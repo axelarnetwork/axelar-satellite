@@ -11,8 +11,8 @@ import {
 
 export const SwapBox = () => {
   return (
-    <div className="backdrop-blur-lg bg-[#385073]/10 rounded-xl w-[500px] h-[500px]">
-      <div className="p-8">
+    <div className="backdrop-blur-lg bg-[#385073]/10 rounded-xl w-[500px] min-h-[500px] h-auto">
+      <div className="p-8 space-y-5">
         <div className="flex justify-between">
           <InputWrapper>
             <SourceChainSelector />
@@ -25,13 +25,13 @@ export const SwapBox = () => {
           </InputWrapper>
         </div>
 
-        <div className="mt-4">
+        <div>
           <InputWrapper>
             <TokenSelector />
           </InputWrapper>
         </div>
 
-        <div className="mt-4">
+        <div>
           <StatsWrapper>
             <ul className="space-y-2 text-sm">
               <li className="flex justify-between">
@@ -54,7 +54,7 @@ export const SwapBox = () => {
           </StatsWrapper>
         </div>
 
-        <div className="mt-4">
+        <div>
           <div className="flex h-10 gap-5">
             <InputWrapper className="h-full">
               <div className="h-full">
@@ -69,7 +69,7 @@ export const SwapBox = () => {
             </div>
           </div>
         </div>
-        <div className="mt-4">
+        <div>
           <button className="w-full btn btn-primary">
             <div className="flex items-center gap-3">
               <div className="relative">
