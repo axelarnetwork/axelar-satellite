@@ -55,8 +55,8 @@ export const SwapBox = () => {
         </div>
 
         <div className="mt-4">
-          <div className="flex gap-5">
-            <InputWrapper>
+          <div className="flex h-10 gap-5">
+            <InputWrapper className="h-full">
               <div className="h-full">
                 <input
                   className="w-full h-full text-xs bg-transparent outline-none"
@@ -64,7 +64,7 @@ export const SwapBox = () => {
                 />
               </div>
             </InputWrapper>
-            <div>
+            <div className="h-full">
               <AddressFiller />
             </div>
           </div>
