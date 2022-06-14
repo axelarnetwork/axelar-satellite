@@ -59,8 +59,8 @@ export const SwapBox = () => {
             <InputWrapper>
               <div className="h-full">
                 <input
-                  className="h-full bg-transparent outline-none"
-                  placeholder="0x....."
+                  className="w-full h-full text-xs bg-transparent outline-none"
+                  placeholder="0x120698246F840480A8aF88D8C301cb9a38F7628A"
                 />
               </div>
             </InputWrapper>
