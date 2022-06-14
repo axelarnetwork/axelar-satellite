@@ -3,7 +3,7 @@ import React from "react";
 import { InputWrapper, StatsWrapper } from "../common";
 import {
   AddressFiller,
-  ChainSwitcher,
+  ChainSwapper,
   DestChainSelector,
   SourceChainSelector,
   TokenSelector,
@@ -18,7 +18,7 @@ export const SwapBox = () => {
             <SourceChainSelector />
           </InputWrapper>
           <div className="relative z-50 flex items-center -mx-2">
-            <ChainSwitcher />
+            <ChainSwapper />
           </div>
           <InputWrapper>
             <DestChainSelector />
