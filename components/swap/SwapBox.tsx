@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { InputWrapper, StatsWrapper } from "../common";
 import {
+  AddressFiller,
   ChainSwitcher,
   DestChainSelector,
   SourceChainSelector,
@@ -16,7 +17,7 @@ export const SwapBox = () => {
           <InputWrapper>
             <SourceChainSelector />
           </InputWrapper>
-          <div className="-mx-2 flex items-center relative z-50">
+          <div className="relative z-50 flex items-center -mx-2">
             <ChainSwitcher />
           </div>
           <InputWrapper>
@@ -32,7 +33,7 @@ export const SwapBox = () => {
 
         <div className="mt-4">
           <StatsWrapper>
-            <ul className="text-sm space-y-2">
+            <ul className="space-y-2 text-sm">
               <li className="flex justify-between">
                 <span>Current asset balance:</span>
                 <span>00.00</span>
@@ -51,6 +52,22 @@ export const SwapBox = () => {
               </li>
             </ul>
           </StatsWrapper>
+        </div>
+
+        <div className="mt-4">
+          <div className="flex gap-5">
+            <InputWrapper>
+              <div className="h-full">
+                <input
+                  className="h-full bg-transparent outline-none"
+                  placeholder="0x....."
+                />
+              </div>
+            </InputWrapper>
+            <div>
+              <AddressFiller />
+            </div>
+          </div>
         </div>
       </div>
     </div>
