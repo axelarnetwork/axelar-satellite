@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Layout } from "../components/layout";
+import { Layout, Navbar } from "../components/layout";
 import { SwapBox } from "../components/swap";
 
 const Home: NextPage = () => {
@@ -13,7 +13,8 @@ const Home: NextPage = () => {
       </Head>
 
       <Layout>
-        <div className="grid grid-cols-2 h-full">
+        <Navbar />
+        <div className="grid h-full grid-cols-2">
           <div></div>
           <div className="h-full pt-40">
             <SwapBox />
