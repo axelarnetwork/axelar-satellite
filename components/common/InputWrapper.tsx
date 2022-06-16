@@ -9,7 +9,12 @@ export const InputWrapper: React.FC<InputWrapperProps> = ({
   className,
 }) => {
   return (
-    <div className={cn("bg-[#02141b] w-full rounded-lg py-2 px-5", className)}>
+    <div
+      className={cn(
+        "bg-[#02141b] w-full rounded-lg py-2 px-5 relative",
+        className
+      )}
+    >
       {children}
     </div>
   );
