@@ -13,12 +13,11 @@ const Home: NextPage = () => {
       </Head>
 
       <Layout>
-        <Navbar />
-        <div className="grid h-full grid-cols-2 pt-48 justify-items-center">
+        <div className="grid h-full grid-cols-1 pt-48 md:grid-cols-2">
           <div>
             <PageHeader />
           </div>
-          <div className="h-full pt-16">
+          <div className="h-full pt-16 justify-self-center md:justify-self-end">
             <SwapBox />
           </div>
         </div>

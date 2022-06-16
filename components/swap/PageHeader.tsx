@@ -3,7 +3,7 @@ import React from "react";
 
 export const PageHeader = () => {
   return (
-    <div className="max-w-md">
+    <div className="max-w-md mx-auto md:mx-0">
       <h1 className="text-6xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#AECDFF] to-[#7BFEFF]">
         Satellite
       </h1>

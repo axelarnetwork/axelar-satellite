@@ -5,7 +5,7 @@ export const SourceChainSelector = () => {
   return (
     <div>
       <label className="text-xs">From</label>
-      <div className="text-lg font-medium flex items-center space-x-2">
+      <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
         <Image
           src="/assets/chains/ethereum.logo.svg"
           layout="intrinsic"
