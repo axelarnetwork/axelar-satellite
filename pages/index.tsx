@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Layout, Navbar } from "../components/layout";
-import { SwapBox } from "../components/swap";
+import { PageHeader, SwapBox } from "../components/swap";
 
 const Home: NextPage = () => {
   return (
@@ -14,9 +14,11 @@ const Home: NextPage = () => {
 
       <Layout>
         <Navbar />
-        <div className="grid h-full grid-cols-2">
-          <div></div>
-          <div className="h-full pt-40">
+        <div className="grid h-full grid-cols-2 pt-48 justify-items-center">
+          <div>
+            <PageHeader />
+          </div>
+          <div className="h-full pt-16">
             <SwapBox />
           </div>
         </div>

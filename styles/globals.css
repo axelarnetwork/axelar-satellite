@@ -5,6 +5,9 @@
 * {
   @apply text-white;
 }
+.btn {
+  @apply text-white;
+}
 
 .btn-primary {
   @apply bg-gradient-to-r from-[#0062FE] to-[#01F8F9] text-white border-0;
