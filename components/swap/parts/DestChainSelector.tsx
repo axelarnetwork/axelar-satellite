@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { allChains } from "../../../config/chains";
+import { useSwapStore } from "../../../store";
+import { useOnClickOutside } from "usehooks-ts";
 
 export const DestChainSelector = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { destChain, setDestChain } = useSwapStore((state) => state);
+
+  const ref = useRef(null);
+  useOnClickOutside(ref, () => {
+    dropdownOpen && handleOnDropdownToggle();
+  });
+
+  function handleOnChainChange(chain: string) {
+    setDestChain(chain);
+  }
+
+  function handleOnDropdownToggle() {
+    setDropdownOpen(!dropdownOpen);
+  }
+
   return (
     <div>
       <label className="block text-xs">To</label>
@@ -15,7 +33,7 @@ export const DestChainSelector = () => {
               width={40}
               height={40}
             />
-            <span>Cosmos</span>
+            <span>{destChain}</span>
             <div className="flex items-center">
               <Image
                 src="/assets/ui/arrow-down.svg"
@@ -33,7 +51,11 @@ export const DestChainSelector = () => {
           {allChains.map((chain) => {
             return (
               <li key={chain.chainInfo.chainName}>
-                <a>{chain.chainInfo.chainName}</a>
+                <button
+                  onClick={() => handleOnChainChange(chain.chainInfo.chainName)}
+                >
+                  {chain.chainInfo.chainName}
+                </button>
               </li>
             );
           })}
