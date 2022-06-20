@@ -17,7 +17,7 @@ export const Navbar = () => {
             <div className="text-lg font-normal">(Beta) Powered by Axelar</div>
           </div>
         </div>
-        <div className="ml-auto">
+        <div className="flex items-center ml-auto">
           <label className="swap swap-rotate">
             <input type="checkbox" />
 
