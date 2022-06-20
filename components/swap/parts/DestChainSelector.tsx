@@ -1,19 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { allChains } from "../../../config/chains";
 import { useSwapStore } from "../../../store";
 import { useOnClickOutside } from "usehooks-ts";
 import { convertChainName } from "../../../utils/transformers";
 
+const defaultChainImg = "/assets/chains/default.logo.svg";
+
 export const DestChainSelector = () => {
-  const [imgError, setImgError] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { destChain, setDestChain } = useSwapStore((state) => state);
   const ref = useRef(null);
-
-  useEffect(() => {
-    setImgError(false);
-  }, [destChain]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -21,11 +18,6 @@ export const DestChainSelector = () => {
 
   function handleOnDropdownToggle() {
     setDropdownOpen(!dropdownOpen);
-  }
-
-  function getChainImg() {
-    if (imgError) return "/assets/chains/default.logo.svg";
-    return `/assets/chains/${destChain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`;
   }
 
   function renderChainDropdown() {
@@ -40,7 +32,17 @@ export const DestChainSelector = () => {
           return (
             <li key={chain.chainInfo.chainSymbol}>
               <button onClick={() => setDestChain(chain)}>
-                {chain.chainInfo.chainName}
+                <Image
+                  src={`/assets/chains/${chain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`}
+                  layout="intrinsic"
+                  width={40}
+                  height={40}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultChainImg;
+                    e.currentTarget.srcset = defaultChainImg;
+                  }}
+                />
+                <span>{chain.chainInfo.chainName}</span>
               </button>
             </li>
           );
@@ -50,7 +52,7 @@ export const DestChainSelector = () => {
   }
 
   return (
-    <div>
+    <div ref={ref}>
       <label className="block text-xs">To</label>
       <div
         className="static dropdown dropdown-open"
@@ -59,11 +61,14 @@ export const DestChainSelector = () => {
         <div tabIndex={0}>
           <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
             <Image
-              src={getChainImg()}
+              src={`/assets/chains/${destChain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`}
               layout="intrinsic"
               width={40}
               height={40}
-              onError={() => setImgError(true)}
+              onError={(e) => {
+                e.currentTarget.src = defaultChainImg;
+                e.currentTarget.srcset = defaultChainImg;
+              }}
             />
             <span>{convertChainName(destChain.chainInfo.chainName)}</span>
             <div className="flex items-center">

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
 
@@ -6,15 +6,12 @@ import { allChains } from "../../../config/chains";
 import { useSwapStore } from "../../../store";
 import { convertChainName } from "../../../utils/transformers";
 
+const defaultChainImg = "/assets/chains/default.logo.svg";
+
 export const SourceChainSelector = () => {
-  const [imgError, setImgError] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { srcChain, setSrcChain } = useSwapStore((state) => state);
   const ref = useRef(null);
-
-  useEffect(() => {
-    setImgError(false);
-  }, [srcChain]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -22,11 +19,6 @@ export const SourceChainSelector = () => {
 
   function handleOnDropdownToggle() {
     setDropdownOpen(!dropdownOpen);
-  }
-
-  function getChainImg() {
-    if (imgError) return "/assets/chains/default.logo.svg";
-    return `/assets/chains/${srcChain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`;
   }
 
   function renderChainDropdown() {
@@ -41,7 +33,17 @@ export const SourceChainSelector = () => {
           return (
             <li key={chain.chainInfo.chainSymbol}>
               <button onClick={() => setSrcChain(chain)}>
-                {chain.chainInfo.chainName}
+                <Image
+                  src={`/assets/chains/${chain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`}
+                  layout="intrinsic"
+                  width={40}
+                  height={40}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultChainImg;
+                    e.currentTarget.srcset = defaultChainImg;
+                  }}
+                />
+                <span>{chain.chainInfo.chainName}</span>
               </button>
             </li>
           );
@@ -60,11 +62,14 @@ export const SourceChainSelector = () => {
         <div tabIndex={0}>
           <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
             <Image
-              src={getChainImg()}
+              src={`/assets/chains/${srcChain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`}
               layout="intrinsic"
               width={40}
               height={40}
-              onError={() => setImgError(true)}
+              onError={(e) => {
+                e.currentTarget.src = defaultChainImg;
+                e.currentTarget.srcset = defaultChainImg;
+              }}
             />
             <span>{convertChainName(srcChain.chainInfo.chainName)}</span>
             <div className="flex items-center">
