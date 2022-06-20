@@ -8,6 +8,7 @@ interface SwapSwate {
   destChain: Chain;
   setSrcChain: (chain: any) => void;
   setDestChain: (chain: any) => void;
+  switchChains: () => void;
 }
 
 export const useSwapStore = create<SwapSwate>()(
@@ -22,5 +23,10 @@ export const useSwapStore = create<SwapSwate>()(
       set({
         destChain: chain,
       }),
+    switchChains: () =>
+      set((state) => ({
+        destChain: state.srcChain,
+        srcChain: state.destChain,
+      })),
   }))
 );
