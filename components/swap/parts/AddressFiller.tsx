@@ -1,10 +1,17 @@
 import React from "react";
 import Image from "next/image";
 import { useSwapStore } from "../../../store";
+import { useAccount } from "wagmi";
 
 export const AddressFiller = () => {
+  const { data } = useAccount();
+  const setDestAddress = useSwapStore((state) => state.setDestAddress);
   const destChain = useSwapStore((state) => state.destChain);
   const isEvm = destChain.chainInfo.module === "evm";
+
+  function fillDestinationAddress() {
+    if (data?.address) setDestAddress(data?.address);
+  }
 
   if (isEvm)
     return (
@@ -13,7 +20,10 @@ export const AddressFiller = () => {
         className="bg-gradient-to-b from-[#E8821E] to-[#F89C35] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
       >
         <div className="flex justify-between items-center h-full w-full bg-[#291e14] rounded-lg p-3">
-          <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#E8821E] to-[#F89C35]">
+          <div
+            className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#E8821E] to-[#F89C35]"
+            onClick={fillDestinationAddress}
+          >
             Autofill from
           </div>
 
