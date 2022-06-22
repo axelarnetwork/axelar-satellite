@@ -1,19 +1,31 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { useConnect } from "wagmi";
+import { useAccount, useConnect } from "wagmi";
+import toast from "react-hot-toast";
 
 export const Web3Modal = () => {
-  // const { connect, connectors, isConnected } = useConnect();
+  const { connect, connectors, isConnected, error } = useConnect();
   const modalRef = useRef<any>();
+
+  // close modal upon successful connection
+  useEffect(() => {
+    if (isConnected) closeModal();
+  }, [isConnected]);
+
+  // notify user that he already has a connected account but it's not the active one
+  useEffect(() => {
+    if (error) toast.error(error?.message);
+  }, [error]);
 
   function closeModal() {
     if (modalRef?.current?.checked) modalRef.current.checked = false;
   }
 
-  // function handleOnMetamaskSwitch() {
-  //   const metamaskConnector = connectors[0];
-  //   connect(metamaskConnector);
-  // }
+  function handleOnMetamaskSwitch() {
+    const connector = connectors.find((c) => c.name === "MetaMask");
+    if (!connector) return;
+    connect(connector);
+  }
 
   // function handleOnWalletConnectSwitch() {
   //   const walletConnectConnector = connectors[1];
@@ -36,7 +48,7 @@ export const Web3Modal = () => {
         <div className="grid grid-cols-2 mt-4 gap-x-4 gap-y-5">
           <button
             className="relative flex btn btn-neutral"
-            // onClick={handleOnMetamaskSwitch}
+            onClick={handleOnMetamaskSwitch}
           >
             <span>Metamask</span>
             <div className="ml-auto">
