@@ -6,6 +6,8 @@ import { WagmiConfig, createClient } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { Toaster } from "react-hot-toast";
 
+import "animate.css";
+
 const client = createClient({
   autoConnect: true,
   connectors: [

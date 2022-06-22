@@ -59,12 +59,12 @@ export const SwapBox = () => {
         </div>
 
         <div>
-          <div className="flex h-10 gap-2">
+          <div className="flex h-10 gap-2 ">
             <InputWrapper className="h-full">
               <div className="h-full">
                 <input
                   className="w-full h-full text-xs bg-transparent outline-none"
-                  placeholder="0x120698246F840480A8aF88D8C301cb9a38F7628A"
+                  placeholder="Destination address"
                 />
               </div>
             </InputWrapper>
