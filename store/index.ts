@@ -45,7 +45,7 @@ export const useSwapStore = create<SwapStore>()(
         {
           srcChain: chain,
         },
-        undefined,
+        false,
         "setSrcChain"
       ),
     setDestChain: (chain) =>
@@ -53,7 +53,7 @@ export const useSwapStore = create<SwapStore>()(
         {
           destChain: chain,
         },
-        undefined,
+        false,
         "setDestChain"
       ),
     setDestAddress: (address) =>
@@ -61,7 +61,7 @@ export const useSwapStore = create<SwapStore>()(
         {
           destAddress: address,
         },
-        undefined,
+        false,
         "setDestAddress"
       ),
     setAsset: (asset) =>
@@ -69,7 +69,7 @@ export const useSwapStore = create<SwapStore>()(
         {
           asset,
         },
-        undefined,
+        false,
         "setAsset"
       ),
     setAssetList: (assets) =>
@@ -77,7 +77,7 @@ export const useSwapStore = create<SwapStore>()(
         {
           selectableAssetList: assets,
         },
-        undefined,
+        false,
         "setAssetList"
       ),
     switchChains: () =>
@@ -86,7 +86,7 @@ export const useSwapStore = create<SwapStore>()(
           destChain: state.srcChain,
           srcChain: state.destChain,
         }),
-        undefined,
+        false,
         "switchChains"
       ),
   }))
