@@ -1,15 +1,19 @@
-import Image from "next/image";
 import React from "react";
+import { useConnect } from "wagmi";
 import { InputWrapper, StatsWrapper } from "../common";
 import {
   AddressFiller,
   ChainSwapper,
+  ConnectButton,
   DestChainSelector,
+  GenerateDepositAddressButton,
   SourceChainSelector,
   TokenSelector,
 } from "./parts";
 
 export const SwapBox = () => {
+  const { isConnected } = useConnect();
+
   return (
     <div className="backdrop-blur-lg bg-[#385073]/10 rounded-xl w-[500px] min-h-[500px] h-auto">
       <div className="p-8 space-y-5">
@@ -70,14 +74,8 @@ export const SwapBox = () => {
           </div>
         </div>
         <div>
-          <label htmlFor="web3-modal" className="w-full btn btn-primary">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <Image src="/assets/ui/wallet.svg" height={20} width={20} />
-              </div>
-              <span>Connect Wallet</span>
-            </div>
-          </label>
+          {!isConnected && <ConnectButton />}
+          {isConnected && <GenerateDepositAddressButton />}
         </div>
       </div>
     </div>
