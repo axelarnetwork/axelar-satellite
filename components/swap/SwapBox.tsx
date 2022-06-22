@@ -1,6 +1,7 @@
 import React from "react";
 import { useConnect } from "wagmi";
-import { InputWrapper, StatsWrapper } from "../common";
+import { useSwapStore } from "../../store";
+import { ConnectIndicator, InputWrapper, StatsWrapper } from "../common";
 import {
   AddressFiller,
   ChainSwapper,
@@ -13,10 +14,13 @@ import {
 
 export const SwapBox = () => {
   const { isConnected } = useConnect();
+  const destAddress = useSwapStore((state) => state.destAddress);
+  const setDestAddress = useSwapStore((state) => state.setDestAddress);
 
   return (
     <div className="backdrop-blur-lg bg-[#385073]/10 rounded-xl w-[500px] min-h-[500px] h-auto">
       <div className="p-8 space-y-5">
+        <ConnectIndicator />
         <div className="flex justify-between">
           <InputWrapper>
             <SourceChainSelector />
@@ -65,6 +69,8 @@ export const SwapBox = () => {
                 <input
                   className="w-full h-full text-xs bg-transparent outline-none"
                   placeholder="Destination address"
+                  value={destAddress}
+                  onChange={(e) => setDestAddress(e.target.value)}
                 />
               </div>
             </InputWrapper>
