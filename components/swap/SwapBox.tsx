@@ -8,6 +8,7 @@ import {
   ConnectButton,
   DestChainSelector,
   GenerateDepositAddressButton,
+  InitialStats,
   SourceChainSelector,
   TokenSelector,
 } from "./parts";
@@ -40,26 +41,7 @@ export const SwapBox = () => {
         </div>
 
         <div>
-          <StatsWrapper>
-            <ul className="space-y-2 text-sm">
-              <li className="flex justify-between">
-                <span>Current asset balance:</span>
-                <span>00.00</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Minimum deposit amount:</span>
-                <span>00.00</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Relayer Gas Fees:</span>
-                <span>00.00</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Estimated wait time:</span>
-                <span>~ 00-00 min</span>
-              </li>
-            </ul>
-          </StatsWrapper>
+          <InitialStats />
         </div>
 
         <div>
