@@ -8,6 +8,7 @@ import { allAssets } from "../config/assets";
 interface SwapState {
   srcChain: Chain;
   destChain: Chain;
+  destAddress: string;
   selectableAssetList: AssetConfig[];
   asset: AssetConfig | null;
 }
@@ -15,6 +16,7 @@ interface SwapState {
 interface SwapStore extends SwapState {
   setSrcChain: (chain: Chain) => void;
   setDestChain: (chain: Chain) => void;
+  setDestAddress: (address: string) => void;
   setAsset: (asset: AssetConfig | null) => void;
   setAssetList: (assets: AssetConfig[]) => void;
   switchChains: () => void;
@@ -30,6 +32,7 @@ const initialState: SwapState = {
   destChain: allChains.find(
     (chain) => chain.chainInfo.chainSymbol === "MOONBEAM"
   ) as Chain,
+  destAddress: "",
   selectableAssetList: [],
   asset: null,
 };
@@ -52,6 +55,14 @@ export const useSwapStore = create<SwapStore>()(
         },
         undefined,
         "setDestChain"
+      ),
+    setDestAddress: (address) =>
+      set(
+        {
+          destAddress: address,
+        },
+        undefined,
+        "setDestAddress"
       ),
     setAsset: (asset) =>
       set(
