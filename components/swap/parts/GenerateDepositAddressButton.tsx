@@ -5,28 +5,33 @@ import { useGenerateDepositAddress } from "../../../hooks/api";
 import { useSwapStore } from "../../../store";
 
 export const GenerateDepositAddressButton = () => {
-  const { srcChain, destChain, destAddress, asset } = useSwapStore(
+  const { srcChain, destChain, destAddress, asset, setIsBusy } = useSwapStore(
     (state) => state
   );
-  const { mutate, data } = useGenerateDepositAddress();
+  const { mutateAsync, data, isLoading } = useGenerateDepositAddress();
 
-  function handleOnGenerateDepositAddress() {
+  async function handleOnGenerateDepositAddress() {
     if (!asset) return toast.error("Asset can't be empty");
     if (!destAddress) return toast.error("Destination address can't be empty");
 
-    mutate({
+    setIsBusy(true);
+    mutateAsync({
       fromChain: srcChain.chainInfo.chainIdentifier[ENVIRONMENT],
       toChain: destChain.chainInfo.chainIdentifier[ENVIRONMENT],
       asset: asset?.common_key[ENVIRONMENT],
       destAddress,
-    });
+    }).finally(() => setIsBusy(false));
   }
 
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
-  }, [data]);
+  function renderLoadingButton() {
+    return (
+      <div className="w-full btn btn-primary loading">
+        Generating Deposit Address
+      </div>
+    );
+  }
+
+  if (isLoading) return renderLoadingButton();
 
   return (
     <div
