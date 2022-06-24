@@ -4,7 +4,7 @@ import Image from "next/image";
 export const Navbar = () => {
   return (
     <div className="fixed flex items-center w-full h-24">
-      <nav className="container flex items-center px-4 mx-auto">
+      <nav className="flex items-center w-full max-w-screen-xl px-4 mx-auto">
         <div className="flex">
           <Image
             layout="intrinsic"
