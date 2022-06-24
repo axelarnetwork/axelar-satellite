@@ -1,26 +1,36 @@
-import React, { useEffect } from "react";
+import React from "react";
 import toast from "react-hot-toast";
+
 import { ENVIRONMENT } from "../../../config/constants";
 import { useGenerateDepositAddress } from "../../../hooks/api";
 import { useSwapStore } from "../../../store";
+import { SwapStatus } from "../../../utils/enums";
 
 export const GenerateDepositAddressButton = () => {
-  const { srcChain, destChain, destAddress, asset, setIsBusy } = useSwapStore(
-    (state) => state
-  );
+  const {
+    srcChain,
+    destChain,
+    destAddress,
+    asset,
+    setSwapStatus,
+    setDestAddress,
+  } = useSwapStore((state) => state);
   const { mutateAsync, data, isLoading } = useGenerateDepositAddress();
 
   async function handleOnGenerateDepositAddress() {
     if (!asset) return toast.error("Asset can't be empty");
     if (!destAddress) return toast.error("Destination address can't be empty");
 
-    setIsBusy(true);
+    setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
     mutateAsync({
       fromChain: srcChain.chainInfo.chainIdentifier[ENVIRONMENT],
       toChain: destChain.chainInfo.chainIdentifier[ENVIRONMENT],
       asset: asset?.common_key[ENVIRONMENT],
       destAddress,
-    }).finally(() => setIsBusy(false));
+    })
+      .then((depositAddress: string) => setDestAddress(depositAddress))
+      .then(() => setSwapStatus(SwapStatus.WAIT_FOR_DEPOSIT))
+      .catch(() => setSwapStatus(SwapStatus.IDLE));
   }
 
   function renderLoadingButton() {

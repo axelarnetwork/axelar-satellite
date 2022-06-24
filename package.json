@@ -21,6 +21,7 @@
     "react-dom": "18.1.0",
     "react-hot-toast": "^2.2.0",
     "react-query": "^3.39.1",
+    "spinners-react": "^1.0.7",
     "usehooks-ts": "^2.5.4",
     "wagmi": "^0.4.12",
     "zustand": "^4.0.0-rc.1"
