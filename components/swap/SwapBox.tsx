@@ -1,4 +1,5 @@
 import React from "react";
+import cn from "classnames";
 import { useConnect } from "wagmi";
 import { useSwapStore } from "../../store";
 import { ConnectIndicator, InputWrapper, StatsWrapper } from "../common";
@@ -12,15 +13,17 @@ import {
   SourceChainSelector,
   TokenSelector,
 } from "./parts";
+import { useGenerateDepositAddress } from "../../hooks/api";
 
 export const SwapBox = () => {
   const { isConnected } = useConnect();
-  const destAddress = useSwapStore((state) => state.destAddress);
-  const setDestAddress = useSwapStore((state) => state.setDestAddress);
+  const { destAddress, setDestAddress, isBusy } = useSwapStore(
+    (state) => state
+  );
 
   return (
     <div className="backdrop-blur-lg bg-[#385073]/10 rounded-xl w-[500px] min-h-[500px] h-auto">
-      <div className="p-8 space-y-5">
+      <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
         <ConnectIndicator />
         <div className="flex justify-between">
           <InputWrapper>
@@ -40,28 +43,37 @@ export const SwapBox = () => {
           </InputWrapper>
         </div>
 
-        <div>
-          <InitialStats />
-        </div>
-
-        <div>
-          <div className="flex h-10 gap-2 ">
-            <InputWrapper className="h-full">
-              <div className="h-full">
-                <input
-                  className="w-full h-full text-xs bg-transparent outline-none"
-                  placeholder="Destination address"
-                  value={destAddress}
-                  onChange={(e) => setDestAddress(e.target.value)}
-                />
-              </div>
-            </InputWrapper>
-            <div className="h-full">
-              <AddressFiller />
+        {!isBusy && (
+          <>
+            <div>
+              <InitialStats />
             </div>
-          </div>
-        </div>
-        <div>
+
+            <div
+              className={cn({
+                "opacity-0": !isConnected,
+              })}
+            >
+              <div className="flex h-10 gap-2 ">
+                <InputWrapper className="h-full">
+                  <div className="h-full">
+                    <input
+                      className="w-full h-full text-xs bg-transparent outline-none"
+                      placeholder="Destination address"
+                      value={destAddress}
+                      onChange={(e) => setDestAddress(e.target.value)}
+                    />
+                  </div>
+                </InputWrapper>
+                <div className="h-full">
+                  <AddressFiller />
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
+        <div className="flex flex-col justify-end h-full">
           {!isConnected && <ConnectButton />}
           {isConnected && <GenerateDepositAddressButton />}
         </div>
