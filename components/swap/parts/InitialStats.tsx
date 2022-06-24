@@ -34,14 +34,19 @@ export const InitialStats = () => {
     return Big(sourceFee).add(Big(destFee)).toString();
   }
 
-  console.log("hi");
+  function renderAssetSymbol() {
+    if (!asset) return null;
+    return asset.common_key[ENVIRONMENT];
+  }
 
   return (
     <StatsWrapper>
       <ul className="space-y-2 text-sm">
         <li className="flex justify-between">
           <span>Relayer Gas Fees:</span>
-          <span>{renderGasFee()}</span>
+          <span>
+            {renderGasFee()} {renderAssetSymbol()}
+          </span>
         </li>
         <li className="flex justify-between">
           <span>Estimated wait time:</span>
