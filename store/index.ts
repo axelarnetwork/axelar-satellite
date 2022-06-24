@@ -44,8 +44,8 @@ const initialState: SwapState = {
   destAddress: "",
   selectableAssetList: [],
   asset: null,
-  swapStatus: SwapStatus.WAIT_FOR_DEPOSIT,
-  despositAddress: "0xDA1c29B5017229Ce46158EB42693f5F5C8f893E9",
+  swapStatus: SwapStatus.IDLE,
+  despositAddress: "",
 };
 
 export const useSwapStore = create<SwapStore>()(
