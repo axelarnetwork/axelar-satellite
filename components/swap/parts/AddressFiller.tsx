@@ -18,12 +18,10 @@ export const AddressFiller = () => {
       <div
         key={destChain.chainInfo.module}
         className="bg-gradient-to-b from-[#E8821E] to-[#F89C35] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
+        onClick={fillDestinationAddress}
       >
         <div className="flex justify-between items-center h-full w-full bg-[#291e14] rounded-lg p-3">
-          <div
-            className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#E8821E] to-[#F89C35]"
-            onClick={fillDestinationAddress}
-          >
+          <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#E8821E] to-[#F89C35]">
             Autofill from
           </div>
 
