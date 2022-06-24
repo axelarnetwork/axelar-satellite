@@ -6,3 +6,4 @@ export * from "./AddressFiller";
 export * from "./ConnectButton";
 export * from "./GenerateDepositAddressButton";
 export * from "./InitialStats";
+export * from "./SwapActions";
