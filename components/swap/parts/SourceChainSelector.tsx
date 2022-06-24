@@ -56,7 +56,7 @@ export const SourceChainSelector = () => {
     <div ref={ref}>
       <label className="block text-xs">From</label>
       <div
-        className="static dropdown dropdown-open"
+        className="static mt-1 dropdown dropdown-open"
         onClick={handleOnDropdownToggle}
       >
         <div tabIndex={0}>

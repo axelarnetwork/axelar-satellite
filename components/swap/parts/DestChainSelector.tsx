@@ -55,7 +55,7 @@ export const DestChainSelector = () => {
     <div ref={ref}>
       <label className="block text-xs">To</label>
       <div
-        className="static dropdown dropdown-open"
+        className="static mt-1 dropdown dropdown-open"
         onClick={handleOnDropdownToggle}
       >
         <div tabIndex={0}>
