@@ -3,6 +3,7 @@ import create from "zustand";
 import { devtools } from "zustand/middleware";
 
 import { allChains } from "../config/chains";
+import { SwapStatus } from "../utils/enums";
 
 interface SwapState {
   srcChain: Chain;
@@ -10,7 +11,7 @@ interface SwapState {
   destAddress: string;
   selectableAssetList: AssetConfig[];
   asset: AssetConfig | null;
-  isBusy: boolean; // check if we generate the deposit address
+  swapStatus: SwapStatus;
   despositAddress: string;
 }
 
@@ -21,7 +22,7 @@ interface SwapStore extends SwapState {
   setAsset: (asset: AssetConfig | null) => void;
   setAssetList: (assets: AssetConfig[]) => void;
   switchChains: () => void;
-  setIsBusy: (isBusy: boolean) => void;
+  setSwapStatus: (newStatus: SwapStatus) => void;
   setDepositAddress: (address: string) => void;
 }
 
@@ -43,8 +44,8 @@ const initialState: SwapState = {
   destAddress: "",
   selectableAssetList: [],
   asset: null,
-  isBusy: false,
-  despositAddress: "",
+  swapStatus: SwapStatus.WAIT_FOR_DEPOSIT,
+  despositAddress: "0xDA1c29B5017229Ce46158EB42693f5F5C8f893E9",
 };
 
 export const useSwapStore = create<SwapStore>()(
@@ -99,14 +100,6 @@ export const useSwapStore = create<SwapStore>()(
         false,
         "switchChains"
       ),
-    setIsBusy: (isBusy) =>
-      set(
-        (state) => ({
-          isBusy,
-        }),
-        false,
-        "setIsBusy"
-      ),
     setDepositAddress: (address) =>
       set(
         (state) => ({
@@ -114,6 +107,14 @@ export const useSwapStore = create<SwapStore>()(
         }),
         false,
         "setDepositAddress"
+      ),
+    setSwapStatus: (newStatus) =>
+      set(
+        (state) => ({
+          swapStatus: newStatus,
+        }),
+        false,
+        "setSwapStatus"
       ),
   }))
 );
