@@ -3,7 +3,6 @@ import create from "zustand";
 import { devtools } from "zustand/middleware";
 
 import { allChains } from "../config/chains";
-import { allAssets } from "../config/assets";
 
 interface SwapState {
   srcChain: Chain;
@@ -11,6 +10,8 @@ interface SwapState {
   destAddress: string;
   selectableAssetList: AssetConfig[];
   asset: AssetConfig | null;
+  isBusy: boolean; // check if we generate the deposit address
+  despositAddress: string;
 }
 
 interface SwapStore extends SwapState {
@@ -20,21 +21,30 @@ interface SwapStore extends SwapState {
   setAsset: (asset: AssetConfig | null) => void;
   setAssetList: (assets: AssetConfig[]) => void;
   switchChains: () => void;
+  setIsBusy: (isBusy: boolean) => void;
+  setDepositAddress: (address: string) => void;
 }
+
+// initial chains
+// TODO: probably need to add initial asset as well
+const avalancheChain = allChains.find(
+  (chain) => chain.chainInfo.chainSymbol === "AVAX"
+) as Chain;
+const moonbeamChain = allChains.find(
+  (chain) => chain.chainInfo.chainSymbol === "MOONBEAM"
+) as Chain;
 
 /**
  * We define an initial state for easy state reset if needed
  */
 const initialState: SwapState = {
-  srcChain: allChains.find(
-    (chain) => chain.chainInfo.chainSymbol === "AVAX"
-  ) as Chain,
-  destChain: allChains.find(
-    (chain) => chain.chainInfo.chainSymbol === "MOONBEAM"
-  ) as Chain,
+  srcChain: avalancheChain,
+  destChain: moonbeamChain,
   destAddress: "",
   selectableAssetList: [],
   asset: null,
+  isBusy: false,
+  despositAddress: "",
 };
 
 export const useSwapStore = create<SwapStore>()(
@@ -88,6 +98,22 @@ export const useSwapStore = create<SwapStore>()(
         }),
         false,
         "switchChains"
+      ),
+    setIsBusy: (isBusy) =>
+      set(
+        (state) => ({
+          isBusy,
+        }),
+        false,
+        "setIsBusy"
+      ),
+    setDepositAddress: (address) =>
+      set(
+        (state) => ({
+          despositAddress: address,
+        }),
+        false,
+        "setDepositAddress"
       ),
   }))
 );
