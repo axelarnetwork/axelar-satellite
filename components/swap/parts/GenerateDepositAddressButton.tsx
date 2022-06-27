@@ -13,7 +13,7 @@ export const GenerateDepositAddressButton = () => {
     destAddress,
     asset,
     setSwapStatus,
-    setDestAddress,
+    setDepositAddress,
   } = useSwapStore((state) => state);
   const { mutateAsync, data, isLoading } = useGenerateDepositAddress();
 
@@ -22,15 +22,18 @@ export const GenerateDepositAddressButton = () => {
     if (!destAddress) return toast.error("Destination address can't be empty");
 
     setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
-    mutateAsync({
+    const t = await mutateAsync({
       fromChain: srcChain.chainInfo.chainIdentifier[ENVIRONMENT],
       toChain: destChain.chainInfo.chainIdentifier[ENVIRONMENT],
       asset: asset?.common_key[ENVIRONMENT],
       destAddress,
     })
-      .then((depositAddress: string) => setDestAddress(depositAddress))
+      .then((depositAddress: string) => setDepositAddress(depositAddress))
       .then(() => setSwapStatus(SwapStatus.WAIT_FOR_DEPOSIT))
-      .catch(() => setSwapStatus(SwapStatus.IDLE));
+      .catch((error) => {
+        toast.error(error);
+        setSwapStatus(SwapStatus.IDLE);
+      });
   }
 
   function renderLoadingButton() {

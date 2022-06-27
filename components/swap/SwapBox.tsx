@@ -5,7 +5,12 @@ import Image from "next/image";
 
 import { SpinnerCircular } from "spinners-react";
 import { useSwapStore } from "../../store";
-import { ConnectIndicator, InputWrapper, StatsWrapper } from "../common";
+import {
+  AddressShortener,
+  ConnectIndicator,
+  InputWrapper,
+  StatsWrapper,
+} from "../common";
 import {
   AddressFiller,
   ChainSwapper,
@@ -19,11 +24,18 @@ import {
 } from "./parts";
 
 import { SwapStatus } from "../../utils/enums";
+import { ENVIRONMENT } from "../../config/constants";
+import toast from "react-hot-toast";
 
 export const SwapBox = () => {
   const { isConnected } = useConnect();
-  const { destAddress, setDestAddress, swapStatus, despositAddress } =
+  const { destAddress, setDestAddress, swapStatus, despositAddress, asset } =
     useSwapStore((state) => state);
+
+  function handleOnCopyDestinationAddressToClipboard() {
+    navigator.clipboard.writeText(despositAddress);
+    toast.success("copied to clipboard!");
+  }
 
   function renderIdleState() {
     return (
@@ -81,16 +93,42 @@ export const SwapBox = () => {
   function renderBusyState() {
     return (
       <InputWrapper className="h-40">
-        <div className="flex items-center justify-center h-full space-x-2">
-          <SpinnerCircular
-            size={20}
-            thickness={147}
-            color={"#00a5ff"}
-            secondaryColor={"#375f73"}
-          />
-          <span className="text-sm font-bold">
-            Generating deposit address...
-          </span>
+        <div className="h-full space-x-2">
+          <div className="flex flex-col w-full h-full">
+            <div className="h-full">
+              <div className="grid items-center grid-cols-5 mt-2 text-xs font-medium justify-items-center">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
+                  1
+                </div>
+                <progress className="h-1 progress progress-primary"></progress>
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
+                  2
+                </div>
+                <progress className="h-1 progress" value={0}></progress>
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
+                  3
+                </div>
+              </div>
+
+              <div className="flex items-center justify-center mt-6 text-xs gap-x-2">
+                <SpinnerCircular
+                  size={20}
+                  thickness={147}
+                  color={"#00a5ff"}
+                  secondaryColor={"#375f73"}
+                />
+                <span className="font-semibold">
+                  Generating deposit address...
+                </span>
+              </div>
+            </div>
+            <div className="w-full mt-auto">
+              <div className="my-0 divider" />
+              <div className="w-full text-xs font-medium text-center text-gray-500">
+                Generating deposit address
+              </div>
+            </div>
+          </div>
         </div>
       </InputWrapper>
     );
@@ -98,83 +136,77 @@ export const SwapBox = () => {
 
   function renderWaitState() {
     return (
-      <div>
-        <InputWrapper className="h-auto" style={{ minHeight: "10rem" }}>
-          <div className="flex flex-col items-center mt-4 text-xs">
-            <div>
-              <label>Deposit Address</label>
-              <div className="flex gap-x-2">
-                <div className="font-medium text-blue-400 cursor-pointer">
-                  {despositAddress}
+      <InputWrapper className="h-auto">
+        <div className="h-full space-x-2">
+          <div className="flex flex-col w-full h-full">
+            <div className="h-full">
+              <div className="grid items-center grid-cols-5 mt-2 text-xs font-medium justify-items-center">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
+                  1
                 </div>
+                <progress
+                  className="h-1 progress progress-primary"
+                  value={100}
+                ></progress>
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
+                  2
+                </div>
+                <progress className="h-1 progress"></progress>
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
+                  3
+                </div>
+              </div>
 
-                <label className="swap swap-rotate">
-                  <input type="checkbox" />
-
-                  <div className="swap-on">
+              <div className="flex items-center justify-center mt-6 text-xs gap-x-2">
+                <div>
+                  <label className="block text-center">
+                    Please transfer{" "}
+                    <strong>{asset?.common_key[ENVIRONMENT]}</strong> to
+                  </label>
+                  <div className="flex font-bold text-info gap-x-2">
+                    <AddressShortener value={despositAddress} />
+                    <div
+                      className="cursor-pointer"
+                      onClick={handleOnCopyDestinationAddressToClipboard}
+                    >
+                      <Image
+                        src={"/assets/ui/copy.svg"}
+                        height={16}
+                        width={16}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="w-48 mx-auto my-1 text-xs divider">OR USE</div>
+              <div>
+                <div className="flex justify-center my-2 gap-x-5">
+                  <button>
                     <Image
-                      layout="intrinsic"
-                      height={15}
-                      width={15}
-                      src="/assets/ui/copy-check.svg"
+                      src="/assets/wallets/terra-station.logo.svg"
+                      height={20}
+                      width={20}
                     />
-                  </div>
-
-                  <div className="swap-off">
-                    <Image height={15} width={15} src="/assets/ui/copy.svg" />
-                  </div>
-                </label>
+                  </button>
+                  <button>
+                    <Image
+                      src="/assets/wallets/kepler.logo.svg"
+                      height={20}
+                      width={20}
+                    />
+                  </button>
+                </div>
               </div>
             </div>
-            <div>
-              <label>Transaction Hash</label>
-              <div className="flex gap-x-2">
-                <div className="font-medium text-blue-400 cursor-pointer">
-                  {despositAddress}
-                </div>
-
-                <label className="swap swap-rotate">
-                  <input type="checkbox" />
-
-                  <div className="swap-on">
-                    <Image
-                      layout="intrinsic"
-                      height={15}
-                      width={15}
-                      src="/assets/ui/copy-check.svg"
-                    />
-                  </div>
-
-                  <div className="swap-off">
-                    <Image height={15} width={15} src="/assets/ui/copy.svg" />
-                  </div>
-                </label>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <h4>Send deposit via</h4>
-
-              <div className="bg-gradient-to-b from-[#E8821E] to-[#F89C35] w-28 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse">
-                <div className="flex justify-between items-center h-full w-full bg-[#291e14] rounded-lg p-2">
-                  <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#E8821E] to-[#F89C35]">
-                    Metamask
-                  </div>
-
-                  <div className="relative flex items-center h-full">
-                    <Image
-                      layout="intrinsic"
-                      height={25}
-                      width={25}
-                      src="/assets/wallets/metamask.logo.svg"
-                    />
-                  </div>
-                </div>
+            <div className="w-full mt-auto">
+              <div className="my-0 divider" />
+              <div className="w-full text-xs font-medium text-center text-gray-500">
+                Execution of asset transfer
               </div>
             </div>
           </div>
-        </InputWrapper>
-      </div>
+        </div>
+      </InputWrapper>
     );
   }
 
@@ -207,7 +239,25 @@ export const SwapBox = () => {
 
         <div className="flex flex-col justify-end h-full pt-2">
           {!isConnected && <ConnectButton />}
-          {isConnected && <GenerateDepositAddressButton />}
+          {isConnected && swapStatus === SwapStatus.IDLE && (
+            <GenerateDepositAddressButton />
+          )}
+
+          {isConnected && swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS && (
+            <button className="w-full btn btn-disabled" disabled>
+              <div className="flex items-center gap-3">
+                <span>Processing...</span>
+              </div>
+            </button>
+          )}
+
+          {isConnected && swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && (
+            <button className="w-full btn btn-disabled" disabled>
+              <div className="flex items-center gap-3">
+                <span>Waiting for deposit...</span>
+              </div>
+            </button>
+          )}
         </div>
       </div>
     </div>
