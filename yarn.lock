@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@axelar-network/axelarjs-sdk@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.6.0.tgz#fc5d2b18093b78b3f2bd0cd8018675da8528d7f8"
-  integrity sha512-RPf7mP4TLvd32uQXbmpmXCTAhBgi9Rw/ilRXhR7kkwmONpWG5YZw+E8nu0/D7cD++GoCc+Fik5W9kik+XYiePQ==
+"@axelar-network/axelarjs-sdk@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.6.1.tgz#f1bd7cf1934db0c42f817ee5a4904165afc2f227"
+  integrity sha512-I2Ego6obs99iVmey+5sFcrN08eETavTIakL+DhZbMPHCg5PWYhbOG30Xmb72xQMFJAZ0KY3HdHDclgpyVqk4AA==
   dependencies:
     "@terra-money/terra.js" "^3.0.0"
     "@types/lodash" "^4.14.176"

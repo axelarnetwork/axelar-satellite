@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@axelar-network/axelarjs-sdk": "^0.6.0",
+    "@axelar-network/axelarjs-sdk": "^0.6.1",
     "animate.css": "^4.1.1",
     "big.js": "^6.2.0",
     "classnames": "^2.3.1",
