@@ -32,27 +32,48 @@ export const SwapBox = () => {
           <InitialStats />
         </div>
 
-        <div
-          className={cn({
-            "opacity-0": !isConnected,
-          })}
-        >
-          <div className="flex h-10 gap-2 ">
-            <InputWrapper className="h-full">
-              <div className="h-full">
-                <input
-                  className="w-full h-full text-xs bg-transparent outline-none"
-                  placeholder="Destination address"
-                  value={destAddress}
-                  onChange={(e) => setDestAddress(e.target.value)}
-                />
+        {!isConnected && (
+          <div className="h-10 my-4">
+            <div className="rounded-lg bg-neutral alert">
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  className="flex-shrink-0 w-6 h-6 stroke-info"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                <span>Please connect your wallet to use the app</span>
               </div>
-            </InputWrapper>
-            <div className="h-full">
-              <AddressFiller />
             </div>
           </div>
-        </div>
+        )}
+
+        {isConnected && (
+          <div>
+            <div className="flex h-10 gap-2 ">
+              <InputWrapper className="h-full">
+                <div className="h-full">
+                  <input
+                    className="w-full h-full text-xs bg-transparent outline-none"
+                    placeholder="Destination address"
+                    value={destAddress}
+                    onChange={(e) => setDestAddress(e.target.value)}
+                  />
+                </div>
+              </InputWrapper>
+              <div className="h-full">
+                <AddressFiller />
+              </div>
+            </div>
+          </div>
+        )}
       </>
     );
   }
@@ -184,7 +205,7 @@ export const SwapBox = () => {
         {swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS && renderBusyState()}
         {swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && renderWaitState()}
 
-        <div className="flex flex-col justify-end h-full">
+        <div className="flex flex-col justify-end h-full pt-2">
           {!isConnected && <ConnectButton />}
           {isConnected && <GenerateDepositAddressButton />}
         </div>
