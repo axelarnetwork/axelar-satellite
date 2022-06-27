@@ -13,10 +13,11 @@ import {
   DestChainSelector,
   GenerateDepositAddressButton,
   InitialStats,
+  OriginSwapper,
   SourceChainSelector,
   TokenSelector,
 } from "./parts";
-import { useGenerateDepositAddress } from "../../hooks/api";
+
 import { SwapStatus } from "../../utils/enums";
 
 export const SwapBox = () => {
@@ -159,6 +160,7 @@ export const SwapBox = () => {
   return (
     <div className="backdrop-blur-lg bg-[#385073]/10 rounded-xl w-[500px] min-h-[500px] h-auto">
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
+        <OriginSwapper />
         <ConnectIndicator />
         <div className="flex justify-between">
           <InputWrapper>

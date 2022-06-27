@@ -10,3 +10,8 @@ export enum SwapStatus {
   WAIT_FOR_DEPOSIT = "WAIT_FOR_DEPOSIT",
   WAIT_FOR_CONFIRMATION = "WAIT_FOR_CONFIRMATION",
 }
+
+export enum SwapOrigin {
+  APP = "APP",
+  EXCHANGE = "EXCHANGE",
+}

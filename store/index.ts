@@ -3,7 +3,7 @@ import create from "zustand";
 import { devtools } from "zustand/middleware";
 
 import { allChains } from "../config/chains";
-import { SwapStatus } from "../utils/enums";
+import { SwapOrigin, SwapStatus } from "../utils/enums";
 
 interface SwapState {
   srcChain: Chain;
@@ -13,6 +13,7 @@ interface SwapState {
   asset: AssetConfig | null;
   swapStatus: SwapStatus;
   despositAddress: string;
+  swapOrigin: SwapOrigin;
 }
 
 interface SwapStore extends SwapState {
@@ -24,6 +25,7 @@ interface SwapStore extends SwapState {
   switchChains: () => void;
   setSwapStatus: (newStatus: SwapStatus) => void;
   setDepositAddress: (address: string) => void;
+  setSwapOrigin: (origin: SwapOrigin) => void;
 }
 
 // initial chains
@@ -46,6 +48,7 @@ const initialState: SwapState = {
   asset: null,
   swapStatus: SwapStatus.IDLE,
   despositAddress: "",
+  swapOrigin: SwapOrigin.APP,
 };
 
 export const useSwapStore = create<SwapStore>()(
@@ -102,7 +105,7 @@ export const useSwapStore = create<SwapStore>()(
       ),
     setDepositAddress: (address) =>
       set(
-        (state) => ({
+        () => ({
           despositAddress: address,
         }),
         false,
@@ -110,11 +113,19 @@ export const useSwapStore = create<SwapStore>()(
       ),
     setSwapStatus: (newStatus) =>
       set(
-        (state) => ({
+        () => ({
           swapStatus: newStatus,
         }),
         false,
         "setSwapStatus"
+      ),
+    setSwapOrigin: (origin) =>
+      set(
+        () => ({
+          swapOrigin: origin,
+        }),
+        false,
+        "setSwapOrigin"
       ),
   }))
 );
