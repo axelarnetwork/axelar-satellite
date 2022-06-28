@@ -29,7 +29,7 @@ export const OriginSwapper = () => {
           type="checkbox"
           className="toggle toggle-primary"
           checked={swapOrigin === SwapOrigin.APP}
-          onClick={toggleSwapOrigin}
+          onChange={toggleSwapOrigin}
         />
         <span
           className={cn({
@@ -46,7 +46,7 @@ export const OriginSwapper = () => {
           <svg
             className="w-4 h-4 text-white fill-current"
             xmlns="http://www.w3.org/2000/svg"
-            enable-background="new 0 0 24 24"
+            enableBackground="new 0 0 24 24"
             height="24"
             viewBox="0 0 24 24"
             width="24"
