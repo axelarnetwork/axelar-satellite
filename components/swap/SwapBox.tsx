@@ -23,14 +23,20 @@ import {
   TokenSelector,
 } from "./parts";
 
-import { SwapStatus } from "../../utils/enums";
+import { SwapOrigin, SwapStatus } from "../../utils/enums";
 import { ENVIRONMENT } from "../../config/constants";
 import toast from "react-hot-toast";
 
 export const SwapBox = () => {
   const { isConnected } = useConnect();
-  const { destAddress, setDestAddress, swapStatus, despositAddress, asset } =
-    useSwapStore((state) => state);
+  const {
+    destAddress,
+    setDestAddress,
+    swapStatus,
+    despositAddress,
+    asset,
+    swapOrigin,
+  } = useSwapStore((state) => state);
 
   function handleOnCopyDestinationAddressToClipboard() {
     navigator.clipboard.writeText(despositAddress);
@@ -178,25 +184,31 @@ export const SwapBox = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-48 mx-auto my-1 text-xs divider">OR USE</div>
-              <div>
-                <div className="flex justify-center my-2 gap-x-5">
-                  <button>
-                    <Image
-                      src="/assets/wallets/terra-station.logo.svg"
-                      height={20}
-                      width={20}
-                    />
-                  </button>
-                  <button>
-                    <Image
-                      src="/assets/wallets/kepler.logo.svg"
-                      height={20}
-                      width={20}
-                    />
-                  </button>
+              {swapOrigin === SwapOrigin.APP && (
+                <div>
+                  <div className="w-48 mx-auto my-1 text-xs divider">
+                    OR USE
+                  </div>
+                  <div>
+                    <div className="flex justify-center my-2 gap-x-5">
+                      <button>
+                        <Image
+                          src="/assets/wallets/terra-station.logo.svg"
+                          height={20}
+                          width={20}
+                        />
+                      </button>
+                      <button>
+                        <Image
+                          src="/assets/wallets/kepler.logo.svg"
+                          height={20}
+                          width={20}
+                        />
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className="w-full mt-auto">
               <div className="my-0 divider" />
