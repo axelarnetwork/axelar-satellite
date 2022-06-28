@@ -46,7 +46,7 @@ export const SwapBox = () => {
 
         {!isConnected && (
           <div className="h-10 my-4">
-            <div className="rounded-lg bg-neutral alert">
+            <div className="text-sm rounded-lg bg-neutral alert">
               <div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -213,8 +213,14 @@ export const SwapBox = () => {
   return (
     <div className="backdrop-blur-lg bg-[#385073]/10 rounded-xl w-[500px] min-h-[500px] h-auto">
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
-        <OriginSwapper />
-        <ConnectIndicator />
+        <div className="relative flex justify-between space-x-8">
+          <ConnectIndicator />
+
+          <button className="btn btn-xs btn-info">Top Flows</button>
+        </div>
+        <div>
+          <OriginSwapper />
+        </div>
         <div className="flex justify-between">
           <InputWrapper>
             <SourceChainSelector />
