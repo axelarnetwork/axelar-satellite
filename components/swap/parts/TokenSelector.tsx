@@ -10,8 +10,15 @@ const defaultAssetImg = "/assets/tokens/default.logo.svg";
 export const TokenSelector = () => {
   const [imgError, setImgError] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { asset, selectableAssetList, setAsset, srcChain, swapOrigin } =
-    useSwapStore((state) => state);
+  const {
+    asset,
+    selectableAssetList,
+    setAsset,
+    srcChain,
+    swapOrigin,
+    tokensToTransfer,
+    setTokensToTransfer,
+  } = useSwapStore((state) => state);
   const ref = useRef(null);
 
   useOnClickOutside(ref, () => {
@@ -25,7 +32,11 @@ export const TokenSelector = () => {
   function renderTokenInput() {
     return (
       <div className="">
-        <div className="text-lg font-bold text-right">4500</div>
+        <input
+          className="w-24 text-lg font-bold text-right bg-transparent outline-none"
+          value={tokensToTransfer}
+          onChange={(e) => setTokensToTransfer(Number(e.target.value) || 0)}
+        />
         <div className="space-x-2">
           <span className="text-xs text-gray-500">Available:</span>
           <span className="text-xs text-info">12000</span>
