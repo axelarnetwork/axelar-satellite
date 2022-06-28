@@ -16,3 +16,12 @@
 .animate__animated.animate__pulse {
   --animate-duration: 200ms;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
