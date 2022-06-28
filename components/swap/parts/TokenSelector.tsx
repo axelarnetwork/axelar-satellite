@@ -3,15 +3,15 @@ import Image from "next/image";
 import { useSwapStore } from "../../../store";
 import { useOnClickOutside } from "usehooks-ts";
 import { ENVIRONMENT } from "../../../config/constants";
+import { SwapOrigin } from "../../../utils/enums";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
 export const TokenSelector = () => {
   const [imgError, setImgError] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { asset, selectableAssetList, setAsset, srcChain } = useSwapStore(
-    (state) => state
-  );
+  const { asset, selectableAssetList, setAsset, srcChain, swapOrigin } =
+    useSwapStore((state) => state);
   const ref = useRef(null);
 
   useOnClickOutside(ref, () => {
@@ -20,6 +20,18 @@ export const TokenSelector = () => {
 
   function handleOnDropdownToggle() {
     setDropdownOpen(!dropdownOpen);
+  }
+
+  function renderTokenInput() {
+    return (
+      <div className="">
+        <div className="text-lg font-bold text-right">4500</div>
+        <div className="space-x-2">
+          <span className="text-xs text-gray-500">Available:</span>
+          <span className="text-xs text-info">12000</span>
+        </div>
+      </div>
+    );
   }
 
   function renderAssetDropdown() {
@@ -69,35 +81,44 @@ export const TokenSelector = () => {
 
   return (
     <div ref={ref}>
-      <label className="block text-xs">I want to transfer</label>
-      <div
-        className="static mt-1 dropdown dropdown-open"
-        onClick={handleOnDropdownToggle}
-      >
-        <div tabIndex={0}>
-          <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
-            <Image
-              src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
-              layout="intrinsic"
-              width={40}
-              height={40}
-              onError={(e) => {
-                e.currentTarget.src = defaultAssetImg;
-                e.currentTarget.srcset = defaultAssetImg;
-              }}
-            />
-            <span>{renderAssetName()}</span>
-            <div className="flex items-center">
+      <div className="flex items-center justify-between h-6">
+        <label className="block text-xs">I want to transfer</label>
+        {swapOrigin === SwapOrigin.APP && (
+          <button className="btn btn-neutral btn-xs">Max</button>
+        )}
+      </div>
+      <div className="flex justify-between mt-2">
+        <div
+          className="static flex mt-1 dropdown dropdown-open"
+          onClick={handleOnDropdownToggle}
+        >
+          <div tabIndex={0}>
+            <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
               <Image
-                src="/assets/ui/arrow-down.svg"
+                src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
                 layout="intrinsic"
-                width={25}
-                height={25}
+                width={40}
+                height={40}
+                onError={(e) => {
+                  e.currentTarget.src = defaultAssetImg;
+                  e.currentTarget.srcset = defaultAssetImg;
+                }}
               />
+              <span>{renderAssetName()}</span>
+              <div className="flex items-center">
+                <Image
+                  src="/assets/ui/arrow-down.svg"
+                  layout="intrinsic"
+                  width={25}
+                  height={25}
+                />
+              </div>
             </div>
           </div>
+
+          {renderAssetDropdown()}
         </div>
-        {renderAssetDropdown()}
+        {swapOrigin === SwapOrigin.APP && renderTokenInput()}
       </div>
     </div>
   );

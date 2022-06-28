@@ -16,7 +16,7 @@ export const OriginSwapper = () => {
 
   return (
     <div className="flex justify-center text-xs font-medium">
-      <div className="relative flex items-center gap-x-4">
+      <div className="relative flex items-center gap-x-3">
         <span
           className={cn({
             "text-white": swapOrigin === SwapOrigin.EXCHANGE,
@@ -40,7 +40,7 @@ export const OriginSwapper = () => {
           App
         </span>
         <div
-          className="absolute cursor-pointer -top-3 -right-8 tooltip"
+          className="absolute cursor-pointer -top-2 -right-6 tooltip"
           data-tip={tooltipMessage}
         >
           <svg
