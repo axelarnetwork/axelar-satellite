@@ -3,7 +3,7 @@ import { Chain } from "wagmi";
 const avalanche: Chain = {
   id: 43113,
   name: "Avalanche FUJI C-Chain",
-  network: "avalanche-testnet",
+  network: "avalanche",
   nativeCurrency: {
     decimals: 18,
     name: "Avalanche",
@@ -21,4 +21,19 @@ const avalanche: Chain = {
   testnet: true,
 };
 
-export const testnetChains = [avalanche];
+const moonbeam: Chain = {
+  id: 1287,
+  name: "Moonbase Alpha",
+  network: "moonbeam",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Glimmer",
+    symbol: "GLMR",
+  },
+  rpcUrls: {
+    default: "https://rpc.api.moonbase.moonbeam.network",
+  },
+  testnet: true,
+};
+
+export const testnetChains = [avalanche, moonbeam];
