@@ -4,13 +4,13 @@ import { useSwapStore } from "../../../store";
 import { useAccount } from "wagmi";
 
 export const AddressFiller = () => {
-  const { data } = useAccount();
+  const { address } = useAccount();
   const setDestAddress = useSwapStore((state) => state.setDestAddress);
   const destChain = useSwapStore((state) => state.destChain);
   const isEvm = destChain.chainInfo.module === "evm";
 
   function fillDestinationAddress() {
-    if (data?.address) setDestAddress(data?.address);
+    if (address) setDestAddress(address);
   }
 
   if (isEvm)

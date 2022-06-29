@@ -2,9 +2,9 @@ import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { allChains } from "../../../config/chains";
 import { useSwapStore } from "../../../store";
 import { convertChainName } from "../../../utils/transformers";
+import { allChains } from "../../../config/web3";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 

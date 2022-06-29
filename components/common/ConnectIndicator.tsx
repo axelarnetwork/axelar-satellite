@@ -1,10 +1,10 @@
 import React from "react";
-import { useConnect } from "wagmi";
+import { useAccount } from "wagmi";
 
 export const ConnectIndicator = () => {
-  const { isConnected } = useConnect();
+  const { connector, isConnected } = useAccount();
 
-  if (isConnected)
+  if (connector && isConnected)
     return (
       <span className="flex items-center">
         <div className="relative w-2 h-2">

@@ -1,6 +1,6 @@
 import React from "react";
 import cn from "classnames";
-import { useConnect } from "wagmi";
+import { useAccount, useConnect } from "wagmi";
 import Image from "next/image";
 
 import { SpinnerCircular } from "spinners-react";
@@ -26,9 +26,10 @@ import {
 import { SwapOrigin, SwapStatus } from "../../utils/enums";
 import { ENVIRONMENT } from "../../config/constants";
 import toast from "react-hot-toast";
+import { useListenForEvmTransfer } from "../../hooks";
 
 export const SwapBox = () => {
-  const { isConnected } = useConnect();
+  const { connector, isConnected } = useAccount();
   const {
     destAddress,
     setDestAddress,
@@ -37,6 +38,8 @@ export const SwapBox = () => {
     asset,
     swapOrigin,
   } = useSwapStore((state) => state);
+
+  useListenForEvmTransfer();
 
   function handleOnCopyDestinationAddressToClipboard() {
     navigator.clipboard.writeText(despositAddress);
@@ -50,7 +53,7 @@ export const SwapBox = () => {
           <InitialStats />
         </div>
 
-        {!isConnected && (
+        {connector && !isConnected && (
           <div className="h-10 my-4">
             <div className="text-sm rounded-lg bg-neutral alert">
               <div>
@@ -73,7 +76,7 @@ export const SwapBox = () => {
           </div>
         )}
 
-        {isConnected && (
+        {connector && isConnected && (
           <div>
             <div className="flex h-10 gap-2 ">
               <InputWrapper className="h-full">
@@ -256,26 +259,30 @@ export const SwapBox = () => {
         {swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && renderWaitState()}
 
         <div className="flex flex-col justify-end h-full pt-2">
-          {!isConnected && <ConnectButton />}
-          {isConnected && swapStatus === SwapStatus.IDLE && (
+          {connector && !isConnected && <ConnectButton />}
+          {connector && isConnected && swapStatus === SwapStatus.IDLE && (
             <GenerateDepositAddressButton />
           )}
 
-          {isConnected && swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS && (
-            <button className="w-full btn btn-disabled" disabled>
-              <div className="flex items-center gap-3">
-                <span>Processing...</span>
-              </div>
-            </button>
-          )}
+          {connector &&
+            isConnected &&
+            swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS && (
+              <button className="w-full btn btn-disabled" disabled>
+                <div className="flex items-center gap-3">
+                  <span>Processing...</span>
+                </div>
+              </button>
+            )}
 
-          {isConnected && swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && (
-            <button className="w-full btn btn-disabled" disabled>
-              <div className="flex items-center gap-3">
-                <span>Waiting for deposit...</span>
-              </div>
-            </button>
-          )}
+          {connector &&
+            isConnected &&
+            swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && (
+              <button className="w-full btn btn-disabled" disabled>
+                <div className="flex items-center gap-3">
+                  <span>Waiting for deposit...</span>
+                </div>
+              </button>
+            )}
         </div>
       </div>
     </div>

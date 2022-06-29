@@ -1,8 +1,8 @@
 import { Chain, AssetConfig } from "@axelar-network/axelarjs-sdk";
 import create from "zustand";
 import { devtools } from "zustand/middleware";
+import { allChains } from "../config/web3";
 
-import { allChains } from "../config/chains";
 import { SwapOrigin, SwapStatus } from "../utils/enums";
 
 interface SwapState {
@@ -55,7 +55,7 @@ const initialState: SwapState = {
 };
 
 export const useSwapStore = create<SwapStore>()(
-  devtools((set) => ({
+  devtools((set, get) => ({
     ...initialState,
     setSrcChain: (chain) =>
       set(

@@ -4,7 +4,8 @@ import { useAccount, useConnect } from "wagmi";
 import toast from "react-hot-toast";
 
 export const Web3Modal = () => {
-  const { connect, connectors, isConnected, error } = useConnect();
+  const { isConnected } = useAccount();
+  const { connect, connectors, error } = useConnect();
   const modalRef = useRef<any>();
 
   // close modal upon successful connection
@@ -23,8 +24,7 @@ export const Web3Modal = () => {
 
   function handleOnMetamaskSwitch() {
     const connector = connectors.find((c) => c.name === "MetaMask");
-    if (!connector) return;
-    connect(connector);
+    connect({ connector });
   }
 
   // function handleOnWalletConnectSwitch() {
