@@ -231,7 +231,7 @@ export const SwapBox = () => {
         <div className="relative flex justify-between space-x-8">
           <ConnectIndicator />
 
-          <button className="btn btn-xs btn-info">Top Flows</button>
+          <button className="btn btn-xs btn-neutral">Top Flows</button>
         </div>
         <div>
           <OriginSwapper />

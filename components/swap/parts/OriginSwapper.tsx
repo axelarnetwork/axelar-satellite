@@ -27,7 +27,7 @@ export const OriginSwapper = () => {
         </span>
         <input
           type="checkbox"
-          className="toggle toggle-primary"
+          className="toggle toggle-sm"
           checked={swapOrigin === SwapOrigin.APP}
           onChange={toggleSwapOrigin}
         />
