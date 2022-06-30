@@ -34,16 +34,16 @@ export const TokenSelector = () => {
 
   function renderTokenInput() {
     return (
-      <div className="">
+      <div className="text-end">
         <input
           className="w-24 text-lg font-bold text-right bg-transparent outline-none"
           type="number"
           value={tokensToTransfer}
           onChange={(e) => setTokensToTransfer(Number(e.target.value))}
         />
-        <div className="space-x-2 text-end">
-          <span className="text-xs text-gray-500">Available:</span>
-          <span className="text-xs text-info">{balance}</span>
+        <div className="space-x-2">
+          <span className="text-xs text-gray-500">Available</span>
+          <span className="w-auto text-xs text-info">{balance}</span>
         </div>
       </div>
     );
