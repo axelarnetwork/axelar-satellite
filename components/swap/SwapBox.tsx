@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import cn from "classnames";
-import { useAccount, useConnect } from "wagmi";
+import { useAccount, useConnect, useNetwork } from "wagmi";
 import Image from "next/image";
 
 import { SpinnerCircular } from "spinners-react";
-import { useSwapStore } from "../../store";
+import { useSwapStore, useWalletStore } from "../../store";
 import {
   AddressShortener,
   ConnectIndicator,
@@ -29,7 +29,6 @@ import toast from "react-hot-toast";
 import { useListenForEvmTransfer } from "../../hooks";
 
 export const SwapBox = () => {
-  const { connector, isConnected } = useAccount();
   const {
     destAddress,
     setDestAddress,
@@ -38,6 +37,7 @@ export const SwapBox = () => {
     asset,
     swapOrigin,
   } = useSwapStore((state) => state);
+  const walletConnected = useWalletStore((state) => state.walletConnected);
 
   useListenForEvmTransfer();
 
@@ -53,7 +53,7 @@ export const SwapBox = () => {
           <InitialStats />
         </div>
 
-        {connector && !isConnected && (
+        {!walletConnected && (
           <div className="h-10 my-4">
             <div className="text-sm rounded-lg bg-neutral alert">
               <div>
@@ -76,7 +76,7 @@ export const SwapBox = () => {
           </div>
         )}
 
-        {connector && isConnected && (
+        {walletConnected && (
           <div>
             <div className="flex h-10 gap-2 ">
               <InputWrapper className="h-full">
@@ -259,30 +259,26 @@ export const SwapBox = () => {
         {swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && renderWaitState()}
 
         <div className="flex flex-col justify-end h-full pt-2">
-          {connector && !isConnected && <ConnectButton />}
-          {connector && isConnected && swapStatus === SwapStatus.IDLE && (
+          {!walletConnected && <ConnectButton />}
+          {walletConnected && swapStatus === SwapStatus.IDLE && (
             <GenerateDepositAddressButton />
           )}
 
-          {connector &&
-            isConnected &&
-            swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS && (
-              <button className="w-full btn btn-disabled" disabled>
-                <div className="flex items-center gap-3">
-                  <span>Processing...</span>
-                </div>
-              </button>
-            )}
+          {walletConnected && swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS && (
+            <button className="w-full btn btn-disabled" disabled>
+              <div className="flex items-center gap-3">
+                <span>Processing...</span>
+              </div>
+            </button>
+          )}
 
-          {connector &&
-            isConnected &&
-            swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && (
-              <button className="w-full btn btn-disabled" disabled>
-                <div className="flex items-center gap-3">
-                  <span>Waiting for deposit...</span>
-                </div>
-              </button>
-            )}
+          {walletConnected && swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && (
+            <button className="w-full btn btn-disabled" disabled>
+              <div className="flex items-center gap-3">
+                <span>Waiting for deposit...</span>
+              </div>
+            </button>
+          )}
         </div>
       </div>
     </div>
