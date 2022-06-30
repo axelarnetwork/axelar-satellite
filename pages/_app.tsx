@@ -1,12 +1,13 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Web3Modal } from "../components/web3";
+import { GlobalHooksContainer, Web3Modal } from "../components/web3";
 
 import {
   WagmiConfig,
   createClient,
   configureChains,
   defaultChains,
+  createStorage,
 } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
@@ -16,10 +17,11 @@ import { Toaster } from "react-hot-toast";
 
 import "animate.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { testnetChains } from "../config/web3";
+import { getWagmiChains } from "../config/web3";
+import { useMonitorWalletConnect } from "../hooks";
 
 const { chains, provider } = configureChains(
-  [...defaultChains, ...testnetChains],
+  [...defaultChains, ...getWagmiChains()],
   [
     publicProvider(),
     jsonRpcProvider({
@@ -53,6 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <WagmiConfig client={client}>
           <Component {...pageProps} />
           <Web3Modal />
+          <GlobalHooksContainer />
         </WagmiConfig>
         <Toaster position="top-right" reverseOrder={false} />
       </QueryClientProvider>
