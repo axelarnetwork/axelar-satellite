@@ -1,7 +1,11 @@
 import React from "react";
-import { useMonitorWalletConnect } from "../../hooks";
+import {
+  useFilterSelectableAssetList,
+  useMonitorWalletConnect,
+} from "../../hooks";
 
 export const GlobalHooksContainer = () => {
   useMonitorWalletConnect();
+  useFilterSelectableAssetList();
   return null;
 };
