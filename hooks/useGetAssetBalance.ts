@@ -24,6 +24,7 @@ export const useGetAssetBalance = () => {
     args: [address],
   });
 
+  // convert fetched token balance to a readable format
   useEffect(() => {
     if (!isSuccess || !data) return;
     const bigNum = new BigNumber(ethers.BigNumber.from(data).toString());
@@ -32,6 +33,7 @@ export const useGetAssetBalance = () => {
     setBalance(num.toFixed());
   }, [data, isSuccess]);
 
+  // parse information to allow to fetch contract balance
   useEffect(() => {
     // get contract and network id of the chain we want to call
     if (!srcChain || !asset) return;
@@ -46,12 +48,14 @@ export const useGetAssetBalance = () => {
     // verify balance of account
   }, [srcChain, asset]);
 
+  // extract token address from source chain
   function getTokenAddress(srcChain: Chain, asset: AssetConfig): string | null {
     const chainAlias = srcChain?.chainInfo?.chainName?.toLowerCase();
     const tokenAddress = asset.chain_aliases[chainAlias]?.tokenAddress;
     return tokenAddress || null;
   }
 
+  // extract network id from source chain
   function getNetworkId(srcChain: Chain): number | null {
     const chainAlias = srcChain.chainInfo?.chainName?.toLowerCase();
     if (!chainAlias) return null;
