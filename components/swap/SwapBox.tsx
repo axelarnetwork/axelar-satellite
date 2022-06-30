@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
-import cn from "classnames";
-import { useAccount, useConnect, useNetwork } from "wagmi";
 import Image from "next/image";
 
 import { SpinnerCircular } from "spinners-react";
 import { useSwapStore, useWalletStore } from "../../store";
-import {
-  AddressShortener,
-  ConnectIndicator,
-  InputWrapper,
-  StatsWrapper,
-} from "../common";
+import { AddressShortener, ConnectIndicator, InputWrapper } from "../common";
 import {
   AddressFiller,
   ChainSwapper,
@@ -26,7 +19,6 @@ import {
 import { SwapOrigin, SwapStatus } from "../../utils/enums";
 import { ENVIRONMENT } from "../../config/constants";
 import toast from "react-hot-toast";
-import { useListenForEvmTransfer } from "../../hooks";
 
 export const SwapBox = () => {
   const {
@@ -38,8 +30,6 @@ export const SwapBox = () => {
     swapOrigin,
   } = useSwapStore((state) => state);
   const walletConnected = useWalletStore((state) => state.walletConnected);
-
-  useListenForEvmTransfer();
 
   function handleOnCopyDestinationAddressToClipboard() {
     navigator.clipboard.writeText(despositAddress);
