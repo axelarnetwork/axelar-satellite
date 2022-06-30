@@ -2,16 +2,17 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useAccount, useConnect } from "wagmi";
 import toast from "react-hot-toast";
+import { useWalletStore } from "../../store";
 
 export const Web3Modal = () => {
-  const { isConnected } = useAccount();
   const { connect, connectors, error } = useConnect();
   const modalRef = useRef<any>();
+  const { walletConnected } = useWalletStore((state) => state);
 
   // close modal upon successful connection
   useEffect(() => {
-    if (isConnected) closeModal();
-  }, [isConnected]);
+    if (walletConnected) closeModal();
+  }, [walletConnected]);
 
   // notify user that he already has a connected account but it's not the active one
   useEffect(() => {
@@ -26,20 +27,6 @@ export const Web3Modal = () => {
     const connector = connectors.find((c) => c.name === "MetaMask");
     connect({ connector });
   }
-
-  // function handleOnWalletConnectSwitch() {
-  //   const walletConnectConnector = connectors[1];
-  //   connect(walletConnectConnector);
-  // }
-
-  // function handleOnCoinbaseWalletSwitch() {
-  //   const coinbaseConnector = connectors[2];
-  //   connect(coinbaseConnector);
-  // }
-
-  // useEffect(() => {
-  //   if (isConnected) closeModal();
-  // }, [isConnected]);
 
   function renderConnectors() {
     return (

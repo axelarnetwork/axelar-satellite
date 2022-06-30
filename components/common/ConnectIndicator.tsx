@@ -1,10 +1,11 @@
 import React from "react";
 import { useAccount } from "wagmi";
+import { useWalletStore } from "../../store";
 
 export const ConnectIndicator = () => {
-  const { connector, isConnected } = useAccount();
+  const { walletConnected } = useWalletStore();
 
-  if (connector && isConnected)
+  if (walletConnected)
     return (
       <span className="flex items-center">
         <div className="relative w-2 h-2">

@@ -140,3 +140,29 @@ export const useSwapStore = create<SwapStore>()(
       ),
   }))
 );
+
+/**
+ * Store created to avoid hydration issues with wagmi
+ * TODO: move to another file
+ */
+interface WalletState {
+  walletConnected: boolean;
+}
+
+interface WalletStore extends WalletState {
+  setWalletConnected: (state: boolean) => void;
+}
+
+export const useWalletStore = create<WalletStore>()(
+  devtools((set, get) => ({
+    walletConnected: false,
+    setWalletConnected: (state) =>
+      set(
+        {
+          walletConnected: state,
+        },
+        false,
+        "setWalletConnected"
+      ),
+  }))
+);
