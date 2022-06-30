@@ -18,13 +18,13 @@ export const useListenForEvmTransfer = () => {
     chainId: 43113,
   });
 
-  console.log({
-    contractAddress,
-    data,
-    isError,
-    error,
-    isLoading,
-  });
+  // console.log({
+  //   contractAddress,
+  //   data,
+  //   isError,
+  //   error,
+  //   isLoading,
+  // });
 
   useEffect(() => {
     if (!srcChain || !asset) return;
@@ -48,5 +48,5 @@ export const useListenForEvmTransfer = () => {
   //   contract: contract.
   // });
 
-  return null;
+  // return null;
 };
