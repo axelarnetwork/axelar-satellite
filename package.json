@@ -22,12 +22,11 @@
     "react-dom": "18.1.0",
     "react-hot-toast": "^2.2.0",
     "react-query": "^3.39.1",
+    "socket.io-client": "^4.5.1",
     "spinners-react": "^1.0.7",
     "usehooks-ts": "^2.5.4",
     "wagmi": "^0.5.5",
-    "zustand": "^4.0.0-rc.1",
-    "zustand-middleware-computed-state": "^0.1.0",
-    "zustand-store-addons": "^0.1.12"
+    "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@types/big.js": "^6.1.3",
