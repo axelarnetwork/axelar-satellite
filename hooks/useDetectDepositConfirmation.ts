@@ -5,7 +5,7 @@ import { useSwapStore } from "../store";
 import { buildDepositConfirmationRoomId } from "../utils";
 import { SwapStatus } from "../utils/enums";
 
-export const useDetectDepositTransfer = () => {
+export const useDetectDepositConfirmation = () => {
   const { asset, srcChain, despositAddress, swapStatus, setSwapStatus } =
     useSwapStore();
 

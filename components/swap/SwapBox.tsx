@@ -13,13 +13,13 @@ import {
 
 import { SwapStatus } from "../../utils/enums";
 import { GenDepositAddressState, IdleState, WaitDepositState } from "./states";
-import { useDetectDepositTransfer } from "../../hooks";
+import { useDetectDepositConfirmation } from "../../hooks";
 
 export const SwapBox = () => {
   const { swapStatus } = useSwapStore((state) => state);
   const walletConnected = useWalletStore((state) => state.walletConnected);
 
-  useDetectDepositTransfer();
+  useDetectDepositConfirmation();
 
   return (
     <div className="backdrop-blur-lg bg-[#385073]/10 rounded-xl w-[500px] min-h-[500px] h-auto">
