@@ -4,6 +4,7 @@ import { useSwapStore } from "../../../store";
 import { useOnClickOutside } from "usehooks-ts";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapOrigin } from "../../../utils/enums";
+import { useGetAssetBalance } from "../../../hooks";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -19,6 +20,8 @@ export const TokenSelector = () => {
     tokensToTransfer,
     setTokensToTransfer,
   } = useSwapStore((state) => state);
+
+  const { balance } = useGetAssetBalance();
   const ref = useRef(null);
 
   useOnClickOutside(ref, () => {
@@ -38,9 +41,9 @@ export const TokenSelector = () => {
           value={tokensToTransfer}
           onChange={(e) => setTokensToTransfer(Number(e.target.value))}
         />
-        <div className="space-x-2">
+        <div className="space-x-2 text-end">
           <span className="text-xs text-gray-500">Available:</span>
-          <span className="text-xs text-info">12000</span>
+          <span className="text-xs text-info">{balance}</span>
         </div>
       </div>
     );
@@ -95,9 +98,11 @@ export const TokenSelector = () => {
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
         <label className="block text-xs">I want to transfer</label>
-        {swapOrigin === SwapOrigin.APP && (
-          <button className="btn btn-neutral btn-xs">Max</button>
-        )}
+        <div>
+          {swapOrigin === SwapOrigin.APP && (
+            <button className="btn btn-neutral btn-xs">Max</button>
+          )}
+        </div>
       </div>
       <div className="flex justify-between mt-2">
         <div
