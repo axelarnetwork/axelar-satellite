@@ -24,3 +24,12 @@ export function buildEvmTransferCompletedRoomId(
 
   return JSON.stringify(topic, Object.keys(topic).sort());
 }
+
+export function curateCosmosChainId(chainId: string) {
+  switch (chainId) {
+    case "terra-2":
+      return "pisco-1";
+    default:
+      return chainId;
+  }
+}
