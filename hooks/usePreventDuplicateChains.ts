@@ -4,15 +4,19 @@ import { allChains } from "../config/web3";
 import { useSwapStore } from "../store";
 
 export const usePreventDuplicateChains = () => {
-  const { srcChain, destChain, setSrcChain, setDestChain } = useSwapStore(
-    (state) => state
-  );
+  const { srcChain, destChain, setSrcChain, setDestChain, setDestAddress } =
+    useSwapStore((state) => state);
   const [originSrcChain, setOriginSrcChain] = useState<Chain>();
   const [originDestChain, setOriginDestChain] = useState<Chain>();
 
   useEffect(() => {
     if (srcChain.chainInfo.chainName === destChain.chainInfo.chainName)
       updateChains();
+
+    // reset deposit address on chain module change
+    if (originSrcChain?.chainInfo.module !== srcChain.chainInfo.module) {
+      setDestAddress("");
+    }
 
     updateCachedChains();
   }, [srcChain, destChain]);
