@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { useAccount, useConnect } from "wagmi";
+import { useConnect } from "wagmi";
 import toast from "react-hot-toast";
 import { useWalletStore } from "../../store";
 
@@ -28,6 +28,11 @@ export const Web3Modal = () => {
     connect({ connector });
   }
 
+  function handleOnWalletConnectSwitch() {
+    const connector = connectors.find((c) => c.name === "WalletConnect");
+    connect({ connector });
+  }
+
   function renderConnectors() {
     return (
       <div>
@@ -49,15 +54,15 @@ export const Web3Modal = () => {
               />
             </div>
           </button>
-          {/* <button
-            className="relative flex btn btn-primary bg-[#181A25]"
-            // onClick={handleOnWalletConnectSwitch}
+          <button
+            className="relative flex btn btn-neutral"
+            onClick={handleOnWalletConnectSwitch}
           >
             <span>Wallet Connect</span>
             <div className="ml-auto">
               <Image
-                src="/assets/svg/walletconnect-logo.svg"
-                alt="metamask"
+                src="/assets/wallets/walletconnect.logo.svg"
+                alt="walletconnect"
                 layout="intrinsic"
                 objectFit="contain"
                 height={30}
@@ -65,7 +70,7 @@ export const Web3Modal = () => {
               />
             </div>
           </button>
-          <button
+          {/* <button
             className="relative flex btn btn-primary bg-[#181A25]"
             // onClick={handleOnCoinbaseWalletSwitch}
           >
@@ -94,13 +99,10 @@ export const Web3Modal = () => {
         id="web3-modal"
         className="modal-toggle"
       />
-      <label
-        htmlFor="web3-modal"
-        className="cursor-pointer modal backdrop-blur-sm"
-      >
-        <label className="relative max-w-lg bg-base-100 modal-box">
+      <label htmlFor="web3-modal" className="modal backdrop-blur-sm">
+        <div className="relative max-w-lg bg-base-100 modal-box">
           {renderConnectors()}
-        </label>
+        </div>
       </label>
     </div>
   );

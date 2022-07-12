@@ -1,5 +1,6 @@
 import { createClient, configureChains, defaultChains } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
 import { getWagmiChains } from "./config/web3";
@@ -24,6 +25,12 @@ export const wagmiClient = createClient({
       options: {
         shimDisconnect: true,
         shimChainChangedDisconnect: true,
+      },
+    }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        qrcode: true,
       },
     }),
   ],
