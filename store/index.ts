@@ -14,7 +14,7 @@ interface SwapState {
   swapStatus: SwapStatus;
   despositAddress: string;
   swapOrigin: SwapOrigin;
-  tokensToTransfer: number;
+  tokensToTransfer: string;
 }
 
 interface SwapStore extends SwapState {
@@ -27,7 +27,7 @@ interface SwapStore extends SwapState {
   setSwapStatus: (newStatus: SwapStatus) => void;
   setDepositAddress: (address: string) => void;
   setSwapOrigin: (origin: SwapOrigin) => void;
-  setTokensToTransfer: (tokens: number) => void;
+  setTokensToTransfer: (tokens: string) => void;
 }
 
 // initial chains
@@ -51,7 +51,7 @@ const initialState: SwapState = {
   swapStatus: SwapStatus.IDLE,
   despositAddress: "",
   swapOrigin: SwapOrigin.APP,
-  tokensToTransfer: 0,
+  tokensToTransfer: "",
 };
 
 export const useSwapStore = create<SwapStore>()(

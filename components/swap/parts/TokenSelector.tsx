@@ -59,7 +59,8 @@ export const TokenSelector = () => {
           className="w-24 text-lg font-bold text-right bg-transparent outline-none"
           type="number"
           value={tokensToTransfer}
-          onChange={(e) => setTokensToTransfer(Number(e.target.value))}
+          placeholder="0"
+          onChange={(e) => setTokensToTransfer(e.target.value)}
         />
         <div className="space-x-2">
           <span className="text-xs text-gray-500">Available</span>
@@ -126,7 +127,12 @@ export const TokenSelector = () => {
         <label className="block text-xs">I want to transfer</label>
         <div>
           {swapOrigin === SwapOrigin.APP && (
-            <button className="btn btn-neutral btn-xs">Max</button>
+            <button
+              className="btn btn-neutral btn-xs"
+              onClick={() => setTokensToTransfer(balance)}
+            >
+              Max
+            </button>
           )}
         </div>
       </div>
