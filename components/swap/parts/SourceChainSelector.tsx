@@ -31,6 +31,7 @@ export const SourceChainSelector = () => {
   });
 
   function handleOnDropdownToggle() {
+    if (dropdownOpen) setFilteredChains(allChains);
     setDropdownOpen(!dropdownOpen);
   }
 

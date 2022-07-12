@@ -30,6 +30,7 @@ export const DestChainSelector = () => {
   });
 
   function handleOnDropdownToggle() {
+    if (dropdownOpen) setFilteredChains(allChains);
     setDropdownOpen(!dropdownOpen);
   }
 

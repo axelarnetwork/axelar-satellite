@@ -48,6 +48,7 @@ export const TokenSelector = () => {
   });
 
   function handleOnDropdownToggle() {
+    if (dropdownOpen) setFilteredAssets(selectableAssetList);
     setDropdownOpen(!dropdownOpen);
   }
 
