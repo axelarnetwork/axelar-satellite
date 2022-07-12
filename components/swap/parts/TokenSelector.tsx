@@ -7,6 +7,7 @@ import { ENVIRONMENT } from "../../../config/constants";
 import { SwapOrigin } from "../../../utils/enums";
 import { useGetAssetBalance } from "../../../hooks";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+import { Blockable } from "../../common";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -141,33 +142,35 @@ export const TokenSelector = () => {
         </div>
       </div>
       <div className="flex justify-between mt-2">
-        <div className="static flex mt-1 dropdown dropdown-open">
-          <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
-            <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
-              <Image
-                src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
-                layout="intrinsic"
-                width={40}
-                height={40}
-                onError={(e) => {
-                  e.currentTarget.src = defaultAssetImg;
-                  e.currentTarget.srcset = defaultAssetImg;
-                }}
-              />
-              <span>{renderAssetName()}</span>
-              <div className="flex items-center">
+        <Blockable>
+          <div className="static flex mt-1 dropdown dropdown-open">
+            <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
+              <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
                 <Image
-                  src="/assets/ui/arrow-down.svg"
+                  src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
                   layout="intrinsic"
-                  width={25}
-                  height={25}
+                  width={40}
+                  height={40}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultAssetImg;
+                    e.currentTarget.srcset = defaultAssetImg;
+                  }}
                 />
+                <span>{renderAssetName()}</span>
+                <div className="flex items-center">
+                  <Image
+                    src="/assets/ui/arrow-down.svg"
+                    layout="intrinsic"
+                    width={25}
+                    height={25}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          {renderAssetDropdown()}
-        </div>
+            {renderAssetDropdown()}
+          </div>
+        </Blockable>
         {swapOrigin === SwapOrigin.APP && renderTokenInput()}
       </div>
     </div>

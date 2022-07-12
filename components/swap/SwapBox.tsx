@@ -1,6 +1,6 @@
 import React from "react";
 import { useSwapStore, useWalletStore } from "../../store";
-import { ConnectIndicator, InputWrapper } from "../common";
+import { Blockable, ConnectIndicator, InputWrapper } from "../common";
 import {
   ChainSwapper,
   ConnectButton,
@@ -30,23 +30,26 @@ export const SwapBox = () => {
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
         <div className="relative flex justify-between space-x-8">
           <ConnectIndicator />
-
           <button className="btn btn-xs btn-neutral">Top Flows</button>
         </div>
+
         <div>
           <OriginSwapper />
         </div>
-        <div className="flex justify-between">
-          <InputWrapper>
-            <SourceChainSelector />
-          </InputWrapper>
-          <div className="relative z-50 flex items-center -mx-2">
-            <ChainSwapper />
+
+        <Blockable>
+          <div className="flex justify-between">
+            <InputWrapper>
+              <SourceChainSelector />
+            </InputWrapper>
+            <div className="relative z-50 flex items-center -mx-2">
+              <ChainSwapper />
+            </div>
+            <InputWrapper>
+              <DestChainSelector />
+            </InputWrapper>
           </div>
-          <InputWrapper>
-            <DestChainSelector />
-          </InputWrapper>
-        </div>
+        </Blockable>
 
         <div>
           <InputWrapper>
