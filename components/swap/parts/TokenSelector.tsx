@@ -52,6 +52,10 @@ export const TokenSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }
 
+  function handleOnMaxButtonClick() {
+    if (Number(balance)) setTokensToTransfer(balance);
+  }
+
   function renderTokenInput() {
     return (
       <div className="text-end">
@@ -129,7 +133,7 @@ export const TokenSelector = () => {
           {swapOrigin === SwapOrigin.APP && (
             <button
               className="btn btn-neutral btn-xs"
-              onClick={() => setTokensToTransfer(balance)}
+              onClick={handleOnMaxButtonClick}
             >
               Max
             </button>
