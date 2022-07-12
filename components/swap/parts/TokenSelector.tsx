@@ -1,15 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useSwapStore } from "../../../store";
 import { useOnClickOutside } from "usehooks-ts";
+
+import { useSwapStore } from "../../../store";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapOrigin } from "../../../utils/enums";
 import { useGetAssetBalance } from "../../../hooks";
+import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
 export const TokenSelector = () => {
-  const [imgError, setImgError] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const {
     asset,
@@ -21,8 +22,26 @@ export const TokenSelector = () => {
     setTokensToTransfer,
   } = useSwapStore((state) => state);
 
+  const [searchAssetInput, setSearchAssetInput] = useState<string>();
+  const [filteredAssets, setFilteredAssets] =
+    useState<AssetConfig[]>(selectableAssetList);
+
   const { balance } = useGetAssetBalance();
   const ref = useRef(null);
+
+  useEffect(() => {
+    if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
+
+    const chains = selectableAssetList.filter((asset) =>
+      asset.common_key[ENVIRONMENT].toLowerCase().includes(searchAssetInput)
+    );
+    setFilteredAssets(chains);
+  }, [searchAssetInput]);
+
+  // update filtered assets state on chain change
+  useEffect(() => {
+    setFilteredAssets(selectableAssetList);
+  }, [selectableAssetList]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -53,38 +72,44 @@ export const TokenSelector = () => {
     if (!dropdownOpen) return null;
 
     return (
-      <ul
-        tabIndex={0}
-        className="p-2 rounded-lg shadow dropdown-content menu bg-[#02141b] left-0 w-full h-64 overflow-auto"
-      >
-        {selectableAssetList.map((asset) => {
-          return (
-            <li key={asset.common_key[ENVIRONMENT]}>
-              <button onClick={() => setAsset(asset)}>
-                <Image
-                  src={`/assets/tokens/${asset.common_key[
-                    ENVIRONMENT
-                  ].toLowerCase()}.logo.svg`}
-                  layout="intrinsic"
-                  width={40}
-                  height={40}
-                  onError={(e) => {
-                    e.currentTarget.src = defaultAssetImg;
-                    e.currentTarget.srcset = defaultAssetImg;
-                  }}
-                />
-                <span>
-                  {
-                    asset.chain_aliases[
-                      srcChain.chainInfo.chainName.toLowerCase()
-                    ]?.assetName
-                  }
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="p-2 rounded-lg shadow dropdown-content menu bg-[#02141b] left-0 w-full h-64 overflow-auto">
+        <div className="px-2 py-2 ">
+          <input
+            className="w-full bg-[#333c42] input input-sm"
+            placeholder="Search token"
+            onChange={(e) => setSearchAssetInput(e.target.value)}
+          />
+        </div>
+        <ul tabIndex={0} onClick={handleOnDropdownToggle}>
+          {filteredAssets.map((asset) => {
+            return (
+              <li key={asset.common_key[ENVIRONMENT]}>
+                <button onClick={() => setAsset(asset)}>
+                  <Image
+                    src={`/assets/tokens/${asset.common_key[
+                      ENVIRONMENT
+                    ].toLowerCase()}.logo.svg`}
+                    layout="intrinsic"
+                    width={40}
+                    height={40}
+                    onError={(e) => {
+                      e.currentTarget.src = defaultAssetImg;
+                      e.currentTarget.srcset = defaultAssetImg;
+                    }}
+                  />
+                  <span>
+                    {
+                      asset.chain_aliases[
+                        srcChain.chainInfo.chainName.toLowerCase()
+                      ]?.assetName
+                    }
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     );
   }
 
@@ -105,11 +130,8 @@ export const TokenSelector = () => {
         </div>
       </div>
       <div className="flex justify-between mt-2">
-        <div
-          className="static flex mt-1 dropdown dropdown-open"
-          onClick={handleOnDropdownToggle}
-        >
-          <div tabIndex={0}>
+        <div className="static flex mt-1 dropdown dropdown-open">
+          <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
             <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
               <Image
                 src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
