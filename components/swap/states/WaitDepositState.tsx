@@ -5,14 +5,55 @@ import { ENVIRONMENT } from "../../../config/constants";
 import { useSwapStore } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
 import { SwapOrigin } from "../../../utils/enums";
+import { EvmWalletTransfer } from "./parts";
 
 export const WaitDepositState = () => {
-  const { asset, despositAddress, swapOrigin } = useSwapStore((state) => state);
+  const { asset, depositAddress, swapOrigin, srcChain } = useSwapStore(
+    (state) => state
+  );
 
   function handleOnCopyDestinationAddressToClipboard() {
-    navigator.clipboard.writeText(despositAddress);
+    navigator.clipboard.writeText(depositAddress);
     toast.success("copied to clipboard!");
   }
+
+  // function renderWallets() {
+  //   if (srcChain.chainInfo.module === "evm")
+  //     return (
+  //       <div>
+  //         <div className="flex justify-center my-2 gap-x-5">
+  //           <button>
+  //             <Image
+  //               src="/assets/wallets/metamask.logo.svg"
+  //               height={20}
+  //               width={20}
+  //             />
+  //           </button>
+  //         </div>
+  //       </div>
+  //     );
+
+  //   return (
+  //     <div>
+  //       <div className="flex justify-center my-2 gap-x-5">
+  //         <button>
+  //           <Image
+  //             src="/assets/wallets/terra-station.logo.svg"
+  //             height={20}
+  //             width={20}
+  //           />
+  //         </button>
+  //         <button>
+  //           <Image
+  //             src="/assets/wallets/kepler.logo.svg"
+  //             height={20}
+  //             width={20}
+  //           />
+  //         </button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <InputWrapper className="h-auto">
@@ -25,12 +66,12 @@ export const WaitDepositState = () => {
               </div>
               <progress
                 className="h-1 progress progress-primary"
-                value={100}
+                value={1}
               ></progress>
               <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
                 2
               </div>
-              <progress className="h-1 progress"></progress>
+              <progress className="h-1 progress" value={0}></progress>
               <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
                 3
               </div>
@@ -43,7 +84,7 @@ export const WaitDepositState = () => {
                   <strong>{asset?.common_key[ENVIRONMENT]}</strong> to
                 </label>
                 <div className="flex font-bold text-info gap-x-2">
-                  <AddressShortener value={despositAddress} />
+                  <AddressShortener value={depositAddress} />
                   <div
                     className="cursor-pointer"
                     onClick={handleOnCopyDestinationAddressToClipboard}
@@ -56,24 +97,7 @@ export const WaitDepositState = () => {
             {swapOrigin === SwapOrigin.APP && (
               <div>
                 <div className="w-48 mx-auto my-1 text-xs divider">OR USE</div>
-                <div>
-                  <div className="flex justify-center my-2 gap-x-5">
-                    <button>
-                      <Image
-                        src="/assets/wallets/terra-station.logo.svg"
-                        height={20}
-                        width={20}
-                      />
-                    </button>
-                    <button>
-                      <Image
-                        src="/assets/wallets/kepler.logo.svg"
-                        height={20}
-                        width={20}
-                      />
-                    </button>
-                  </div>
-                </div>
+                {srcChain.chainInfo.module === "evm" && <EvmWalletTransfer />}
               </div>
             )}
           </div>

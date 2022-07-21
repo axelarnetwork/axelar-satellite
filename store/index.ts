@@ -5,6 +5,11 @@ import { allChains } from "../config/web3";
 
 import { SwapOrigin, SwapStatus } from "../utils/enums";
 
+interface TxInfo {
+  sourceTxHash?: string;
+  destTxHash?: string;
+}
+
 interface SwapState {
   srcChain: Chain;
   destChain: Chain;
@@ -12,9 +17,10 @@ interface SwapState {
   selectableAssetList: AssetConfig[];
   asset: AssetConfig | null;
   swapStatus: SwapStatus;
-  despositAddress: string;
+  depositAddress: string;
   swapOrigin: SwapOrigin;
   tokensToTransfer: string;
+  txInfo: TxInfo;
 }
 
 interface SwapStore extends SwapState {
@@ -28,6 +34,7 @@ interface SwapStore extends SwapState {
   setDepositAddress: (address: string) => void;
   setSwapOrigin: (origin: SwapOrigin) => void;
   setTokensToTransfer: (tokens: string) => void;
+  setTxInfo: (_txInfo: TxInfo) => void;
 }
 
 // initial chains
@@ -43,15 +50,19 @@ const moonbeamChain = allChains.find(
  * We define an initial state for easy state reset if needed
  */
 const initialState: SwapState = {
+  selectableAssetList: [], // list of assets to select from
   srcChain: avalancheChain,
   destChain: moonbeamChain,
-  destAddress: "",
-  selectableAssetList: [],
-  asset: null,
+  asset: null, // asset to transfer
+  tokensToTransfer: "", // asset amount to transfer
+  destAddress: "", // user owned account to transfer assets to
+  depositAddress: "", // axelar generated account where user should deposit his assets
   swapStatus: SwapStatus.IDLE,
-  despositAddress: "",
   swapOrigin: SwapOrigin.APP,
-  tokensToTransfer: "",
+  txInfo: {
+    sourceTxHash: "",
+    destTxHash: "",
+  },
 };
 
 export const useSwapStore = create<SwapStore>()(
@@ -109,7 +120,7 @@ export const useSwapStore = create<SwapStore>()(
     setDepositAddress: (address) =>
       set(
         () => ({
-          despositAddress: address,
+          depositAddress: address,
         }),
         false,
         "setDepositAddress"
@@ -137,6 +148,17 @@ export const useSwapStore = create<SwapStore>()(
         },
         false,
         "setTokensToTransfer"
+      ),
+    setTxInfo: (_txInfo) =>
+      set(
+        {
+          txInfo: {
+            ...get().txInfo,
+            ..._txInfo,
+          },
+        },
+        false,
+        "setTxInfo"
       ),
   }))
 );

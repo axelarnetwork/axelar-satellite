@@ -29,6 +29,8 @@ export function curateCosmosChainId(chainId: string) {
   switch (chainId) {
     case "terra-2":
       return "pisco-1";
+    case "osmo-4":
+      return "osmo-test-4";
     default:
       return chainId;
   }

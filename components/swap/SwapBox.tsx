@@ -12,7 +12,13 @@ import {
 } from "./parts";
 
 import { SwapStatus } from "../../utils/enums";
-import { GenDepositAddressState, IdleState, WaitDepositState } from "./states";
+import {
+  GenDepositAddressState,
+  IdleState,
+  WaitDepositState,
+  WaitConfirmationState,
+  ConfirmTransferState,
+} from "./states";
 import {
   useDetectDepositConfirmation,
   usePreventDuplicateChains,
@@ -63,6 +69,12 @@ export const SwapBox = () => {
         )}
         {swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && <WaitDepositState />}
 
+        {swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION && (
+          <WaitConfirmationState />
+        )}
+
+        {swapStatus === SwapStatus.FINISHED && <ConfirmTransferState />}
+
         <div className="flex flex-col justify-end h-full pt-2">
           {!walletConnected && <ConnectButton />}
           {walletConnected && swapStatus === SwapStatus.IDLE && (
@@ -80,6 +92,14 @@ export const SwapBox = () => {
             <button className="w-full btn btn-disabled" disabled>
               <div className="flex items-center gap-3">
                 <span>Waiting for deposit...</span>
+              </div>
+            </button>
+          )}
+
+          {walletConnected && swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION && (
+            <button className="w-full btn btn-disabled" disabled>
+              <div className="flex items-center gap-3">
+                <span>Waiting for confirmation...</span>
               </div>
             </button>
           )}

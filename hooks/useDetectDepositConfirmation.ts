@@ -6,7 +6,7 @@ import { buildDepositConfirmationRoomId } from "../utils";
 import { SwapStatus } from "../utils/enums";
 
 export const useDetectDepositConfirmation = () => {
-  const { asset, srcChain, despositAddress, swapStatus, setSwapStatus } =
+  const { asset, srcChain, depositAddress, swapStatus, setSwapStatus } =
     useSwapStore();
 
   const socketRef = useRef<Socket>();
@@ -14,7 +14,7 @@ export const useDetectDepositConfirmation = () => {
   useEffect(() => {
     if (!asset) return;
     // only connect to sockets if waiting for deposit state
-    if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT || !despositAddress) return;
+    if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT || !depositAddress) return;
 
     // avoid initialising socket twice
     if (!socketRef.current)
@@ -30,7 +30,7 @@ export const useDetectDepositConfirmation = () => {
     // build socket room id
     const roomId = buildDepositConfirmationRoomId(
       srcChain.chainInfo.module,
-      despositAddress
+      depositAddress
     );
 
     // subscribe to socket room
@@ -40,11 +40,11 @@ export const useDetectDepositConfirmation = () => {
       parseDepositConfirmationEvent(data);
       socketRef.current?.close();
     });
-  }, [asset, swapStatus, despositAddress]);
+  }, [asset, swapStatus, depositAddress]);
 
   function parseDepositConfirmationEvent(data: any) {
     if (data.Type !== "depositConfirmation") return;
-    if (data.Attributes.depositAddress !== despositAddress) return;
+    if (data.Attributes.depositAddress !== depositAddress) return;
 
     setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
   }
