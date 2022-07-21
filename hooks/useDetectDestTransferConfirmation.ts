@@ -1,20 +1,29 @@
 import { useEffect, useRef } from "react";
 import { io, Socket } from "socket.io-client";
-import { SOCKET_API } from "../config/constants";
+import { ENVIRONMENT, SOCKET_API } from "../config/constants";
 import { useSwapStore } from "../store";
-import { buildDepositConfirmationRoomId } from "../utils";
+import { buildEvmTransferCompletedRoomId } from "../utils";
 import { SwapStatus } from "../utils/enums";
 
-export const useDetectDepositConfirmation = () => {
-  const { asset, srcChain, depositAddress, swapStatus, setSwapStatus } =
-    useSwapStore();
+export const useDetectDestTransferConfirmation = () => {
+  const {
+    asset,
+    srcChain,
+    destChain,
+    depositAddress,
+    swapStatus,
+    setSwapStatus,
+    setTxInfo,
+    destAddress,
+  } = useSwapStore();
 
   const socketRef = useRef<Socket>();
 
   useEffect(() => {
     if (!asset) return;
     // only connect to sockets if waiting for deposit state
-    if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT || !depositAddress) return;
+    if (swapStatus !== SwapStatus.WAIT_FOR_CONFIRMATION || !depositAddress)
+      return;
 
     // avoid initialising socket twice
     if (!socketRef.current)
@@ -27,11 +36,20 @@ export const useDetectDepositConfirmation = () => {
         },
       });
 
-    // build socket room id
-    const roomId = buildDepositConfirmationRoomId(
-      srcChain.chainInfo.module,
-      depositAddress
+    const assetCommonKey = asset?.common_key[ENVIRONMENT];
+    const assetData = destChain.chainInfo.assets?.find(
+      (asset) => asset.common_key === assetCommonKey
     );
+
+    // build socket room id
+    const roomId = buildEvmTransferCompletedRoomId(
+      destAddress,
+      assetData?.common_key as string
+    );
+
+    console.log({
+      roomId,
+    });
 
     // subscribe to socket room
     socketRef.current.emit("room:join", roomId);
@@ -44,9 +62,9 @@ export const useDetectDepositConfirmation = () => {
   }, [asset, swapStatus, depositAddress]);
 
   function parseResponse(data: any) {
-    if (data.Type !== "depositConfirmation") return;
-    if (data.Attributes.depositAddress !== depositAddress) return;
+    if (data.Type !== "fungible_token_packet") return;
+    if (data.Attributes.receiver !== destAddress) return;
 
-    setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+    setSwapStatus(SwapStatus.FINISHED);
   }
 };

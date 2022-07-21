@@ -3,6 +3,7 @@ export * from "./useListenForEvmTransfer";
 export * from "./useGetAssetBalance";
 export * from "./useMonitorWalletConnect";
 export * from "./useDetectDepositConfirmation";
+export * from "./useDetectDestTransferConfirmation";
 export * from "./usePreventDuplicateChains";
 
 export * from "./kepler/useHasKeplerWallet";
