@@ -1,16 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { SpinnerCircular } from "spinners-react";
+import React from "react";
 import Image from "next/image";
-import { erc20ABI, useContractEvent, useWaitForTransaction } from "wagmi";
-import { ENVIRONMENT } from "../../../config/constants";
-import { getWagmiChains } from "../../../config/web3";
 import { useSwapStore } from "../../../store";
-import { SwapOrigin, SwapStatus } from "../../../utils/enums";
 import { AddressShortener, InputWrapper } from "../../common";
-import { EvmWalletTransfer } from "./parts";
-import toast from "react-hot-toast";
+import { copyToClipboard } from "../../../utils";
 
 export const ConfirmTransferState = () => {
+  const { txInfo } = useSwapStore();
+
+  function renderTxConfirmationInfo() {
+    if (!txInfo?.destTxHash) return;
+
+    return (
+      <div className="text-center">
+        <div className="font-semibold">Found transfer on destination chain</div>
+
+        <div className="flex justify-center mx-auto font-bold text-center text-info gap-x-2">
+          <AddressShortener value={txInfo.destTxHash} />
+          <div
+            className="cursor-pointer"
+            onClick={() => copyToClipboard(txInfo.destTxHash!)}
+          >
+            <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <InputWrapper className="h-40">
       <div className="h-full space-x-2">
@@ -36,12 +52,14 @@ export const ConfirmTransferState = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-center mt-6 text-xs gap-x-2"></div>
+            <div className="flex items-center justify-center mt-6 text-xs gap-x-2">
+              {renderTxConfirmationInfo()}
+            </div>
           </div>
           <div className="w-full mt-auto">
             <div className="my-0 divider" />
             <div className="w-full text-xs font-medium text-center text-gray-500">
-              Waiting for confirmations
+              Transaction completed
             </div>
           </div>
         </div>

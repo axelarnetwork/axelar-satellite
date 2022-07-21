@@ -13,9 +13,8 @@ import toast from "react-hot-toast";
 export const WaitConfirmationState = () => {
   const [foundTransfer, setFoundTransfer] = useState<boolean>();
   const [destTxHash, setDestTxHash] = useState<string>("");
-  const { asset, destChain, destAddress, setSwapStatus } = useSwapStore(
-    (state) => state
-  );
+  const { asset, destChain, destAddress, setSwapStatus, setTxInfo, txInfo } =
+    useSwapStore((state) => state);
 
   const wagmiChains = getWagmiChains();
 
@@ -40,6 +39,9 @@ export const WaitConfirmationState = () => {
         console.log("event[1] === destAddress");
         setFoundTransfer(true);
         setDestTxHash(event[3]?.transactionHash);
+        setTxInfo({
+          destTxHash: event[3]?.transactionHash,
+        });
         setSwapStatus(SwapStatus.FINISHED);
       }
     },

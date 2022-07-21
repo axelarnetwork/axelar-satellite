@@ -1,3 +1,11 @@
+import toast from "react-hot-toast";
+
+export function copyToClipboard(value: string) {
+  if (!value) return;
+  navigator.clipboard.writeText(value);
+  toast.success("copied to clipboard!");
+}
+
 export function buildDepositConfirmationRoomId(
   module: string,
   depositAddress: string
