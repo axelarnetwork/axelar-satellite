@@ -31,6 +31,45 @@ export const SwapBox = () => {
   useDetectDepositConfirmation();
   usePreventDuplicateChains();
 
+  function renderStates() {
+    if (swapStatus === SwapStatus.IDLE) return <IdleState />;
+    if (swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS)
+      return <GenDepositAddressState />;
+    if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT) return <WaitDepositState />;
+    if (swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION)
+      return <WaitConfirmationState />;
+    if (swapStatus === SwapStatus.FINISHED) return <ConfirmTransferState />;
+  }
+
+  function renderActionButton() {
+    if (!walletConnected) return <ConnectButton />;
+    if (swapStatus === SwapStatus.IDLE) return <GenerateDepositAddressButton />;
+    if (swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS)
+      return (
+        <button className="w-full btn btn-disabled" disabled>
+          <div className="flex items-center gap-3">
+            <span>Processing...</span>
+          </div>
+        </button>
+      );
+    if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT)
+      return (
+        <button className="w-full btn btn-disabled" disabled>
+          <div className="flex items-center gap-3">
+            <span>Waiting for deposit...</span>
+          </div>
+        </button>
+      );
+    if (swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION)
+      return (
+        <button className="w-full btn btn-disabled" disabled>
+          <div className="flex items-center gap-3">
+            <span>Waiting for confirmation...</span>
+          </div>
+        </button>
+      );
+  }
+
   return (
     <div className="backdrop-blur-lg bg-[#385073]/10 rounded-xl w-[500px] min-h-[500px] h-auto">
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
@@ -39,9 +78,7 @@ export const SwapBox = () => {
           <button className="btn btn-xs btn-neutral">Top Flows</button>
         </div>
 
-        <div>
-          <OriginSwapper />
-        </div>
+        <OriginSwapper />
 
         <Blockable>
           <div className="flex justify-between">
@@ -57,52 +94,14 @@ export const SwapBox = () => {
           </div>
         </Blockable>
 
-        <div>
-          <InputWrapper>
-            <TokenSelector />
-          </InputWrapper>
-        </div>
+        <InputWrapper>
+          <TokenSelector />
+        </InputWrapper>
 
-        {swapStatus === SwapStatus.IDLE && <IdleState />}
-        {swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS && (
-          <GenDepositAddressState />
-        )}
-        {swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && <WaitDepositState />}
-
-        {swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION && (
-          <WaitConfirmationState />
-        )}
-
-        {swapStatus === SwapStatus.FINISHED && <ConfirmTransferState />}
+        {renderStates()}
 
         <div className="flex flex-col justify-end h-full pt-2">
-          {!walletConnected && <ConnectButton />}
-          {walletConnected && swapStatus === SwapStatus.IDLE && (
-            <GenerateDepositAddressButton />
-          )}
-          {walletConnected && swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS && (
-            <button className="w-full btn btn-disabled" disabled>
-              <div className="flex items-center gap-3">
-                <span>Processing...</span>
-              </div>
-            </button>
-          )}
-
-          {walletConnected && swapStatus === SwapStatus.WAIT_FOR_DEPOSIT && (
-            <button className="w-full btn btn-disabled" disabled>
-              <div className="flex items-center gap-3">
-                <span>Waiting for deposit...</span>
-              </div>
-            </button>
-          )}
-
-          {walletConnected && swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION && (
-            <button className="w-full btn btn-disabled" disabled>
-              <div className="flex items-center gap-3">
-                <span>Waiting for confirmation...</span>
-              </div>
-            </button>
-          )}
+          {renderActionButton()}
         </div>
       </div>
     </div>
