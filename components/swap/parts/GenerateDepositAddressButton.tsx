@@ -22,9 +22,9 @@ export const GenerateDepositAddressButton = () => {
     if (!destAddress) return toast.error("Destination address can't be empty");
 
     setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
-    const t = await mutateAsync({
-      fromChain: srcChain.chainInfo.chainIdentifier[ENVIRONMENT],
-      toChain: destChain.chainInfo.chainIdentifier[ENVIRONMENT],
+    await mutateAsync({
+      fromChain: srcChain.chainInfo.chainName,
+      toChain: destChain.chainInfo.chainName,
       asset: asset?.common_key[ENVIRONMENT],
       destAddress,
     })
