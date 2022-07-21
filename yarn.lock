@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@axelar-network/axelarjs-sdk@^0.6.11-alpha.5":
-  version "0.6.11-alpha.5"
-  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.6.11-alpha.5.tgz#dd8628a368f73f4dc33309f0df19561871a5236f"
-  integrity sha512-cRldSk9S30ONcejQJMHH0jOqjtuTxY/3u48OjX+R1OrpHxisyBXg6qFXoOVEmmpj8K0cKEvzhgBFTxh1oQtbgg==
+"@axelar-network/axelarjs-sdk@^0.6.14":
+  version "0.6.14"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.6.14.tgz#63bbfaf3bf4e1369c74860e15a6f0b02d0ce3eae"
+  integrity sha512-sX+0udGT9uqX7fVV1wD1WpvzGpht+TvRSMCk4NVY3h9yFf5OipndQwWHLGCcJQloiw0EX2bulcnCiehUdYclAw==
   dependencies:
     "@axelar-network/axelarjs-types" "^0.0.3"
     "@cosmjs/stargate" "^0.28.4"
