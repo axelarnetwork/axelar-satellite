@@ -16,19 +16,22 @@ import {
   GenDepositAddressState,
   IdleState,
   WaitDepositState,
-  WaitConfirmationState,
+  WaitEvmConfirmationState,
   ConfirmTransferState,
+  WaitCosmosConfirmationState,
 } from "./states";
 import {
   useDetectDepositConfirmation,
+  useDetectDestTransferConfirmation,
   usePreventDuplicateChains,
 } from "../../hooks";
 
 export const SwapBox = () => {
-  const { swapStatus } = useSwapStore((state) => state);
+  const { swapStatus, destChain } = useSwapStore((state) => state);
   const walletConnected = useWalletStore((state) => state.walletConnected);
 
-  useDetectDepositConfirmation();
+  // useDetectDepositConfirmation();
+  useDetectDestTransferConfirmation();
   usePreventDuplicateChains();
 
   function renderStates() {
@@ -36,8 +39,16 @@ export const SwapBox = () => {
     if (swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS)
       return <GenDepositAddressState />;
     if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT) return <WaitDepositState />;
-    if (swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION)
-      return <WaitConfirmationState />;
+    if (
+      swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION &&
+      destChain.chainInfo.module === "evm"
+    )
+      return <WaitEvmConfirmationState />;
+    if (
+      swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION &&
+      destChain.chainInfo.module === "axelarnet"
+    )
+      return <WaitCosmosConfirmationState />;
     if (swapStatus === SwapStatus.FINISHED) return <ConfirmTransferState />;
   }
 

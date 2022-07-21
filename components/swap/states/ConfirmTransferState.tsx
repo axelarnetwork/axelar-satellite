@@ -8,21 +8,23 @@ export const ConfirmTransferState = () => {
   const { txInfo } = useSwapStore();
 
   function renderTxConfirmationInfo() {
-    if (!txInfo?.destTxHash) return;
-
     return (
       <div className="text-center">
-        <div className="font-semibold">Found transfer on destination chain</div>
-
-        <div className="flex justify-center mx-auto font-bold text-center text-info gap-x-2">
-          <AddressShortener value={txInfo.destTxHash} />
-          <div
-            className="cursor-pointer"
-            onClick={() => copyToClipboard(txInfo.destTxHash!)}
-          >
-            <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
-          </div>
+        <div className="font-semibold">
+          Transfer on destination chain complete
         </div>
+
+        {txInfo?.destTxHash && (
+          <div className="flex justify-center mx-auto font-bold text-center text-info gap-x-2">
+            <AddressShortener value={txInfo.destTxHash} />
+            <div
+              className="cursor-pointer"
+              onClick={() => copyToClipboard(txInfo.destTxHash!)}
+            >
+              <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+            </div>
+          </div>
+        )}
       </div>
     );
   }

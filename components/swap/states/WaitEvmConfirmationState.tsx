@@ -7,7 +7,7 @@ import { useSwapStore } from "../../../store";
 import { SwapStatus } from "../../../utils/enums";
 import { InputWrapper } from "../../common";
 
-export const WaitConfirmationState = () => {
+export const WaitEvmConfirmationState = () => {
   const { asset, destChain, destAddress, setSwapStatus, setTxInfo } =
     useSwapStore((state) => state);
 
