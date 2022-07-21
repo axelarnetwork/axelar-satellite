@@ -9,8 +9,9 @@ import { curateCosmosChainId } from "../../../utils";
 export const AddressFiller = () => {
   const { address } = useAccount();
   const setDestAddress = useSwapStore((state) => state.setDestAddress);
-  const srcChain = useSwapStore((state) => state.srcChain);
-  const isEvm = srcChain.chainInfo.module === "evm";
+
+  const { destChain } = useSwapStore((state) => state);
+  const isEvm = destChain.chainInfo.module === "evm";
 
   const hasKeplerWallet = useHasKeplerWallet();
   const keplerWallet = useGetKeplerWallet();
@@ -22,7 +23,7 @@ export const AddressFiller = () => {
   async function fillCosmosDestinationAddress() {
     if (hasKeplerWallet) {
       const chainId = curateCosmosChainId(
-        srcChain.chainInfo.chainIdentifier[ENVIRONMENT]
+        destChain.chainInfo.chainIdentifier[ENVIRONMENT]
       );
       await keplerWallet?.enable(chainId);
       const address = await keplerWallet?.getKey(chainId);
@@ -33,7 +34,7 @@ export const AddressFiller = () => {
   if (isEvm)
     return (
       <div
-        key={srcChain.chainInfo.module}
+        key={destChain.chainInfo.module}
         className="bg-gradient-to-b from-[#E8821E] to-[#F89C35] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
         onClick={fillEvmDestinationAddress}
       >
@@ -56,7 +57,7 @@ export const AddressFiller = () => {
 
   return (
     <div
-      key={srcChain.chainInfo.module}
+      key={destChain.chainInfo.module}
       className="bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
       onClick={fillCosmosDestinationAddress}
     >
