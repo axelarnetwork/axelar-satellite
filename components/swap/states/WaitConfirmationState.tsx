@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SpinnerCircular } from "spinners-react";
-import Image from "next/image";
-import { erc20ABI, useContractEvent, useWaitForTransaction } from "wagmi";
+import { erc20ABI, useContractEvent } from "wagmi";
 import { ENVIRONMENT } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { useSwapStore } from "../../../store";
-import { SwapOrigin, SwapStatus } from "../../../utils/enums";
-import { AddressShortener, InputWrapper } from "../../common";
-import { EvmWalletTransfer } from "./parts";
-import toast from "react-hot-toast";
+import { SwapStatus } from "../../../utils/enums";
+import { InputWrapper } from "../../common";
 
 export const WaitConfirmationState = () => {
-  const [foundTransfer, setFoundTransfer] = useState<boolean>();
-  const [destTxHash, setDestTxHash] = useState<string>("");
-  const { asset, destChain, destAddress, setSwapStatus, setTxInfo, txInfo } =
+  const { asset, destChain, destAddress, setSwapStatus, setTxInfo } =
     useSwapStore((state) => state);
 
   const wagmiChains = getWagmiChains();
@@ -31,14 +26,7 @@ export const WaitConfirmationState = () => {
     contractInterface: erc20ABI,
     eventName: "Transfer",
     listener: (event) => {
-      console.log({
-        event,
-        destAddress,
-      });
       if (event[1] === destAddress) {
-        console.log("event[1] === destAddress");
-        setFoundTransfer(true);
-        setDestTxHash(event[3]?.transactionHash);
         setTxInfo({
           destTxHash: event[3]?.transactionHash,
         });
@@ -47,33 +35,7 @@ export const WaitConfirmationState = () => {
     },
   });
 
-  function handleOnCopyDestinationAddressToClipboard() {
-    navigator.clipboard.writeText(destTxHash);
-    toast.success("copied to clipboard!");
-  }
-
   function renderConfirmations() {
-    if (foundTransfer) {
-      return (
-        <div className="text-center">
-          <div className="font-semibold">
-            Found transfer on destination chain
-          </div>
-          {destTxHash && (
-            <div className="flex justify-center mx-auto font-bold text-center text-info gap-x-2">
-              <AddressShortener value={destTxHash} />
-              <div
-                className="cursor-pointer"
-                onClick={handleOnCopyDestinationAddressToClipboard}
-              >
-                <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
-              </div>
-            </div>
-          )}
-        </div>
-      );
-    }
-
     return (
       <>
         <SpinnerCircular

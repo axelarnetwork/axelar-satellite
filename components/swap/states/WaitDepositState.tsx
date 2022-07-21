@@ -1,21 +1,16 @@
 import React from "react";
-import toast from "react-hot-toast";
 import Image from "next/image";
 import { ENVIRONMENT } from "../../../config/constants";
 import { useSwapStore } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
 import { SwapOrigin } from "../../../utils/enums";
 import { EvmWalletTransfer } from "./parts";
+import { copyToClipboard } from "../../../utils";
 
 export const WaitDepositState = () => {
   const { asset, depositAddress, swapOrigin, srcChain } = useSwapStore(
     (state) => state
   );
-
-  function handleOnCopyDestinationAddressToClipboard() {
-    navigator.clipboard.writeText(depositAddress);
-    toast.success("copied to clipboard!");
-  }
 
   // function renderWallets() {
   //   if (srcChain.chainInfo.module === "evm")
@@ -87,7 +82,7 @@ export const WaitDepositState = () => {
                   <AddressShortener value={depositAddress} />
                   <div
                     className="cursor-pointer"
-                    onClick={handleOnCopyDestinationAddressToClipboard}
+                    onClick={() => copyToClipboard(depositAddress)}
                   >
                     <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
                   </div>
