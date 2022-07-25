@@ -68,8 +68,12 @@ export const TokenSelector = () => {
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
         <div className="space-x-2">
-          <span className="text-xs text-gray-500">Available</span>
-          <span className="w-auto text-xs text-info">{balance}</span>
+          {srcChain.chainInfo.module === "evm" && (
+            <>
+              <span className="text-xs text-gray-500">Available</span>
+              <span className="w-auto text-xs text-info">{balance}</span>
+            </>
+          )}
         </div>
       </div>
     );
