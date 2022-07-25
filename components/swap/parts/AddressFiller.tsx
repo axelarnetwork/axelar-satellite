@@ -1,10 +1,11 @@
 import React from "react";
 import Image from "next/image";
-import { useSwapStore } from "../../../store";
 import { useAccount } from "wagmi";
+import { useSwapStore } from "../../../store";
 import { useGetKeplerWallet, useHasKeplerWallet } from "../../../hooks";
 import { ENVIRONMENT } from "../../../config/constants";
 import { curateCosmosChainId } from "../../../utils";
+import { getCosmosChains } from "../../../config/web3";
 
 export const AddressFiller = () => {
   const { address } = useAccount();
@@ -25,6 +26,11 @@ export const AddressFiller = () => {
       const chainId = curateCosmosChainId(
         destChain.chainInfo.chainIdentifier[ENVIRONMENT]
       );
+      const chain = getCosmosChains().find(
+        (_chain) => _chain.chainId === chainId
+      );
+      if (!chain) return;
+      await keplerWallet?.experimentalSuggestChain(chain);
       await keplerWallet?.enable(chainId);
       const address = await keplerWallet?.getKey(chainId);
       setDestAddress(address?.bech32Address as string);

@@ -4,7 +4,8 @@ import { Environment } from "../../utils/enums";
 import { ENVIRONMENT } from "../constants";
 
 // wagmi ready chains
-import { testnetChains } from "./chains.testnet";
+import { testnetChains as evmTestnetChains } from "./evm/chains.testnet";
+import { testnetChains as cosmosTestnetChains } from "./cosmos/chains.testnet";
 
 // sdk chains (generic)
 export const allAssets = loadAssets({
@@ -16,7 +17,16 @@ export const allChains = loadChains({
 });
 
 export const getWagmiChains = () => {
-  if (ENVIRONMENT === Environment.TESTNET) return testnetChains;
+  if (ENVIRONMENT === Environment.TESTNET) return evmTestnetChains;
+  if (ENVIRONMENT === Environment.MAINNET) return [];
+
+  toast.error(`Environment "${ENVIRONMENT}" not supported`);
+
+  return [];
+};
+
+export const getCosmosChains = () => {
+  if (ENVIRONMENT === Environment.TESTNET) return cosmosTestnetChains;
   if (ENVIRONMENT === Environment.MAINNET) return [];
 
   toast.error(`Environment "${ENVIRONMENT}" not supported`);
