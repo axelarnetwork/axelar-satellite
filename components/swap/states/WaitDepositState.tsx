@@ -4,7 +4,7 @@ import { ENVIRONMENT } from "../../../config/constants";
 import { useSwapStore } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
 import { SwapOrigin } from "../../../utils/enums";
-import { EvmWalletTransfer } from "./parts";
+import { CosmosWalletTransfer, EvmWalletTransfer } from "./parts";
 import { copyToClipboard } from "../../../utils";
 
 export const WaitDepositState = () => {
@@ -93,6 +93,9 @@ export const WaitDepositState = () => {
               <div>
                 <div className="w-48 mx-auto my-1 text-xs divider">OR USE</div>
                 {srcChain.chainInfo.module === "evm" && <EvmWalletTransfer />}
+                {srcChain.chainInfo.module === "axelarnet" && (
+                  <CosmosWalletTransfer />
+                )}
               </div>
             )}
           </div>
