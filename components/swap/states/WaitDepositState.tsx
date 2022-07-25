@@ -50,6 +50,22 @@ export const WaitDepositState = () => {
   //   );
   // }
 
+  function renderTransferInfo() {
+    if (swapOrigin === SwapOrigin.APP) {
+      return (
+        <>
+          Please transfer <strong>{asset?.common_key[ENVIRONMENT]}</strong> from{" "}
+          {srcChain.chainInfo.chainName} to
+        </>
+      );
+    }
+    return (
+      <>
+        Please transfer <strong>{asset?.common_key[ENVIRONMENT]}</strong> to
+      </>
+    );
+  }
+
   return (
     <InputWrapper className="h-auto">
       <div className="h-full space-x-2">
@@ -75,10 +91,9 @@ export const WaitDepositState = () => {
             <div className="flex items-center justify-center mt-6 text-xs gap-x-2">
               <div>
                 <label className="block text-center">
-                  Please transfer{" "}
-                  <strong>{asset?.common_key[ENVIRONMENT]}</strong> to
+                  {renderTransferInfo()}
                 </label>
-                <div className="flex font-bold text-info gap-x-2">
+                <div className="flex justify-center font-bold text-info gap-x-2">
                   <AddressShortener value={depositAddress} />
                   <div
                     className="cursor-pointer"
