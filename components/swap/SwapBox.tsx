@@ -20,18 +20,12 @@ import {
   ConfirmTransferState,
   WaitCosmosConfirmationState,
 } from "./states";
-import {
-  useDetectDepositConfirmation,
-  useDetectDestTransferConfirmation,
-  usePreventDuplicateChains,
-} from "../../hooks";
+import { usePreventDuplicateChains } from "../../hooks";
 
 export const SwapBox = () => {
   const { swapStatus, destChain } = useSwapStore((state) => state);
   const walletConnected = useWalletStore((state) => state.walletConnected);
 
-  // useDetectDepositConfirmation();
-  useDetectDestTransferConfirmation();
   usePreventDuplicateChains();
 
   function renderStates() {

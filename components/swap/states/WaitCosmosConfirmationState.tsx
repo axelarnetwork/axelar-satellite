@@ -3,37 +3,13 @@ import { SpinnerCircular } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
 import { ENVIRONMENT } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
+import { useDetectDestTransferConfirmation } from "../../../hooks";
 import { useSwapStore } from "../../../store";
 import { SwapStatus } from "../../../utils/enums";
 import { InputWrapper } from "../../common";
 
 export const WaitCosmosConfirmationState = () => {
-  // const { asset, destChain, destAddress, setSwapStatus, setTxInfo } =
-  //   useSwapStore((state) => state);
-
-  // const wagmiChains = getWagmiChains();
-
-  // const chainAlias = destChain.chainInfo.chainIdentifier[ENVIRONMENT];
-  // const tokenAddress = asset?.chain_aliases[chainAlias]?.tokenAddress;
-
-  // const chainId = wagmiChains.find(
-  //   (chain) => chain.network === destChain.chainInfo.chainName.toLowerCase()
-  // )?.id;
-
-  // useContractEvent({
-  //   chainId,
-  //   addressOrName: tokenAddress as string,
-  //   contractInterface: erc20ABI,
-  //   eventName: "Transfer",
-  //   listener: (event) => {
-  //     if (event[1] === destAddress) {
-  //       setTxInfo({
-  //         destTxHash: event[3]?.transactionHash,
-  //       });
-  //       setSwapStatus(SwapStatus.FINISHED);
-  //     }
-  //   },
-  // });
+  useDetectDestTransferConfirmation();
 
   function renderConfirmations() {
     return (

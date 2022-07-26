@@ -8,12 +8,10 @@ import { SwapStatus } from "../utils/enums";
 export const useDetectDestTransferConfirmation = () => {
   const {
     asset,
-    srcChain,
     destChain,
     depositAddress,
     swapStatus,
     setSwapStatus,
-    setTxInfo,
     destAddress,
   } = useSwapStore();
 

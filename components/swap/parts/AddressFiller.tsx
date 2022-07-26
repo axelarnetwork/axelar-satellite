@@ -31,8 +31,8 @@ export const AddressFiller = () => {
       );
       if (!chain) return;
       await keplerWallet?.experimentalSuggestChain(chain);
-      await keplerWallet?.enable(chainId);
-      const address = await keplerWallet?.getKey(chainId);
+      await keplerWallet?.enable(chainId as string);
+      const address = await keplerWallet?.getKey(chainId as string);
       setDestAddress(address?.bech32Address as string);
     }
   }
