@@ -1,13 +1,50 @@
 import { Chain, AssetConfig } from "@axelar-network/axelarjs-sdk";
+import memoize from "proxy-memoize";
 import create from "zustand";
 import { devtools } from "zustand/middleware";
-import { allChains } from "../config/web3";
+import { ENVIRONMENT } from "../config/constants";
+import { allChains, getWagmiChains } from "../config/web3";
 
 import { SwapOrigin, SwapStatus } from "../utils/enums";
+
+/**
+ * COMPUTED VALUES
+ */
+export const getSrcChainId = memoize((state: { srcChain: Chain }) => {
+  const chains = getWagmiChains();
+  const chain = chains.find(
+    (_chain) =>
+      _chain.network === state.srcChain.chainInfo.chainIdentifier[ENVIRONMENT]
+  );
+  return chain?.id;
+});
+
+export const getDestChainId = memoize((state: { destChain: Chain }) => {
+  const chains = getWagmiChains();
+  const chain = chains.find(
+    (_chain) =>
+      _chain.network === state.destChain.chainInfo.chainIdentifier[ENVIRONMENT]
+  );
+  return chain?.id;
+});
+
+export const getSrcTokenAddress = memoize(
+  (state: { srcChain: Chain; asset: AssetConfig | null }) => {
+    if (!state.asset || !state.srcChain) return null;
+    const srcChain = state.srcChain;
+    const assetCommonKey = state.asset.common_key[ENVIRONMENT];
+
+    const assetInfo = srcChain.chainInfo.assets?.find(
+      (_asset) => _asset.common_key === assetCommonKey
+    );
+    return assetInfo?.tokenAddress || null;
+  }
+);
 
 interface TxInfo {
   sourceTxHash?: string;
   destTxHash?: string;
+  destStartBlockNumber?: number;
 }
 
 interface SwapState {
@@ -62,6 +99,7 @@ const initialState: SwapState = {
   txInfo: {
     sourceTxHash: "",
     destTxHash: "",
+    destStartBlockNumber: 1,
   },
 };
 

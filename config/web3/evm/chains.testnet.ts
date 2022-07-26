@@ -28,7 +28,13 @@ const moonbeam: Chain = {
   nativeCurrency: {
     decimals: 18,
     name: "Glimmer",
-    symbol: "GLMR",
+    symbol: "DEV",
+  },
+  blockExplorers: {
+    default: {
+      name: "moonscan",
+      url: "https://moonbase.moonscan.io/",
+    },
   },
   rpcUrls: {
     default: "https://rpc.api.moonbase.moonbeam.network",

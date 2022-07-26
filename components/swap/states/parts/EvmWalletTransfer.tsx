@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { useContractWrite } from "wagmi";
+import { useBlockNumber, useContractWrite, useNetwork } from "wagmi";
 import { erc20ABI } from "wagmi";
 import { BigNumber } from "bignumber.js";
 import { utils } from "ethers";
@@ -17,17 +17,32 @@ export const EvmWalletTransfer = () => {
 
   const {
     srcChain,
+    destChain,
     asset,
     depositAddress,
     tokensToTransfer,
     setSwapStatus,
     setTxInfo,
   } = useSwapStore((state) => state);
+  const { chains } = useNetwork();
+
+  const srcChainId = chains.find(
+    (_chain) => _chain.network === srcChain.chainInfo.chainName.toLowerCase()
+  );
+  const destChainId = chains.find(
+    (chain) => chain.network === destChain.chainInfo.chainName.toLowerCase()
+  )?.id;
 
   const { writeAsync } = useContractWrite({
+    chainId: srcChainId?.id, // call transfer on source chain
     addressOrName: tokenAddress,
     contractInterface: erc20ABI,
     functionName: "transfer",
+  });
+
+  const { data: blockNumber } = useBlockNumber({
+    chainId: destChainId,
+    enabled: !!destChainId,
   });
 
   useEffect(() => {
@@ -67,6 +82,7 @@ export const EvmWalletTransfer = () => {
       .then((data) => {
         setTxInfo({
           sourceTxHash: data.hash,
+          destStartBlockNumber: blockNumber,
         });
         setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
       })

@@ -3,29 +3,26 @@ import { SpinnerCircular } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
 import { ENVIRONMENT } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
-import { useSwapStore } from "../../../store";
+import { getDestChainId, useSwapStore } from "../../../store";
 import { SwapStatus } from "../../../utils/enums";
 import { InputWrapper } from "../../common";
 
 export const WaitEvmConfirmationState = () => {
-  const { asset, destChain, destAddress, setSwapStatus, setTxInfo } =
+  const { asset, destChain, destAddress, setSwapStatus, txInfo, setTxInfo } =
     useSwapStore((state) => state);
-
-  const wagmiChains = getWagmiChains();
 
   const chainAlias = destChain.chainInfo.chainIdentifier[ENVIRONMENT];
   const tokenAddress = asset?.chain_aliases[chainAlias]?.tokenAddress;
 
-  const chainId = wagmiChains.find(
-    (chain) => chain.network === destChain.chainInfo.chainName.toLowerCase()
-  )?.id;
+  const destChainId = useSwapStore(getDestChainId);
 
   useContractEvent({
-    chainId,
+    chainId: destChainId,
     addressOrName: tokenAddress as string,
     contractInterface: erc20ABI,
     eventName: "Transfer",
     listener: (event) => {
+      if (event[3].blockNumber < Number(txInfo.destStartBlockNumber)) return;
       if (event[1] === destAddress) {
         setTxInfo({
           destTxHash: event[3]?.transactionHash,
