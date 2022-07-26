@@ -12,44 +12,6 @@ export const WaitDepositState = () => {
     (state) => state
   );
 
-  // function renderWallets() {
-  //   if (srcChain.chainInfo.module === "evm")
-  //     return (
-  //       <div>
-  //         <div className="flex justify-center my-2 gap-x-5">
-  //           <button>
-  //             <Image
-  //               src="/assets/wallets/metamask.logo.svg"
-  //               height={20}
-  //               width={20}
-  //             />
-  //           </button>
-  //         </div>
-  //       </div>
-  //     );
-
-  //   return (
-  //     <div>
-  //       <div className="flex justify-center my-2 gap-x-5">
-  //         <button>
-  //           <Image
-  //             src="/assets/wallets/terra-station.logo.svg"
-  //             height={20}
-  //             width={20}
-  //           />
-  //         </button>
-  //         <button>
-  //           <Image
-  //             src="/assets/wallets/kepler.logo.svg"
-  //             height={20}
-  //             width={20}
-  //           />
-  //         </button>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   function renderTransferInfo() {
     if (swapOrigin === SwapOrigin.APP) {
       return (
