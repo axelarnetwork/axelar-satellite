@@ -14,7 +14,16 @@ const Home: NextPage = () => {
       </Head>
 
       <Layout>
-        <div className="grid h-full grid-cols-1 pt-48 md:grid-cols-2">
+        <video
+          className="fixed top-0 left-0 object-cover w-screen h-screen aspect-video -z-10"
+          autoPlay
+          muted
+          loop
+          id="myVideo"
+        >
+          <source src="/video/planet.mp4" type="video/mp4" />
+        </video>
+        <div className="z-10 grid h-full grid-cols-1 pt-48 md:grid-cols-2">
           <div>
             <PageHeader />
           </div>
