@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useSwapStore } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
 import { copyToClipboard } from "../../../utils";
+import Link from "next/link";
+import { AXELARSCAN_URL } from "../../../config/constants";
 
 export const ConfirmTransferState = () => {
   const { txInfo } = useSwapStore();
@@ -10,21 +12,27 @@ export const ConfirmTransferState = () => {
   function renderTxConfirmationInfo() {
     return (
       <div className="text-center">
-        <div className="font-semibold">
-          Transfer on destination chain complete
-        </div>
+        <div>Transfer on destination chain complete</div>
+        <a
+          className="text-primary"
+          href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
+          target="_blank"
+          rel="noreferrer nofollow noopener"
+        >
+          Visit axelarscan for more information
+        </a>
 
-        {txInfo?.destTxHash && (
+        {/* {txInfo?.sourceTxHash && (
           <div className="flex justify-center mx-auto font-bold text-center text-info gap-x-2">
-            <AddressShortener value={txInfo.destTxHash} />
+            <AddressShortener value={txInfo.sourceTxHash} />
             <div
               className="cursor-pointer"
-              onClick={() => copyToClipboard(txInfo.destTxHash!)}
+              onClick={() => copyToClipboard(txInfo.sourceTxHash!)}
             >
               <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
             </div>
           </div>
-        )}
+        )} */}
       </div>
     );
   }

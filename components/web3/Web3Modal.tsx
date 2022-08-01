@@ -54,7 +54,7 @@ export const Web3Modal = () => {
               />
             </div>
           </button>
-          <button
+          {/* <button
             className="relative flex btn btn-neutral"
             onClick={handleOnWalletConnectSwitch}
           >
@@ -69,7 +69,7 @@ export const Web3Modal = () => {
                 width={30}
               />
             </div>
-          </button>
+          </button> */}
           {/* <button
             className="relative flex btn btn-primary bg-[#181A25]"
             // onClick={handleOnCoinbaseWalletSwitch}

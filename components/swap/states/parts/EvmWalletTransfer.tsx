@@ -6,14 +6,19 @@ import { BigNumber } from "bignumber.js";
 import { utils } from "ethers";
 import toast from "react-hot-toast";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
+import { SpinnerRoundOutlined } from "spinners-react";
 
 import { useSwapStore } from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
 import { SwapStatus } from "../../../../utils/enums";
+import { useDetectDepositConfirmation } from "../../../../hooks";
 
 export const EvmWalletTransfer = () => {
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
+
+  // used to hide wallets when transaction has been triggered
+  const [isTxOngoing, setIsTxOngoing] = useState(false);
 
   const {
     srcChain,
@@ -44,6 +49,8 @@ export const EvmWalletTransfer = () => {
     chainId: destChainId,
     enabled: !!destChainId,
   });
+
+  useDetectDepositConfirmation();
 
   useEffect(() => {
     const assetCommonKey = asset?.common_key[ENVIRONMENT];
@@ -84,7 +91,8 @@ export const EvmWalletTransfer = () => {
           sourceTxHash: data.hash,
           destStartBlockNumber: blockNumber,
         });
-        setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+        setIsTxOngoing(true);
+        // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
       })
       .catch((error) => toast.error(error?.message as string));
   }
@@ -92,13 +100,26 @@ export const EvmWalletTransfer = () => {
   return (
     <div>
       <div className="flex justify-center my-2 gap-x-5">
-        <button onClick={handleOnTokensTransfer}>
-          <Image
-            src="/assets/wallets/metamask.logo.svg"
-            height={20}
-            width={20}
-          />
-        </button>
+        {isTxOngoing ? (
+          <div className="flex items-center gap-x-2">
+            <SpinnerRoundOutlined
+              className="text-blue-500"
+              size={20}
+              color="#00a6ff"
+            />
+            <span className="text-xs">
+              Waiting for transaction confirmation...
+            </span>
+          </div>
+        ) : (
+          <button onClick={handleOnTokensTransfer}>
+            <Image
+              src="/assets/wallets/metamask.logo.svg"
+              height={20}
+              width={20}
+            />
+          </button>
+        )}
       </div>
     </div>
   );

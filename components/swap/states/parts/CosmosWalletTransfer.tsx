@@ -10,7 +10,11 @@ import {
 import { OfflineSigner } from "@cosmjs/launchpad";
 import { ENVIRONMENT } from "../../../../config/constants";
 import { useSwapStore } from "../../../../store";
-import { useGetKeplerWallet, useHasKeplerWallet } from "../../../../hooks";
+import {
+  useDetectDepositConfirmation,
+  useGetKeplerWallet,
+  useHasKeplerWallet,
+} from "../../../../hooks";
 import { curateCosmosChainId } from "../../../../utils";
 import { getCosmosChains } from "../../../../config/web3";
 import { utils } from "ethers";
@@ -19,15 +23,27 @@ import Long from "long";
 import { Height } from "cosmjs-types/ibc/core/client/v1/client";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { SwapStatus } from "../../../../utils/enums";
+import { SpinnerRoundOutlined } from "spinners-react";
 
 export const CosmosWalletTransfer = () => {
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
 
-  const { srcChain, asset, tokensToTransfer, depositAddress, setSwapStatus } =
-    useSwapStore((state) => state);
+  // used to hide wallets when transaction has been triggered
+  const [isTxOngoing, setIsTxOngoing] = useState(false);
+
+  const {
+    srcChain,
+    asset,
+    tokensToTransfer,
+    depositAddress,
+    setSwapStatus,
+    setTxInfo,
+  } = useSwapStore((state) => state);
   const keplerWallet = useGetKeplerWallet();
   const hasKeplerWallet = useHasKeplerWallet();
+
+  useDetectDepositConfirmation();
 
   useEffect(() => {
     const assetCommonKey = asset?.common_key[ENVIRONMENT];
@@ -134,8 +150,13 @@ export const CosmosWalletTransfer = () => {
         timeoutTimestamp,
         fee
       )
-      .then(() => {
-        setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+      .then((e) => {
+        setTxInfo({
+          sourceTxHash: e.transactionHash,
+        });
+
+        setIsTxOngoing(true);
+        // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
       })
       .catch((error) => console.log(error));
 
@@ -159,9 +180,26 @@ export const CosmosWalletTransfer = () => {
   return (
     <div>
       <div className="flex justify-center my-2 gap-x-5">
-        <button onClick={handleOnTokensTransfer}>
-          <Image src="/assets/wallets/kepler.logo.svg" height={20} width={20} />
-        </button>
+        {isTxOngoing ? (
+          <div className="flex items-center gap-x-2">
+            <SpinnerRoundOutlined
+              className="text-blue-500"
+              size={20}
+              color="#00a6ff"
+            />
+            <span className="text-xs">
+              Waiting for transaction confirmation...
+            </span>
+          </div>
+        ) : (
+          <button onClick={handleOnTokensTransfer}>
+            <Image
+              src="/assets/wallets/kepler.logo.svg"
+              height={20}
+              width={20}
+            />
+          </button>
+        )}
       </div>
     </div>
   );

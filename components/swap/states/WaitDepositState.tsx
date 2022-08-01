@@ -8,23 +8,17 @@ import { CosmosWalletTransfer, EvmWalletTransfer } from "./parts";
 import { copyToClipboard } from "../../../utils";
 
 export const WaitDepositState = () => {
-  const { asset, depositAddress, swapOrigin, srcChain } = useSwapStore(
-    (state) => state
-  );
+  const { asset, depositAddress, destAddress, swapOrigin, srcChain } =
+    useSwapStore((state) => state);
 
   function renderTransferInfo() {
-    if (swapOrigin === SwapOrigin.APP) {
-      return (
-        <>
-          Please transfer <strong>{asset?.common_key[ENVIRONMENT]}</strong> from{" "}
-          {srcChain.chainInfo.chainName} to
-        </>
-      );
-    }
     return (
-      <>
-        Please transfer <strong>{asset?.common_key[ENVIRONMENT]}</strong> to
-      </>
+      <div>
+        <div>
+          Please transfer <strong>{asset?.common_key[ENVIRONMENT]}</strong> on{" "}
+          {srcChain.chainInfo.chainName} to
+        </div>
+      </div>
     );
   }
 
@@ -79,7 +73,7 @@ export const WaitDepositState = () => {
           <div className="w-full mt-auto">
             <div className="my-0 divider" />
             <div className="w-full text-xs font-medium text-center text-gray-500">
-              Execution of asset transfer
+              Execution of asset transfer to {destAddress}
             </div>
           </div>
         </div>

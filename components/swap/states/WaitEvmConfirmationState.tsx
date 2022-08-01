@@ -8,8 +8,15 @@ import { SwapStatus } from "../../../utils/enums";
 import { InputWrapper } from "../../common";
 
 export const WaitEvmConfirmationState = () => {
-  const { asset, destChain, destAddress, setSwapStatus, txInfo, setTxInfo } =
-    useSwapStore((state) => state);
+  const {
+    asset,
+    srcChain,
+    destChain,
+    destAddress,
+    setSwapStatus,
+    txInfo,
+    setTxInfo,
+  } = useSwapStore((state) => state);
 
   const chainAlias = destChain.chainInfo.chainIdentifier[ENVIRONMENT];
   const tokenAddress = asset?.chain_aliases[chainAlias]?.tokenAddress;
@@ -34,15 +41,23 @@ export const WaitEvmConfirmationState = () => {
 
   function renderConfirmations() {
     return (
-      <>
+      <div className="flex items-center gap-x-2">
         <SpinnerCircular
           size={20}
           thickness={147}
           color={"#00a5ff"}
           secondaryColor={"#375f73"}
         />
-        <span className="font-semibold">Waiting for confirmations...</span>
-      </>
+        <div className="flex flex-col text-center">
+          <span className="text-sm">
+            Transfer on {srcChain.chainInfo.chainName} detected!
+          </span>
+          <span className="text-xs font-light text-gray-200">
+            Transfering your {asset?.common_key[ENVIRONMENT]} to{" "}
+            {destChain.chainInfo.chainName}...
+          </span>
+        </div>
+      </div>
     );
   }
 
