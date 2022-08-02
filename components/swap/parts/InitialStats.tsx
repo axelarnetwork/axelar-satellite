@@ -41,7 +41,7 @@ export const InitialStats = () => {
 
   return (
     <StatsWrapper>
-      <ul className="space-y-2 text-sm">
+      <ul className="space-y-2 text-xs">
         <li className="flex justify-between">
           <span>Relayer Gas Fees:</span>
           <span>
