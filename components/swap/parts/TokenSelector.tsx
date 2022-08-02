@@ -101,8 +101,8 @@ export const TokenSelector = () => {
                       ENVIRONMENT
                     ].toLowerCase()}.logo.svg`}
                     layout="intrinsic"
-                    width={40}
-                    height={40}
+                    width={35}
+                    height={35}
                     onError={(e) => {
                       e.currentTarget.src = defaultAssetImg;
                       e.currentTarget.srcset = defaultAssetImg;
@@ -153,8 +153,8 @@ export const TokenSelector = () => {
                 <Image
                   src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
                   layout="intrinsic"
-                  width={40}
-                  height={40}
+                  width={35}
+                  height={35}
                   onError={(e) => {
                     e.currentTarget.src = defaultAssetImg;
                     e.currentTarget.srcset = defaultAssetImg;

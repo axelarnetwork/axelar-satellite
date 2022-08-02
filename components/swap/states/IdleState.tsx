@@ -10,7 +10,7 @@ export const IdleState = () => {
   function renderConnectAlert() {
     return (
       <div className="h-10 my-4">
-        <div className="text-sm rounded-lg bg-neutral alert">
+        <div className="text-sm rounded-lg bg-neutral alert bg-[#091928]">
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"

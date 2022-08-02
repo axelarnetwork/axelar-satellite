@@ -54,8 +54,8 @@ export const DestChainSelector = () => {
                   <Image
                     src={`/assets/chains/${chain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
-                    width={40}
-                    height={40}
+                    width={35}
+                    height={35}
                     onError={(e) => {
                       e.currentTarget.src = defaultChainImg;
                       e.currentTarget.srcset = defaultChainImg;
@@ -80,8 +80,8 @@ export const DestChainSelector = () => {
             <Image
               src={`/assets/chains/${destChain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`}
               layout="intrinsic"
-              width={40}
-              height={40}
+              width={35}
+              height={35}
               onError={(e) => {
                 e.currentTarget.src = defaultChainImg;
                 e.currentTarget.srcset = defaultChainImg;

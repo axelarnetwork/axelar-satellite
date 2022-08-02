@@ -76,14 +76,14 @@ export const SwapBox = () => {
   }
 
   return (
-    <div className="backdrop-blur-lg bg-[#385073]/10 rounded-xl w-[500px] min-h-[500px] h-auto">
+    <div className="bg-[#122b47] rounded-xl w-[500px] min-h-[500px] h-auto">
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
         <div className="relative flex justify-between space-x-8">
           <ConnectIndicator />
-          <button className="btn btn-xs btn-neutral">Top Flows</button>
+          {/* <button className="btn btn-xs btn-neutral">Top Flows</button> */}
         </div>
 
-        <OriginSwapper />
+        {/* <OriginSwapper /> */}
 
         <Blockable>
           <div className="flex justify-between">

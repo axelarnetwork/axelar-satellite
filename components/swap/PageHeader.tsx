@@ -7,11 +7,11 @@ export const PageHeader = () => {
       <h1 className="text-6xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#AECDFF] to-[#7BFEFF]">
         Satellite
       </h1>
-      <h2 className="my-4 text-3xl font-bold">Powered by Axelar</h2>
-      <p>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-        voluptua.
+      <h2 className="mt-1 text-3xl font-bold">Powered by Axelar</h2>
+      <p className="mt-4">
+        Satellite is a decentralized cross-chain asset transfer application,
+        which enables users to transfer assets they hold on a source chain to an
+        address on a different destination chain.
       </p>
       <div className="mt-5 space-x-4">
         <button className="btn">Getting started</button>
