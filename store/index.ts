@@ -72,6 +72,7 @@ interface SwapStore extends SwapState {
   setSwapOrigin: (origin: SwapOrigin) => void;
   setTokensToTransfer: (tokens: string) => void;
   setTxInfo: (_txInfo: TxInfo) => void;
+  resetState: () => void;
 }
 
 // initial chains
@@ -198,6 +199,7 @@ export const useSwapStore = create<SwapStore>()(
         false,
         "setTxInfo"
       ),
+    resetState: () => set(initialState, false, "resetState"),
   }))
 );
 

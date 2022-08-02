@@ -23,7 +23,7 @@ import {
 import { usePreventDuplicateChains } from "../../hooks";
 
 export const SwapBox = () => {
-  const { swapStatus, destChain } = useSwapStore((state) => state);
+  const { swapStatus, destChain, resetState } = useSwapStore((state) => state);
   const walletConnected = useWalletStore((state) => state.walletConnected);
 
   usePreventDuplicateChains();
@@ -51,7 +51,7 @@ export const SwapBox = () => {
     if (swapStatus === SwapStatus.IDLE) return <GenerateDepositAddressButton />;
     if (swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS)
       return (
-        <button className="w-full btn btn-disabled" disabled>
+        <button className="w-full btn btn-primary" disabled>
           <div className="flex items-center gap-3">
             <span>Processing...</span>
           </div>
@@ -59,7 +59,7 @@ export const SwapBox = () => {
       );
     if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT)
       return (
-        <button className="w-full btn btn-disabled" disabled>
+        <button className="w-full btn btn-primary" disabled>
           <div className="flex items-center gap-3">
             <span>Waiting for deposit...</span>
           </div>
@@ -67,9 +67,17 @@ export const SwapBox = () => {
       );
     if (swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION)
       return (
-        <button className="w-full btn btn-disabled" disabled>
+        <button className="w-full btn btn-primary" disabled>
           <div className="flex items-center gap-3">
             <span>Waiting for confirmation...</span>
+          </div>
+        </button>
+      );
+    if (swapStatus === SwapStatus.FINISHED)
+      return (
+        <button className="w-full btn btn-primary" onClick={resetState}>
+          <div className="flex items-center gap-3">
+            <span>Make another transfer?</span>
           </div>
         </button>
       );
