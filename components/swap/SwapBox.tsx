@@ -21,6 +21,7 @@ import {
   WaitCosmosConfirmationState,
 } from "./states";
 import { usePreventDuplicateChains } from "../../hooks";
+import { TopFlows } from "./parts/TopFlows";
 
 export const SwapBox = () => {
   const { swapStatus, destChain, resetState } = useSwapStore((state) => state);
@@ -86,9 +87,10 @@ export const SwapBox = () => {
   return (
     <div className="bg-[#122b47] rounded-xl w-[500px] min-h-[500px] h-auto">
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
-        <div className="relative flex justify-between space-x-8">
+        <div className="relative flex justify-between mb-5 space-x-8">
           <ConnectIndicator />
           {/* <button className="btn btn-xs btn-neutral">Top Flows</button> */}
+          <TopFlows />
         </div>
 
         {/* <OriginSwapper /> */}
@@ -98,7 +100,7 @@ export const SwapBox = () => {
             <InputWrapper>
               <SourceChainSelector />
             </InputWrapper>
-            <div className="relative z-50 flex items-center -mx-2">
+            <div className="relative z-40 flex items-center -mx-2">
               <ChainSwapper />
             </div>
             <InputWrapper>
