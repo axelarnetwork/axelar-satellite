@@ -14,7 +14,9 @@ export const Navbar = () => {
           />
           <div className="ml-3">
             <div className="text-2xl font-bold">Satellite</div>
-            <div className="text-sm font-normal">(Beta) Powered by Axelar</div>
+            <div className="text-sm font-normal">
+              (Beta) Powered by Axelar Network
+            </div>
           </div>
         </div>
         <div className="flex items-center ml-auto">
