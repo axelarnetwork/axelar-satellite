@@ -15,7 +15,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Layout>
-        <div className="fixed top-0 left-0 object-cover w-screen h-screen opacity-50 aspect-video -z-10">
+        <div className="fixed top-0 left-0 object-cover w-screen h-screen opacity-50 aspect-video -z-10 -scale-100">
           <Image src="/assets/ui/bg.png" layout="fill" objectFit="cover" />
         </div>
         <div className="z-10 grid h-full grid-cols-1 pt-48 md:grid-cols-2">

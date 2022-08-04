@@ -20,7 +20,7 @@ export const Navbar = () => {
           </div>
         </div>
         <div className="flex items-center ml-auto">
-          <input type="checkbox" className="toggle toggle-primary" />
+          {/* <input type="checkbox" className="toggle toggle-primary" /> */}
           {/* <label className="swap swap-rotate">
             <input type="checkbox" />
 
