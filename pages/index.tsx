@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import { LegacyRef, MutableRefObject, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { Layout } from "../components/layout";
 import { PageHeader, SwapBox } from "../components/swap";
