@@ -1,11 +1,21 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { LegacyRef, MutableRefObject, useEffect, useRef } from "react";
 
 import { Layout } from "../components/layout";
 import { PageHeader, SwapBox } from "../components/swap";
+import { useSwapStore } from "../store";
+import { SwapStatus } from "../utils/enums";
 
 const Home: NextPage = () => {
+  const { swapStatus } = useSwapStore((state) => state);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (swapStatus !== SwapStatus.IDLE) videoRef.current?.play();
+  }, [swapStatus]);
+
   return (
     <div>
       <Head>
@@ -15,12 +25,9 @@ const Home: NextPage = () => {
       </Head>
 
       <Layout>
-        {/* <div className="fixed top-0 left-0 object-cover w-screen h-screen opacity-50 aspect-video -z-10 -scale-100">
-          <Image src="/assets/ui/bg.png" layout="fill" objectFit="cover" />
-        </div> */}
         <video
+          ref={videoRef}
           className="fixed top-0 left-0 object-cover w-screen h-screen aspect-video -z-10"
-          autoPlay
           muted
           loop
           id="myVideo"
