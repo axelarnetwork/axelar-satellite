@@ -18,11 +18,11 @@ export const PageHeader = () => {
         which enables users to transfer assets they hold on a source chain to an
         address on a different destination chain.
       </p>
-      <div className="mt-5 space-x-4">
+      {/* <div className="mt-5 space-x-4">
         <button className="btn">Getting started</button>
         <button className="btn">Support</button>
         <button className="btn">FAQ</button>
-      </div>
+      </div> */}
 
       {walletConnected && (
         <div className="mt-5 font-bold">

@@ -4,22 +4,27 @@ import Image from "next/image";
 export const Navbar = () => {
   return (
     <div className="fixed flex items-center w-full h-36">
-      <nav className="flex items-center w-full max-w-screen-xl px-4 mx-auto">
-        <div className="flex">
+      <nav className="container flex items-center w-full max-w-screen-xl px-4 mx-auto">
+        <div className="flex items-center">
           <Image
             layout="intrinsic"
-            width={50}
-            height={50}
+            width={60}
+            height={60}
             src="/assets/ui/satellite.logo.svg"
           />
           <div className="ml-3">
-            <div className="text-2xl font-bold">Satellite</div>
-            <div className="text-sm font-normal">
-              (Beta) Powered by Axelar Network
+            <div className="text-3xl font-bold">
+              Satellite <span className="text-lg font-light">(Beta)</span>
             </div>
           </div>
         </div>
+
         <div className="flex items-center ml-auto">
+          <div className="mt-5 space-x-4">
+            <button className="btn">Getting started</button>
+            <button className="btn">Support</button>
+            <button className="btn">FAQ</button>
+          </div>
           {/* <input type="checkbox" className="toggle toggle-primary" /> */}
           {/* <label className="swap swap-rotate">
             <input type="checkbox" />

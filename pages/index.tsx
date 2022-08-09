@@ -27,11 +27,11 @@ const Home: NextPage = () => {
         >
           <source src="/video/bg.webm" type="video/webm" />
         </video>
-        <div className="z-10 h-full grid grid-cols-1 pt-[30vh] md:grid-cols-1 justify-items-center">
-          {/* <div>
-            <PageHeader />
-          </div> */}
+        <div className="z-10 h-full grid grid-cols-1 pt-[30vh] md:grid-cols-2 justify-items-stretch">
           <div>
+            <PageHeader />
+          </div>
+          <div className="flex items-start justify-end">
             <SwapBox />
           </div>
         </div>
