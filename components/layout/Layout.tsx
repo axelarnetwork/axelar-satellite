@@ -13,8 +13,10 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
       <header>
         <Navbar />
       </header>
-      <main className="h-auto min-h-screen">
-        <div className="container max-w-screen-xl px-4 mx-auto">{children}</div>
+      <main className="h-screen">
+        <div className="container h-full max-w-screen-xl px-4 mx-auto">
+          {children}
+        </div>
       </main>
     </>
   );

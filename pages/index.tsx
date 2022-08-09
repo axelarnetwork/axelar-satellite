@@ -15,14 +15,23 @@ const Home: NextPage = () => {
       </Head>
 
       <Layout>
-        <div className="fixed top-0 left-0 object-cover w-screen h-screen opacity-50 aspect-video -z-10 -scale-100">
+        {/* <div className="fixed top-0 left-0 object-cover w-screen h-screen opacity-50 aspect-video -z-10 -scale-100">
           <Image src="/assets/ui/bg.png" layout="fill" objectFit="cover" />
-        </div>
-        <div className="z-10 grid h-full grid-cols-1 pt-48 md:grid-cols-2">
-          <div>
+        </div> */}
+        <video
+          className="fixed top-0 left-0 object-cover w-screen h-screen aspect-video -z-10"
+          autoPlay
+          muted
+          loop
+          id="myVideo"
+        >
+          <source src="/video/bg.webm" type="video/webm" />
+        </video>
+        <div className="z-10 h-full grid grid-cols-1 pt-[30vh] md:grid-cols-1 justify-items-center">
+          {/* <div>
             <PageHeader />
-          </div>
-          <div className="h-full pt-16 justify-self-center md:justify-self-end">
+          </div> */}
+          <div>
             <SwapBox />
           </div>
         </div>
