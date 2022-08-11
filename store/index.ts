@@ -95,7 +95,7 @@ const initialState: SwapState = {
   tokensToTransfer: "", // asset amount to transfer
   destAddress: "", // user owned account to transfer assets to
   depositAddress: "", // axelar generated account where user should deposit his assets
-  swapStatus: SwapStatus.IDLE,
+  swapStatus: SwapStatus.WAIT_FOR_DEPOSIT,
   swapOrigin: SwapOrigin.APP,
   txInfo: {
     sourceTxHash: "",

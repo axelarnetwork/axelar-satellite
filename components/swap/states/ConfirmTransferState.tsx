@@ -1,10 +1,8 @@
 import React from "react";
-import Image from "next/image";
 import { useSwapStore } from "../../../store";
-import { AddressShortener, InputWrapper } from "../../common";
-import { copyToClipboard } from "../../../utils";
-import Link from "next/link";
+import { InputWrapper } from "../../common";
 import { AXELARSCAN_URL } from "../../../config/constants";
+import { ProgressBar } from "./parts";
 
 export const ConfirmTransferState = () => {
   const { txInfo } = useSwapStore();
@@ -42,25 +40,7 @@ export const ConfirmTransferState = () => {
       <div className="h-full space-x-2">
         <div className="flex flex-col w-full h-full">
           <div className="h-full">
-            <div className="grid items-center grid-cols-5 mt-2 text-xs font-medium justify-items-center">
-              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
-                1
-              </div>
-              <progress
-                className="h-1 progress progress-primary"
-                value={1}
-              ></progress>
-              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
-                2
-              </div>
-              <progress
-                className="h-1 progress progress-primary"
-                value={1}
-              ></progress>
-              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc">
-                3
-              </div>
-            </div>
+            <ProgressBar level={3} />
 
             <div className="flex items-center justify-center mt-6 text-xs gap-x-2">
               {renderTxConfirmationInfo()}
