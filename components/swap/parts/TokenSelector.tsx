@@ -71,7 +71,7 @@ export const TokenSelector = () => {
           {srcChain.chainInfo.module === "evm" && (
             <>
               <span className="text-xs text-gray-500">Available</span>
-              <span className="w-auto text-xs text-info">{balance}</span>
+              <span className="w-auto text-xs text-[#86d6ff]">{balance}</span>
             </>
           )}
         </div>
