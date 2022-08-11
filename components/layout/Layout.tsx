@@ -13,7 +13,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
           {children}
         </div>
       </main>
-      <footer className="fixed bottom-0 left-0 w-full h-20">
+      {/* <footer className="fixed bottom-0 left-0 w-full h-20">
         <div className="container relative w-full h-full max-w-screen-xl px-4 mx-auto">
           <div className="relative w-48 h-full">
             <a
@@ -29,7 +29,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
             </a>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </>
   );
 };

@@ -13,7 +13,7 @@ export const InputWrapper: React.FC<InputWrapperProps> = ({
   return (
     <div
       className={cn(
-        "bg-[#00151c] w-full rounded-lg py-2 px-5 relative",
+        "bg-neutral w-full rounded-lg py-2 px-5 relative",
         className
       )}
       style={style}

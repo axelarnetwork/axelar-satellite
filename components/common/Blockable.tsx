@@ -11,7 +11,7 @@ export const Blockable: React.FC<PropsWithChildren> = (props) => {
 
   return (
     <div
-      className={cn("w-full", {
+      className={cn({
         "cursor-not-allowed opacity-75": isInactive,
       })}
     >

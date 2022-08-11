@@ -89,15 +89,18 @@ export const TopFlows = () => {
     <div className="dropdown dropdown-end">
       <label
         tabIndex={0}
-        className="px-3 py-1 rounded-lg border border-[#00a7ff] bg-[#003556] text-[#00a7ff] text-xs cursor-pointer"
+        className="px-3 py-1 rounded-lg border border-[#00a7ff] bg-[#003556] text-[#00a7ff] text-xs cursor-pointer font-semibold"
       >
         Top Flows
       </label>
       <ul
         tabIndex={0}
-        className="z-50 p-2 shadow dropdown-content menu bg-base-100 rounded-box w-52 top-8"
+        className="z-50 p-2 shadow gap-y-2 dropdown-content menu bg-neutral rounded-box w-52 top-8"
       >
-        <li onClick={handleOnFlow1}>
+        <li
+          onClick={handleOnFlow1}
+          className="border rounded-lg border-[#00b0f4]"
+        >
           <div className="flex">
             <Image
               src={`/assets/chains/avax.logo.svg`}
@@ -121,7 +124,10 @@ export const TopFlows = () => {
             />
           </div>
         </li>
-        <li onClick={handleOnFlow2}>
+        <li
+          onClick={handleOnFlow2}
+          className="border rounded-lg border-[#00b0f4]"
+        >
           <div className="flex">
             <Image
               src={`/assets/chains/osmo.logo.svg`}
@@ -145,7 +151,10 @@ export const TopFlows = () => {
             />
           </div>
         </li>
-        <li onClick={handleOnFlow3}>
+        <li
+          onClick={handleOnFlow3}
+          className="border rounded-lg border-[#00b0f4]"
+        >
           <div className="flex">
             <Image
               src={`/assets/chains/moonbeam.logo.svg`}

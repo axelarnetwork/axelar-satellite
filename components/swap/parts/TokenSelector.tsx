@@ -137,7 +137,7 @@ export const TokenSelector = () => {
         <div>
           {swapOrigin === SwapOrigin.APP && (
             <button
-              className="btn btn-neutral btn-xs"
+              className="btn btn-info btn-xs"
               onClick={handleOnMaxButtonClick}
             >
               Max
