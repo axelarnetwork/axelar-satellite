@@ -1,95 +1,25 @@
 import React from "react";
-import { useSwapStore, useWalletStore } from "../../store";
 import { Blockable, ConnectIndicator, InputWrapper } from "../common";
 import {
+  ActionButton,
   ChainSwapper,
-  ConnectButton,
   DestChainSelector,
-  GenerateDepositAddressButton,
-  OriginSwapper,
   SourceChainSelector,
+  SwapStates,
   TokenSelector,
 } from "./parts";
 
-import { SwapStatus } from "../../utils/enums";
-import {
-  GenDepositAddressState,
-  IdleState,
-  WaitDepositState,
-  WaitEvmConfirmationState,
-  ConfirmTransferState,
-  WaitCosmosConfirmationState,
-} from "./states";
 import { usePreventDuplicateChains } from "../../hooks";
 import { TopFlows } from "./parts/TopFlows";
 
 export const SwapBox = () => {
-  const { swapStatus, destChain, resetState } = useSwapStore((state) => state);
-  const walletConnected = useWalletStore((state) => state.walletConnected);
-
   usePreventDuplicateChains();
-
-  function renderStates() {
-    if (swapStatus === SwapStatus.IDLE) return <IdleState />;
-    if (swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS)
-      return <GenDepositAddressState />;
-    if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT) return <WaitDepositState />;
-    if (
-      swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION &&
-      destChain.chainInfo.module === "evm"
-    )
-      return <WaitEvmConfirmationState />;
-    if (
-      swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION &&
-      destChain.chainInfo.module === "axelarnet"
-    )
-      return <WaitCosmosConfirmationState />;
-    if (swapStatus === SwapStatus.FINISHED) return <ConfirmTransferState />;
-  }
-
-  function renderActionButton() {
-    if (!walletConnected) return <ConnectButton />;
-    if (swapStatus === SwapStatus.IDLE) return <GenerateDepositAddressButton />;
-    if (swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS)
-      return (
-        <button className="w-full btn btn-primary" disabled>
-          <div className="flex items-center gap-3">
-            <span>Processing...</span>
-          </div>
-        </button>
-      );
-    if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT)
-      return (
-        <button className="w-full btn btn-primary" disabled>
-          <div className="flex items-center gap-3">
-            <span>Waiting for deposit...</span>
-          </div>
-        </button>
-      );
-    if (swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION)
-      return (
-        <button className="w-full btn btn-primary" disabled>
-          <div className="flex items-center gap-3">
-            <span>Waiting for confirmation...</span>
-          </div>
-        </button>
-      );
-    if (swapStatus === SwapStatus.FINISHED)
-      return (
-        <button className="w-full btn btn-primary" onClick={resetState}>
-          <div className="flex items-center gap-3">
-            <span>Make another transfer?</span>
-          </div>
-        </button>
-      );
-  }
 
   return (
     <div className="bg-base-100 rounded-xl w-[500px] min-h-[500px] h-auto">
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
         <div className="relative flex justify-between mb-5 space-x-8">
           <ConnectIndicator />
-          {/* <button className="btn btn-xs btn-neutral">Top Flows</button> */}
           <Blockable>
             <TopFlows />
           </Blockable>
@@ -115,10 +45,10 @@ export const SwapBox = () => {
           <TokenSelector />
         </InputWrapper>
 
-        {renderStates()}
+        <SwapStates />
 
-        <div className="flex flex-col justify-end h-full pt-2">
-          {renderActionButton()}
+        <div className="pt-2">
+          <ActionButton />
         </div>
       </div>
     </div>

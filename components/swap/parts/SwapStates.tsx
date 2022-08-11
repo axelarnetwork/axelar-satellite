@@ -1,0 +1,32 @@
+import React from "react";
+import { useSwapStore } from "../../../store";
+import { SwapStatus } from "../../../utils/enums";
+import {
+  IdleState,
+  GenDepositAddressState,
+  WaitDepositState,
+  WaitEvmConfirmationState,
+  WaitCosmosConfirmationState,
+  ConfirmTransferState,
+} from "../states";
+
+export const SwapStates = () => {
+  const { swapStatus, destChain } = useSwapStore((state) => state);
+  if (swapStatus === SwapStatus.IDLE) return <IdleState />;
+  if (swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS)
+    return <GenDepositAddressState />;
+  if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT) return <WaitDepositState />;
+  if (
+    swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION &&
+    destChain.chainInfo.module === "evm"
+  )
+    return <WaitEvmConfirmationState />;
+  if (
+    swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION &&
+    destChain.chainInfo.module === "axelarnet"
+  )
+    return <WaitCosmosConfirmationState />;
+  if (swapStatus === SwapStatus.FINISHED) return <ConfirmTransferState />;
+
+  return null;
+};
