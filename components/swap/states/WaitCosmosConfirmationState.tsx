@@ -1,11 +1,6 @@
 import React from "react";
 import { SpinnerCircular } from "spinners-react";
-import { erc20ABI, useContractEvent } from "wagmi";
-import { ENVIRONMENT } from "../../../config/constants";
-import { getWagmiChains } from "../../../config/web3";
 import { useDetectDestTransferConfirmation } from "../../../hooks";
-import { useSwapStore } from "../../../store";
-import { SwapStatus } from "../../../utils/enums";
 import { InputWrapper } from "../../common";
 import { ProgressBar } from "./parts";
 
