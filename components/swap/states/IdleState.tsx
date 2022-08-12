@@ -10,13 +10,13 @@ export const IdleState = () => {
   function renderConnectAlert() {
     return (
       <div className="h-10 my-4">
-        <div className="text-sm rounded-lg bg-neutral alert bg-[#091928]">
+        <div className="text-sm rounded-lg bg-neutral alert">
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              className="flex-shrink-0 w-5 h-5 stroke-info"
+              className="flex-shrink-0 w-5 h-5 stroke-accent"
             >
               <path
                 strokeLinecap="round"
