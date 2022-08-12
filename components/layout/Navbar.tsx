@@ -17,7 +17,7 @@ export const Navbar = () => {
               <div className="ml-3 text-4xl font-bold">
                 Satellite <span className="text-lg font-light">(Beta)</span>
               </div>
-              <div className="flex justify-start ml-2">
+              <div className="flex justify-end -mr-3">
                 <img src="/assets/ui/powered.logo.svg" width={150} />
               </div>
             </div>
