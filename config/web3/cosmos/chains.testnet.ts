@@ -258,6 +258,46 @@ const crescent: ChainInfo = {
   features: ["ibc-transfer"],
 };
 
+const fetch: ChainInfo = {
+  rpc: "https://rpc-dorado.fetch.ai",
+  rest: "https://rest-dorado.fetch.ai",
+  chainId: "dorado-1",
+  chainName: "FetchHub Testnet",
+  bip44: {
+    coinType: 118,
+  },
+  bech32Config: Bech32Address.defaultBech32Config("fetch"),
+  currencies: [
+    {
+      coinDenom: "FET",
+      coinMinimalDenom: "atestfet",
+      coinDecimals: 18,
+      coinGeckoId: "fetch-ai",
+    },
+  ],
+  feeCurrencies: [
+    {
+      coinDenom: "FET",
+      coinMinimalDenom: "atestfet",
+      coinDecimals: 18,
+      coinGeckoId: "fetch-ai",
+    },
+  ],
+  stakeCurrency: {
+    coinDenom: "FET",
+    coinMinimalDenom: "atestfet",
+    coinDecimals: 18,
+    coinGeckoId: "fetch-ai",
+  },
+  coinType: 118,
+  gasPriceStep: {
+    low: 0,
+    average: 5000000000,
+    high: 6250000000,
+  },
+  features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
+};
+
 export const testnetChains = [
   terra,
   osmosis,
@@ -266,4 +306,5 @@ export const testnetChains = [
   sei,
   cosmos,
   crescent,
+  fetch,
 ];
