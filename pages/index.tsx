@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 
 import { Layout, VideoBackground } from "../components/layout";
 import { PageSEO } from "../components/seo";
@@ -18,7 +17,7 @@ const Home: NextPage = () => {
       <Layout>
         <VideoBackground />
         <div className="h-full grid grid-cols-1 pt-[30vh] md:grid-cols-2 justify-items-stretch">
-          {/* <PageHeader /> */}
+          <PageHeader />
           <div className="flex items-start justify-start">
             <SwapBox />
           </div>
