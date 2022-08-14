@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+import { useWalletStore } from "../../store";
 
 export const useHasKeplerWallet = () => {
+  const { walletConnected } = useWalletStore();
   const [hasWallet, setHasWallet] = useState(false);
 
   useEffect(() => {
-    const keplr = window.keplr;
+    if (!walletConnected) return;
+    const keplr = window?.keplr;
     setHasWallet(!!keplr);
-  }, [window.keplr]);
+  }, [walletConnected]);
 
   return hasWallet;
 };

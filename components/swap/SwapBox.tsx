@@ -18,7 +18,7 @@ export const SwapBox = () => {
   return (
     <div className="bg-base-100 rounded-xl w-[500px] min-h-[500px] h-auto">
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
-        <div className="relative flex justify-between mb-5 space-x-8">
+        <div className="relative flex justify-between mb-0 space-x-8">
           <ConnectIndicator />
           <Blockable>
             <TopFlows />
