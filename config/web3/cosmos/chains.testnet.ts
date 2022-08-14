@@ -2,11 +2,16 @@ import { ChainInfo } from "@keplr-wallet/types";
 import { Bech32Address } from "@keplr-wallet/cosmos";
 // import { allAssets } from "..";
 
-const terra: ChainInfo = {
+interface CosmosChain extends ChainInfo {
+  chainIdentifier: string;
+}
+
+const terra: CosmosChain = {
   rpc: "https://terra-bombay-rpc.axelar-dev.workers.dev",
   rest: "https://pisco-lcd.terra.dev",
   chainId: "pisco-1",
   chainName: "Terra",
+  chainIdentifier: "terra",
   stakeCurrency: {
     coinDenom: "LUNA",
     coinMinimalDenom: "uluna",
@@ -29,11 +34,12 @@ const terra: ChainInfo = {
   features: ["ibc-transfer"],
 };
 
-const osmosis: ChainInfo = {
+const osmosis: CosmosChain = {
   rpc: "https://testnet-rpc.osmosis.zone",
   rest: "https://testnet-rest.osmosis.zone",
   chainId: "osmo-test-4",
   chainName: "Osmosis Testnet",
+  chainIdentifier: "osmosis",
   stakeCurrency: {
     coinDenom: "OSMO",
     coinMinimalDenom: "uosmo",
@@ -80,9 +86,10 @@ const osmosis: ChainInfo = {
   features: ["ibc-transfer", "ibc-go"],
 };
 
-const kujira: ChainInfo = {
+const kujira: CosmosChain = {
   chainId: "harpoon-4",
   chainName: "Kujira Testnet",
+  chainIdentifier: "kujira",
   rpc: "https://rpc-harpoon.kujira.app",
   rest: "https://lcd-harpoon.kujira.app",
   bip44: { coinType: 118 },
@@ -120,11 +127,12 @@ const kujira: ChainInfo = {
   gasPriceStep: { low: 0.01, average: 0.025, high: 0.03 },
 };
 
-const axelar: ChainInfo = {
+const axelar: CosmosChain = {
   rpc: "https://axelar-testnet-rpc.axelar-dev.workers.dev",
   rest: "https://axelar-testnet-lcd.axelar-dev.workers.dev",
   chainId: "axelar-testnet-lisbon-3",
   chainName: "Axelar Lisbon 3",
+  chainIdentifier: "axelar",
   stakeCurrency: {
     coinDenom: "AXL",
     coinMinimalDenom: "uaxl",
@@ -143,9 +151,10 @@ const axelar: ChainInfo = {
   features: ["ibc-transfer"],
 };
 
-const sei: ChainInfo = {
+const sei: CosmosChain = {
   chainId: "atlantic-1",
   chainName: "SEI Testnet",
+  chainIdentifier: "sei",
   rpc: "https://rpc-sei-ia.notional.ventures",
   rest: "https://sei-testnet-api.polkachu.com",
   bip44: { coinType: 118 },
@@ -169,11 +178,12 @@ const sei: ChainInfo = {
   coinType: 118,
 };
 
-const cosmos: ChainInfo = {
+const cosmos: CosmosChain = {
   rpc: "https://vega-rpc.interchain.io",
   rest: "https://vega-rest.interchain.io",
   chainId: "vega-testnet",
   chainName: "Cosmos Testnet",
+  chainIdentifier: "cosmoshub",
   bip44: {
     coinType: 118,
   },
@@ -211,11 +221,12 @@ const cosmos: ChainInfo = {
   features: ["ibc-transfer", "ibc-go"],
 };
 
-const crescent: ChainInfo = {
+const crescent: CosmosChain = {
   rpc: "https://testnet-endpoint.crescent.network/rpc/crescent",
   rest: "https://testnet-endpoint.crescent.network/api/crescent",
   chainId: "mooncat-1-1",
   chainName: "Crescent Testnet",
+  chainIdentifier: "crescent",
   bip44: {
     coinType: 118,
   },
@@ -258,11 +269,12 @@ const crescent: ChainInfo = {
   features: ["ibc-transfer"],
 };
 
-const fetch: ChainInfo = {
+const fetch: CosmosChain = {
   rpc: "https://rpc-dorado.fetch.ai",
   rest: "https://rest-dorado.fetch.ai",
   chainId: "dorado-1",
   chainName: "FetchHub Testnet",
+  chainIdentifier: "fetch",
   bip44: {
     coinType: 118,
   },

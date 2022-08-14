@@ -70,9 +70,15 @@ export const CosmosWalletTransfer = () => {
   async function handleOnTokensTransfer() {
     if (!hasKeplerWallet) return;
 
-    const chainId = curateCosmosChainId(
-      srcChain.chainInfo.chainIdentifier[ENVIRONMENT]
+    const cosmosChains = getCosmosChains();
+    const chainIdentifier = srcChain.chainInfo.chainIdentifier[ENVIRONMENT];
+    const cosmosChain = cosmosChains.find(
+      (chain) => chain.chainIdentifier === chainIdentifier
     );
+    if (!cosmosChain?.chainId) return toast.error("Chain id not found");
+
+    const chainId = curateCosmosChainId(cosmosChain.chainId);
+
     const chain = getCosmosChains().find(
       (_chain) => _chain.chainId === chainId
     );
