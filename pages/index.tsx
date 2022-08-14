@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 
       <Layout>
         <VideoBackground />
-        <div className="h-full grid grid-cols-1 pt-[30vh] md:grid-cols-2 justify-items-stretch">
+        <div className="h-full grid grid-cols-1 pt-[25vh] md:grid-cols-2 justify-items-stretch">
           <PageHeader />
           <div className="flex items-start justify-start">
             <SwapBox />
