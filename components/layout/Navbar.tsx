@@ -25,9 +25,9 @@ export const Navbar = () => {
         </div>
         <div className="flex items-center ml-16">
           <div className="mt-5 space-x-4">
-            <button className="btn btn-xs">Getting started</button>
-            <button className="btn btn-xs">Support</button>
-            <button className="btn btn-xs">FAQ</button>
+            <button className="btn btn-sm">Getting started</button>
+            <button className="btn btn-sm">Support</button>
+            <button className="btn btn-sm">FAQ</button>
           </div>
         </div>
       </nav>
