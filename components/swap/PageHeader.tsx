@@ -12,7 +12,7 @@ export const PageHeader = () => {
       <h1 className="text-6xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#AECDFF] to-[#7BFEFF]">
         Satellite
       </h1>
-      <h2 className="mt-1 text-3xl font-bold">Powered by Axelar Network</h2>
+      {/* <h2 className="mt-1 text-3xl font-bold">Powered by Axelar Network</h2> */}
       <p className="mt-4">
         Satellite is a decentralized cross-chain asset transfer application,
         which enables users to transfer assets they hold on a source chain to an
@@ -32,9 +32,10 @@ export const PageHeader = () => {
             target="_blank"
             rel="noopener noreferrer nofollow"
           >
-            <span className="text-[#4CB4FF] uppercase">
-              Transaction History
-            </span>
+            <div className="text-[#4CB4FF] uppercase">
+              Transaction History{" "}
+              <span className="text-xs text-[#4CB4FF]">(Axelarscan)</span>
+            </div>
 
             <svg
               width="12"
