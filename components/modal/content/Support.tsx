@@ -1,8 +1,8 @@
 import { FC } from "react";
 import Image from "next/image";
-import { SUPPORT_MODAL } from "../../config/constants";
-import { useApplicationStateStore } from "../../store";
-import { Link } from "../common/GetLink";
+import { SUPPORT_MODAL } from "../../../config/constants";
+import { useApplicationStateStore } from "../../../store";
+import { Link } from "../../common/GetLink";
 
 type SupportProps = {};
 
@@ -20,7 +20,12 @@ export const Support: FC<SupportProps> = ({}) => {
         linkDescription: `Try this Deposit Recovery Tool to confirm your deposit transasction on the Axelar network.`,
       })}
       {Link({
-        url: "https://transaction-confirmation.axelar.dev",
+        url: `https://${process.env.NEXT_PUBLIC_ENVIRONMENT !== "mainnet" ? "testnet." : ""}axelarscan.io`,
+        linkTitle: "Transaction History",
+        linkDescription: `Search Axelarscan for any transactions you made through Satellite. You can search by sending, receiving, or deposit addresses.`,
+      })}
+      {Link({
+        url: "https://axelar.zendesk.com/hc/en-us/requests/new",
         linkTitle: "File A Ticket",
         linkDescription: `For general help, submit your questions/feedback via Zendesk. Any and all thoughts welcome!`,
       })}

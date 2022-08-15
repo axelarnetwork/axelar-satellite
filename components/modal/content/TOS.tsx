@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { TOS_MODAL } from "../../config/constants";
-import { useApplicationStateStore } from "../../store";
+import { TOS_MODAL } from "../../../config/constants";
+import { useApplicationStateStore } from "../../../store";
 
 type TOSProps = {};
 

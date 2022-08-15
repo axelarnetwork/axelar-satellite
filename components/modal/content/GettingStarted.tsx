@@ -3,10 +3,10 @@ import {
   docsLinks,
   GETTING_STARTED_MODAL,
   tokenContractDocs,
-} from "../../config/constants";
-import { useApplicationStateStore } from "../../store";
-import { toProperCase } from "../../utils/toProperCase";
-import { Link } from "../common/GetLink";
+} from "../../../config/constants";
+import { useApplicationStateStore } from "../../../store";
+import { toProperCase } from "../../../utils/toProperCase";
+import { Link } from "../../common/GetLink";
 
 type GettingStartedProps = {};
 

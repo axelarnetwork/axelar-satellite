@@ -32,7 +32,7 @@ export const Navbar = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center ml-16">
+        <div className="flex items-center">
           <div className="mt-5 space-x-4">
             <label
               htmlFor={GETTING_STARTED_MODAL}
