@@ -215,7 +215,25 @@ export const useSwapStore = create<SwapStore>()(
         false,
         "setTxInfo"
       ),
-    resetState: () => set(initialState, false, "resetState"),
+    resetState: () =>
+      set(
+        {
+          ...initialState,
+          allChains: get().allChains,
+          allAssets: get().allAssets,
+          srcChain: get().allChains.find(
+            (chain) => chain.chainName.toLowerCase() === "avalanche"
+          ),
+          destChain: get().allChains.find(
+            (chain) => chain.chainName.toLowerCase() === "moonbeam"
+          ),
+          asset: get().allAssets.find((asset) =>
+            asset?.common_key[ENVIRONMENT].includes("usdc")
+          ),
+        },
+        false,
+        "resetState"
+      ),
   }))
 );
 
