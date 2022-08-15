@@ -11,7 +11,7 @@ import {
 
 import { usePreventDuplicateChains } from "../../hooks";
 import { TopFlows } from "./parts/TopFlows";
-import { useInitialChainList } from "../../hooks/useInitialChainList";
+import { useInitialChainList } from "../../hooks";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
