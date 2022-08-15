@@ -5,7 +5,6 @@ import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 import { useSwapStore } from "../../../store";
 import { convertChainName } from "../../../utils/transformers";
-import { chain } from "lodash";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 

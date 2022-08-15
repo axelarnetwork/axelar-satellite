@@ -4,7 +4,6 @@ import { useSwapStore } from "../../../store";
 import { useOnClickOutside } from "usehooks-ts";
 import { convertChainName } from "../../../utils/transformers";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-import { chain } from "lodash";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -53,7 +52,7 @@ export const DestChainSelector = () => {
               <li key={chain.chainSymbol}>
                 <button onClick={() => setDestChain(chain)}>
                   <Image
-                    src={`/assets/chains/${chain.chainSymbol.toLowerCase()}.logo.svg`}
+                    src={`/assets/chains/${chain.chainName.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
                     width={35}
                     height={35}
