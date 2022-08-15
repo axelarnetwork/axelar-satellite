@@ -1,20 +1,19 @@
-import { Chain } from "@axelar-network/axelarjs-sdk";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useEffect, useState } from "react";
-import { allChains } from "../config/web3";
 import { useSwapStore } from "../store";
 
 export const usePreventDuplicateChains = () => {
-  const { srcChain, destChain, setSrcChain, setDestChain, setDestAddress } =
+  const { allChains, srcChain, destChain, setSrcChain, setDestChain, setDestAddress } =
     useSwapStore((state) => state);
-  const [originSrcChain, setOriginSrcChain] = useState<Chain>();
-  const [originDestChain, setOriginDestChain] = useState<Chain>();
+  const [originSrcChain, setOriginSrcChain] = useState<ChainInfo>();
+  const [originDestChain, setOriginDestChain] = useState<ChainInfo>();
 
   useEffect(() => {
-    if (srcChain.chainInfo.chainName === destChain.chainInfo.chainName)
+    if (srcChain?.chainName === destChain?.chainName)
       updateChains();
 
     // reset deposit address on chain module change
-    if (originDestChain?.chainInfo.module !== destChain.chainInfo.module) {
+    if (originDestChain?.module !== destChain?.module) {
       setDestAddress("");
     }
 
@@ -25,26 +24,27 @@ export const usePreventDuplicateChains = () => {
     const sourceChain = getChangeOrigin();
     if (sourceChain === "srcChain") {
       const newChain = allChains.find(
-        (chain) => chain.chainInfo.chainName !== srcChain.chainInfo.chainName
-      ) as Chain;
+        (chain) => chain?.chainName !== srcChain?.chainName
+      ) as ChainInfo;
       setSrcChain(newChain);
     } else if (sourceChain === "destChain") {
       const newChain = allChains.find(
-        (chain) => chain.chainInfo.chainName !== destChain.chainInfo.chainName
-      ) as Chain;
+        (chain) => chain?.chainName !== destChain?.chainName
+      ) as ChainInfo;
       setDestChain(newChain);
     }
   }
 
   function getChangeOrigin(): "srcChain" | "destChain" | null {
-    if (originSrcChain?.chainInfo?.chainName !== srcChain.chainInfo.chainName)
+    if (originSrcChain?.chainName !== srcChain?.chainName)
       return "srcChain";
-    if (originDestChain?.chainInfo?.chainName !== destChain.chainInfo.chainName)
+    if (originDestChain?.chainName !== destChain?.chainName)
       return "destChain";
     return null;
   }
 
   function updateCachedChains() {
+    if (!srcChain || !destChain) return;
     setOriginSrcChain(srcChain);
     setOriginDestChain(destChain);
   }

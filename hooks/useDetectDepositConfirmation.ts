@@ -29,7 +29,7 @@ export const useDetectDepositConfirmation = () => {
 
     // build socket room id
     const roomId = buildDepositConfirmationRoomId(
-      srcChain.chainInfo.module,
+      srcChain.module,
       depositAddress
     );
 

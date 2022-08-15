@@ -58,6 +58,7 @@ export const TokenSelector = () => {
   }
 
   function renderTokenInput() {
+    if (!srcChain) return null;
     return (
       <div className="text-end">
         <input
@@ -68,7 +69,7 @@ export const TokenSelector = () => {
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
         <div className="space-x-2">
-          {srcChain.chainInfo.module === "evm" && (
+          {srcChain.module === "evm" && (
             <>
               <span className="text-xs text-gray-500">Available</span>
               <span className="w-auto text-xs text-[#86d6ff]">{balance}</span>
@@ -80,7 +81,7 @@ export const TokenSelector = () => {
   }
 
   function renderAssetDropdown() {
-    if (!dropdownOpen) return null;
+    if (!dropdownOpen || !srcChain) return null;
 
     return (
       <div className="p-2 rounded-lg shadow dropdown-content menu bg-[#02141b] left-0 w-full h-64 overflow-auto">
@@ -111,7 +112,7 @@ export const TokenSelector = () => {
                   <span>
                     {
                       asset.chain_aliases[
-                        srcChain.chainInfo.chainName.toLowerCase()
+                        srcChain.chainName.toLowerCase()
                       ]?.assetName
                     }
                   </span>
@@ -125,12 +126,12 @@ export const TokenSelector = () => {
   }
 
   function renderAssetName() {
-    if (!asset) return "Select an asset";
-    return asset.chain_aliases[srcChain.chainInfo.chainName.toLowerCase()]
+    if (!asset || !srcChain) return "Select an asset";
+    return asset.chain_aliases[srcChain.chainName.toLowerCase()]
       ?.assetName;
   }
 
-  return (
+  return (asset ?
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
         <label className="block text-xs">I want to transfer</label>
@@ -178,5 +179,5 @@ export const TokenSelector = () => {
         {swapOrigin === SwapOrigin.APP && renderTokenInput()}
       </div>
     </div>
-  );
+  : null);
 };

@@ -23,8 +23,8 @@ export const GenerateDepositAddressButton = () => {
 
     setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
     await mutateAsync({
-      fromChain: srcChain.chainInfo.chainName,
-      toChain: destChain.chainInfo.chainName,
+      fromChain: srcChain.chainName,
+      toChain: destChain.chainName,
       asset: asset?.common_key[ENVIRONMENT],
       destAddress,
     })

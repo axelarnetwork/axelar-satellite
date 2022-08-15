@@ -18,13 +18,13 @@ export const WaitEvmConfirmationState = () => {
     setTxInfo,
   } = useSwapStore((state) => state);
 
-  const chainAlias = destChain.chainInfo.chainIdentifier[ENVIRONMENT];
+  const chainAlias = destChain.chainIdentifier[ENVIRONMENT];
   const tokenAddress = asset?.chain_aliases[chainAlias]?.tokenAddress;
 
   const destChainId = useSwapStore(getDestChainId);
 
   useContractEvent({
-    chainId: destChainId,
+    chainId: destChainId as number,
     addressOrName: tokenAddress as string,
     contractInterface: erc20ABI,
     eventName: "Transfer",
@@ -50,11 +50,11 @@ export const WaitEvmConfirmationState = () => {
         />
         <div className="flex flex-col text-center">
           <span className="text-sm">
-            Transfer on {srcChain.chainInfo.chainName} detected!
+            Transfer on {srcChain.chainName} detected!
           </span>
           <span className="text-xs font-light text-gray-200">
             Transfering your {asset?.common_key[ENVIRONMENT]} to{" "}
-            {destChain.chainInfo.chainName}...
+            {destChain.chainName}...
           </span>
         </div>
       </div>

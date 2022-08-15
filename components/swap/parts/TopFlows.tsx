@@ -1,8 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { allAssets, allChains } from "../../../config/web3";
 import { useSwapStore } from "../../../store";
-import { AssetConfig, Chain } from "@axelar-network/axelarjs-sdk";
+import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../../config/constants";
 
 const Arrow = () => (
@@ -34,16 +33,16 @@ const Arrow = () => (
 );
 
 export const TopFlows = () => {
-  const { setSrcChain, setDestChain, setAsset, selectableAssetList } =
+  const { setSrcChain, setDestChain, setAsset, selectableAssetList, allChains } =
     useSwapStore();
 
   function handleOnFlow1() {
     const avax = allChains.find((chain) =>
-      chain.chainInfo.chainName.toLowerCase().includes("avalanche")
-    ) as Chain;
+      chain.chainName.toLowerCase().includes("avalanche")
+    ) as ChainInfo;
     const moonbeam = allChains.find((chain) =>
-      chain.chainInfo.chainName.toLowerCase().includes("moonbeam")
-    ) as Chain;
+      chain.chainName.toLowerCase().includes("moonbeam")
+    ) as ChainInfo;
     const asset = selectableAssetList.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("uausdc")
     ) as AssetConfig;
@@ -55,11 +54,11 @@ export const TopFlows = () => {
 
   function handleOnFlow2() {
     const osmo = allChains.find((chain) =>
-      chain.chainInfo.chainName.toLowerCase().includes("osmosis")
-    ) as Chain;
+      chain.chainName.toLowerCase().includes("osmosis")
+    ) as ChainInfo;
     const moonbeam = allChains.find((chain) =>
-      chain.chainInfo.chainName.toLowerCase().includes("moonbeam")
-    ) as Chain;
+      chain.chainName.toLowerCase().includes("moonbeam")
+    ) as ChainInfo;
     const asset = selectableAssetList.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("uausdc")
     ) as AssetConfig;
@@ -71,11 +70,11 @@ export const TopFlows = () => {
 
   function handleOnFlow3() {
     const moonbeam = allChains.find((chain) =>
-      chain.chainInfo.chainName.toLowerCase().includes("moonbeam")
-    ) as Chain;
+      chain.chainName.toLowerCase().includes("moonbeam")
+    ) as ChainInfo;
     const osmo = allChains.find((chain) =>
-      chain.chainInfo.chainName.toLowerCase().includes("osmosis")
-    ) as Chain;
+      chain.chainName.toLowerCase().includes("osmosis")
+    ) as ChainInfo;
     const asset = selectableAssetList.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("uausdc")
     ) as AssetConfig;
@@ -103,7 +102,7 @@ export const TopFlows = () => {
         >
           <div className="flex">
             <Image
-              src={`/assets/chains/avax.logo.svg`}
+              src={`/assets/chains/avalanche.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -130,7 +129,7 @@ export const TopFlows = () => {
         >
           <div className="flex">
             <Image
-              src={`/assets/chains/osmo.logo.svg`}
+              src={`/assets/chains/osmosis.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -171,7 +170,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/chains/osmo.logo.svg`}
+              src={`/assets/chains/osmosis.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}

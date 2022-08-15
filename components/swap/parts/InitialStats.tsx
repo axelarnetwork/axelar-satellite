@@ -11,11 +11,14 @@ export const InitialStats = () => {
   const asset = useSwapStore((state) => state.asset);
 
   function renderWaitTime() {
-    if (srcChain.chainInfo.module === "axelarnet") return "~2 minutes";
+
+    if (!srcChain) return "";
+    
+    if (srcChain.module === "axelarnet") return "~2 minutes";
 
     if (
       ["ethereum", "polygon"].includes(
-        srcChain.chainInfo.chainName.toLowerCase()
+        srcChain.chainName.toLowerCase()
       )
     )
       return "~15 minutes";
@@ -24,8 +27,10 @@ export const InitialStats = () => {
   }
 
   function renderGasFee() {
-    const sourceChainName = srcChain.chainInfo.chainIdentifier[ENVIRONMENT];
-    const destChainName = destChain.chainInfo.chainIdentifier[ENVIRONMENT];
+    if (!srcChain || !destChain) return "";
+    
+    const sourceChainName = srcChain.chainIdentifier[ENVIRONMENT];
+    const destChainName = destChain.chainIdentifier[ENVIRONMENT];
 
     const sourceFee = asset?.chain_aliases[sourceChainName]?.minDepositAmt;
     const destFee = asset?.chain_aliases[destChainName]?.minDepositAmt;

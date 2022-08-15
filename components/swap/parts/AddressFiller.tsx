@@ -12,7 +12,7 @@ export const AddressFiller = () => {
   const setDestAddress = useSwapStore((state) => state.setDestAddress);
 
   const { destChain } = useSwapStore((state) => state);
-  const isEvm = destChain.chainInfo.module === "evm";
+  const isEvm = destChain?.module === "evm";
 
   const hasKeplerWallet = useHasKeplerWallet();
   const keplerWallet = useGetKeplerWallet();
@@ -24,7 +24,7 @@ export const AddressFiller = () => {
   async function fillCosmosDestinationAddress() {
     if (hasKeplerWallet) {
       const chainId = curateCosmosChainId(
-        destChain.chainInfo.chainIdentifier[ENVIRONMENT]
+        destChain?.chainIdentifier[ENVIRONMENT]
       );
       const chain = getCosmosChains().find(
         (_chain) => _chain.chainId === chainId
@@ -40,7 +40,7 @@ export const AddressFiller = () => {
   if (isEvm)
     return (
       <div
-        key={destChain.chainInfo.module}
+        key={destChain?.module}
         className="bg-gradient-to-b from-[#E8821E] to-[#F89C35] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
         onClick={fillEvmDestinationAddress}
       >
@@ -63,7 +63,7 @@ export const AddressFiller = () => {
 
   return (
     <div
-      key={destChain.chainInfo.module}
+      key={destChain?.module}
       className="bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
       onClick={fillCosmosDestinationAddress}
     >

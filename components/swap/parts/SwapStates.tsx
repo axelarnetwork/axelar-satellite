@@ -18,12 +18,12 @@ export const SwapStates = () => {
   if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT) return <WaitDepositState />;
   if (
     swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION &&
-    destChain.chainInfo.module === "evm"
+    destChain?.module === "evm"
   )
     return <WaitEvmConfirmationState />;
   if (
     swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION &&
-    destChain.chainInfo.module === "axelarnet"
+    destChain?.module === "axelarnet"
   )
     return <WaitCosmosConfirmationState />;
   if (swapStatus === SwapStatus.FINISHED) return <ConfirmTransferState />;

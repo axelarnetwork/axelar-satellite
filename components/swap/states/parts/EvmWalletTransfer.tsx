@@ -32,10 +32,10 @@ export const EvmWalletTransfer = () => {
   const { chains } = useNetwork();
 
   const srcChainId = chains.find(
-    (_chain) => _chain.network === srcChain.chainInfo.chainName.toLowerCase()
+    (_chain) => _chain.network === srcChain.chainName.toLowerCase()
   );
   const destChainId = chains.find(
-    (chain) => chain.network === destChain.chainInfo.chainName.toLowerCase()
+    (chain) => chain.network === destChain.chainName.toLowerCase()
   )?.id;
 
   const { writeAsync } = useContractWrite({
@@ -54,7 +54,7 @@ export const EvmWalletTransfer = () => {
 
   useEffect(() => {
     const assetCommonKey = asset?.common_key[ENVIRONMENT];
-    const assetData = srcChain.chainInfo.assets?.find(
+    const assetData = srcChain.assets?.find(
       (asset) => asset.common_key === assetCommonKey
     );
 
