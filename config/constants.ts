@@ -8,6 +8,7 @@ export const AXELARSCAN_URL = process.env.NEXT_PUBLIC_AXELARSCAN_URL as string;
 export const GETTING_STARTED_MODAL = "getting_started_modal";
 export const SUPPORT_MODAL = "support_modal";
 export const FAQ_MODAL = "faq_modal";
+export const TOS_MODAL = "tos_modal";
 
 export const tokenContractDocs: Record<string, string> = {
   local: "https://docs.axelar.dev/dev/build/contract-addresses/testnet",

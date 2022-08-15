@@ -1,6 +1,8 @@
 import { FC } from "react";
+import Image from "next/image";
 import { SUPPORT_MODAL } from "../../config/constants";
 import { useApplicationStateStore } from "../../store";
+import { Link } from "../common/GetLink";
 
 type SupportProps = {};
 
@@ -12,15 +14,72 @@ export const Support: FC<SupportProps> = ({}) => {
   return (
     <div>
       <h1 className="mb-10 text-3xl">Get Support</h1>
-      <p className="py-4">
-        You've been selected for a chance to get one year of subscription to use
-        Wikipedia for free!
-      </p>
+      {Link({
+        url: "https://transaction-confirmation.axelar.dev",
+        linkTitle: "Transaction Stuck?",
+        linkDescription: `Try this Deposit Recovery Tool to confirm your deposit transasction on the Axelar network.`,
+      })}
+      {Link({
+        url: "https://transaction-confirmation.axelar.dev",
+        linkTitle: "File A Ticket",
+        linkDescription: `For general help, submit your questions/feedback via Zendesk. Any and all thoughts welcome!`,
+      })}
+      {GetSocials()}
       <div className="modal-action">
         <label htmlFor={modalId} className="btn">
-          Yay!
+          Close
         </label>
       </div>
+    </div>
+  );
+};
+
+export const GetSocials = () => {
+  return (
+    <div className="flex items-center mb-5 space-x-2">
+      <div>
+        <div className="text-[#FFFFFF] uppercase mr-2">Join the community!</div>
+      </div>
+
+      <a
+        className="flex items-center ml-1 space-x-2"
+        href={"https://discord.com/invite/aRZ3Ra6f7D"}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+      >
+        <Image
+          layout="intrinsic"
+          width={25}
+          height={50}
+          src="/assets/ui/discord.svg"
+        />
+      </a>
+      <a
+        className="flex items-center ml-1 space-x-2"
+        href={"https://twitter.com/axl_satellite"}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+      >
+        <Image
+          layout="intrinsic"
+          width={25}
+          height={25}
+          src="/assets/ui/twitter.svg"
+        />
+      </a>
+      <a
+        className="flex items-center ml-1 space-x-2"
+        href={"https://www.linkedin.com/company/axelarnetwork/"}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+      >
+        <Image
+          layout="intrinsic"
+          width={25}
+          height={25}
+          src="/assets/ui/linkedin.svg"
+        />
+      </a>
     </div>
   );
 };

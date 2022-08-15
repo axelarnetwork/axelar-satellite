@@ -4,6 +4,7 @@ import {
   FAQ_MODAL,
   GETTING_STARTED_MODAL,
   SUPPORT_MODAL,
+  TOS_MODAL,
 } from "../../config/constants";
 import { useApplicationStateStore } from "../../store";
 
@@ -49,7 +50,7 @@ export const Navbar = () => {
                 setModalId(SUPPORT_MODAL);
               }}
             >
-              Support
+              Support & Feedback
             </label>
             <label
               htmlFor={FAQ_MODAL}
@@ -59,6 +60,15 @@ export const Navbar = () => {
               }}
             >
               FAQ
+            </label>
+            <label
+              htmlFor={TOS_MODAL}
+              className="btn modal-button"
+              onClick={() => {
+                setModalId(TOS_MODAL);
+              }}
+            >
+              Terms of Use
             </label>
           </div>
         </div>
