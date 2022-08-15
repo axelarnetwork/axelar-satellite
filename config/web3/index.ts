@@ -8,13 +8,13 @@ import { testnetChains as evmTestnetChains } from "./evm/chains.testnet";
 import { testnetChains as cosmosTestnetChains } from "./cosmos/chains.testnet";
 
 // sdk chains (generic)
-export const allAssets = loadAssets({
-  environment: ENVIRONMENT,
-});
+// export const allAssets = loadAssets({
+//   environment: ENVIRONMENT,
+// });
 
-export const allChains = loadChains({
-  environment: ENVIRONMENT,
-});
+// export const allChains = loadChains({
+//   environment: ENVIRONMENT,
+// });
 
 export const getWagmiChains = () => {
   if (ENVIRONMENT === Environment.TESTNET) return evmTestnetChains;

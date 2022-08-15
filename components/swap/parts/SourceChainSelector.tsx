@@ -1,30 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
-import { Chain } from "@axelar-network/axelarjs-sdk";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 import { useSwapStore } from "../../../store";
 import { convertChainName } from "../../../utils/transformers";
-import { allChains } from "../../../config/web3";
+import { chain } from "lodash";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
 export const SourceChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
-  const [filteredChains, setFilteredChains] = useState<Chain[]>(allChains);
+  const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { srcChain, setSrcChain } = useSwapStore((state) => state);
+  const { allChains, srcChain, setSrcChain } = useSwapStore((state) => state);
   const ref = useRef(null);
 
   useEffect(() => {
     if (!searchChainInput) return setFilteredChains(allChains);
 
     const chains = allChains.filter((chain) =>
-      chain.chainInfo.chainName.toLowerCase().includes(searchChainInput)
+      chain.chainName.toLowerCase().includes(searchChainInput)
     );
     setFilteredChains(chains);
-  }, [searchChainInput]);
+  }, [allChains, searchChainInput]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -50,10 +50,10 @@ export const SourceChainSelector = () => {
         <ul tabIndex={0} onClick={handleOnDropdownToggle}>
           {filteredChains.map((chain) => {
             return (
-              <li key={chain.chainInfo.chainSymbol}>
+              <li key={chain.chainSymbol}>
                 <button onClick={() => setSrcChain(chain)}>
                   <Image
-                    src={`/assets/chains/${chain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`}
+                    src={`/assets/chains/${chain.chainName.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
                     width={35}
                     height={35}
@@ -62,7 +62,7 @@ export const SourceChainSelector = () => {
                       e.currentTarget.srcset = defaultChainImg;
                     }}
                   />
-                  <span>{chain.chainInfo.chainName}</span>
+                  <span>{chain.chainName}</span>
                 </button>
               </li>
             );
@@ -72,14 +72,14 @@ export const SourceChainSelector = () => {
     );
   }
 
-  return (
+  return srcChain ? (
     <div ref={ref}>
       <label className="block text-xs">From</label>
       <div className="static mt-1 dropdown dropdown-open">
         <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
           <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
             <Image
-              src={`/assets/chains/${srcChain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`}
+              src={`/assets/chains/${srcChain.chainName.toLowerCase()}.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -88,7 +88,7 @@ export const SourceChainSelector = () => {
                 e.currentTarget.srcset = defaultChainImg;
               }}
             />
-            <span>{convertChainName(srcChain.chainInfo.chainName)}</span>
+            <span>{convertChainName(srcChain.chainName)}</span>
             <div className="flex items-center">
               <Image
                 src="/assets/ui/arrow-down.svg"
@@ -102,5 +102,5 @@ export const SourceChainSelector = () => {
         {renderChainDropdown()}
       </div>
     </div>
-  );
+  ) : null;
 };

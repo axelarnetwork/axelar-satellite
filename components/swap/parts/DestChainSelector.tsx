@@ -3,14 +3,15 @@ import Image from "next/image";
 import { useSwapStore } from "../../../store";
 import { useOnClickOutside } from "usehooks-ts";
 import { convertChainName } from "../../../utils/transformers";
-import { allChains } from "../../../config/web3";
-import { Chain } from "@axelar-network/axelarjs-sdk";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { chain } from "lodash";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
 export const DestChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
-  const [filteredChains, setFilteredChains] = useState<Chain[]>(allChains);
+  const { allChains, setAllChains } = useSwapStore();
+  const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { destChain, setDestChain } = useSwapStore((state) => state);
@@ -20,7 +21,7 @@ export const DestChainSelector = () => {
     if (!searchChainInput) return setFilteredChains(allChains);
 
     const chains = allChains.filter((chain) =>
-      chain.chainInfo.chainName.toLowerCase().includes(searchChainInput)
+      chain.chainName.toLowerCase().includes(searchChainInput)
     );
     setFilteredChains(chains);
   }, [searchChainInput]);
@@ -35,7 +36,7 @@ export const DestChainSelector = () => {
   }
 
   function renderChainDropdown() {
-    if (!dropdownOpen) return null;
+    if (!dropdownOpen || !chain) return null;
 
     return (
       <div className="p-2 rounded-lg shadow dropdown-content menu bg-[#02141b] left-0 w-full h-64 overflow-auto">
@@ -49,10 +50,10 @@ export const DestChainSelector = () => {
         <ul tabIndex={0} onClick={handleOnDropdownToggle}>
           {filteredChains.map((chain) => {
             return (
-              <li key={chain.chainInfo.chainSymbol}>
+              <li key={chain.chainSymbol}>
                 <button onClick={() => setDestChain(chain)}>
                   <Image
-                    src={`/assets/chains/${chain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`}
+                    src={`/assets/chains/${chain.chainSymbol.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
                     width={35}
                     height={35}
@@ -61,7 +62,7 @@ export const DestChainSelector = () => {
                       e.currentTarget.srcset = defaultChainImg;
                     }}
                   />
-                  <span>{chain.chainInfo.chainName}</span>
+                  <span>{chain.chainName}</span>
                 </button>
               </li>
             );
@@ -71,14 +72,14 @@ export const DestChainSelector = () => {
     );
   }
 
-  return (
+  return destChain ? (
     <div ref={ref}>
       <label className="block text-xs">To</label>
       <div className="static mt-1 dropdown dropdown-open">
         <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
           <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
             <Image
-              src={`/assets/chains/${destChain.chainInfo.chainSymbol.toLowerCase()}.logo.svg`}
+              src={`/assets/chains/${destChain.chainName.toLowerCase()}.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -87,7 +88,7 @@ export const DestChainSelector = () => {
                 e.currentTarget.srcset = defaultChainImg;
               }}
             />
-            <span>{convertChainName(destChain.chainInfo.chainName)}</span>
+            <span>{convertChainName(destChain.chainName)}</span>
             <div className="flex items-center">
               <Image
                 src="/assets/ui/arrow-down.svg"
@@ -101,5 +102,5 @@ export const DestChainSelector = () => {
         {renderChainDropdown()}
       </div>
     </div>
-  );
+  ) : null;
 };

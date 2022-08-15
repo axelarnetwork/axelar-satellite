@@ -11,9 +11,11 @@ import {
 
 import { usePreventDuplicateChains } from "../../hooks";
 import { TopFlows } from "./parts/TopFlows";
+import { useInitialChainList } from "../../hooks/useInitialChainList";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
+  useInitialChainList();
 
   return (
     <div className="bg-base-100 rounded-xl w-[500px] min-h-[500px] h-auto">

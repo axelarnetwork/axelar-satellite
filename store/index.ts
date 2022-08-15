@@ -1,40 +1,42 @@
-import { Chain, AssetConfig } from "@axelar-network/axelarjs-sdk";
+import { Chain, AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import memoize from "proxy-memoize";
 import create from "zustand";
 import { devtools } from "zustand/middleware";
 import { ENVIRONMENT } from "../config/constants";
-import { allChains, getWagmiChains } from "../config/web3";
+import { getWagmiChains } from "../config/web3";
 
 import { SwapOrigin, SwapStatus } from "../utils/enums";
 
 /**
  * COMPUTED VALUES
  */
-export const getSrcChainId = memoize((state: { srcChain: Chain }) => {
+export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
+  if (!state.srcChain) return null;
   const chains = getWagmiChains();
   const chain = chains.find(
     (_chain) =>
-      _chain.network === state.srcChain.chainInfo.chainIdentifier[ENVIRONMENT]
+      _chain.network === state.srcChain.chainIdentifier[ENVIRONMENT]
   );
   return chain?.id;
 });
 
-export const getDestChainId = memoize((state: { destChain: Chain }) => {
+export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
+  if (!state.destChain) return null;
   const chains = getWagmiChains();
   const chain = chains.find(
     (_chain) =>
-      _chain.network === state.destChain.chainInfo.chainIdentifier[ENVIRONMENT]
+      _chain.network === state.destChain.chainIdentifier[ENVIRONMENT]
   );
   return chain?.id;
 });
 
 export const getSrcTokenAddress = memoize(
-  (state: { srcChain: Chain; asset: AssetConfig | null }) => {
+  (state: { srcChain: ChainInfo; asset: AssetConfig | null }) => {
     if (!state.asset || !state.srcChain) return null;
     const srcChain = state.srcChain;
     const assetCommonKey = state.asset.common_key[ENVIRONMENT];
 
-    const assetInfo = srcChain.chainInfo.assets?.find(
+    const assetInfo = srcChain.assets?.find(
       (_asset) => _asset.common_key === assetCommonKey
     );
     return assetInfo?.tokenAddress || null;
@@ -48,8 +50,10 @@ interface TxInfo {
 }
 
 interface SwapState {
-  srcChain: Chain;
-  destChain: Chain;
+  allAssets: AssetConfig[];
+  allChains: ChainInfo[];
+  srcChain: ChainInfo | null;
+  destChain: ChainInfo | null;
   destAddress: string;
   selectableAssetList: AssetConfig[];
   asset: AssetConfig | null;
@@ -61,8 +65,10 @@ interface SwapState {
 }
 
 interface SwapStore extends SwapState {
-  setSrcChain: (chain: Chain) => void;
-  setDestChain: (chain: Chain) => void;
+  setAllAssets: (assets: AssetConfig[]) => void;
+  setAllChains: (chains: ChainInfo[]) => void;
+  setSrcChain: (chain: ChainInfo) => void;
+  setDestChain: (chain: ChainInfo) => void;
   setDestAddress: (address: string) => void;
   setAsset: (asset: AssetConfig | null) => void;
   setAssetList: (assets: AssetConfig[]) => void;
@@ -75,22 +81,15 @@ interface SwapStore extends SwapState {
   resetState: () => void;
 }
 
-// initial chains
-// TODO: probably need to add initial asset as well
-const avalancheChain = allChains.find(
-  (chain) => chain.chainInfo.chainSymbol === "AVAX"
-) as Chain;
-const moonbeamChain = allChains.find(
-  (chain) => chain.chainInfo.chainSymbol === "MOONBEAM"
-) as Chain;
-
 /**
  * We define an initial state for easy state reset if needed
  */
 const initialState: SwapState = {
+  allAssets: [],
+  allChains: [],
   selectableAssetList: [], // list of assets to select from
-  srcChain: avalancheChain,
-  destChain: moonbeamChain,
+  srcChain: null,
+  destChain: null,
   asset: null, // asset to transfer
   tokensToTransfer: "", // asset amount to transfer
   destAddress: "", // user owned account to transfer assets to
@@ -107,14 +106,33 @@ const initialState: SwapState = {
 export const useSwapStore = create<SwapStore>()(
   devtools((set, get) => ({
     ...initialState,
-    setSrcChain: (chain) =>
+    setAllAssets: (assets) => {
+      set(
+        {
+          allAssets: assets,
+        },
+        false,
+        "setAllAssets"
+      )
+    },
+    setAllChains: (chains) => {
+      set(
+        {
+          allChains: chains,
+        },
+        false,
+        "setAllChains"
+      )
+    },
+    setSrcChain: (chain) => {
       set(
         {
           srcChain: chain,
         },
         false,
         "setSrcChain"
-      ),
+      )
+    },
     setDestChain: (chain) =>
       set(
         {
