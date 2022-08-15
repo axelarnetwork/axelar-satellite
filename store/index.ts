@@ -11,7 +11,7 @@ import { SwapOrigin, SwapStatus } from "../utils/enums";
  * COMPUTED VALUES
  */
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
-  if (!state.srcChain) return null;
+  if (!state.srcChain) return undefined;
   const chains = getWagmiChains();
   const chain = chains.find(
     (_chain) => _chain.network === state.srcChain.chainIdentifier[ENVIRONMENT]
