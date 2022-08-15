@@ -262,3 +262,25 @@ export const useWalletStore = create<WalletStore>()(
       ),
   }))
 );
+
+interface ApplicationState {
+  modalId: string;
+}
+
+interface ApplicationStateStore extends ApplicationState {
+  setModalId: (state: string) => void;
+}
+
+export const useApplicationStateStore = create<ApplicationStateStore>()(
+  devtools((set, get) => ({
+    modalId: "",
+    setModalId: (state) =>
+      set(
+        {
+          modalId: state,
+        },
+        false,
+        "setModalId"
+      ),
+  }))
+);
