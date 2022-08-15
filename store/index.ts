@@ -11,7 +11,7 @@ import { SwapOrigin, SwapStatus } from "../utils/enums";
  * COMPUTED VALUES
  */
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
-  if (!state.srcChain) return null;
+  if (!state.srcChain) return undefined;
   const chains = getWagmiChains();
   const chain = chains.find(
     (_chain) => _chain.network === state.srcChain.chainIdentifier[ENVIRONMENT]
@@ -259,6 +259,28 @@ export const useWalletStore = create<WalletStore>()(
         },
         false,
         "setWalletConnected"
+      ),
+  }))
+);
+
+interface ApplicationState {
+  modalId: string;
+}
+
+interface ApplicationStateStore extends ApplicationState {
+  setModalId: (state: string) => void;
+}
+
+export const useApplicationStateStore = create<ApplicationStateStore>()(
+  devtools((set, get) => ({
+    modalId: "",
+    setModalId: (state) =>
+      set(
+        {
+          modalId: state,
+        },
+        false,
+        "setModalId"
       ),
   }))
 );
