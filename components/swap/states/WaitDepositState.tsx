@@ -16,7 +16,7 @@ export const WaitDepositState = () => {
       <div>
         <div>
           Please transfer <strong>{asset?.common_key[ENVIRONMENT]}</strong> on{" "}
-          {srcChain.chainInfo.chainName} to
+          {srcChain.chainName} to
         </div>
       </div>
     );
@@ -48,10 +48,8 @@ export const WaitDepositState = () => {
             {swapOrigin === SwapOrigin.APP && (
               <div>
                 <div className="w-48 mx-auto my-1 text-xs divider">OR USE</div>
-                {srcChain.chainInfo.module === "evm" && <EvmWalletTransfer />}
-                {srcChain.chainInfo.module === "axelarnet" && (
-                  <CosmosWalletTransfer />
-                )}
+                {srcChain.module === "evm" && <EvmWalletTransfer />}
+                {srcChain.module === "axelarnet" && <CosmosWalletTransfer />}
               </div>
             )}
           </div>

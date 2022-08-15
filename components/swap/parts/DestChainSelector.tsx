@@ -35,7 +35,7 @@ export const DestChainSelector = () => {
   }
 
   function renderChainDropdown() {
-    if (!dropdownOpen || !chain) return null;
+    if (!dropdownOpen) return null;
 
     return (
       <div className="p-2 rounded-lg shadow dropdown-content menu bg-[#02141b] left-0 w-full h-64 overflow-auto">
@@ -52,7 +52,7 @@ export const DestChainSelector = () => {
               <li key={chain.chainSymbol}>
                 <button onClick={() => setDestChain(chain)}>
                   <Image
-                    src={`/assets/chains/${chain.chainName.toLowerCase()}.logo.svg`}
+                    src={`/assets/chains/${chain?.chainName?.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
                     width={35}
                     height={35}
@@ -78,7 +78,7 @@ export const DestChainSelector = () => {
         <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
           <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
             <Image
-              src={`/assets/chains/${destChain.chainName.toLowerCase()}.logo.svg`}
+              src={`/assets/chains/${destChain?.chainName?.toLowerCase()}.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}

@@ -78,7 +78,7 @@ export const SourceChainSelector = () => {
         <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
           <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
             <Image
-              src={`/assets/chains/${srcChain.chainName.toLowerCase()}.logo.svg`}
+              src={`/assets/chains/${srcChain?.chainName?.toLowerCase()}.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
