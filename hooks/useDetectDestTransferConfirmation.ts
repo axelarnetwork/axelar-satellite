@@ -35,7 +35,7 @@ export const useDetectDestTransferConfirmation = () => {
       });
 
     const assetCommonKey = asset?.common_key[ENVIRONMENT];
-    const assetData = destChain.chainInfo.assets?.find(
+    const assetData = destChain.assets?.find(
       (asset) => asset.common_key === assetCommonKey
     );
 

@@ -47,7 +47,7 @@ export const CosmosWalletTransfer = () => {
 
   useEffect(() => {
     const assetCommonKey = asset?.common_key[ENVIRONMENT];
-    const assetData = srcChain.chainInfo.assets?.find(
+    const assetData = srcChain.assets?.find(
       (asset) => asset.common_key === assetCommonKey
     );
 
@@ -71,7 +71,7 @@ export const CosmosWalletTransfer = () => {
     if (!hasKeplerWallet) return;
 
     const cosmosChains = getCosmosChains();
-    const chainIdentifier = srcChain.chainInfo.chainIdentifier[ENVIRONMENT];
+    const chainIdentifier = srcChain.chainIdentifier[ENVIRONMENT];
     const cosmosChain = cosmosChains.find(
       (chain) => chain.chainIdentifier === chainIdentifier
     );

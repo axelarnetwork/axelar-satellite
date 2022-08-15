@@ -28,7 +28,7 @@ export const useListenForEvmTransfer = () => {
 
   useEffect(() => {
     if (!srcChain || !asset) return;
-    const chainAlias = srcChain?.chainInfo?.chainName?.toLowerCase();
+    const chainAlias = srcChain?.chainName?.toLowerCase();
     const tokenAddress = asset.chain_aliases[chainAlias]?.tokenAddress;
     setContractAddress(tokenAddress);
   }, [srcChain, asset]);

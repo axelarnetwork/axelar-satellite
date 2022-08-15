@@ -14,8 +14,7 @@ export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   if (!state.srcChain) return null;
   const chains = getWagmiChains();
   const chain = chains.find(
-    (_chain) =>
-      _chain.network === state.srcChain.chainIdentifier[ENVIRONMENT]
+    (_chain) => _chain.network === state.srcChain.chainIdentifier[ENVIRONMENT]
   );
   return chain?.id;
 });
@@ -24,8 +23,7 @@ export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
   if (!state.destChain) return null;
   const chains = getWagmiChains();
   const chain = chains.find(
-    (_chain) =>
-      _chain.network === state.destChain.chainIdentifier[ENVIRONMENT]
+    (_chain) => _chain.network === state.destChain.chainIdentifier[ENVIRONMENT]
   );
   return chain?.id;
 });
@@ -52,8 +50,8 @@ interface TxInfo {
 interface SwapState {
   allAssets: AssetConfig[];
   allChains: ChainInfo[];
-  srcChain: ChainInfo | null;
-  destChain: ChainInfo | null;
+  srcChain: ChainInfo;
+  destChain: ChainInfo;
   destAddress: string;
   selectableAssetList: AssetConfig[];
   asset: AssetConfig | null;
@@ -88,8 +86,8 @@ const initialState: SwapState = {
   allAssets: [],
   allChains: [],
   selectableAssetList: [], // list of assets to select from
-  srcChain: null,
-  destChain: null,
+  srcChain: {} as ChainInfo,
+  destChain: {} as ChainInfo,
   asset: null, // asset to transfer
   tokensToTransfer: "", // asset amount to transfer
   destAddress: "", // user owned account to transfer assets to
@@ -113,7 +111,7 @@ export const useSwapStore = create<SwapStore>()(
         },
         false,
         "setAllAssets"
-      )
+      );
     },
     setAllChains: (chains) => {
       set(
@@ -122,7 +120,7 @@ export const useSwapStore = create<SwapStore>()(
         },
         false,
         "setAllChains"
-      )
+      );
     },
     setSrcChain: (chain) => {
       set(
@@ -131,7 +129,7 @@ export const useSwapStore = create<SwapStore>()(
         },
         false,
         "setSrcChain"
-      )
+      );
     },
     setDestChain: (chain) =>
       set(

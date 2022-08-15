@@ -13,7 +13,11 @@ export const useInitialChainList = () => {
     useSwapStore();
 
   useEffect(() => {
-    loadChains({ environment }).then((chains) => {
+    Promise.all([loadInitialChains(), loadInitialAssets()]);
+  }, []);
+
+  function loadInitialChains() {
+    return loadChains({ environment }).then((chains) => {
       setAllChains(chains);
       setSrcChain(
         chains.find(
@@ -26,7 +30,10 @@ export const useInitialChainList = () => {
         ) as ChainInfo
       );
     });
-    loadAssets({ environment }).then((assets) => {
+  }
+
+  function loadInitialAssets() {
+    return loadAssets({ environment }).then((assets) => {
       setAllAssets(assets);
       setAsset(
         assets.find((asset) =>
@@ -34,5 +41,5 @@ export const useInitialChainList = () => {
         ) as AssetConfig
       );
     });
-  }, []);
+  }
 };
