@@ -87,7 +87,7 @@ export const DestChainSelector = () => {
                 e.currentTarget.srcset = defaultChainImg;
               }}
             />
-            <span>{convertChainName(destChain.chainName)}</span>
+            <span className="capitalize">{convertChainName(destChain.chainName)}</span>
             <div className="flex items-center">
               <Image
                 src="/assets/ui/arrow-down.svg"
