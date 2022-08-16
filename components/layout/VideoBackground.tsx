@@ -17,7 +17,7 @@ export const VideoBackground = () => {
       muted
       loop
       id="myVideo"
-      preload="metadata"
+      poster="/video/video-poster.png"
     >
       <source src="/video/bg.webm" type="video/webm" />
     </video>
