@@ -33,7 +33,7 @@ export const Navbar = () => {
           </div>
         </div>
         <div className="flex items-center">
-          <div className="mt-5 space-x-4">
+          <div className="flex flex-wrap gap-4 mt-5">
             <label
               htmlFor={GETTING_STARTED_MODAL}
               className="btn modal-button"
