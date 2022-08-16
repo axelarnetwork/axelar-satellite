@@ -61,7 +61,7 @@ export const SourceChainSelector = () => {
                       e.currentTarget.srcset = defaultChainImg;
                     }}
                   />
-                  <span>{chain.chainName}</span>
+                  <span className="capitalize">{chain?.chainName}</span>
                 </button>
               </li>
             );
@@ -87,7 +87,7 @@ export const SourceChainSelector = () => {
                 e.currentTarget.srcset = defaultChainImg;
               }}
             />
-            <span>{convertChainName(srcChain.chainName)}</span>
+            <span className="capitalize">{convertChainName(srcChain.chainName)}</span>
             <div className="flex items-center">
               <Image
                 src="/assets/ui/arrow-down.svg"

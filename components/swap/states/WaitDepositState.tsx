@@ -7,6 +7,7 @@ import { SwapOrigin } from "../../../utils/enums";
 import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
 import { copyToClipboard } from "../../../utils";
 import { EvmAssetWarning } from "../../modal/EvmAssetWarning";
+import { convertChainName } from "../../../utils/transformers";
 
 export const WaitDepositState = () => {
   const { asset, depositAddress, destAddress, swapOrigin, srcChain } =
@@ -16,8 +17,8 @@ export const WaitDepositState = () => {
     return (
       <div>
         <div>
-          Please transfer <strong>{asset?.common_key[ENVIRONMENT]}</strong> on{" "}
-          {srcChain.chainName} to
+          Please transfer <strong>{asset?.chain_aliases[srcChain.chainName].assetName}</strong> on{" "}
+          {convertChainName(srcChain.chainName)} to
         </div>
       </div>
     );
