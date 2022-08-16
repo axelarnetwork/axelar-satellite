@@ -1,14 +1,16 @@
 import { FC, useCallback, useEffect, useState } from "react";
+import { useAccount } from "wagmi";
 import { tokenContractDocs } from "../../config/constants";
+import { useGetAssetBalance } from "../../hooks";
 import { useSwapStore } from "../../store";
+import { truncateEthAddress } from "../../utils/truncateEthAddress";
 
 export const EvmAssetWarning: FC = () => {
-  const {
-    asset,
-    destChain,
-    resetState,
-    srcChain,
-  } = useSwapStore((state) => state);
+  const { asset, destChain, resetState, srcChain } = useSwapStore(
+    (state) => state
+  );
+  const { balance } = useGetAssetBalance();
+  const { address } = useAccount();
 
   const [showAssetWarning, setShowAssetWarning] = useState(false);
   const [userAcknowledged, setUserAcknowledged] = useState(false);
@@ -32,14 +34,49 @@ export const EvmAssetWarning: FC = () => {
       <div className="modal-box">
         {srcChain?.module === "evm" && (
           <div>
-            {" "}
-            Only send{" "}
-            <span className="font-bold">
-              {asset?.chain_aliases[srcChain.chainName.toLowerCase()].assetName}
-            </span>{" "}
-            to this deposit address on{" "}
-            <span className="capitalize">{srcChain.chainName}</span>. Any other
-            tokens sent to this address will be lost.
+            <div>
+              {" "}
+              Only send{" "}
+              <span className="font-bold">
+                {
+                  asset?.chain_aliases[srcChain.chainName.toLowerCase()]
+                    .assetName
+                }
+              </span>{" "}
+              to this deposit address on{" "}
+              <span className="capitalize">{srcChain.chainName}</span>. Any
+              other tokens sent to this address will be lost.
+            </div>
+
+            <div className="mt-2">
+              <div className="w-auto text-[#86d6ff]">
+                {
+                  asset?.chain_aliases[srcChain.chainName.toLowerCase()]
+                    .assetName
+                }{" "}
+                contract address on{" "}
+                <span className="capitalize text-[#86d6ff]">
+                  {srcChain.chainName}
+                </span>
+                :{" "}
+                {truncateEthAddress(
+                  asset?.chain_aliases[srcChain.chainName.toLowerCase()]
+                    .tokenAddress as string
+                )}
+              </div>
+            </div>
+
+            {address && balance && (
+              <div>
+                <span className="w-auto text-[#86d6ff]">
+                  Your balance ({truncateEthAddress(address)}): {balance}{" "}
+                  {
+                    asset?.chain_aliases[srcChain.chainName.toLowerCase()]
+                      .assetName
+                  }
+                </span>
+              </div>
+            )}
           </div>
         )}
 
@@ -67,7 +104,7 @@ export const EvmAssetWarning: FC = () => {
         )}
 
         <div className="mt-5">
-          The correct ERC20 token addresses can be verified{" "}
+          All ERC20 token addresses can be verified{" "}
           <a
             href={
               tokenContractDocs[process.env.NEXT_PUBLIC_ENVIRONMENT as string]
@@ -77,7 +114,8 @@ export const EvmAssetWarning: FC = () => {
             rel="noopener noreferrer nofollow"
           >
             here
-          </a>.
+          </a>
+          .
         </div>
 
         <div className="flex justify-center mt-5">
