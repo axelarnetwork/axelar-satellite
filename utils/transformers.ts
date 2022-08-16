@@ -1,5 +1,3 @@
-import { toProperCase } from "./toProperCase";
-
 /**
  * Converts long chain names into shorter onces
  */
@@ -8,6 +6,6 @@ export function convertChainName(chainName: string) {
     case "Cosmoshub":
       return "Cosmos";
     default:
-      return toProperCase(chainName);
+      return chainName;
   }
 }

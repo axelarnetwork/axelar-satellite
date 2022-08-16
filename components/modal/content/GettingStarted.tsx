@@ -5,7 +5,6 @@ import {
   tokenContractDocs,
 } from "../../../config/constants";
 import { useApplicationStateStore } from "../../../store";
-import { toProperCase } from "../../../utils/toProperCase";
 import { Link } from "../../common/GetLink";
 
 type GettingStartedProps = {};
@@ -30,9 +29,7 @@ export const GettingStarted: FC<GettingStartedProps> = ({}) => {
       })}
       {Link({
         url: tokenContractDocs[process.env.NEXT_PUBLIC_ENVIRONMENT as string],
-        linkTitle: `Token Contracts & Channel IDs (${toProperCase(
-          process.env.NEXT_PUBLIC_ENVIRONMENT as string
-        )})`,
+        linkTitle: `Token Contracts & Channel IDs (${process.env.NEXT_PUBLIC_ENVIRONMENT as string})`,
         linkDescription: `An IMPORTANT document with token contract addresses for all
         supported assets.`,
       })}

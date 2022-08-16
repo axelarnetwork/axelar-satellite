@@ -5,7 +5,6 @@ import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 import { useSwapStore } from "../../../store";
 import { convertChainName } from "../../../utils/transformers";
-import { toProperCase } from "../../../utils/toProperCase";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -62,7 +61,7 @@ export const SourceChainSelector = () => {
                       e.currentTarget.srcset = defaultChainImg;
                     }}
                   />
-                  <span>{toProperCase(chain?.chainName)}</span>
+                  <span className="capitalize">{chain?.chainName}</span>
                 </button>
               </li>
             );
@@ -88,7 +87,7 @@ export const SourceChainSelector = () => {
                 e.currentTarget.srcset = defaultChainImg;
               }}
             />
-            <span>{convertChainName(srcChain.chainName)}</span>
+            <span className="capitalize">{convertChainName(srcChain.chainName)}</span>
             <div className="flex items-center">
               <Image
                 src="/assets/ui/arrow-down.svg"
