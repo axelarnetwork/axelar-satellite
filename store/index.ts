@@ -7,14 +7,22 @@ import { getWagmiChains } from "../config/web3";
 
 import { SwapOrigin, SwapStatus } from "../utils/enums";
 
+const getWagmiChainOverride = (wagmiNetwork: string) => {
+  const map: Record<string, string> = {
+    "ropsten": "ethereum",
+  }
+  return map[wagmiNetwork] || wagmiNetwork;
+}
+
 /**
  * COMPUTED VALUES
  */
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   if (!state.srcChain) return undefined;
   const chains = getWagmiChains();
+  console.log("chains",chains);
   const chain = chains.find(
-    (_chain) => _chain.network === state.srcChain.chainIdentifier[ENVIRONMENT]
+    (_chain) => getWagmiChainOverride(_chain.network) === state.srcChain.chainIdentifier[ENVIRONMENT]
   );
   return chain?.id;
 });
@@ -23,7 +31,7 @@ export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
   if (!state.destChain) return null;
   const chains = getWagmiChains();
   const chain = chains.find(
-    (_chain) => _chain.network === state.destChain.chainIdentifier[ENVIRONMENT]
+    (_chain) => getWagmiChainOverride(_chain.network) === state.destChain.chainIdentifier[ENVIRONMENT]
   );
   return chain?.id;
 });
