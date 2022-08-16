@@ -1,7 +1,7 @@
 import React from "react";
 import { useAccount } from "wagmi";
 import { AXELARSCAN_URL } from "../../config/constants";
-import { useSwapStore, useWalletStore } from "../../store";
+import { useWalletStore } from "../../store";
 
 export const PageHeader = () => {
   const walletConnected = useWalletStore((state) => state.walletConnected);
@@ -13,16 +13,11 @@ export const PageHeader = () => {
         Satellite
       </h1>
       {/* <h2 className="mt-1 text-3xl font-bold">Powered by Axelar Network</h2> */}
-      <p className="mt-4">
+      <p className="mt-4 text-lg font-light">
         Satellite is a decentralized cross-chain asset transfer application,
         which enables users to transfer assets they hold on a source chain to an
         address on a different destination chain.
       </p>
-      {/* <div className="mt-5 space-x-4">
-        <button className="btn">Getting started</button>
-        <button className="btn">Support</button>
-        <button className="btn">FAQ</button>
-      </div> */}
 
       {walletConnected && (
         <div className="mt-5 font-bold">
