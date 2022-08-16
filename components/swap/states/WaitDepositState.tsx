@@ -6,6 +6,7 @@ import { AddressShortener, InputWrapper } from "../../common";
 import { SwapOrigin } from "../../../utils/enums";
 import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
 import { copyToClipboard } from "../../../utils";
+import { EvmAssetWarning } from "../../modal/EvmAssetWarning";
 
 export const WaitDepositState = () => {
   const { asset, depositAddress, destAddress, swapOrigin, srcChain } =
@@ -24,6 +25,7 @@ export const WaitDepositState = () => {
 
   return (
     <InputWrapper className="h-auto">
+      <EvmAssetWarning />
       <div className="h-full space-x-2">
         <div className="flex flex-col w-full h-full">
           <div className="h-full">
