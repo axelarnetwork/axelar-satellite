@@ -20,12 +20,12 @@ export const EvmAssetWarning: FC = () => {
     if (srcChain?.module === "evm") {
       setShowAssetWarning(true);
     }
-  }, [userAcknowledged]);
+  }, [destChain, setShowAssetWarning, srcChain, userAcknowledged]);
 
   const onConfirm = useCallback(() => {
     setUserAcknowledged(true);
     setShowAssetWarning(false);
-  }, [setShowAssetWarning, setUserAcknowledged, userAcknowledged]);
+  }, [setShowAssetWarning, setUserAcknowledged]);
 
   return (
     <div className={`modal modal-${showAssetWarning ? "open" : "close"}`}>
