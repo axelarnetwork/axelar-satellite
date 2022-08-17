@@ -33,8 +33,9 @@ export const useInitialChainList = () => {
   }
 
   function loadInitialAssets() {
-    return loadAssets({ environment }).then((assets) => {
+    return loadAssets({ environment }).then((assets: AssetConfig[]) => {
       setAllAssets(assets);
+
       setAsset(
         assets.find((asset) =>
           asset?.common_key[environment].includes("usdc")

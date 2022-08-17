@@ -4,6 +4,8 @@ export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
 export const SOCKET_API = process.env.NEXT_PUBLIC_SOCKET_API as string;
 
 export const AXELARSCAN_URL = process.env.NEXT_PUBLIC_AXELARSCAN_URL as string;
+export const RESERVED_ADDRESSES = process.env
+  .NEXT_PUBLIC_RESERVED_ADDRESSES as string;
 
 export const GETTING_STARTED_MODAL = "getting_started_modal";
 export const SUPPORT_MODAL = "support_modal";

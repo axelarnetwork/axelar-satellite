@@ -1,9 +1,9 @@
 import React from "react";
 import toast from "react-hot-toast";
 
-import { ENVIRONMENT } from "../../../config/constants";
+import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
 import { useGenerateDepositAddress } from "../../../hooks/api";
-import { useSwapStore } from "../../../store";
+import { getReservedAddresses, useSwapStore } from "../../../store";
 import { SwapStatus } from "../../../utils/enums";
 
 export const GenerateDepositAddressButton = () => {
@@ -15,11 +15,18 @@ export const GenerateDepositAddressButton = () => {
     setSwapStatus,
     setDepositAddress,
   } = useSwapStore((state) => state);
-  const { mutateAsync, data, isLoading } = useGenerateDepositAddress();
+  const { mutateAsync, isLoading } = useGenerateDepositAddress();
+
+  const reservedAddresses = useSwapStore(getReservedAddresses);
 
   async function handleOnGenerateDepositAddress() {
     if (!asset) return toast.error("Asset can't be empty");
     if (!destAddress) return toast.error("Destination address can't be empty");
+    if (
+      RESERVED_ADDRESSES?.includes(destAddress) ||
+      reservedAddresses.includes(destAddress)
+    )
+      return toast.error("Cannot send to this address");
 
     setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
     await mutateAsync({

@@ -49,6 +49,20 @@ export const getSrcTokenAddress = memoize(
   }
 );
 
+export const getReservedAddresses = memoize(
+  (state: { allAssets: AssetConfig[] }) => {
+    const addresses = state.allAssets?.reduce((a: string[], b: AssetConfig) => {
+      return [
+        ...a,
+        ...Object.values(b.chain_aliases)
+          .map((chain) => chain?.tokenAddress || "")
+          .filter((data) => data !== ""), // clean
+      ];
+    }, []);
+    return addresses;
+  }
+);
+
 interface TxInfo {
   sourceTxHash?: string;
   destTxHash?: string;
