@@ -3,7 +3,7 @@ import { Chain } from "wagmi";
 const ethereum: Chain = {
   id: 3,
   name: "Ropsten Testnet",
-  network: "ropsten",
+  network: "ethereum",
   nativeCurrency: {
     name: "Ether",
     symbol: "ETH",
