@@ -41,6 +41,20 @@ export const getSrcTokenAddress = memoize(
   }
 );
 
+export const getReservedAddresses = memoize(
+  (state: { allAssets: AssetConfig[] }) => {
+    const addresses = state.allAssets?.reduce((a: string[], b: AssetConfig) => {
+      return [
+        ...a,
+        ...Object.values(b.chain_aliases)
+          .map((chain) => chain?.tokenAddress || "")
+          .filter((data) => data !== ""), // clean
+      ];
+    }, []);
+    return addresses;
+  }
+);
+
 interface TxInfo {
   sourceTxHash?: string;
   destTxHash?: string;
@@ -54,7 +68,6 @@ interface SwapState {
   destChain: ChainInfo;
   destAddress: string;
   selectableAssetList: AssetConfig[];
-  reservedAddressesList: string[];
   asset: AssetConfig | null;
   swapStatus: SwapStatus;
   depositAddress: string;
@@ -71,7 +84,6 @@ interface SwapStore extends SwapState {
   setDestAddress: (address: string) => void;
   setAsset: (asset: AssetConfig | null) => void;
   setAssetList: (assets: AssetConfig[]) => void;
-  setReservedAddressesList: (assetTokenContracts: string[]) => void;
   switchChains: () => void;
   setSwapStatus: (newStatus: SwapStatus) => void;
   setDepositAddress: (address: string) => void;
@@ -88,7 +100,6 @@ const initialState: SwapState = {
   allAssets: [],
   allChains: [],
   selectableAssetList: [], // list of assets to select from
-  reservedAddressesList: [],
   srcChain: {} as ChainInfo,
   destChain: {} as ChainInfo,
   asset: null, // asset to transfer
@@ -123,15 +134,6 @@ export const useSwapStore = create<SwapStore>()(
         },
         false,
         "setAllChains"
-      );
-    },
-    setReservedAddressesList: (assetTokenContracts) => {
-      set(
-        {
-          reservedAddressesList: assetTokenContracts
-        },
-        false,
-        "setReservedAddressesList"
       );
     },
     setSrcChain: (chain) => {
@@ -242,7 +244,6 @@ export const useSwapStore = create<SwapStore>()(
           asset: get().allAssets.find((asset) =>
             asset?.common_key[ENVIRONMENT].includes("usdc")
           ),
-          reservedAddressesList: get().reservedAddressesList
         },
         false,
         "resetState"
