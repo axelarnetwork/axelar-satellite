@@ -3,10 +3,11 @@ import { useAccount } from "wagmi";
 import { tokenContractDocs } from "../../config/constants";
 import { useGetAssetBalance } from "../../hooks";
 import { useSwapStore } from "../../store";
+import { SwapStatus } from "../../utils/enums";
 import { truncateEthAddress } from "../../utils/truncateEthAddress";
 
-export const EvmAssetWarning: FC = () => {
-  const { asset, destChain, resetState, srcChain } = useSwapStore(
+export const EvmAssetWarningModal = () => {
+  const { asset, destChain, resetState, srcChain, swapStatus } = useSwapStore(
     (state) => state
   );
   const { balance } = useGetAssetBalance();
@@ -16,13 +17,13 @@ export const EvmAssetWarning: FC = () => {
   const [userAcknowledged, setUserAcknowledged] = useState(false);
 
   useEffect(() => {
-    if (userAcknowledged) return;
+    if (userAcknowledged || swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) return;
     if (![srcChain?.module, destChain?.module].includes("evm")) return;
 
     if (srcChain?.module === "evm") {
       setShowAssetWarning(true);
     }
-  }, [destChain, setShowAssetWarning, srcChain, userAcknowledged]);
+  }, [setShowAssetWarning, userAcknowledged, swapStatus]);
 
   const onConfirm = useCallback(() => {
     setUserAcknowledged(true);

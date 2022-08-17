@@ -6,7 +6,7 @@ import { AddressShortener, InputWrapper } from "../../common";
 import { SwapOrigin } from "../../../utils/enums";
 import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
 import { copyToClipboard } from "../../../utils";
-import { EvmAssetWarning } from "../../modal/EvmAssetWarning";
+
 import { convertChainName } from "../../../utils/transformers";
 
 export const WaitDepositState = () => {
@@ -17,8 +17,9 @@ export const WaitDepositState = () => {
     return (
       <div>
         <div>
-          Please transfer <strong>{asset?.chain_aliases[srcChain.chainName].assetName}</strong> on{" "}
-          {convertChainName(srcChain.chainName)} to
+          Please transfer{" "}
+          <strong>{asset?.chain_aliases[srcChain.chainName].assetName}</strong>{" "}
+          on {convertChainName(srcChain.chainName)} to
         </div>
       </div>
     );
@@ -26,7 +27,6 @@ export const WaitDepositState = () => {
 
   return (
     <InputWrapper className="h-auto">
-      <EvmAssetWarning />
       <div className="h-full space-x-2">
         <div className="flex flex-col w-full h-full">
           <div className="h-full">
