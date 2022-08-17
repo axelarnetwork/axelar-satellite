@@ -1,7 +1,7 @@
 import React from "react";
 import toast from "react-hot-toast";
 
-import { ENVIRONMENT } from "../../../config/constants";
+import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
 import { useGenerateDepositAddress } from "../../../hooks/api";
 import { getReservedAddresses, useSwapStore } from "../../../store";
 import { SwapStatus } from "../../../utils/enums";
@@ -23,7 +23,7 @@ export const GenerateDepositAddressButton = () => {
     if (!asset) return toast.error("Asset can't be empty");
     if (!destAddress) return toast.error("Destination address can't be empty");
     if (
-      process.env.NEXT_PUBLIC_RESERVED_ADDRESSES?.includes(destAddress) ||
+      RESERVED_ADDRESSES?.includes(destAddress) ||
       reservedAddresses.includes(destAddress)
     )
       return toast.error("Cannot send to this address");
