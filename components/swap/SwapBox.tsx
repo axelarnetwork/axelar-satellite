@@ -5,6 +5,7 @@ import {
   ChainSwapper,
   DestChainSelector,
   SourceChainSelector,
+  StopButton,
   SwapStates,
   TokenSelector,
 } from "./parts";
@@ -23,9 +24,12 @@ export const SwapBox = () => {
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
         <div className="relative flex justify-between mb-0 space-x-8">
           <ConnectIndicator />
-          <Blockable>
-            <TopFlows />
-          </Blockable>
+          <div className="flex gap-x-4">
+            <StopButton />
+            <Blockable>
+              <TopFlows />
+            </Blockable>
+          </div>
         </div>
 
         {/* <OriginSwapper /> */}
