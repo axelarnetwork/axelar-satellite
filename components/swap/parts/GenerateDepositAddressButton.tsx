@@ -12,6 +12,7 @@ export const GenerateDepositAddressButton = () => {
     destChain,
     destAddress,
     asset,
+    reservedAddressesList,
     setSwapStatus,
     setDepositAddress,
   } = useSwapStore((state) => state);
@@ -20,6 +21,11 @@ export const GenerateDepositAddressButton = () => {
   async function handleOnGenerateDepositAddress() {
     if (!asset) return toast.error("Asset can't be empty");
     if (!destAddress) return toast.error("Destination address can't be empty");
+    if (
+      process.env.NEXT_PUBLIC_RESERVED_ADDRESSES?.includes(destAddress) ||
+      reservedAddressesList.includes(destAddress)
+    )
+      return toast.error("Cannot send to this address");
 
     setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
     await mutateAsync({

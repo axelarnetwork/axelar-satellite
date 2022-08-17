@@ -9,8 +9,14 @@ import { ENVIRONMENT as environment } from "../config/constants";
 import { useSwapStore } from "../store";
 
 export const useInitialChainList = () => {
-  const { setAllChains, setSrcChain, setDestChain, setAllAssets, setAsset } =
-    useSwapStore();
+  const {
+    setAllChains,
+    setSrcChain,
+    setDestChain,
+    setAllAssets,
+    setAsset,
+    setReservedAddressesList,
+  } = useSwapStore();
 
   useEffect(() => {
     Promise.all([loadInitialChains(), loadInitialAssets()]);
@@ -35,6 +41,19 @@ export const useInitialChainList = () => {
   function loadInitialAssets() {
     return loadAssets({ environment }).then((assets) => {
       setAllAssets(assets);
+
+      /**get the list of token addresses from the assets json */
+      setReservedAddressesList(
+        Object.values(assets).reduce(
+          (a, b) => [
+            ...a,
+            ...(Object.values(b.chain_aliases).map(
+              (chain) => chain.tokenAddress
+            ) as string[]),
+          ],
+          [] as string[]
+        )
+      );
       setAsset(
         assets.find((asset) =>
           asset?.common_key[environment].includes("usdc")
