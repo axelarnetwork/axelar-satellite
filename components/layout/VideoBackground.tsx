@@ -19,7 +19,7 @@ export const VideoBackground = () => {
       id="myVideo"
       poster="/video/video-poster.png"
     >
-      <source src="/video/bg.webm" type="video/webm" />
+      <source src="/video/video.mp4" type="video/mp4" />
     </video>
   );
 };
