@@ -41,6 +41,10 @@ export const useDetectDepositConfirmation = () => {
       socketRef.current?.close();
       socketRef.current = undefined;
     });
+
+    return () => {
+      socketRef.current?.close();
+    };
   }, [asset, swapStatus, depositAddress]);
 
   function parseResponse(data: any) {

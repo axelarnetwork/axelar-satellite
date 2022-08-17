@@ -45,10 +45,6 @@ export const useDetectDestTransferConfirmation = () => {
       assetData?.common_key as string
     );
 
-    console.log({
-      roomId,
-    });
-
     // subscribe to socket room
     socketRef.current.emit("room:join", roomId);
 
@@ -57,6 +53,10 @@ export const useDetectDestTransferConfirmation = () => {
       socketRef.current?.close();
       socketRef.current = undefined;
     });
+
+    return () => {
+      socketRef.current?.close();
+    };
   }, [asset, swapStatus, depositAddress]);
 
   function parseResponse(data: any) {
