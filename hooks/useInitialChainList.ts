@@ -39,13 +39,13 @@ export const useInitialChainList = () => {
   }
 
   function loadInitialAssets() {
-    return loadAssets({ environment }).then((assets) => {
+    return loadAssets({ environment }).then((assets: AssetConfig[]) => {
       setAllAssets(assets);
 
       /**get the list of token addresses from the assets json */
       setReservedAddressesList(
-        Object.values(assets).reduce(
-          (a, b) => [
+        assets.reduce(
+          (a: string[], b: AssetConfig) => [
             ...a,
             ...(Object.values(b.chain_aliases).map(
               (chain) => chain.tokenAddress
