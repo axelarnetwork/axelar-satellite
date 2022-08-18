@@ -4,6 +4,7 @@ import { useSwapStore } from "../../../store";
 import { useOnClickOutside } from "usehooks-ts";
 import { convertChainName } from "../../../utils/transformers";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { useRouter } from "next/router";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -11,10 +12,21 @@ export const DestChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
   const { allChains, setAllChains } = useSwapStore();
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { destChain, setDestChain } = useSwapStore((state) => state);
   const ref = useRef(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const { destination } = router.query;
+    const destChainName: string = (destination as string)?.toLowerCase() || "";
+    if (destChainName) {
+      const chain = filteredChains.find(
+        (candidate) => candidate.chainName === destChainName
+      );
+      if (chain) setDestChain(chain);
+    }
+  }, [router, filteredChains]);
 
   useEffect(() => {
     if (!searchChainInput) return setFilteredChains(allChains);
@@ -50,7 +62,18 @@ export const DestChainSelector = () => {
           {filteredChains.map((chain) => {
             return (
               <li key={chain.chainSymbol}>
-                <button onClick={() => setDestChain(chain)}>
+                <button
+                  onClick={() => {
+                    setDestChain(chain);
+                    router.replace({
+                      pathname: router.pathname,
+                      query: {
+                        ...router.query,
+                        destination: chain.chainName.toLowerCase(),
+                      },
+                    });
+                  }}
+                >
                   <Image
                     src={`/assets/chains/${chain?.chainName?.toLowerCase()}.logo.svg`}
                     layout="intrinsic"

@@ -8,6 +8,7 @@ import { SwapOrigin } from "../../../utils/enums";
 import { useGetAssetBalance } from "../../../hooks";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { Blockable } from "../../common";
+import { useRouter } from "next/router";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -29,6 +30,27 @@ export const TokenSelector = () => {
 
   const { balance } = useGetAssetBalance();
   const ref = useRef(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    let { token, asset_denom } = router.query;
+    if (token && typeof token === "string") token === token.toLowerCase();
+    if (asset_denom && typeof asset_denom === "string") asset_denom === asset_denom.toLowerCase();
+    
+    let asset;
+
+    if (asset_denom) {
+      asset = selectableAssetList.find(
+        (candidate) => candidate.common_key[ENVIRONMENT] === asset_denom
+      );
+    } else if (token) {
+      asset = selectableAssetList.find(
+        (candidate) =>
+          candidate.chain_aliases[srcChain.chainName].assetSymbol === token
+      );
+    }
+    if (asset) setAsset(asset);
+  }, [router, selectableAssetList]);
 
   useEffect(() => {
     if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
@@ -96,7 +118,19 @@ export const TokenSelector = () => {
           {filteredAssets.map((asset) => {
             return (
               <li key={asset.common_key[ENVIRONMENT]}>
-                <button onClick={() => setAsset(asset)}>
+                <button
+                  onClick={() => {
+                    setAsset(asset);
+                    const { token, ...newQuery } = router.query;
+                    router.replace({
+                      pathname: router.pathname,
+                      query: {
+                        ...newQuery,
+                        asset_denom: asset.common_key[ENVIRONMENT],
+                      },
+                    });
+                  }}
+                >
                   <Image
                     src={`/assets/tokens/${asset.common_key[
                       ENVIRONMENT
@@ -111,9 +145,8 @@ export const TokenSelector = () => {
                   />
                   <span>
                     {
-                      asset.chain_aliases[
-                        srcChain.chainName.toLowerCase()
-                      ]?.assetName
+                      asset.chain_aliases[srcChain.chainName.toLowerCase()]
+                        ?.assetName
                     }
                   </span>
                 </button>
@@ -127,11 +160,10 @@ export const TokenSelector = () => {
 
   function renderAssetName() {
     if (!asset || !srcChain) return "Select an asset";
-    return asset.chain_aliases[srcChain.chainName.toLowerCase()]
-      ?.assetName;
+    return asset.chain_aliases[srcChain.chainName.toLowerCase()]?.assetName;
   }
 
-  return (asset ?
+  return asset ? (
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
         <label className="block text-xs">I want to transfer</label>
@@ -179,5 +211,5 @@ export const TokenSelector = () => {
         {swapOrigin === SwapOrigin.APP && renderTokenInput()}
       </div>
     </div>
-  : null);
+  ) : null;
 };
