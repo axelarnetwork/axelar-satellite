@@ -47,7 +47,7 @@ export const Navbar = () => {
               setModalId(SUPPORT_MODAL);
             }}
           >
-            Support & Feedback
+            Support
           </label>
           <label
             htmlFor={FAQ_MODAL}
