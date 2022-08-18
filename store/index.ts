@@ -20,7 +20,6 @@ const getWagmiChainOverride = (wagmiNetwork: string) => {
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   if (!state.srcChain) return undefined;
   const chains = getWagmiChains();
-  console.log("chains",chains);
   const chain = chains.find(
     (_chain) => getWagmiChainOverride(_chain.network) === state.srcChain.chainIdentifier[ENVIRONMENT]
   );
