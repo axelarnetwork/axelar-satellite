@@ -1,4 +1,5 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import { useSwapStore, useWalletStore } from "../../../store";
 import { InputWrapper } from "../../common";
 import { AddressFiller, InitialStats } from "../parts";
@@ -6,6 +7,14 @@ import { AddressFiller, InitialStats } from "../parts";
 export const IdleState = () => {
   const { destAddress, setDestAddress } = useSwapStore((state) => state);
   const walletConnected = useWalletStore((state) => state.walletConnected);
+  const router = useRouter();
+
+  useEffect(() => {
+    const { destination_address } = router.query;
+    if (destination_address && typeof destination_address === 'string') {
+      setTimeout(() => setDestAddress(destination_address), 0); //hack: this won't automatically set for some reason without the setTimeout
+    }
+  }, []);
 
   function renderConnectAlert() {
     return (
@@ -41,7 +50,16 @@ export const IdleState = () => {
               className="w-full h-full text-xs bg-transparent outline-none"
               placeholder="Destination address"
               value={destAddress}
-              onChange={(e) => setDestAddress(e.target.value)}
+              onChange={(e) => {
+                setDestAddress(e.target.value);
+                router.replace({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    destination_address: e.target.value
+                  },
+                });
+              }}
             />
           </div>
         </InputWrapper>
