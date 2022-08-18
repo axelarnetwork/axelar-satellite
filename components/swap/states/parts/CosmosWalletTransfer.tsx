@@ -72,13 +72,9 @@ export const CosmosWalletTransfer = () => {
 
     const cosmosChains = getCosmosChains();
     const chainIdentifier = srcChain.chainName.toLowerCase();
-    console.log({ chainIdentifier });
     const cosmosChain = cosmosChains.find(
       (chain) => chain.chainIdentifier === chainIdentifier
     );
-    console.log({
-      cosmosChain,
-    });
     if (!cosmosChain?.chainId) return toast.error("Chain id not found");
 
     const chainId = curateCosmosChainId(cosmosChain.chainId);
