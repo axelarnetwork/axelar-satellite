@@ -9,10 +9,10 @@ import { SwapOrigin, SwapStatus } from "../utils/enums";
 
 const getWagmiChainOverride = (wagmiNetwork: string) => {
   const map: Record<string, string> = {
-    "ropsten": "ethereum",
-  }
+    ropsten: "ethereum",
+  };
   return map[wagmiNetwork] || wagmiNetwork;
-}
+};
 
 /**
  * COMPUTED VALUES
@@ -20,9 +20,10 @@ const getWagmiChainOverride = (wagmiNetwork: string) => {
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   if (!state.srcChain) return undefined;
   const chains = getWagmiChains();
-  console.log("chains",chains);
   const chain = chains.find(
-    (_chain) => getWagmiChainOverride(_chain.network) === state.srcChain.chainIdentifier[ENVIRONMENT]
+    (_chain) =>
+      getWagmiChainOverride(_chain.network) ===
+      state.srcChain.chainIdentifier[ENVIRONMENT]
   );
   return chain?.id;
 });
@@ -31,7 +32,9 @@ export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
   if (!state.destChain) return null;
   const chains = getWagmiChains();
   const chain = chains.find(
-    (_chain) => getWagmiChainOverride(_chain.network) === state.destChain.chainIdentifier[ENVIRONMENT]
+    (_chain) =>
+      getWagmiChainOverride(_chain.network) ===
+      state.destChain.chainIdentifier[ENVIRONMENT]
   );
   return chain?.id;
 });
