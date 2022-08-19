@@ -1,4 +1,5 @@
 import { formatUnits } from "ethers/lib/utils";
+import { ethers } from "ethers"
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
 import { useAccount, useContractRead, erc20ABI } from "wagmi";
