@@ -1,4 +1,5 @@
-import { ethers } from "ethers";
+import { formatUnits } from "ethers/lib/utils";
+import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
 import { useAccount, useContractRead, erc20ABI } from "wagmi";
 import { BigNumber } from "bignumber.js";
@@ -61,22 +62,21 @@ export const useGetAssetBalance = () => {
     );
     if (!fullChainConfig)
       throw new Error("chain config not found: " + srcChain.chainName);
-    debugger;
 
-    queryBalance(
-      await getAddress(fullChainConfig),
-      derivedDenom,
-      fullChainConfig.rpc
-    )
-      .then((res) => {
-        const balance =
-          ethers.utils.formatUnits(res?.amount as string, decimals) || "0";
-        setBalance(balance);
-      })
-      .catch((e) => {
-        setBalance("0");
-        throw new Error("chain config not found: " + srcChain.chainName);
-      });
+    try {
+      const res = await queryBalance(
+        await getAddress(fullChainConfig),
+        derivedDenom,
+        fullChainConfig.rpc
+      );
+      const balance = formatUnits(res?.amount as string, decimals) || "0";
+      setBalance(balance);
+    } catch (e) {
+      setBalance("0");
+      const msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
+      toast.error(msg);
+      throw new Error(msg);
+    }
   }, [asset, srcChain, allAssets]);
 
   return {
