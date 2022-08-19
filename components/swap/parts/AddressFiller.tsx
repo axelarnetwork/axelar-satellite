@@ -9,7 +9,7 @@ import { getCosmosChains } from "../../../config/web3";
 
 export const AddressFiller = () => {
   const { address } = useAccount();
-  const setDestAddress = useSwapStore((state) => state.setDestAddress);
+  const { allAssets, setDestAddress } = useSwapStore((state) => state);
   const { connect, connectors } = useConnect();
   const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
 
@@ -30,7 +30,7 @@ export const AddressFiller = () => {
 
   async function fillCosmosDestinationAddress() {
     if (hasKeplerWallet) {
-      const chain = getCosmosChains().find(
+      const chain = getCosmosChains(allAssets).find(
         (_chain) => _chain.chainIdentifier === destChain.chainName
       );
       if (!chain) return;

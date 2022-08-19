@@ -9,7 +9,11 @@ import {
   useWalletStore,
 } from "../store";
 import { ENVIRONMENT } from "../config/constants";
-import { getAddress, getSigningClient } from "../utils/wallet/keplr";
+import {
+  getAddress,
+  getSigningClient,
+  queryBalance,
+} from "../utils/wallet/keplr";
 import { getCosmosChains } from "../config/web3";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 
@@ -46,12 +50,6 @@ export const useGetAssetBalance = () => {
     setBalance(num.toFixed());
   }, [srcChainId, srcTokenAddress, data, isSuccess]);
 
-  useEffect(() => {
-    if (srcChain?.module !== "axelarnet") return;
-    if (!isKeplrConnected) return;
-    setKeplrBalance().then((balance) => setBalance(balance));
-  }, [srcChainId, srcTokenAddress, data, isSuccess]);
-
   const setKeplrBalance = useCallback(async (): Promise<string> => {
     if (!asset) return "";
     if (!srcChain) return "";
@@ -65,26 +63,31 @@ export const useGetAssetBalance = () => {
     )?.chain_aliases[chainName.toLowerCase()]?.ibcDenom;
     if (!derivedDenom) throw new Error("asset not found: " + common_key);
 
-    const fullChainConfig = getCosmosChains().find(
+    const cosmosChains = getCosmosChains(allAssets);
+
+    const fullChainConfig = cosmosChains.find(
       (chainConfig) =>
         chainConfig.chainIdentifier.toLowerCase() ===
         srcChain.chainName.toLowerCase()
     );
     if (!fullChainConfig)
       throw new Error("chain config not found: " + srcChain.chainName);
+    debugger;
 
-    const cosmjs = await getSigningClient(
-      fullChainConfig?.chainId as string,
-      fullChainConfig?.rpc as string
+    const balance = await queryBalance(
+      await getAddress(fullChainConfig),
+      derivedDenom,
+      fullChainConfig.rpc
     );
 
-    const balanceResponse: Coin = await cosmjs.getBalance(
-      await getAddress(fullChainConfig?.chainId as string),
-      derivedDenom
-    );
+    return ethers.utils.formatUnits(balance?.amount as string, decimals) || "0";
+  }, [asset, srcChain, allAssets]);
 
-    return ethers.utils.formatUnits(balanceResponse.amount, decimals) || "0";
-  }, []);
+  useEffect(() => {
+    if (srcChain?.module !== "axelarnet") return;
+    if (!isKeplrConnected) return;
+    setKeplrBalance().then((balance) => setBalance(balance));
+  }, [srcChain, isKeplrConnected, setKeplrBalance, setBalance]);
 
   return {
     balance,
