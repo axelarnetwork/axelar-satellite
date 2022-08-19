@@ -30,16 +30,13 @@ export const AddressFiller = () => {
 
   async function fillCosmosDestinationAddress() {
     if (hasKeplerWallet) {
-      const chainId = curateCosmosChainId(
-        destChain?.chainIdentifier[ENVIRONMENT]
-      );
       const chain = getCosmosChains().find(
-        (_chain) => _chain.chainId === chainId
+        (_chain) => _chain.chainIdentifier === destChain.chainName
       );
       if (!chain) return;
       await keplerWallet?.experimentalSuggestChain(chain);
-      await keplerWallet?.enable(chainId as string);
-      const address = await keplerWallet?.getKey(chainId as string);
+      await keplerWallet?.enable(chain.chainId as string);
+      const address = await keplerWallet?.getKey(chain.chainId as string);
       setDestAddress(address?.bech32Address as string);
     }
   }
@@ -49,7 +46,9 @@ export const AddressFiller = () => {
       <div
         key={destChain?.module}
         className="bg-gradient-to-b from-[#E8821E] to-[#F89C35] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
-        onClick={wagmiConnected ? fillEvmDestinationAddress : handleMetamaskConnect}
+        onClick={
+          wagmiConnected ? fillEvmDestinationAddress : handleMetamaskConnect
+        }
       >
         <div className="flex justify-between items-center h-full w-full bg-[#291e14] rounded-lg p-3">
           <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#E8821E] to-[#F89C35]">

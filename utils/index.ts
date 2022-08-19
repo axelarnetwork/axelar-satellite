@@ -47,6 +47,8 @@ function mapCosmosTestnetChains(chainId: string) {
       return "atlantic-1";
     case "crescent":
       return "mooncat-1-1";
+    case "axelarnet":
+      return "axelar-testnet-lisbon-3";
     default:
       return chainId;
   }
