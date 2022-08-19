@@ -11,11 +11,9 @@ import {
 import { ENVIRONMENT } from "../config/constants";
 import {
   getAddress,
-  getSigningClient,
   queryBalance,
 } from "../utils/wallet/keplr";
 import { getCosmosChains } from "../config/web3";
-import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
@@ -50,9 +48,9 @@ export const useGetAssetBalance = () => {
     setBalance(num.toFixed());
   }, [srcChainId, srcTokenAddress, data, isSuccess]);
 
-  const setKeplrBalance = useCallback(async (): Promise<string> => {
-    if (!asset) return "";
-    if (!srcChain) return "";
+  const setKeplrBalance = useCallback(async (): Promise<void> => {
+    if (!asset) return;
+    if (!srcChain) return;
 
     const { decimals, common_key } = asset;
     const { chainName } = srcChain;
@@ -74,22 +72,19 @@ export const useGetAssetBalance = () => {
       throw new Error("chain config not found: " + srcChain.chainName);
     debugger;
 
-    const balance = await queryBalance(
+    const responseBody = await queryBalance(
       await getAddress(fullChainConfig),
       derivedDenom,
       fullChainConfig.rpc
     );
+    const balance =
+      ethers.utils.formatUnits(responseBody?.amount as string, decimals) || "0";
 
-    return ethers.utils.formatUnits(balance?.amount as string, decimals) || "0";
+    setBalance(balance);
   }, [asset, srcChain, allAssets]);
-
-  useEffect(() => {
-    if (srcChain?.module !== "axelarnet") return;
-    if (!isKeplrConnected) return;
-    setKeplrBalance().then((balance) => setBalance(balance));
-  }, [srcChain, isKeplrConnected, setKeplrBalance, setBalance]);
 
   return {
     balance,
+    setKeplrBalance,
   };
 };

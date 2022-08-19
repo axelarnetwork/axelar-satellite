@@ -27,7 +27,7 @@ export const TokenSelector = () => {
   const [filteredAssets, setFilteredAssets] =
     useState<AssetConfig[]>(selectableAssetList);
 
-  const { balance } = useGetAssetBalance();
+  const { balance, setKeplrBalance } = useGetAssetBalance();
   const ref = useRef(null);
 
   useEffect(() => {
@@ -43,6 +43,11 @@ export const TokenSelector = () => {
   useEffect(() => {
     setFilteredAssets(selectableAssetList);
   }, [selectableAssetList]);
+
+  // update asset balance from useGetAssetBalance hook if srcChain or asset changes
+  useEffect(() => {
+    if (srcChain?.module === "axelarnet") setKeplrBalance();
+  }, [asset, srcChain]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
