@@ -1,6 +1,7 @@
 import { Chain, AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import memoize from "proxy-memoize";
-import create from "zustand";
+import create, { createStore } from "zustand";
+import { persist } from "zustand/middleware";
 import { devtools } from "zustand/middleware";
 import { ENVIRONMENT } from "../config/constants";
 import { getWagmiChains } from "../config/web3";
@@ -267,25 +268,24 @@ export const useSwapStore = create<SwapStore>()(
  * TODO: move to another file
  */
 interface WalletState {
-  walletConnected: boolean;
+  wagmiConnected: boolean;
+  keplrConnected: boolean;
 }
+const initialWalletState: WalletState = {
+  wagmiConnected: false,
+  keplrConnected: false,
+};
 
 interface WalletStore extends WalletState {
-  setWalletConnected: (state: boolean) => void;
+  setWagmiConnected: (state: boolean) => void;
+  setKeplrConnected: (state: boolean) => void;
 }
-
 export const useWalletStore = create<WalletStore>()(
-  devtools((set, get) => ({
-    walletConnected: false,
-    setWalletConnected: (state) =>
-      set(
-        {
-          walletConnected: state,
-        },
-        false,
-        "setWalletConnected"
-      ),
-  }))
+  persist((set, get) => ({
+    ...initialWalletState,
+    setWagmiConnected: (wagmiConnected) => set({ wagmiConnected }),
+    setKeplrConnected: (keplrConnected) => set({ keplrConnected }),
+  }), { name: "walletStore", })
 );
 
 interface ApplicationState {

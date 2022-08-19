@@ -5,9 +5,9 @@ import { useWalletStore } from "../../store";
 import { useHasKeplerWallet } from "../../hooks/kepler";
 
 export const ConnectIndicator = () => {
-  const { walletConnected } = useWalletStore();
+  const { wagmiConnected, keplrConnected } = useWalletStore();
 
-  if (walletConnected)
+  if ([keplrConnected, wagmiConnected].some((isActive) => isActive))
     return (
       <div>
         <span className="flex items-center">
@@ -23,11 +23,18 @@ export const ConnectIndicator = () => {
           </div>
         </span>
         <div className="flex pt-2 pl-4 gap-x-2">
-          {walletConnected && (
+          {wagmiConnected && (
             <Image
               height={20}
               width={20}
               src="/assets/wallets/metamask.logo.svg"
+            />
+          )}
+          {keplrConnected && (
+            <Image
+              height={15}
+              width={15}
+              src="/assets/wallets/kepler.logo.svg"
             />
           )}
         </div>

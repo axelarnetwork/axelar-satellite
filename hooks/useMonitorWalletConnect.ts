@@ -4,10 +4,10 @@ import { useWalletStore } from "../store";
 
 export const useMonitorWalletConnect = () => {
   const { isConnected } = useAccount();
-  const { setWalletConnected } = useWalletStore();
+  const { setWagmiConnected } = useWalletStore();
 
   useEffect(() => {
-    if (isConnected) setWalletConnected(true);
-    if (!isConnected) setWalletConnected(false);
+    if (isConnected) setWagmiConnected(true);
+    if (!isConnected) setWagmiConnected(false);
   }, [isConnected]);
 };

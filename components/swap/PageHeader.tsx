@@ -4,7 +4,7 @@ import { AXELARSCAN_URL } from "../../config/constants";
 import { useWalletStore } from "../../store";
 
 export const PageHeader = () => {
-  const walletConnected = useWalletStore((state) => state.walletConnected);
+  const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
   const { address } = useAccount();
 
   return (
@@ -19,7 +19,7 @@ export const PageHeader = () => {
         address on a different destination chain.
       </p>
 
-      {walletConnected && (
+      {wagmiConnected && (
         <div className="mt-5 font-bold">
           <a
             className="flex items-center space-x-2"

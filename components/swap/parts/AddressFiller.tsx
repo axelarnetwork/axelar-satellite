@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { useAccount } from "wagmi";
-import { useSwapStore } from "../../../store";
+import { useAccount, useConnect } from "wagmi";
+import { useSwapStore, useWalletStore } from "../../../store";
 import { useGetKeplerWallet, useHasKeplerWallet } from "../../../hooks";
 import { ENVIRONMENT } from "../../../config/constants";
 import { curateCosmosChainId } from "../../../utils";
@@ -10,6 +10,8 @@ import { getCosmosChains } from "../../../config/web3";
 export const AddressFiller = () => {
   const { address } = useAccount();
   const setDestAddress = useSwapStore((state) => state.setDestAddress);
+  const { connect, connectors } = useConnect();
+  const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
 
   const { destChain } = useSwapStore((state) => state);
   const isEvm = destChain?.module === "evm";
@@ -19,6 +21,11 @@ export const AddressFiller = () => {
 
   function fillEvmDestinationAddress() {
     if (address) setDestAddress(address);
+  }
+
+  function handleMetamaskConnect() {
+    const connector = connectors.find((c) => c.name === "MetaMask");
+    connect({ connector });
   }
 
   async function fillCosmosDestinationAddress() {
@@ -42,11 +49,11 @@ export const AddressFiller = () => {
       <div
         key={destChain?.module}
         className="bg-gradient-to-b from-[#E8821E] to-[#F89C35] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
-        onClick={fillEvmDestinationAddress}
+        onClick={wagmiConnected ? fillEvmDestinationAddress : handleMetamaskConnect}
       >
         <div className="flex justify-between items-center h-full w-full bg-[#291e14] rounded-lg p-3">
           <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#E8821E] to-[#F89C35]">
-            Autofill from
+            {wagmiConnected ? "Autofill from" : "Connect"}
           </div>
 
           <div className="relative flex items-center h-full">
