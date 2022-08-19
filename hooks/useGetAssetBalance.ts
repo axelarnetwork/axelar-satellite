@@ -18,7 +18,6 @@ import { getCosmosChains } from "../config/web3";
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
   const { asset, allAssets } = useSwapStore((state) => state);
-  const isKeplrConnected = useWalletStore((state) => state.keplrConnected);
 
   const srcChainId = useSwapStore(getSrcChainId);
   const srcChain = useSwapStore((state) => state?.srcChain);
