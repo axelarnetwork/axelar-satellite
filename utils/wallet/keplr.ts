@@ -26,7 +26,7 @@ export const connectChainId = async (chain: CosmosChain): Promise<void> => {
 
 export const getSigner = async (chain: CosmosChain): Promise<OfflineSigner> => {
   const { keplr } = window;
-  await connectChainId(chain);
+  // await connectChainId(chain);
   return (await keplr?.getOfflineSignerAuto(chain.chainId)) as OfflineSigner;
 };
 
