@@ -2,13 +2,14 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useConnect } from "wagmi";
 import toast from "react-hot-toast";
-import { useWalletStore } from "../../store";
+import { useSwapStore, useWalletStore } from "../../store";
 import { getCosmosChains } from "../../config/web3";
 import { CosmosChain } from "../../config/web3/cosmos/chains.testnet";
 import { OfflineSigner } from "@cosmjs/proto-signing";
 
 export const Web3Modal = () => {
   const { connect, connectors, error } = useConnect();
+  const allAssets = useSwapStore(state => state.allAssets);
   const modalRef = useRef<any>();
   const { setKeplrConnected, wagmiConnected } = useWalletStore(
     (state) => state
@@ -34,7 +35,7 @@ export const Web3Modal = () => {
 
   async function handleOnKeplrConnect() {
     const { keplr } = window;
-    const axelar: CosmosChain = getCosmosChains().find(
+    const axelar: CosmosChain = getCosmosChains(allAssets).find(
       (chain) => chain.chainIdentifier === "axelar"
     ) as CosmosChain;
     console.log("axlear chain id", axelar);
