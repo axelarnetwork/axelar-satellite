@@ -22,8 +22,8 @@ export const SwapBox = () => {
       <ModalWindow />
       <EvmAssetWarningModal />
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
-        <div className="relative flex justify-between mb-0 space-x-8">
-          <ConnectIndicator />
+        <div className="relative flex justify-end mb-0 space-x-8">
+          {/* <ConnectIndicator /> */}
           <div className="flex gap-x-4">
             <StopButton />
             <Blockable>
