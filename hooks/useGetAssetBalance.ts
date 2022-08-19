@@ -2,17 +2,9 @@ import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
 import { useAccount, useContractRead, erc20ABI } from "wagmi";
 import { BigNumber } from "bignumber.js";
-import {
-  getSrcChainId,
-  getSrcTokenAddress,
-  useSwapStore,
-  useWalletStore,
-} from "../store";
+import { getSrcChainId, getSrcTokenAddress, useSwapStore } from "../store";
 import { ENVIRONMENT } from "../config/constants";
-import {
-  getAddress,
-  queryBalance,
-} from "../utils/wallet/keplr";
+import { getAddress, queryBalance } from "../utils/wallet/keplr";
 import { getCosmosChains } from "../config/web3";
 
 export const useGetAssetBalance = () => {
@@ -71,15 +63,20 @@ export const useGetAssetBalance = () => {
       throw new Error("chain config not found: " + srcChain.chainName);
     debugger;
 
-    const responseBody = await queryBalance(
+    queryBalance(
       await getAddress(fullChainConfig),
       derivedDenom,
       fullChainConfig.rpc
-    );
-    const balance =
-      ethers.utils.formatUnits(responseBody?.amount as string, decimals) || "0";
-
-    setBalance(balance);
+    )
+      .then((res) => {
+        const balance =
+          ethers.utils.formatUnits(res?.amount as string, decimals) || "0";
+        setBalance(balance);
+      })
+      .catch((e) => {
+        setBalance("0");
+        throw new Error("chain config not found: " + srcChain.chainName);
+      });
   }, [asset, srcChain, allAssets]);
 
   return {
