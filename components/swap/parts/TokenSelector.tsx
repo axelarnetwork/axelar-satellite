@@ -68,14 +68,12 @@ export const TokenSelector = () => {
           placeholder="0"
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
-        <div className="space-x-2">
-          {srcChain.module === "evm" && (
-            <>
-              <span className="text-xs text-gray-500">Available</span>
-              <span className="w-auto text-xs text-[#86d6ff]">{balance}</span>
-            </>
-          )}
-        </div>
+        {balance && (
+          <div className="space-x-2">
+            <span className="text-xs text-gray-500">Available</span>
+            <span className="w-auto text-xs text-[#86d6ff]">{balance}</span>
+          </div>
+        )}
       </div>
     );
   }
@@ -111,9 +109,8 @@ export const TokenSelector = () => {
                   />
                   <span>
                     {
-                      asset.chain_aliases[
-                        srcChain.chainName.toLowerCase()
-                      ]?.assetName
+                      asset.chain_aliases[srcChain.chainName.toLowerCase()]
+                        ?.assetName
                     }
                   </span>
                 </button>
@@ -127,11 +124,10 @@ export const TokenSelector = () => {
 
   function renderAssetName() {
     if (!asset || !srcChain) return "Select an asset";
-    return asset.chain_aliases[srcChain.chainName.toLowerCase()]
-      ?.assetName;
+    return asset.chain_aliases[srcChain.chainName.toLowerCase()]?.assetName;
   }
 
-  return (asset ?
+  return asset ? (
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
         <label className="block text-xs">I want to transfer</label>
@@ -179,5 +175,5 @@ export const TokenSelector = () => {
         {swapOrigin === SwapOrigin.APP && renderTokenInput()}
       </div>
     </div>
-  : null);
+  ) : null;
 };
