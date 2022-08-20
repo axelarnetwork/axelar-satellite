@@ -1,7 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
 export default {
-    rpc: "https://axelar-testnet-rpc.axelar-dev.workers.dev",
+    rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=axelar",
     rest: "https://axelar-testnet-lcd.axelar-dev.workers.dev",
     chainId: "axelar-testnet-lisbon-3",
     chainName: "Axelar Lisbon 3",

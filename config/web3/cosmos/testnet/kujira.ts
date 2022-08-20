@@ -2,7 +2,7 @@ export default {
   chainId: "harpoon-4",
   chainName: "Kujira Testnet",
   chainIdentifier: "kujira",
-  rpc: "https://rpc-harpoon.kujira.app",
+  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=kujira",
   rest: "https://lcd-harpoon.kujira.app",
   bip44: { coinType: 118 },
   bech32Config: {

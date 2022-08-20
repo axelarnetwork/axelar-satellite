@@ -1,5 +1,5 @@
 export default {
-  rpc: "https://testnet-endpoint.crescent.network/rpc/crescent",
+  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=crescent",
   rest: "https://testnet-endpoint.crescent.network/api/crescent",
   chainId: "mooncat-1-1",
   chainName: "Crescent Testnet",

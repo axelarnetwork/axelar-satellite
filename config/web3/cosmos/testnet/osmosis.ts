@@ -1,7 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
 export default {
-  rpc: "https://testnet-rpc.osmosis.zone",
+  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=osmosis",
   rest: "https://testnet-rest.osmosis.zone",
   chainId: "osmo-test-4",
   chainName: "Osmosis Testnet",

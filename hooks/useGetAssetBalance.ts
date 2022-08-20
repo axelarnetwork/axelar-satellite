@@ -72,11 +72,10 @@ export const useGetAssetBalance = () => {
       );
       const balance = formatUnits(res?.amount as string, decimals) || "0";
       setBalance(balance);
-    } catch (e) {
+    } catch (e: any) {
       setBalance("0");
       const msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
       toast.error(msg);
-      throw new Error(msg);
     }
   }, [asset, srcChain, allAssets]);
 

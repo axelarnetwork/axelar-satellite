@@ -1,7 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
 export default {
-    rpc: "https://rpc-dorado.fetch.ai",
+    rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=fetch",
     rest: "https://rest-dorado.fetch.ai",
     chainId: "dorado-1",
     chainName: "FetchHub Testnet",

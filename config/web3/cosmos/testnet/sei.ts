@@ -2,7 +2,7 @@ export default {
   chainId: "atlantic-1",
   chainName: "SEI Testnet",
   chainIdentifier: "sei",
-  rpc: "https://rpc-sei-ia.notional.ventures",
+  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=sei",
   rest: "https://sei-testnet-api.polkachu.com",
   bip44: { coinType: 118 },
   bech32Config: {

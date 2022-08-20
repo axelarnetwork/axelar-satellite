@@ -1,5 +1,5 @@
 export default {
-  rpc: "https://vega-rpc.interchain.io",
+  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=cosmoshub",
   rest: "https://vega-rest.interchain.io",
   chainId: "vega-testnet",
   chainName: "Cosmos Testnet",
