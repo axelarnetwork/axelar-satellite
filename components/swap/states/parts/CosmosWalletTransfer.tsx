@@ -71,7 +71,7 @@ export const CosmosWalletTransfer = () => {
     if (!hasKeplerWallet) return;
 
     const cosmosChains = getCosmosChains();
-    const chainIdentifier = srcChain.chainIdentifier[ENVIRONMENT];
+    const chainIdentifier = srcChain.chainName.toLowerCase();
     const cosmosChain = cosmosChains.find(
       (chain) => chain.chainIdentifier === chainIdentifier
     );

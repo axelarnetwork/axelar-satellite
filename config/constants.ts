@@ -2,6 +2,8 @@ import { Environment } from "../utils/enums";
 
 export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
 export const SOCKET_API = process.env.NEXT_PUBLIC_SOCKET_API as string;
+export const UNDER_MAINTENANCE =
+  process.env.NEXT_PUBLIC_UNDER_MAINTENANCE === "true" ? true : false;
 
 export const AXELARSCAN_URL = process.env.NEXT_PUBLIC_AXELARSCAN_URL as string;
 export const RESERVED_ADDRESSES = process.env
