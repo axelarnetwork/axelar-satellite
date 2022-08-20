@@ -4,7 +4,7 @@ import { useConnect } from "wagmi";
 import toast from "react-hot-toast";
 import { useSwapStore, useWalletStore } from "../../store";
 import { getCosmosChains } from "../../config/web3";
-import { CosmosChain } from "../../config/web3/cosmos/chains.testnet";
+import { CosmosChain } from "../../config/web3/cosmos/interface";
 import { OfflineSigner } from "@cosmjs/proto-signing";
 
 export const Web3Modal = () => {

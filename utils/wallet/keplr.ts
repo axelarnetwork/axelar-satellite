@@ -1,7 +1,7 @@
 import { OfflineSigner } from "@cosmjs/launchpad";
 import { SigningStargateClient, QueryClient } from "@cosmjs/stargate";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
-import { CosmosChain } from "../../config/web3/cosmos/chains.testnet";
+import { CosmosChain } from "../../config/web3/cosmos/interface";
 import { QueryBalanceRequest, QueryBalanceResponse } from "cosmjs-types/cosmos/bank/v1beta1/query";
 
 export const connectChainId = async (chain: CosmosChain): Promise<void> => {

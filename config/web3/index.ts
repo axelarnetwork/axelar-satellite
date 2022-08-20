@@ -9,7 +9,7 @@ import { ENVIRONMENT } from "../constants";
 
 // wagmi ready chains
 import { testnetChains as evmTestnetChains } from "./evm/chains.testnet";
-import { testnetChains as cosmosTestnetChains } from "./cosmos/chains.testnet";
+import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
 
 // sdk chains (generic)
 // export const allAssets = loadAssets({
