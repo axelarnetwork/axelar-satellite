@@ -13,6 +13,7 @@ import {
 import { usePreventDuplicateChains } from "../../hooks";
 import { TopFlows } from "./parts/TopFlows";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
+import { ENVIRONMENT } from "../../config/constants";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
@@ -22,8 +23,8 @@ export const SwapBox = () => {
       <ModalWindow />
       <EvmAssetWarningModal />
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
-        <div className="relative flex justify-end mb-0 space-x-8">
-          {/* <ConnectIndicator /> */}
+        <div className="relative flex justify-between mb-0 space-x-8">
+          {ENVIRONMENT === "testnet" && <div className="gap-2 badge badge-error text-bold">{ENVIRONMENT.toUpperCase()}</div>}
           <div className="flex gap-x-4">
             <StopButton />
             <Blockable>

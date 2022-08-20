@@ -1,13 +1,10 @@
 import React, { PropsWithChildren } from "react";
 import { Navbar } from "./Navbar";
-import { ENVIRONMENT } from "../../config/constants"
-import Image from "next/image";
 
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <header>
-        {ENVIRONMENT === "testnet" && <div className="absolute gap-2 top-1 right-1 badge badge-error text-bold">{ENVIRONMENT.toUpperCase()}</div>}
         <Navbar />
       </header>
       <main className="h-screen">
