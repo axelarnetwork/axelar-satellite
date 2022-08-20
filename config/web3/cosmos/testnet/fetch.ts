@@ -1,4 +1,5 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+import { CosmosChain } from "../interface";
 
 export default {
     rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=fetch",
@@ -39,4 +40,5 @@ export default {
       high: 6250000000,
     },
     features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
-  }
+    chainToAxelarChannelId: "channel-6"
+  } as CosmosChain;

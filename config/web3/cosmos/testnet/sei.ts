@@ -23,4 +23,5 @@ export default {
     coinDecimals: 6,
   },
   coinType: 118,
+  chainToAxelarChannelId: "channel-29"
 };

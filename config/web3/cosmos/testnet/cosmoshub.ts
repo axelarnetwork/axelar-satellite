@@ -1,3 +1,5 @@
+import { CosmosChain } from "../interface"
+
 export default {
   rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=cosmoshub",
   rest: "https://vega-rest.interchain.io",
@@ -39,4 +41,5 @@ export default {
   },
   coinType: 118,
   features: ["ibc-transfer", "ibc-go"],
-};
+  chainToAxelarChannelId: "channel-238"
+} as CosmosChain;

@@ -2,17 +2,15 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=axelar",
-  rest: "https://axelar-testnet-lcd.axelar-dev.workers.dev",
-  chainId: "axelar-testnet-lisbon-3",
-  chainName: "Axelar Lisbon 3",
-  chainIdentifier: "axelar",
+  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=axelar",
+  rest: "https://axelar-lcd.quickapi.com",
+  chainId: "axelar-dojo-1",
+  chainName: "Axelar",
   stakeCurrency: {
     coinDenom: "AXL",
     coinMinimalDenom: "uaxl",
     coinDecimals: 6,
   },
-  walletUrlForStaking: "https://www.testnet.keplr.app/#/axelar/stake",
   bech32Config: Bech32Address.defaultBech32Config("axelar"),
   bip44: {
     coinType: 118,
@@ -22,6 +20,7 @@ export default {
     { coinDenom: "AXL", coinMinimalDenom: "uaxl", coinDecimals: 6 },
   ],
   gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
-  features: ["ibc-transfer"],
-  chainToAxelarChannelId: "",
+  features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
+  chainIdentifier: "axelar",
+  chainToAxelarChannelId: "channel-0",
 } as CosmosChain;

@@ -1,11 +1,12 @@
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=crescent",
-  rest: "https://testnet-endpoint.crescent.network/api/crescent",
-  chainId: "mooncat-1-1",
-  chainName: "Crescent Testnet",
+  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=crescent",
+  rest: "https://mainnet.crescent.network:1317",
+  chainId: "crescent-1",
+  chainName: "Crescent Network",
   chainIdentifier: "crescent",
+
   bip44: {
     coinType: 118,
   },
@@ -45,6 +46,6 @@ export default {
     average: 1,
     high: 1,
   },
-  features: ["ibc-transfer"],
-  chainToAxelarChannelId: "channel-3"
+  features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
+  chainToAxelarChannelId: "channel-4",
 } as CosmosChain;
