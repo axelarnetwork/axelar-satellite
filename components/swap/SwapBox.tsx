@@ -18,7 +18,7 @@ export const SwapBox = () => {
   usePreventDuplicateChains();
 
   return (
-    <div className="bg-base-100 rounded-xl w-[500px] min-h-[500px] h-auto">
+    <div className="bg-base-100 rounded-xl w-[500px] min-h-[500px] h-auto z-10">
       <ModalWindow />
       <EvmAssetWarningModal />
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
@@ -54,7 +54,7 @@ export const SwapBox = () => {
 
         <SwapStates />
 
-        <div className="pt-2">
+        <div className="z-0 pt-2">
           <ActionButton />
         </div>
       </div>
