@@ -14,9 +14,6 @@ import { useInitialChainList } from "../hooks";
 import { drawBackground } from "../hooks/particle";
 import { useSwapStore } from "../store";
 
-declare const document: any;
-// declare const canvas: any;
-
 const Home: NextPage = () => {
   const { allAssets, allChains } = useSwapStore();
   const storeReady = allAssets.length > 0 && allChains.length > 0;
