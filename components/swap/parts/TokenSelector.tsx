@@ -33,14 +33,24 @@ export const TokenSelector = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady || selectableAssetList.length === 0) return;
     const assetDenom = router.query.asset_denom as string;
     const asset = selectableAssetList.find(
       (asset) => asset.common_key[ENVIRONMENT] === assetDenom
     );
-    if (!asset) return;
 
-    setAsset(asset);
+    if (!asset) {
+      const fallbackAsset = selectableAssetList[0];
+      setAsset(fallbackAsset); // FIXME: for some reason srcChain does not change, to investigate
+      router.push({
+        query: {
+          ...router.query,
+          asset_denom: fallbackAsset.common_key[ENVIRONMENT],
+        },
+      });
+    } else {
+      setAsset(asset);
+    }
   }, [router.query, selectableAssetList]);
 
   useEffect(() => {
