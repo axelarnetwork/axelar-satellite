@@ -107,7 +107,7 @@ export const EvmWalletTransfer = () => {
               size={20}
               color="#00a6ff"
             />
-            <span className="text-xs">
+            <span className="text-sm">
               Waiting for transaction confirmation...
             </span>
           </div>
@@ -115,8 +115,8 @@ export const EvmWalletTransfer = () => {
           <button onClick={handleOnTokensTransfer}>
             <Image
               src="/assets/wallets/metamask.logo.svg"
-              height={20}
-              width={20}
+              height={30}
+              width={30}
             />
           </button>
         )}

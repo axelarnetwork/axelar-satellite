@@ -70,6 +70,7 @@ export const WaitEvmConfirmationState = () => {
             </div>
           </div>
         </div>
+        <div className="w-48 mx-auto my-1 text-xs divider" />
         <div className="flex justify-center gap-x-2">
           <SpinnerRoundOutlined
             className="text-blue-500"

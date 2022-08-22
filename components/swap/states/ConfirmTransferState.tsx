@@ -52,7 +52,7 @@ export const ConfirmTransferState = () => {
         <div className="w-48 mx-auto my-1 text-xs divider"></div>
         <div>
           <a
-            className="text-primary hover:underline"
+            className="flex items-center text-primary hover:underline gap-x-2"
             href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
             target="_blank"
             rel="noreferrer nofollow noopener"
@@ -66,7 +66,7 @@ export const ConfirmTransferState = () => {
   }
 
   return (
-    <InputWrapper className="h-80">
+    <InputWrapper className="h-72">
       <div className="h-full space-x-2">
         <div className="flex flex-col w-full h-full">
           <div className="relative flex flex-col h-full">
