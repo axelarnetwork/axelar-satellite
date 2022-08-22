@@ -16,6 +16,7 @@ export const SourceChainSelector = () => {
   const { allChains, srcChain, destChain, setSrcChain } = useSwapStore(
     (state) => state
   );
+
   const ref = useRef(null);
   const router = useRouter();
 
@@ -28,6 +29,18 @@ export const SourceChainSelector = () => {
     );
     setFilteredChains(newChains);
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const source = router.query.source as string;
+    const srcChainName = source?.toLowerCase() || "";
+    if (!srcChain) return;
+
+    const chain = filteredChains.find(
+      (candidate) => candidate.chainName === srcChainName
+    );
+    if (chain) setSrcChain(chain);
+  }, [router.query, filteredChains]);
 
   useEffect(() => {
     if (!searchChainInput) return;
@@ -49,6 +62,16 @@ export const SourceChainSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }
 
+  function handleOnSourceChainChange(chain: ChainInfo) {
+    setSrcChain(chain);
+    router.push({
+      query: {
+        ...router.query,
+        source: chain.chainName.toLowerCase(),
+      },
+    });
+  }
+
   function renderChainDropdown() {
     if (!dropdownOpen) return null;
 
@@ -65,18 +88,7 @@ export const SourceChainSelector = () => {
           {filteredChains.map((chain) => {
             return (
               <li key={chain.chainSymbol}>
-                <button
-                  onClick={() => {
-                    setSrcChain(chain);
-                    router.replace({
-                      pathname: router.pathname,
-                      query: {
-                        ...router.query,
-                        source: chain.chainName.toLowerCase(),
-                      },
-                    });
-                  }}
-                >
+                <button onClick={() => handleOnSourceChainChange(chain)}>
                   <Image
                     src={`/assets/chains/${chain.chainName.toLowerCase()}.logo.svg`}
                     layout="intrinsic"

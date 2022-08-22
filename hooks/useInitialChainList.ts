@@ -5,7 +5,7 @@ import {
   loadChains,
 } from "@axelar-network/axelarjs-sdk";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   DEFAULT_ASSET,
   DEFAULT_DEST_CHAIN,
@@ -28,23 +28,18 @@ export const useInitialChainList = () => {
   const { source, destination, asset_denom } = router.query as RouteQuery;
 
   useEffect(() => {
+    if (!router.isReady) return;
     Promise.all([loadInitialChains(), loadInitialAssets()]).then(() => {
       // updated query without reloading page
-      router.push(
-        {
-          query: {
-            source: source || DEFAULT_SRC_CHAIN,
-            destination: destination || DEFAULT_DEST_CHAIN,
-            asset_denom: asset_denom || DEFAULT_ASSET,
-          },
+      router.replace({
+        query: {
+          source: source || DEFAULT_SRC_CHAIN,
+          destination: destination || DEFAULT_DEST_CHAIN,
+          asset_denom: asset_denom || DEFAULT_ASSET,
         },
-        undefined,
-        {
-          shallow: true,
-        }
-      );
+      });
     });
-  }, [router]);
+  }, [router.isReady]);
 
   // TODO: load chains upon project installation
   async function loadInitialChains() {

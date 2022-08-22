@@ -28,6 +28,18 @@ export const DestChainSelector = () => {
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
 
   useEffect(() => {
+    if (!router.isReady) return;
+    const source = router.query.destination as string;
+    const destChainName = source?.toLowerCase() || "";
+    if (!destChainName) return;
+
+    const chain = filteredChains.find(
+      (candidate) => candidate.chainName === destChainName
+    );
+    if (chain) setDestChain(chain);
+  }, [router.query, filteredChains]);
+
+  useEffect(() => {
     if (!searchChainInput) return;
 
     const chains = allChains.filter(
@@ -47,6 +59,16 @@ export const DestChainSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }
 
+  function handleOnDestChainChain(chain: ChainInfo) {
+    setDestChain(chain);
+    router.push({
+      query: {
+        ...router.query,
+        destination: chain.chainName.toLowerCase(),
+      },
+    });
+  }
+
   function renderChainDropdown() {
     if (!dropdownOpen) return null;
 
@@ -63,18 +85,7 @@ export const DestChainSelector = () => {
           {filteredChains.map((chain) => {
             return (
               <li key={chain.chainSymbol}>
-                <button
-                  onClick={() => {
-                    setDestChain(chain);
-                    router.replace({
-                      pathname: router.pathname,
-                      query: {
-                        ...router.query,
-                        destination: chain.chainName.toLowerCase(),
-                      },
-                    });
-                  }}
-                >
+                <button onClick={() => handleOnDestChainChain(chain)}>
                   <Image
                     src={`/assets/chains/${chain?.chainName?.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
