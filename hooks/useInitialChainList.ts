@@ -25,20 +25,22 @@ export const useInitialChainList = () => {
     useSwapStore();
 
   const router = useRouter();
-  const { source, destination, asset_denom } = router.query as RouteQuery;
+  let { source, destination, asset_denom } = router.query as RouteQuery;
 
   useEffect(() => {
     if (!router.isReady) return;
-    Promise.all([loadInitialChains(), loadInitialAssets()]).then(() => {
-      // updated query without reloading page
-      router.replace({
-        query: {
-          source: source || DEFAULT_SRC_CHAIN,
-          destination: destination || DEFAULT_DEST_CHAIN,
-          asset_denom: asset_denom || DEFAULT_ASSET,
-        },
-      });
-    });
+    Promise.all([loadInitialChains(), loadInitialAssets()]).then(
+      ([chains, asset]) => {
+        // updated query without reloading page
+        router.replace({
+          query: {
+            source: chains.srcChainName,
+            destination: chains.destChainName,
+            asset_denom: asset.assetDenom,
+          },
+        });
+      }
+    );
   }, [router.isReady]);
 
   // TODO: load chains upon project installation
@@ -46,12 +48,43 @@ export const useInitialChainList = () => {
     return loadChains({ environment }).then((chains) => {
       setAllChains(chains);
 
-      if (source) {
-        setSrcChain(
-          chains.find(
-            (chain) => chain.chainName.toLowerCase() === source
-          ) as ChainInfo
-        );
+      // handle same srcChain === destChain. eg: moonbeam - moonbeam
+      if (source === destination) {
+        source = DEFAULT_SRC_CHAIN;
+        destination = DEFAULT_DEST_CHAIN;
+      }
+
+      let srcChainFound = chains.find(
+        (chain) => chain.chainName.toLowerCase() === source
+      ) as ChainInfo;
+      let destChainFound = chains.find(
+        (chain) => chain.chainName.toLowerCase() === destination
+      ) as ChainInfo;
+
+      /**
+       * Handle edge case where srcChain === destChain after default chain setup
+       * eg: moonbeam - moonbeamzzz
+       */
+      if (
+        srcChainFound?.chainName.toLowerCase() === "moobeam" &&
+        !destChainFound
+      ) {
+        destChainFound = chains.find(
+          (chain) => chain.chainName.toLowerCase() === "avalanche"
+        ) as ChainInfo;
+      }
+
+      if (
+        destChainFound?.chainName.toLowerCase() === "avalanche" &&
+        !srcChainFound
+      ) {
+        srcChainFound = chains.find(
+          (chain) => chain.chainName.toLowerCase() === "moonbeam"
+        ) as ChainInfo;
+      }
+
+      if (srcChainFound) {
+        setSrcChain(srcChainFound);
       } else {
         setSrcChain(
           chains.find(
@@ -60,12 +93,8 @@ export const useInitialChainList = () => {
         );
       }
 
-      if (destination) {
-        setDestChain(
-          chains.find(
-            (chain) => chain.chainName.toLowerCase() === destination
-          ) as ChainInfo
-        );
+      if (destChainFound) {
+        setDestChain(destChainFound);
       } else {
         setDestChain(
           chains.find(
@@ -73,6 +102,13 @@ export const useInitialChainList = () => {
           ) as ChainInfo
         );
       }
+
+      return {
+        srcChainName:
+          srcChainFound?.chainName?.toLowerCase() || DEFAULT_SRC_CHAIN,
+        destChainName:
+          destChainFound?.chainName?.toLowerCase() || DEFAULT_DEST_CHAIN,
+      };
     });
   }
 
@@ -83,13 +119,19 @@ export const useInitialChainList = () => {
       const assetFound = assets.find((asset) =>
         asset?.common_key[environment].includes(asset_denom)
       );
-      if (assetFound) return setAsset(assetFound);
+      if (assetFound) {
+        setAsset(assetFound);
+      } else {
+        setAsset(
+          assets.find((asset) =>
+            asset?.common_key[environment].includes(DEFAULT_ASSET)
+          ) as AssetConfig
+        );
+      }
 
-      setAsset(
-        assets.find((asset) =>
-          asset?.common_key[environment].includes(DEFAULT_ASSET)
-        ) as AssetConfig
-      );
+      return {
+        assetDenom: assetFound?.common_key[environment],
+      };
     });
   }
 };
