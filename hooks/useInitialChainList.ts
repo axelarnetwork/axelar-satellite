@@ -34,6 +34,7 @@ export const useInitialChainList = () => {
         // updated query without reloading page
         router.replace({
           query: {
+            ...router.query,
             source: chains.srcChainName,
             destination: chains.destChainName,
             asset_denom: asset.assetDenom,
