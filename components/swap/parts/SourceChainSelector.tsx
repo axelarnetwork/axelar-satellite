@@ -34,13 +34,13 @@ export const SourceChainSelector = () => {
     if (!router.isReady) return;
     const source = router.query.source as string;
     const srcChainName = source?.toLowerCase() || "";
-    if (!srcChain) return;
+    if (!srcChainName) return;
 
     const chain = filteredChains.find(
       (candidate) => candidate.chainName === srcChainName
     );
     if (chain) setSrcChain(chain);
-  }, [router.query, filteredChains]);
+  }, [router.query]);
 
   useEffect(() => {
     if (!searchChainInput) return;

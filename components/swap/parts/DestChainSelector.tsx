@@ -37,7 +37,7 @@ export const DestChainSelector = () => {
       (candidate) => candidate.chainName === destChainName
     );
     if (chain) setDestChain(chain);
-  }, [router.query, filteredChains]);
+  }, [router.query]);
 
   useEffect(() => {
     if (!searchChainInput) return;
