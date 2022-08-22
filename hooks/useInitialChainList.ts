@@ -33,6 +33,7 @@ export const useInitialChainList = () => {
       ([chains, asset]) => {
         // updated query without reloading page
         router.replace({
+          pathname: router.pathname,
           query: {
             ...router.query,
             source: chains.srcChainName,
@@ -131,7 +132,7 @@ export const useInitialChainList = () => {
       }
 
       return {
-        assetDenom: assetFound?.common_key[environment],
+        assetDenom: assetFound?.common_key[environment] || DEFAULT_ASSET,
       };
     });
   }
