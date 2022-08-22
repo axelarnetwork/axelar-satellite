@@ -11,28 +11,32 @@ const defaultChainImg = "/assets/chains/default.logo.svg";
 
 export const SourceChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
-  const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);  
+  const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { allChains, srcChain, setSrcChain } = useSwapStore((state) => state);
+  const { allChains, srcChain, destChain, setSrcChain } = useSwapStore(
+    (state) => state
+  );
   const ref = useRef(null);
   const router = useRouter();
 
+  // avoid same chain selection
   useEffect(() => {
-    const { source } = router.query;
-    const srcChainName: string = (source as string)?.toLowerCase() || "";
-    if (srcChainName) {
-      const chain = filteredChains.find(
-        (candidate) => candidate.chainName === srcChainName
-      );
-      if (chain) setSrcChain(chain);
-    }
-  }, [router, filteredChains]);
+    const newChains = allChains.filter(
+      (chain) =>
+        chain.chainName !== destChain.chainName &&
+        chain.chainName !== srcChain.chainName
+    );
+    setFilteredChains(newChains);
+  }, [srcChain, destChain, dropdownOpen, searchChainInput]);
 
   useEffect(() => {
-    if (!searchChainInput) return setFilteredChains(allChains);
+    if (!searchChainInput) return;
 
-    const chains = allChains.filter((chain) =>
-      chain.chainName.toLowerCase().includes(searchChainInput)
+    const chains = allChains.filter(
+      (chain) =>
+        chain.chainName.toLowerCase().includes(searchChainInput) &&
+        chain.chainName !== destChain.chainName &&
+        chain.chainName !== srcChain.chainName
     );
     setFilteredChains(chains);
   }, [allChains, searchChainInput]);
@@ -42,7 +46,6 @@ export const SourceChainSelector = () => {
   });
 
   function handleOnDropdownToggle() {
-    if (dropdownOpen) setFilteredChains(allChains);
     setDropdownOpen(!dropdownOpen);
   }
 

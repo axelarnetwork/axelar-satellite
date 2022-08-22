@@ -10,39 +10,40 @@ const defaultChainImg = "/assets/chains/default.logo.svg";
 
 export const DestChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
-  const { allChains, setAllChains } = useSwapStore();
+  const { srcChain, allChains, setAllChains } = useSwapStore();
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { destChain, setDestChain } = useSwapStore((state) => state);
   const ref = useRef(null);
   const router = useRouter();
 
+  // avoid same chain selection
   useEffect(() => {
-    const { destination } = router.query;
-    const destChainName: string = (destination as string)?.toLowerCase() || "";
-    if (destChainName) {
-      const chain = filteredChains.find(
-        (candidate) => candidate.chainName === destChainName
-      );
-      if (chain) setDestChain(chain);
-    }
-  }, [router, filteredChains]);
+    const newChains = allChains.filter(
+      (chain) =>
+        chain.chainName !== srcChain.chainName &&
+        chain.chainName !== destChain.chainName
+    );
+    setFilteredChains(newChains);
+  }, [srcChain, destChain, dropdownOpen, searchChainInput]);
 
   useEffect(() => {
-    if (!searchChainInput) return setFilteredChains(allChains);
+    if (!searchChainInput) return;
 
-    const chains = allChains.filter((chain) =>
-      chain.chainName.toLowerCase().includes(searchChainInput)
+    const chains = allChains.filter(
+      (chain) =>
+        chain.chainName.toLowerCase().includes(searchChainInput) &&
+        chain.chainName !== srcChain.chainName &&
+        chain.chainName !== destChain.chainName
     );
     setFilteredChains(chains);
-  }, [searchChainInput]);
+  }, [allChains, searchChainInput]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
   });
 
   function handleOnDropdownToggle() {
-    if (dropdownOpen) setFilteredChains(allChains);
     setDropdownOpen(!dropdownOpen);
   }
 
@@ -110,7 +111,9 @@ export const DestChainSelector = () => {
                 e.currentTarget.srcset = defaultChainImg;
               }}
             />
-            <span className="capitalize">{convertChainName(destChain.chainName)}</span>
+            <span className="capitalize">
+              {convertChainName(destChain.chainName)}
+            </span>
             <div className="flex items-center">
               <Image
                 src="/assets/ui/arrow-down.svg"
