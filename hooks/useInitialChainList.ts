@@ -6,7 +6,12 @@ import {
 } from "@axelar-network/axelarjs-sdk";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { ENVIRONMENT as environment } from "../config/constants";
+import {
+  DEFAULT_ASSET,
+  DEFAULT_DEST_CHAIN,
+  DEFAULT_SRC_CHAIN,
+  ENVIRONMENT as environment,
+} from "../config/constants";
 import { useSwapStore } from "../store";
 
 type RouteQuery = {
@@ -23,7 +28,22 @@ export const useInitialChainList = () => {
   const { source, destination, asset_denom } = router.query as RouteQuery;
 
   useEffect(() => {
-    Promise.all([loadInitialChains(), loadInitialAssets()]);
+    Promise.all([loadInitialChains(), loadInitialAssets()]).then(() => {
+      // updated query without reloading page
+      router.push(
+        {
+          query: {
+            source: source || DEFAULT_SRC_CHAIN,
+            destination: destination || DEFAULT_DEST_CHAIN,
+            asset_denom: asset_denom || DEFAULT_ASSET,
+          },
+        },
+        undefined,
+        {
+          shallow: true,
+        }
+      );
+    });
   }, [router]);
 
   // TODO: load chains upon project installation
@@ -40,7 +60,7 @@ export const useInitialChainList = () => {
       } else {
         setSrcChain(
           chains.find(
-            (chain) => chain.chainName.toLowerCase() === "avalanche"
+            (chain) => chain.chainName.toLowerCase() === DEFAULT_SRC_CHAIN
           ) as ChainInfo
         );
       }
@@ -54,7 +74,7 @@ export const useInitialChainList = () => {
       } else {
         setDestChain(
           chains.find(
-            (chain) => chain.chainName.toLowerCase() === "moonbeam"
+            (chain) => chain.chainName.toLowerCase() === DEFAULT_DEST_CHAIN
           ) as ChainInfo
         );
       }
@@ -72,7 +92,7 @@ export const useInitialChainList = () => {
 
       setAsset(
         assets.find((asset) =>
-          asset?.common_key[environment].includes("usdc")
+          asset?.common_key[environment].includes(DEFAULT_ASSET)
         ) as AssetConfig
       );
     });
