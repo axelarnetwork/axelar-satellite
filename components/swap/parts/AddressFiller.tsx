@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import Image from "next/image";
 import { useAccount } from "wagmi";
 import { useSwapStore } from "../../../store";
@@ -19,15 +19,15 @@ export const AddressFiller = () => {
   const hasKeplerWallet = useHasKeplerWallet();
   const keplerWallet = useGetKeplerWallet();
 
-  const updateQueryParams = useCallback(() => {
+  function updateQueryParams() {
     router.replace({
       pathname: router.pathname,
       query: {
         ...router.query,
-        destination_address: address
+        destination_address: address,
       },
     });
-  }, [address, router]);
+  }
 
   function fillEvmDestinationAddress() {
     if (address) {
