@@ -33,24 +33,15 @@ export const TokenSelector = () => {
   const router = useRouter();
 
   useEffect(() => {
-    let { token, asset_denom } = router.query;
-    if (token && typeof token === "string") token === token.toLowerCase();
-    if (asset_denom && typeof asset_denom === "string") asset_denom === asset_denom.toLowerCase();
-    
-    let asset;
+    if (!router.isReady) return;
+    const assetDenom = router.query.asset_denom as string;
+    const asset = selectableAssetList.find(
+      (asset) => asset.common_key[ENVIRONMENT] === assetDenom
+    );
+    if (!asset) return;
 
-    if (asset_denom) {
-      asset = selectableAssetList.find(
-        (candidate) => candidate.common_key[ENVIRONMENT] === asset_denom
-      );
-    } else if (token) {
-      asset = selectableAssetList.find(
-        (candidate) =>
-          candidate.chain_aliases[srcChain.chainName].assetSymbol === token
-      );
-    }
-    if (asset) setAsset(asset);
-  }, [router, selectableAssetList]);
+    setAsset(asset);
+  }, [router.query, selectableAssetList]);
 
   useEffect(() => {
     if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
@@ -73,6 +64,16 @@ export const TokenSelector = () => {
   function handleOnDropdownToggle() {
     if (dropdownOpen) setFilteredAssets(selectableAssetList);
     setDropdownOpen(!dropdownOpen);
+  }
+
+  function handleOnAssetChange(asset: AssetConfig) {
+    setAsset(asset);
+    router.push({
+      query: {
+        ...router.query,
+        asset_denom: asset.common_key[ENVIRONMENT],
+      },
+    });
   }
 
   function handleOnMaxButtonClick() {
@@ -118,19 +119,7 @@ export const TokenSelector = () => {
           {filteredAssets.map((asset) => {
             return (
               <li key={asset.common_key[ENVIRONMENT]}>
-                <button
-                  onClick={() => {
-                    setAsset(asset);
-                    const { token, ...newQuery } = router.query;
-                    router.replace({
-                      pathname: router.pathname,
-                      query: {
-                        ...newQuery,
-                        asset_denom: asset.common_key[ENVIRONMENT],
-                      },
-                    });
-                  }}
-                >
+                <button onClick={() => handleOnAssetChange(asset)}>
                   <Image
                     src={`/assets/tokens/${asset.common_key[
                       ENVIRONMENT
