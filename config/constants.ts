@@ -18,7 +18,7 @@ export const DEFAULT_SRC_CHAIN =
   process.env.NEXT_PUBLIC_DEFAULT_SRC_CHAIN || "avalanche";
 export const DEFAULT_DEST_CHAIN =
   process.env.NEXT_PUBLIC_DEFAULT_DEST_CHAIN || "moonbeam";
-export const DEFAULT_ASSET = process.env.NEXT_PUBLIC_DEFAULT_ASSET || "usdc";
+export const DEFAULT_ASSET = process.env.NEXT_PUBLIC_DEFAULT_ASSET || "uausdc";
 
 export const tokenContractDocs: Record<string, string> = {
   local: "https://docs.axelar.dev/dev/build/contract-addresses/testnet",
