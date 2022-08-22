@@ -5,22 +5,51 @@ import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 import { useSwapStore } from "../../../store";
 import { convertChainName } from "../../../utils/transformers";
+import { useRouter } from "next/router";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
 export const SourceChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { allChains, srcChain, setSrcChain } = useSwapStore((state) => state);
+  const { allChains, srcChain, destChain, setSrcChain } = useSwapStore(
+    (state) => state
+  );
+
   const ref = useRef(null);
+  const router = useRouter();
+
+  // avoid same chain selection
+  useEffect(() => {
+    const newChains = allChains.filter(
+      (chain) =>
+        chain.chainName !== destChain.chainName &&
+        chain.chainName !== srcChain.chainName
+    );
+    setFilteredChains(newChains);
+  }, [srcChain, destChain, dropdownOpen, searchChainInput]);
 
   useEffect(() => {
-    if (!searchChainInput) return setFilteredChains(allChains);
+    if (!router.isReady) return;
+    const source = router.query.source as string;
+    const srcChainName = source?.toLowerCase() || "";
+    if (!srcChainName) return;
 
-    const chains = allChains.filter((chain) =>
-      chain.chainName.toLowerCase().includes(searchChainInput)
+    const chain = filteredChains.find(
+      (candidate) => candidate.chainName === srcChainName
+    );
+    if (chain) setSrcChain(chain);
+  }, [router.query]);
+
+  useEffect(() => {
+    if (!searchChainInput) return;
+
+    const chains = allChains.filter(
+      (chain) =>
+        chain.chainName.toLowerCase().includes(searchChainInput) &&
+        chain.chainName !== destChain.chainName &&
+        chain.chainName !== srcChain.chainName
     );
     setFilteredChains(chains);
   }, [allChains, searchChainInput]);
@@ -30,8 +59,17 @@ export const SourceChainSelector = () => {
   });
 
   function handleOnDropdownToggle() {
-    if (dropdownOpen) setFilteredChains(allChains);
     setDropdownOpen(!dropdownOpen);
+  }
+
+  function handleOnSourceChainChange(chain: ChainInfo) {
+    setSrcChain(chain);
+    router.push({
+      query: {
+        ...router.query,
+        source: chain.chainName.toLowerCase(),
+      },
+    });
   }
 
   function renderChainDropdown() {
@@ -50,7 +88,7 @@ export const SourceChainSelector = () => {
           {filteredChains.map((chain) => {
             return (
               <li key={chain.chainSymbol}>
-                <button onClick={() => setSrcChain(chain)}>
+                <button onClick={() => handleOnSourceChainChange(chain)}>
                   <Image
                     src={`/assets/chains/${chain.chainName.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
@@ -87,7 +125,9 @@ export const SourceChainSelector = () => {
                 e.currentTarget.srcset = defaultChainImg;
               }}
             />
-            <span className="capitalize">{convertChainName(srcChain.chainName)}</span>
+            <span className="capitalize">
+              {convertChainName(srcChain.chainName)}
+            </span>
             <div className="flex items-center">
               <Image
                 src="/assets/ui/arrow-down.svg"

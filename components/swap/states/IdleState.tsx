@@ -1,4 +1,5 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import { useSwapStore, useWalletStore } from "../../../store";
 import { InputWrapper } from "../../common";
 import { AddressFiller, InitialStats } from "../parts";
@@ -6,6 +7,30 @@ import { AddressFiller, InitialStats } from "../parts";
 export const IdleState = () => {
   const { destAddress, setDestAddress } = useSwapStore((state) => state);
   const walletConnected = useWalletStore((state) => state.walletConnected);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const destination_address =
+      (router.query.destination_address as string) || "";
+    setDestAddress(destination_address);
+  }, [router.query]);
+
+  function handleOnAddressChange(address: string) {
+    setDestAddress(address);
+    router.replace(
+      {
+        query: {
+          ...router.query,
+          destination_address: address,
+        },
+      },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
+  }
 
   function renderConnectAlert() {
     return (
@@ -41,7 +66,7 @@ export const IdleState = () => {
               className="w-full h-full text-xs bg-transparent outline-none"
               placeholder="Destination address"
               value={destAddress}
-              onChange={(e) => setDestAddress(e.target.value)}
+              onChange={(e) => handleOnAddressChange(e.target.value)}
             />
           </div>
         </InputWrapper>

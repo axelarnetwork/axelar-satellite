@@ -8,6 +8,7 @@ import { SwapOrigin } from "../../../utils/enums";
 import { useGetAssetBalance } from "../../../hooks";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { Blockable } from "../../common";
+import { useRouter } from "next/router";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -29,6 +30,18 @@ export const TokenSelector = () => {
 
   const { balance } = useGetAssetBalance();
   const ref = useRef(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const assetDenom = router.query.asset_denom as string;
+    const asset = selectableAssetList.find(
+      (asset) => asset.common_key[ENVIRONMENT] === assetDenom
+    );
+    if (!asset) return;
+
+    setAsset(asset);
+  }, [router.query, selectableAssetList]);
 
   useEffect(() => {
     if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
@@ -51,6 +64,16 @@ export const TokenSelector = () => {
   function handleOnDropdownToggle() {
     if (dropdownOpen) setFilteredAssets(selectableAssetList);
     setDropdownOpen(!dropdownOpen);
+  }
+
+  function handleOnAssetChange(asset: AssetConfig) {
+    setAsset(asset);
+    router.push({
+      query: {
+        ...router.query,
+        asset_denom: asset.common_key[ENVIRONMENT],
+      },
+    });
   }
 
   function handleOnMaxButtonClick() {
@@ -96,7 +119,7 @@ export const TokenSelector = () => {
           {filteredAssets.map((asset) => {
             return (
               <li key={asset.common_key[ENVIRONMENT]}>
-                <button onClick={() => setAsset(asset)}>
+                <button onClick={() => handleOnAssetChange(asset)}>
                   <Image
                     src={`/assets/tokens/${asset.common_key[
                       ENVIRONMENT
@@ -111,9 +134,8 @@ export const TokenSelector = () => {
                   />
                   <span>
                     {
-                      asset.chain_aliases[
-                        srcChain.chainName.toLowerCase()
-                      ]?.assetName
+                      asset.chain_aliases[srcChain.chainName.toLowerCase()]
+                        ?.assetName
                     }
                   </span>
                 </button>
@@ -127,11 +149,10 @@ export const TokenSelector = () => {
 
   function renderAssetName() {
     if (!asset || !srcChain) return "Select an asset";
-    return asset.chain_aliases[srcChain.chainName.toLowerCase()]
-      ?.assetName;
+    return asset.chain_aliases[srcChain.chainName.toLowerCase()]?.assetName;
   }
 
-  return (asset ?
+  return asset ? (
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
         <label className="block text-xs">I want to transfer</label>
@@ -179,5 +200,5 @@ export const TokenSelector = () => {
         {swapOrigin === SwapOrigin.APP && renderTokenInput()}
       </div>
     </div>
-  : null);
+  ) : null;
 };
