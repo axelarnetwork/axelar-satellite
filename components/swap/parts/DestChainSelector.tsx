@@ -59,7 +59,7 @@ export const DestChainSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }
 
-  function handleOnDestChainChain(chain: ChainInfo) {
+  function handleOnDestChainChainChange(chain: ChainInfo) {
     setDestChain(chain);
     router.push({
       query: {
@@ -85,7 +85,7 @@ export const DestChainSelector = () => {
           {filteredChains.map((chain) => {
             return (
               <li key={chain.chainSymbol}>
-                <button onClick={() => handleOnDestChainChain(chain)}>
+                <button onClick={() => handleOnDestChainChainChange(chain)}>
                   <Image
                     src={`/assets/chains/${chain?.chainName?.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
