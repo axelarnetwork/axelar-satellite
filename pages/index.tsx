@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { useEffect } from "react";
 
 import {
   Layout,
@@ -6,16 +7,18 @@ import {
   VideoBackground,
 } from "../components/layout";
 import { PageSEO } from "../components/seo";
-import { PageHeader, SwapBox } from "../components/swap";
+import { SwapBox } from "../components/swap";
 import { UNDER_MAINTENANCE } from "../config/constants";
 import { siteMetadata } from "../data";
 import { useInitialChainList } from "../hooks";
+import { drawBackground } from "../hooks/particle";
 import { useSwapStore } from "../store";
 
 const Home: NextPage = () => {
   const { allAssets, allChains } = useSwapStore();
   const storeReady = allAssets.length > 0 && allChains.length > 0;
 
+  useEffect(() => drawBackground(), []);
   useInitialChainList();
 
   function renderContent() {
@@ -37,7 +40,7 @@ const Home: NextPage = () => {
         description={siteMetadata.description}
         keywords="axelar satellite, cross chain bridge, axelar"
       />
-
+      <canvas id="canvas" className="absolute w-screen h-screen -z-5 "></canvas>
       <Layout>
         <VideoBackground />
         {renderContent()}
