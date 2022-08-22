@@ -20,7 +20,7 @@ export const AddressFiller = () => {
   const keplerWallet = useGetKeplerWallet();
 
   function updateQueryParams() {
-    router.replace({
+    router.push({
       pathname: router.pathname,
       query: {
         ...router.query,

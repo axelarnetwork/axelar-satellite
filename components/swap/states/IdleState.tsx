@@ -10,11 +10,27 @@ export const IdleState = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const { destination_address } = router.query;
-    if (destination_address && typeof destination_address === 'string') {
-      setTimeout(() => setDestAddress(destination_address), 0); //hack: this won't automatically set for some reason without the setTimeout
-    }
-  }, []);
+    if (!router.isReady) return;
+    const destination_address =
+      (router.query.destination_address as string) || "";
+    setDestAddress(destination_address);
+  }, [router.query]);
+
+  function handleOnAddressChange(address: string) {
+    setDestAddress(address);
+    router.replace(
+      {
+        query: {
+          ...router.query,
+          destination_address: address,
+        },
+      },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
+  }
 
   function renderConnectAlert() {
     return (
@@ -50,16 +66,7 @@ export const IdleState = () => {
               className="w-full h-full text-xs bg-transparent outline-none"
               placeholder="Destination address"
               value={destAddress}
-              onChange={(e) => {
-                setDestAddress(e.target.value);
-                router.replace({
-                  pathname: router.pathname,
-                  query: {
-                    ...router.query,
-                    destination_address: e.target.value
-                  },
-                });
-              }}
+              onChange={(e) => handleOnAddressChange(e.target.value)}
             />
           </div>
         </InputWrapper>
