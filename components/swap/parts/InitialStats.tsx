@@ -11,16 +11,11 @@ export const InitialStats = () => {
   const asset = useSwapStore((state) => state.asset);
 
   function renderWaitTime() {
-
     if (!srcChain) return "";
-    
+
     if (srcChain.module === "axelarnet") return "~2 minutes";
 
-    if (
-      ["ethereum", "polygon"].includes(
-        srcChain.chainName.toLowerCase()
-      )
-    )
+    if (["ethereum", "polygon"].includes(srcChain.chainName.toLowerCase()))
       return "~15 minutes";
 
     return "~3 minutes";
@@ -28,7 +23,7 @@ export const InitialStats = () => {
 
   function renderGasFee() {
     if (!srcChain || !destChain) return "";
-    
+
     const sourceChainName = srcChain.chainIdentifier[ENVIRONMENT];
     const destChainName = destChain.chainIdentifier[ENVIRONMENT];
 
@@ -46,16 +41,16 @@ export const InitialStats = () => {
 
   return (
     <StatsWrapper>
-      <ul className="space-y-2 text-xs">
+      <ul className="space-y-2 text-sm">
         <li className="flex justify-between">
           <span>Relayer Gas Fees:</span>
-          <span>
+          <span className="font-semibold">
             {renderGasFee()} {renderAssetSymbol()}
           </span>
         </li>
-        <li className="flex justify-between">
+        <li className="flex justify-between ">
           <span>Estimated wait time:</span>
-          <span>{renderWaitTime()}</span>
+          <span className="font-semibold">{renderWaitTime()}</span>
         </li>
       </ul>
     </StatsWrapper>
