@@ -17,12 +17,15 @@ export const EvmAssetWarningModal = () => {
   const [userAcknowledged, setUserAcknowledged] = useState(false);
 
   useEffect(() => {
-    if (userAcknowledged || swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) return;
+    if (userAcknowledged) return;
+    if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) {
+      userAcknowledged && setUserAcknowledged(false);
+      return;
+    }
+    if (!srcChain || !destChain) return;
     if (![srcChain?.module, destChain?.module].includes("evm")) return;
 
-    if (srcChain?.module === "evm") {
-      setShowAssetWarning(true);
-    }
+    setShowAssetWarning(true);
   }, [setShowAssetWarning, userAcknowledged, swapStatus]);
 
   const onConfirm = useCallback(() => {

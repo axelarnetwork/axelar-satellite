@@ -247,6 +247,7 @@ export const useSwapStore = create<SwapStore>()(
           ...initialState,
           allChains: get().allChains,
           allAssets: get().allAssets,
+          selectableAssetList: get().selectableAssetList,
           srcChain: get().allChains.find(
             (chain) => chain.chainName.toLowerCase() === "avalanche"
           ),

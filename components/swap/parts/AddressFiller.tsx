@@ -6,18 +6,28 @@ import { useGetKeplerWallet, useHasKeplerWallet } from "../../../hooks";
 import { ENVIRONMENT } from "../../../config/constants";
 import { curateCosmosChainId } from "../../../utils";
 import { getCosmosChains } from "../../../config/web3";
+import { useRouter } from "next/router";
 
 export const AddressFiller = () => {
   const { address } = useAccount();
   const { allAssets, setDestAddress } = useSwapStore((state) => state);
   const { connect, connectors } = useConnect();
   const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
-
   const { destChain } = useSwapStore((state) => state);
   const isEvm = destChain?.module === "evm";
-
+  const router = useRouter();
   const hasKeplerWallet = useHasKeplerWallet();
   const keplerWallet = useGetKeplerWallet();
+
+  function updateQueryParams() {
+    router.push({
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        destination_address: address,
+      },
+    });
+  }
 
   function fillEvmDestinationAddress() {
     if (address) setDestAddress(address);
@@ -38,6 +48,7 @@ export const AddressFiller = () => {
       await keplerWallet?.enable(chain.chainId as string);
       const address = await keplerWallet?.getKey(chain.chainId as string);
       setDestAddress(address?.bech32Address as string);
+      updateQueryParams();
     }
   }
 

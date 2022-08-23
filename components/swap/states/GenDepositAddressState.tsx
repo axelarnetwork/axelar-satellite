@@ -11,7 +11,7 @@ export const GenDepositAddressState = () => {
           <div className="h-full">
             <ProgressBar level={1} />
 
-            <div className="flex items-center justify-center mt-6 text-xs gap-x-2">
+            <div className="flex items-center justify-center mt-6 text-sm gap-x-2">
               <SpinnerCircular
                 size={20}
                 thickness={147}
@@ -25,7 +25,7 @@ export const GenDepositAddressState = () => {
           </div>
           <div className="w-full mt-auto">
             <div className="my-0 divider" />
-            <div className="w-full text-xs font-medium text-center text-gray-500">
+            <div className="w-full text-sm font-medium text-center text-gray-500">
               Generating deposit address
             </div>
           </div>

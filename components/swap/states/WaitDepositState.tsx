@@ -32,7 +32,7 @@ export const WaitDepositState = () => {
           <div className="h-full">
             <ProgressBar level={2} />
 
-            <div className="flex items-center justify-center mt-6 text-xs gap-x-2">
+            <div className="flex items-center justify-center mt-6 text-sm gap-x-2">
               <div>
                 <label className="block text-center">
                   {renderTransferInfo()}

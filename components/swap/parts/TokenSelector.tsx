@@ -8,6 +8,7 @@ import { SwapOrigin } from "../../../utils/enums";
 import { useGetAssetBalance } from "../../../hooks";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { Blockable } from "../../common";
+import { useRouter } from "next/router";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -29,6 +30,32 @@ export const TokenSelector = () => {
 
   const { balance, setKeplrBalance } = useGetAssetBalance();
   const ref = useRef(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!router.isReady || selectableAssetList.length === 0) return;
+    if (asset) return;
+    const assetDenom = router.query.asset_denom as string;
+    const foundAsset = selectableAssetList.find(
+      (asset) => asset.common_key[ENVIRONMENT] === assetDenom
+    );
+
+    // FIXME: weird behaviour
+    if (!foundAsset) {
+      const fallbackAsset = selectableAssetList[0];
+      if (fallbackAsset) {
+        setAsset(fallbackAsset);
+        router.push({
+          query: {
+            ...router.query,
+            asset_denom: fallbackAsset.common_key[ENVIRONMENT],
+          },
+        });
+      }
+    } else {
+      setAsset(asset);
+    }
+  }, [router.query, selectableAssetList]);
 
   useEffect(() => {
     if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
@@ -56,6 +83,16 @@ export const TokenSelector = () => {
   function handleOnDropdownToggle() {
     if (dropdownOpen) setFilteredAssets(selectableAssetList);
     setDropdownOpen(!dropdownOpen);
+  }
+
+  function handleOnAssetChange(asset: AssetConfig) {
+    setAsset(asset);
+    router.push({
+      query: {
+        ...router.query,
+        asset_denom: asset.common_key[ENVIRONMENT],
+      },
+    });
   }
 
   function handleOnMaxButtonClick() {
@@ -99,7 +136,7 @@ export const TokenSelector = () => {
           {filteredAssets.map((asset) => {
             return (
               <li key={asset.common_key[ENVIRONMENT]}>
-                <button onClick={() => setAsset(asset)}>
+                <button onClick={() => handleOnAssetChange(asset)}>
                   <Image
                     src={`/assets/tokens/${asset.common_key[
                       ENVIRONMENT
