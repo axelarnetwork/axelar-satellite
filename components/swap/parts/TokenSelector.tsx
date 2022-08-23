@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { useSwapStore } from "../../../store";
+import { useSwapStore, useWalletStore } from "../../../store";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapOrigin } from "../../../utils/enums";
 import { useGetAssetBalance } from "../../../hooks";
@@ -23,6 +23,7 @@ export const TokenSelector = () => {
     tokensToTransfer,
     setTokensToTransfer,
   } = useSwapStore((state) => state);
+  const { wagmiConnected, keplrConnected } = useWalletStore();
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
   const [filteredAssets, setFilteredAssets] =
@@ -110,11 +111,13 @@ export const TokenSelector = () => {
           placeholder="0"
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
-        {balance && (
+        {balance && (!!wagmiConnected || !!keplrConnected) ? (
           <div className="space-x-2">
             <span className="text-xs text-gray-500">Available</span>
             <span className="w-auto text-xs text-[#86d6ff]">{balance}</span>
           </div>
+        ) : (
+          <div className="h-6 space-x-2"></div>
         )}
       </div>
     );
