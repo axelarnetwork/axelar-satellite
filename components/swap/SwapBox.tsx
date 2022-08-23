@@ -10,13 +10,17 @@ import {
   TokenSelector,
 } from "./parts";
 
-import { usePreventDuplicateChains } from "../../hooks";
+import {
+  useDetectDepositConfirmation,
+  usePreventDuplicateChains,
+} from "../../hooks";
 import { TopFlows } from "./parts/TopFlows";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
 import { ENVIRONMENT } from "../../config/constants";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
+  useDetectDepositConfirmation();
 
   return (
     <div className="bg-base-100 rounded-xl w-[500px] min-h-[500px] h-auto z-10">
