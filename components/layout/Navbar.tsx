@@ -11,22 +11,30 @@ import { ConnectButton } from "../swap/parts";
 
 const SatelliteLogo = () => {
   return (
-    <>
-      <div className="w-16 h-full">
-        <Image
-          layout="intrinsic"
-          width={50}
-          height={50}
-          src="/assets/ui/satellite.logo.svg"
-        />
-      </div>
-      <div>
-        <div className="text-4xl font-bold">Satellite</div>
-        <div className="flex -ml-1">
-          <img src="/assets/ui/powered.logo.svg" width={150} />
+    <div>
+      <div className="relative flex items-center">
+        <div className="relative flex items-center w-16 h-16">
+          <Image
+            layout="intrinsic"
+            width={50}
+            height={50}
+            src="/assets/ui/satellite.logo.svg"
+          />
+        </div>
+        <div className="relative">
+          <div className="text-4xl font-bold">Satellite</div>
+          <div className="absolute">
+            <div>
+              <img
+                className="ml-5"
+                src="/assets/ui/powered.logo.svg"
+                width={150}
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -40,7 +48,7 @@ export const Navbar = () => {
           <SatelliteLogo />
 
           <div className="flex items-center w-full ml-10">
-            <div className="space-x-5">
+            <div className="hidden space-x-5 lg:block">
               <label
                 htmlFor={GETTING_STARTED_MODAL}
                 className="btn btn-link modal-button"
