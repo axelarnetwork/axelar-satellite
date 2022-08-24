@@ -26,6 +26,7 @@ import { SwapStatus } from "../../../../utils/enums";
 import { SpinnerRoundOutlined } from "spinners-react";
 
 export const CosmosWalletTransfer = () => {
+  const allAssets = useSwapStore(state => state.allAssets);
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
 
@@ -70,7 +71,7 @@ export const CosmosWalletTransfer = () => {
   async function handleOnTokensTransfer() {
     if (!hasKeplerWallet) return;
 
-    const cosmosChains = getCosmosChains();
+    const cosmosChains = getCosmosChains(allAssets);
     const chainIdentifier = srcChain.chainName.toLowerCase();
     const cosmosChain = cosmosChains.find(
       (chain) => chain.chainIdentifier === chainIdentifier
@@ -79,7 +80,7 @@ export const CosmosWalletTransfer = () => {
 
     const chainId = curateCosmosChainId(cosmosChain.chainId);
 
-    const chain = getCosmosChains().find(
+    const chain = getCosmosChains(allAssets).find(
       (_chain) => _chain.chainId === chainId
     );
     if (!chain) return;

@@ -6,7 +6,6 @@ import { AddressFiller, InitialStats } from "../parts";
 
 export const IdleState = () => {
   const { destAddress, setDestAddress } = useSwapStore((state) => state);
-  const walletConnected = useWalletStore((state) => state.walletConnected);
   const router = useRouter();
 
   useEffect(() => {
@@ -79,11 +78,8 @@ export const IdleState = () => {
 
   return (
     <>
-      <div>
-        <InitialStats />
-      </div>
-      {!walletConnected && renderConnectAlert()}
-      {walletConnected && renderAddressFiller()}
+      <InitialStats />
+      {renderAddressFiller()}
     </>
   );
 };

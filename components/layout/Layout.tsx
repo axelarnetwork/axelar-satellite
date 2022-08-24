@@ -1,6 +1,5 @@
 import React, { PropsWithChildren } from "react";
 import { Navbar } from "./Navbar";
-import Image from "next/image";
 
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (

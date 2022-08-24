@@ -33,8 +33,13 @@ const Arrow = () => (
 );
 
 export const TopFlows = () => {
-  const { setSrcChain, setDestChain, setAsset, selectableAssetList, allChains } =
-    useSwapStore();
+  const {
+    setSrcChain,
+    setDestChain,
+    setAsset,
+    selectableAssetList,
+    allChains,
+  } = useSwapStore();
 
   function handleOnFlow1() {
     const avax = allChains.find((chain) =>
@@ -94,7 +99,7 @@ export const TopFlows = () => {
       </label>
       <ul
         tabIndex={0}
-        className="z-50 p-2 shadow gap-y-2 dropdown-content menu bg-neutral rounded-box w-52 top-8"
+        className="z-50 p-2 shadow shadow-lg gap-y-2 dropdown-content menu bg-neutral rounded-box w-52 top-8"
       >
         <li
           onClick={handleOnFlow1}

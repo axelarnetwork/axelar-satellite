@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { ENVIRONMENT } from "../../../config/constants";
-import { useSwapStore } from "../../../store";
+import { useSwapStore, useWalletStore } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
 import { SwapOrigin } from "../../../utils/enums";
 import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
@@ -12,6 +11,7 @@ import { convertChainName } from "../../../utils/transformers";
 export const WaitDepositState = () => {
   const { asset, depositAddress, destAddress, swapOrigin, srcChain } =
     useSwapStore((state) => state);
+  const { wagmiConnected, keplrConnected } = useWalletStore((state) => state);
 
   function renderTransferInfo() {
     return (
@@ -21,6 +21,18 @@ export const WaitDepositState = () => {
           <strong>{asset?.chain_aliases[srcChain.chainName].assetName}</strong>{" "}
           on {convertChainName(srcChain.chainName)} to
         </div>
+      </div>
+    );
+  }
+
+  function renderWalletSection() {
+    if (!wagmiConnected && !keplrConnected) return;
+
+    return (
+      <div>
+        <div className="w-48 mx-auto my-1 text-xs divider">OR USE</div>
+        {srcChain.module === "evm" && <EvmWalletTransfer />}
+        {srcChain.module === "axelarnet" && <CosmosWalletTransfer />}
       </div>
     );
   }
@@ -48,13 +60,7 @@ export const WaitDepositState = () => {
                 </div>
               </div>
             </div>
-            {swapOrigin === SwapOrigin.APP && (
-              <div>
-                <div className="w-48 mx-auto my-1 text-xs divider">OR USE</div>
-                {srcChain.module === "evm" && <EvmWalletTransfer />}
-                {srcChain.module === "axelarnet" && <CosmosWalletTransfer />}
-              </div>
-            )}
+            {renderWalletSection()}
           </div>
           <div className="w-full mt-auto">
             <div className="my-0 divider" />

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { useSwapStore } from "../../../store";
+import { useSwapStore, useWalletStore } from "../../../store";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapOrigin } from "../../../utils/enums";
 import { useGetAssetBalance } from "../../../hooks";
@@ -23,12 +23,13 @@ export const TokenSelector = () => {
     tokensToTransfer,
     setTokensToTransfer,
   } = useSwapStore((state) => state);
+  const { wagmiConnected, keplrConnected } = useWalletStore();
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
   const [filteredAssets, setFilteredAssets] =
     useState<AssetConfig[]>(selectableAssetList);
 
-  const { balance } = useGetAssetBalance();
+  const { balance, setKeplrBalance } = useGetAssetBalance();
   const ref = useRef(null);
   const router = useRouter();
 
@@ -71,6 +72,11 @@ export const TokenSelector = () => {
     setFilteredAssets(selectableAssetList);
   }, [selectableAssetList]);
 
+  // update asset balance from useGetAssetBalance hook if srcChain or asset changes
+  useEffect(() => {
+    if (srcChain?.module === "axelarnet") setKeplrBalance();
+  }, [asset, srcChain]);
+
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
   });
@@ -105,14 +111,14 @@ export const TokenSelector = () => {
           placeholder="0"
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
-        <div className="space-x-2">
-          {srcChain.module === "evm" && (
-            <>
-              <span className="text-xs text-gray-500">Available</span>
-              <span className="w-auto text-xs text-[#86d6ff]">{balance}</span>
-            </>
-          )}
-        </div>
+        {balance && (!!wagmiConnected || !!keplrConnected) ? (
+          <div className="space-x-2">
+            <span className="text-xs text-gray-500">Available</span>
+            <span className="w-auto text-xs text-[#86d6ff]">{balance}</span>
+          </div>
+        ) : (
+          <div className="h-6 space-x-2"></div>
+        )}
       </div>
     );
   }

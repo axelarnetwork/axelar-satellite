@@ -50,8 +50,6 @@ export const EvmWalletTransfer = () => {
     enabled: !!destChainId,
   });
 
-  useDetectDepositConfirmation();
-
   useEffect(() => {
     const assetCommonKey = asset?.common_key[ENVIRONMENT];
     const assetData = srcChain.assets?.find(
