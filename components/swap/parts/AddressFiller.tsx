@@ -1,18 +1,17 @@
 import React from "react";
 import Image from "next/image";
 import { useAccount, useConnect } from "wagmi";
+import { useRouter } from "next/router";
+
 import { useSwapStore, useWalletStore } from "../../../store";
 import { useGetKeplerWallet, useHasKeplerWallet } from "../../../hooks";
-import { ENVIRONMENT } from "../../../config/constants";
-import { curateCosmosChainId } from "../../../utils";
 import { getCosmosChains } from "../../../config/web3";
-import { useRouter } from "next/router";
 
 export const AddressFiller = () => {
   const { address } = useAccount();
   const { allAssets, setDestAddress } = useSwapStore((state) => state);
   const { connect, connectors } = useConnect();
-  const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
+  const { wagmiConnected, keplrConnected } = useWalletStore((state) => state);
   const { destChain } = useSwapStore((state) => state);
   const isEvm = destChain?.module === "evm";
   const router = useRouter();
@@ -61,7 +60,7 @@ export const AddressFiller = () => {
           wagmiConnected ? fillEvmDestinationAddress : handleMetamaskConnect
         }
       >
-        <div className="flex justify-between items-center h-full w-full bg-[#291e14] rounded-lg p-3">
+        <div className="flex justify-around items-center h-full w-full bg-[#291e14] rounded-lg p-3">
           <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#E8821E] to-[#F89C35]">
             {wagmiConnected ? "Autofill from" : "Connect"}
           </div>
@@ -84,9 +83,9 @@ export const AddressFiller = () => {
       className="bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
       onClick={fillCosmosDestinationAddress}
     >
-      <div className="flex justify-between items-center h-full w-full bg-gradient-to-b from-[#21374b] to-[#292d4b] rounded-lg p-3">
+      <div className="flex justify-around items-center h-full w-full bg-gradient-to-b from-[#21374b] to-[#292d4b] rounded-lg p-3">
         <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF]">
-          Autofill from
+          {keplrConnected ? "Autofill from" : "Connect"}
         </div>
 
         <div className="relative flex items-center h-full">
