@@ -2,22 +2,29 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useConnect } from "wagmi";
 import toast from "react-hot-toast";
+import { OfflineSigner } from "@cosmjs/proto-signing";
+
 import { useSwapStore, useWalletStore } from "../../store";
 import { getCosmosChains } from "../../config/web3";
 import { CosmosChain } from "../../config/web3/cosmos/interface";
-import { OfflineSigner } from "@cosmjs/proto-signing";
 
 export const Web3Modal = () => {
   const { connect, connectors, error } = useConnect();
-  const allAssets = useSwapStore(state => state.allAssets);
+  const allAssets = useSwapStore((state) => state.allAssets);
   const modalRef = useRef<any>();
-  const { setKeplrConnected, wagmiConnected } = useWalletStore(
+  const { setKeplrConnected, keplrConnected, wagmiConnected } = useWalletStore(
     (state) => state
   );
-  // close modal upon successful connection
+
+  // close modal upon successful metamask connection
   useEffect(() => {
     if (wagmiConnected) closeModal();
   }, [wagmiConnected]);
+
+  // close modal upon successful kepler connection
+  useEffect(() => {
+    if (keplrConnected) closeModal();
+  }, [keplrConnected]);
 
   // notify user that he already has a connected account but it's not the active one
   useEffect(() => {
