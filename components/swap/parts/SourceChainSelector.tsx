@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { useRouter } from "next/router";
 
 import { useSwapStore } from "../../../store";
 import { convertChainName } from "../../../utils/transformers";
-import { useRouter } from "next/router";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -109,37 +109,40 @@ export const SourceChainSelector = () => {
     );
   }
 
-  return srcChain ? (
-    <div ref={ref}>
-      <label className="block text-xs">From</label>
-      <div className="static mt-1 dropdown dropdown-open">
-        <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
-          <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
-            <Image
-              src={`/assets/chains/${srcChain?.chainName?.toLowerCase()}.logo.svg`}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              onError={(e) => {
-                e.currentTarget.src = defaultChainImg;
-                e.currentTarget.srcset = defaultChainImg;
-              }}
-            />
-            <span className="capitalize">
-              {convertChainName(srcChain.chainName)}
-            </span>
-            <div className="flex items-center">
+  if (srcChain)
+    return (
+      <div ref={ref}>
+        <label className="block text-xs">From</label>
+        <div className="static mt-1 dropdown dropdown-open">
+          <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
+            <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
               <Image
-                src="/assets/ui/arrow-down.svg"
+                src={`/assets/chains/${srcChain?.chainName?.toLowerCase()}.logo.svg`}
                 layout="intrinsic"
-                width={25}
-                height={25}
+                width={35}
+                height={35}
+                onError={(e) => {
+                  e.currentTarget.src = defaultChainImg;
+                  e.currentTarget.srcset = defaultChainImg;
+                }}
               />
+              <span className="capitalize">
+                {convertChainName(srcChain.chainName)}
+              </span>
+              <div className="flex items-center">
+                <Image
+                  src="/assets/ui/arrow-down.svg"
+                  layout="intrinsic"
+                  width={25}
+                  height={25}
+                />
+              </div>
             </div>
           </div>
+          {renderChainDropdown()}
         </div>
-        {renderChainDropdown()}
       </div>
-    </div>
-  ) : null;
+    );
+
+  return null;
 };

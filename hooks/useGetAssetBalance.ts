@@ -1,10 +1,15 @@
 import { formatUnits } from "ethers/lib/utils";
-import { ethers } from "ethers"
+import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
 import { useAccount, useContractRead, erc20ABI } from "wagmi";
 import { BigNumber } from "bignumber.js";
-import { getSrcChainId, getSrcTokenAddress, useSwapStore } from "../store";
+import {
+  getSrcChainId,
+  getSrcTokenAddress,
+  useSwapStore,
+  useWalletStore,
+} from "../store";
 import { ENVIRONMENT } from "../config/constants";
 import { getAddress, queryBalance } from "../utils/wallet/keplr";
 import { getCosmosChains } from "../config/web3";
@@ -12,6 +17,7 @@ import { getCosmosChains } from "../config/web3";
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
   const { asset, allAssets } = useSwapStore((state) => state);
+  const { keplrConnected } = useWalletStore();
 
   const srcChainId = useSwapStore(getSrcChainId);
   const srcChain = useSwapStore((state) => state?.srcChain);
@@ -42,6 +48,7 @@ export const useGetAssetBalance = () => {
   }, [srcChainId, srcTokenAddress, data, isSuccess]);
 
   const setKeplrBalance = useCallback(async (): Promise<void> => {
+    if (!keplrConnected) return;
     if (!asset) return;
     if (!srcChain) return;
 

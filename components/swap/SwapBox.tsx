@@ -1,5 +1,5 @@
 import React from "react";
-import { Blockable, ConnectIndicator, InputWrapper } from "../common";
+import { Blockable, InputWrapper } from "../common";
 import {
   ActionButton,
   ChainSwapper,
