@@ -143,4 +143,6 @@ export const SourceChainSelector = () => {
         </div>
       </div>
     );
+
+  return null;
 };
