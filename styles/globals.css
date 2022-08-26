@@ -37,3 +37,23 @@ input[type="number"] {
 :root {
   @apply bg-black;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #2e3640;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #464e5a;
+  border-radius: 100px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #616c7d;
+}
