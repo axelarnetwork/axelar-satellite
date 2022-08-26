@@ -23,7 +23,7 @@ export const SwapBox = () => {
   useDetectDepositConfirmation();
 
   return (
-    <div className="bg-base-100 rounded-xl w-[500px] min-h-[500px] h-auto z-10">
+    <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
       <ModalWindow />
       <EvmAssetWarningModal />
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
