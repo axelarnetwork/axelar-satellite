@@ -59,14 +59,14 @@ export const AddressFiller = () => {
     return (
       <div
         key={destChain?.module}
-        className="bg-gradient-to-b from-[#E8821E] to-[#F89C35] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
+        className="bg-gradient-to-b from-[#E8821E] to-[#F89C35] h-full w-28 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
         onClick={
           wagmiConnected ? fillEvmDestinationAddress : handleMetamaskConnect
         }
       >
         <div className="flex justify-around items-center h-full w-full bg-[#291e14] rounded-lg p-3">
           <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#E8821E] to-[#F89C35]">
-            {wagmiConnected ? "Autofill from" : "Connect"}
+            {wagmiConnected ? "Autofill" : "Connect"}
           </div>
 
           <div className="relative flex items-center h-full">
@@ -84,12 +84,12 @@ export const AddressFiller = () => {
   return (
     <div
       key={destChain?.module}
-      className="bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full w-32 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
+      className="bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full w-28 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
       onClick={fillCosmosDestinationAddress}
     >
       <div className="flex justify-around items-center h-full w-full bg-gradient-to-b from-[#21374b] to-[#292d4b] rounded-lg p-3">
         <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF]">
-          {keplrConnected ? "Autofill from" : "Connect"}
+          {keplrConnected ? "Autofill" : "Connect"}
         </div>
 
         <div className="relative flex items-center h-full">
