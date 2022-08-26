@@ -4,32 +4,36 @@ import { useAccount, useConnect } from "wagmi";
 import { useRouter } from "next/router";
 
 import { useSwapStore, useWalletStore } from "../../../store";
-import { useGetKeplerWallet, useHasKeplerWallet } from "../../../hooks";
+import { useGetKeplerWallet } from "../../../hooks";
 import { getCosmosChains } from "../../../config/web3";
 
 export const AddressFiller = () => {
   const { address } = useAccount();
   const { allAssets, setDestAddress } = useSwapStore((state) => state);
   const { connect, connectors } = useConnect();
-  const { wagmiConnected, keplrConnected } = useWalletStore((state) => state);
+  const { wagmiConnected, keplrConnected, setKeplrConnected } = useWalletStore(
+    (state) => state
+  );
   const { destChain } = useSwapStore((state) => state);
   const isEvm = destChain?.module === "evm";
   const router = useRouter();
-  const hasKeplerWallet = useHasKeplerWallet();
   const keplerWallet = useGetKeplerWallet();
 
-  function updateQueryParams() {
+  function updateQueryAddress(_address: string) {
     router.push({
       pathname: router.pathname,
       query: {
         ...router.query,
-        destination_address: address,
+        destination_address: _address,
       },
     });
   }
 
   function fillEvmDestinationAddress() {
-    if (address) setDestAddress(address);
+    if (address) {
+      setDestAddress(address);
+      updateQueryAddress(address);
+    }
   }
 
   function handleMetamaskConnect() {
@@ -38,17 +42,17 @@ export const AddressFiller = () => {
   }
 
   async function fillCosmosDestinationAddress() {
-    if (hasKeplerWallet) {
-      const chain = getCosmosChains(allAssets).find(
-        (_chain) => _chain.chainIdentifier === destChain.chainName
-      );
-      if (!chain) return;
-      await keplerWallet?.experimentalSuggestChain(chain);
-      await keplerWallet?.enable(chain.chainId as string);
-      const address = await keplerWallet?.getKey(chain.chainId as string);
-      setDestAddress(address?.bech32Address as string);
-      updateQueryParams();
-    }
+    const chain = getCosmosChains(allAssets).find(
+      (_chain) => _chain.chainIdentifier === destChain.chainName
+    );
+    if (!chain) return;
+    await keplerWallet?.experimentalSuggestChain(chain);
+    await keplerWallet?.enable(chain.chainId as string);
+    const address = await keplerWallet?.getKey(chain.chainId as string);
+    setDestAddress(address?.bech32Address as string);
+    setKeplrConnected(true);
+
+    updateQueryAddress(address?.bech32Address as string);
   }
 
   if (isEvm)
