@@ -6,15 +6,15 @@ import {
   useWalletStore,
 } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
-import { SwapOrigin } from "../../../utils/enums";
 import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
 import { copyToClipboard } from "../../../utils";
 
 import { convertChainName } from "../../../utils/transformers";
 
 export const WaitDepositState = () => {
-  const { asset, depositAddress, destAddress, swapOrigin, srcChain } =
-    useSwapStore((state) => state);
+  const { depositAddress, destAddress, srcChain } = useSwapStore(
+    (state) => state
+  );
   const { wagmiConnected, keplrConnected } = useWalletStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
