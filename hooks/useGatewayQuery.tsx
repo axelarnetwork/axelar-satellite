@@ -4,7 +4,7 @@ import { useSwapStore } from "../store";
 import { formatUnits } from "ethers/lib/utils";
 import { useAxelarRPCQuery } from "./api/useAxelarRPCQuery";
 import { useEffect, useState } from "react";
-import { testnetChains as evmTestnetChains } from "../config/web3/evm/chains.testnet";
+import { testnetChains as evmTestnetChains } from "../config/web3/evm/testnet";
 
 const UseGatewayQuery = () => {
   const { asset, destChain } = useSwapStore((state) => state);
