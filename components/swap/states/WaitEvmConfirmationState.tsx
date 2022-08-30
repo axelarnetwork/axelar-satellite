@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { SpinnerRoundOutlined } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
-import { ENVIRONMENT } from "../../../config/constants";
+import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
 import {
   getDestChainId,
   getSelectedAssetSymbol,
@@ -64,14 +64,23 @@ export const WaitEvmConfirmationState = () => {
           </div>
         </div>
         <div>
-          <h4 className="text-sm">Transaction Hash</h4>
+          <h4 className="text-sm">Deposit Confirmation</h4>
           <div className="flex justify-center text-sm font-bold text-info gap-x-2">
             <AddressShortener value={txInfo.sourceTxHash} />
-            <div
-              className="cursor-pointer"
-              onClick={() => copyToClipboard(txInfo.sourceTxHash as string)}
-            >
-              <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+            <div className="flex items-center gap-x-2">
+              <div
+                className="cursor-pointer"
+                onClick={() => copyToClipboard(txInfo.sourceTxHash as string)}
+              >
+                <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+              </div>
+              <a
+                href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
+                target="_blank"
+                rel="noopener"
+              >
+                <Image src={"/assets/ui/link.svg"} height={16} width={16} />
+              </a>
             </div>
           </div>
         </div>
