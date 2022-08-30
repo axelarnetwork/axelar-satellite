@@ -1,6 +1,10 @@
 import React from "react";
 import Image from "next/image";
-import { useSwapStore, useWalletStore } from "../../../store";
+import {
+  getSelectedAssetSymbol,
+  useSwapStore,
+  useWalletStore,
+} from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
 import { SwapOrigin } from "../../../utils/enums";
 import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
@@ -12,14 +16,14 @@ export const WaitDepositState = () => {
   const { asset, depositAddress, destAddress, swapOrigin, srcChain } =
     useSwapStore((state) => state);
   const { wagmiConnected, keplrConnected } = useWalletStore((state) => state);
+  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   function renderTransferInfo() {
     return (
       <div>
         <div>
-          Please transfer{" "}
-          <strong>{asset?.chain_aliases[srcChain.chainName].assetName}</strong>{" "}
-          on {convertChainName(srcChain.chainName)} to
+          Please transfer <strong>{selectedAssetSymbol}</strong> on{" "}
+          {convertChainName(srcChain.chainName)} to
         </div>
       </div>
     );
