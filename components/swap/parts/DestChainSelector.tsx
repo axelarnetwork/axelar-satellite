@@ -96,7 +96,7 @@ export const DestChainSelector = () => {
                       e.currentTarget.srcset = defaultChainImg;
                     }}
                   />
-                  <span>{chain.chainName}</span>
+                  <span className="capitalize">{chain.chainName}</span>
                 </button>
               </li>
             );
