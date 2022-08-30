@@ -26,7 +26,7 @@ import { SwapStatus } from "../../../../utils/enums";
 import { SpinnerRoundOutlined } from "spinners-react";
 
 export const CosmosWalletTransfer = () => {
-  const allAssets = useSwapStore(state => state.allAssets);
+  const allAssets = useSwapStore((state) => state.allAssets);
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
 
@@ -54,12 +54,6 @@ export const CosmosWalletTransfer = () => {
 
     setCurrentAsset(assetData);
     setTokenAddress(assetData?.tokenAddress as string);
-
-    console.log({
-      assetCommonKey,
-      currentAsset: assetData,
-      tokenAddress: assetData?.tokenAddress,
-    });
   }, [asset]);
 
   function checkMinAmount(amount: string, minAmount?: number) {
@@ -87,10 +81,6 @@ export const CosmosWalletTransfer = () => {
     await keplerWallet?.experimentalSuggestChain(chain);
     await keplerWallet?.enable(chainId as string);
 
-    console.log({
-      currentAsset,
-    });
-
     const offlineSigner = (await keplerWallet?.getOfflineSignerAuto(
       chainId as string
     )) as OfflineSigner;
@@ -100,10 +90,6 @@ export const CosmosWalletTransfer = () => {
       chain.rpc,
       offlineSigner
     );
-    console.log({
-      tokensToTransfer,
-      "currentAsset?.decimals": currentAsset?.decimals,
-    });
 
     const minAmountOk = checkMinAmount(
       tokensToTransfer,
@@ -158,6 +144,7 @@ export const CosmosWalletTransfer = () => {
         fee
       )
       .then((e) => {
+        console.log("CosmosWalletTransfer");
         setTxInfo({
           sourceTxHash: e.transactionHash,
         });
@@ -166,10 +153,6 @@ export const CosmosWalletTransfer = () => {
         // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
       })
       .catch((error) => console.log(error));
-
-    console.log({
-      res: result,
-    });
 
     // let result
     // try {
