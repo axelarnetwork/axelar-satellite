@@ -4,7 +4,11 @@ import Image from "next/image";
 import { SpinnerRoundOutlined } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
 import { ENVIRONMENT } from "../../../config/constants";
-import { getDestChainId, useSwapStore } from "../../../store";
+import {
+  getDestChainId,
+  getSelectedAssetSymbol,
+  useSwapStore,
+} from "../../../store";
 import { copyToClipboard } from "../../../utils";
 import { SwapStatus } from "../../../utils/enums";
 import { AddressShortener, InputWrapper } from "../../common";
@@ -26,6 +30,7 @@ export const WaitEvmConfirmationState = () => {
   const tokenAddress = asset?.chain_aliases[chainAlias]?.tokenAddress;
 
   const destChainId = useSwapStore(getDestChainId);
+  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   useContractEvent({
     chainId: destChainId as number,
@@ -82,8 +87,7 @@ export const WaitEvmConfirmationState = () => {
               Transfer on {srcChain.chainName} detected!
             </span>
             <span className="text-base font-light text-gray-200">
-              Transfering your {asset?.common_key[ENVIRONMENT]} to{" "}
-              {destChain.chainName}...
+              Transfering your {selectedAssetSymbol} to {destChain.chainName}...
             </span>
           </div>
         </div>
