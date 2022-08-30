@@ -18,7 +18,7 @@ span {
 }
 
 .btn-primary {
-  @apply bg-gradient-to-r from-[#0062FE] to-[#01F8F9] text-white border-0;
+  @apply bg-[#388dc9] text-white border-0;
 }
 
 .animate__animated.animate__pulse {
