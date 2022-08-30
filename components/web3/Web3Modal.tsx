@@ -65,6 +65,7 @@ export const Web3Modal = () => {
       axelar.chainId
     )) as OfflineSigner;
     const [account] = await _signer.getAccounts();
+    if (keplrConnected) toast.error("Kepler already connected");
     setKeplrConnected(true);
   }
 

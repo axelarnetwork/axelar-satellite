@@ -38,14 +38,23 @@ export const ConfirmTransferState = () => {
         </div>
 
         <div>
-          <h4>Source Transaction Hash</h4>
+          <h4>Deposit Confirmation</h4>
           <div className="flex justify-center mx-auto font-bold text-center text-info gap-x-2">
             <AddressShortener value={txInfo.sourceTxHash} />
-            <div
-              className="cursor-pointer"
-              onClick={() => copyToClipboard(txInfo.sourceTxHash!)}
-            >
-              <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+            <div className="flex items-center gap-x-2">
+              <div
+                className="cursor-pointer"
+                onClick={() => copyToClipboard(txInfo.sourceTxHash!)}
+              >
+                <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+              </div>
+              <a
+                href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Image src={"/assets/ui/link.svg"} height={16} width={16} />
+              </a>
             </div>
           </div>
         </div>
@@ -55,7 +64,7 @@ export const ConfirmTransferState = () => {
             className="flex items-center text-primary hover:underline gap-x-2"
             href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
             target="_blank"
-            rel="noreferrer nofollow noopener"
+            rel="noreferrer"
           >
             <span>Visit axelarscan for more information</span>
             <Image src={"/assets/ui/link.svg"} height={16} width={16} />

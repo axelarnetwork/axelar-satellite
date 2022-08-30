@@ -5,7 +5,7 @@ import { Environment } from "./enums";
 export function copyToClipboard(value: string) {
   if (!value) return;
   navigator.clipboard.writeText(value);
-  toast.success("copied to clipboard!");
+  toast.success("Copied to Clipboard!");
 }
 
 export function buildDepositConfirmationRoomId(
