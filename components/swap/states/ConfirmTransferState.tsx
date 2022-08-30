@@ -51,7 +51,7 @@ export const ConfirmTransferState = () => {
               <a
                 href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
                 target="_blank"
-                rel="noopener"
+                rel="noreferrer"
               >
                 <Image src={"/assets/ui/link.svg"} height={16} width={16} />
               </a>
@@ -64,7 +64,7 @@ export const ConfirmTransferState = () => {
             className="flex items-center text-primary hover:underline gap-x-2"
             href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
             target="_blank"
-            rel="noopener"
+            rel="noreferrer"
           >
             <span>Visit axelarscan for more information</span>
             <Image src={"/assets/ui/link.svg"} height={16} width={16} />

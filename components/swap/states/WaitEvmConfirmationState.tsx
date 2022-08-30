@@ -77,7 +77,7 @@ export const WaitEvmConfirmationState = () => {
               <a
                 href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
                 target="_blank"
-                rel="noopener"
+                rel="noreferrer"
               >
                 <Image src={"/assets/ui/link.svg"} height={16} width={16} />
               </a>
