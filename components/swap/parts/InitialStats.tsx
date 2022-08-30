@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Big from "big.js";
 
 import { ENVIRONMENT } from "../../../config/constants";
 import { useSwapStore } from "../../../store";
 import { StatsWrapper } from "../../common";
+import { useAxelarRPCQuery } from "../../../hooks/api/useAxelarRPCQuery";
+import { useContract, useSigner } from "wagmi";
+import gatewayABI from "../../../data/abi/axelarGateway.json";
+import UseGatewayQuery from "../../../hooks/useGatewayQuery";
 
 export const InitialStats = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
+  const [maxXferAmt, setMaxXferAmt] = useState<null | number>(null);
+  const { api } = useAxelarRPCQuery();
+  const [gatewayAddr, setGatewayAddr] = useState<string>("");
+
+  useEffect(() => {
+    (async () => {
+      if (!api) return;
+      if (destChain.module !== "evm") return setMaxXferAmt(null);
+      const chain = srcChain?.chainName.toLowerCase();
+      setGatewayAddr(await (await api?.evm?.GatewayAddress({ chain })).address);
+    })();
+  }, [destChain, api, srcChain]);
 
   function renderWaitTime() {
     if (!srcChain) return "";
@@ -36,7 +52,15 @@ export const InitialStats = () => {
 
   function renderAssetSymbol() {
     if (!asset) return null;
-    return asset.common_key[ENVIRONMENT];
+    const assetForChain =
+      asset.chain_aliases[srcChain?.chainName?.toLowerCase()];
+    if (!assetForChain) return null;
+    return assetForChain.assetName;
+  }
+
+  function renderMax() {
+    if (!gatewayAddr) return null;
+    return <UseGatewayQuery gatewayAddr={gatewayAddr} />
   }
 
   return (
@@ -46,6 +70,12 @@ export const InitialStats = () => {
           <span>Relayer Gas Fees:</span>
           <span className="font-semibold">
             {renderGasFee()} {renderAssetSymbol()}
+          </span>
+        </li>
+        <li className="flex justify-between">
+          <span>Maximum Transfer Amount:</span>
+          <span className="font-semibold">
+            {renderMax()}
           </span>
         </li>
         <li className="flex justify-between ">
