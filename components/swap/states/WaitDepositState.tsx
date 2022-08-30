@@ -34,7 +34,9 @@ export const WaitDepositState = () => {
 
     return (
       <div>
-        <div className="w-48 mx-auto my-1 text-xs divider">OR USE</div>
+        <div className="px-10 mx-auto my-1 text-xs divider">
+          OR USE FROM SATELLITE
+        </div>
         {srcChain.module === "evm" && <EvmWalletTransfer />}
         {srcChain.module === "axelarnet" && <CosmosWalletTransfer />}
       </div>
