@@ -24,13 +24,13 @@ const SatelliteLogo = () => {
         <div className="relative">
           <div className="text-4xl font-bold">Satellite</div>
           <div className="absolute">
-            <div>
+            <a href="https://axelar.network">
               <img
                 className="ml-5"
                 src="/assets/ui/powered.logo.svg"
                 width={150}
               />
-            </div>
+            </a>
           </div>
         </div>
       </div>
