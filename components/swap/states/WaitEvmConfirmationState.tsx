@@ -84,7 +84,9 @@ export const WaitEvmConfirmationState = () => {
           />
           <div className="flex flex-col text-center">
             <span className="text-base">
-              Transfer on {srcChain.chainName} detected!
+              Transfer on{" "}
+              <strong className="capitalize">{srcChain.chainName}</strong>{" "}
+              detected!
             </span>
             <span className="text-base font-light text-gray-200">
               Transfering your {selectedAssetSymbol} to {destChain.chainName}...
