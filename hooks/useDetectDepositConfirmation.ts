@@ -54,22 +54,24 @@ export const useDetectDepositConfirmation = () => {
 
     socket.on("bridge-event", (data) => {
       const ok = checkPayload(data);
-      if (!txInfo.sourceTxHash)
-        if (destChain.module === "evm") {
-          setTxInfo({
-            sourceTxHash: data.transactionHash,
-            destStartBlockNumber: blockNumber,
-          });
-        } else {
-          setTxInfo({
-            sourceTxHash: data.transactionHash,
-          });
-        }
-      if (ok) setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+      if (!ok) return;
+
+      if (destChain.module === "evm") {
+        setTxInfo({
+          sourceTxHash: data?.transactionHash || txInfo?.sourceTxHash || "",
+          destStartBlockNumber: blockNumber || 1,
+        });
+      } else {
+        setTxInfo({
+          sourceTxHash: data?.transactionHash || txInfo?.sourceTxHash || "",
+        });
+      }
+
+      setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
     });
 
     return () => {
       socket.off("bridge-event");
     };
-  }, [depositAddress]);
+  }, [depositAddress, txInfo]);
 };
