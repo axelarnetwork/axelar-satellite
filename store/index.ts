@@ -67,6 +67,17 @@ export const getReservedAddresses = memoize(
   }
 );
 
+export const getSelectedAssetSymbol = memoize(
+  (state: { asset: AssetConfig | null; srcChain: ChainInfo }) => {
+    const chainName = state?.srcChain?.chainName?.toLowerCase();
+    if (!chainName) return "";
+    const assetInfo = state?.asset?.chain_aliases[chainName];
+    if (!assetInfo) return "";
+
+    return assetInfo?.assetSymbol || "";
+  }
+);
+
 interface TxInfo {
   sourceTxHash?: string;
   destTxHash?: string;
@@ -282,11 +293,14 @@ interface WalletStore extends WalletState {
   setKeplrConnected: (state: boolean) => void;
 }
 export const useWalletStore = create<WalletStore>()(
-  persist((set, get) => ({
-    ...initialWalletState,
-    setWagmiConnected: (wagmiConnected) => set({ wagmiConnected }),
-    setKeplrConnected: (keplrConnected) => set({ keplrConnected }),
-  }), { name: "walletStore", })
+  persist(
+    (set, get) => ({
+      ...initialWalletState,
+      setWagmiConnected: (wagmiConnected) => set({ wagmiConnected }),
+      setKeplrConnected: (keplrConnected) => set({ keplrConnected }),
+    }),
+    { name: "walletStore" }
+  )
 );
 
 interface ApplicationState {
