@@ -4,7 +4,7 @@ import { Environment } from "../../utils/enums";
 import { ENVIRONMENT } from "../constants";
 
 // wagmi ready chains
-import { testnetChains as evmTestnetChains } from "./evm/chains.testnet";
+import { testnetChains as evmTestnetChains } from "./evm/testnet";
 import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
 import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";
 import { CosmosChain } from "./cosmos/interface";
