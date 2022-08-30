@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { io } from "socket.io-client";
+import { useBlockNumber, useNetwork } from "wagmi";
 
 import { SOCKET_API } from "../config/constants";
 import { useSwapStore } from "../store";
@@ -16,7 +17,24 @@ const socket = io(SOCKET_API, {
 });
 
 export const useDetectDepositConfirmation = () => {
-  const { srcChain, depositAddress, setSwapStatus } = useSwapStore();
+  const {
+    srcChain,
+    destChain,
+    depositAddress,
+    setSwapStatus,
+    txInfo,
+    setTxInfo,
+  } = useSwapStore();
+  const { chains } = useNetwork();
+
+  const destChainId = chains.find(
+    (chain) => chain.network === destChain.chainName.toLowerCase()
+  )?.id;
+
+  const { data: blockNumber } = useBlockNumber({
+    chainId: destChainId,
+    enabled: !!destChainId && destChain.module === "evm",
+  });
 
   function checkPayload(data: any) {
     if (data.Type !== "depositConfirmation") return;
@@ -36,11 +54,24 @@ export const useDetectDepositConfirmation = () => {
 
     socket.on("bridge-event", (data) => {
       const ok = checkPayload(data);
-      if (ok) setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+      if (!ok) return;
+
+      if (destChain.module === "evm") {
+        setTxInfo({
+          sourceTxHash: data?.transactionHash || txInfo?.sourceTxHash || "",
+          destStartBlockNumber: blockNumber || 1,
+        });
+      } else {
+        setTxInfo({
+          sourceTxHash: data?.transactionHash || txInfo?.sourceTxHash || "",
+        });
+      }
+
+      setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
     });
 
     return () => {
       socket.off("bridge-event");
     };
-  }, [depositAddress]);
+  }, [depositAddress, txInfo]);
 };

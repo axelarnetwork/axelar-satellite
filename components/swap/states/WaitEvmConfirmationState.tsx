@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import { SpinnerCircular, SpinnerRoundOutlined } from "spinners-react";
+import { SpinnerRoundOutlined } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
 import { ENVIRONMENT } from "../../../config/constants";
 import { getDestChainId, useSwapStore } from "../../../store";
