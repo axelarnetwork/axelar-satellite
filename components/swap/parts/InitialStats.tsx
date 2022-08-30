@@ -1,9 +1,9 @@
-import React from "react";
 import Big from "big.js";
 
 import { ENVIRONMENT } from "../../../config/constants";
 import { useSwapStore } from "../../../store";
 import { StatsWrapper } from "../../common";
+import UseGatewayQuery from "../../../hooks/useGatewayQuery";
 
 export const InitialStats = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -36,7 +36,20 @@ export const InitialStats = () => {
 
   function renderAssetSymbol() {
     if (!asset) return null;
-    return asset.common_key[ENVIRONMENT];
+    const assetForChain =
+      asset.chain_aliases[srcChain?.chainName?.toLowerCase()];
+    if (!assetForChain) return null;
+    return assetForChain.assetName;
+  }
+
+  function renderMax() {
+    const { maxTransferAmount, jsx } = UseGatewayQuery();
+    return maxTransferAmount && +maxTransferAmount > 0 ? (
+      <li className="flex justify-between">
+        <span>Maximum Transfer Amount:</span>
+        <span className="font-semibold">{jsx}</span>
+      </li>
+    ) : null;
   }
 
   return (
@@ -48,6 +61,7 @@ export const InitialStats = () => {
             {renderGasFee()} {renderAssetSymbol()}
           </span>
         </li>
+        {destChain?.module === "evm" && renderMax()}
         <li className="flex justify-between ">
           <span>Estimated wait time:</span>
           <span className="font-semibold">{renderWaitTime()}</span>
