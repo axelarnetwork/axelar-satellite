@@ -1,9 +1,13 @@
 import { Chain } from "wagmi";
 
-const ethereum: Chain = {
+interface ChainExtension extends Chain {
+  networkNameOverride: string;
+}
+const ethereum: ChainExtension = {
   id: 3,
   name: "Ropsten Testnet",
   network: "ropsten",
+  networkNameOverride: "ethereum",
   nativeCurrency: {
     name: "Ether",
     symbol: "ETH",
@@ -21,10 +25,11 @@ const ethereum: Chain = {
   testnet: true,
 };
 
-const avalanche: Chain = {
+const avalanche: ChainExtension = {
   id: 43113,
   name: "Avalanche FUJI C-Chain",
   network: "avalanche",
+  networkNameOverride: "avalanche",
   nativeCurrency: {
     decimals: 18,
     name: "Avalanche",
@@ -42,10 +47,11 @@ const avalanche: Chain = {
   testnet: true,
 };
 
-const moonbeam: Chain = {
+const moonbeam: ChainExtension = {
   id: 1287,
   name: "Moonbase Alpha",
   network: "moonbeam",
+  networkNameOverride: "moonbeam",
   nativeCurrency: {
     decimals: 18,
     name: "Glimmer",
@@ -63,10 +69,11 @@ const moonbeam: Chain = {
   testnet: true,
 };
 
-const fantom: Chain = {
+const fantom: ChainExtension = {
   id: 4002,
   name: "Fantom Testnet",
   network: "fantom",
+  networkNameOverride: "fantom",
   nativeCurrency: {
     name: "Fantom",
     symbol: "FTM",
@@ -84,10 +91,11 @@ const fantom: Chain = {
   testnet: true,
 };
 
-const polygon: Chain = {
+const polygon: ChainExtension = {
   id: 80001,
   name: "Polygon Testnet",
   network: "polygon",
+  networkNameOverride: "polygon",
   nativeCurrency: {
     name: "MATIC",
     symbol: "MATIC",
@@ -105,10 +113,11 @@ const polygon: Chain = {
   testnet: true,
 };
 
-const aurora: Chain = {
+const aurora: ChainExtension = {
   id: 131_316_555,
   name: "Aurora Testnet",
   network: "aurora",
+  networkNameOverride: "aurora",
   nativeCurrency: {
     name: "ETH",
     symbol: "ETH",

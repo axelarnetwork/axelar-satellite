@@ -6,7 +6,7 @@ import { useAxelarRPCQuery } from "./api/useAxelarRPCQuery";
 import { useEffect, useState } from "react";
 import { testnetChains as evmTestnetChains } from "../config/web3/evm/chains.testnet";
 
-const UseGatewayQuery = (props: any) => {
+const UseGatewayQuery = () => {
   const { asset, destChain } = useSwapStore((state) => state);
   const [gatewayAddr, setGatewayAddr] = useState<string>("");
   const { api } = useAxelarRPCQuery();
@@ -14,14 +14,12 @@ const UseGatewayQuery = (props: any) => {
   const { data: maxTransferAmount, error } = useContractRead({
     addressOrName: gatewayAddr,
     chainId: evmTestnetChains.find(
-      (chain) => chain.network === destChain.chainName.toLowerCase()
+      (chain) => chain.networkNameOverride === destChain.chainName.toLowerCase()
     )?.id,
     contractInterface: gatewayABI,
     functionName: "tokenMintLimit",
     enabled: !!(gatewayAddr && asset && destChain && api),
-    args: [
-      asset?.chain_aliases[destChain?.chainName.toLowerCase()].assetSymbol,
-    ],
+    args: asset?.chain_aliases[destChain?.chainName.toLowerCase()].assetSymbol,
   });
 
   useEffect(() => {
@@ -35,13 +33,16 @@ const UseGatewayQuery = (props: any) => {
     })();
   }, [destChain, api]);
 
-  return maxTransferAmount ? (
-    <div>
-      {formatUnits(
-        maxTransferAmount,
-        asset?.chain_aliases[destChain?.chainName.toLowerCase()]?.decimals
-      )}
-    </div>
-  ) : null;
+  return {
+    maxTransferAmount,
+    jsx: maxTransferAmount ? (
+      <div>
+        {formatUnits(
+          maxTransferAmount,
+          asset?.chain_aliases[destChain?.chainName.toLowerCase()]?.decimals
+        )}
+      </div>
+    ) : null,
+  };
 };
 export default UseGatewayQuery;

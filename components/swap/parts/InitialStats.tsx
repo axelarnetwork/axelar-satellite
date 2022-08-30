@@ -43,7 +43,13 @@ export const InitialStats = () => {
   }
 
   function renderMax() {
-    return <UseGatewayQuery />;
+    const { maxTransferAmount, jsx } = UseGatewayQuery();
+    return maxTransferAmount && +maxTransferAmount > 0 ? (
+      <li className="flex justify-between">
+        <span>Maximum Transfer Amount:</span>
+        <span className="font-semibold">{jsx}</span>
+      </li>
+    ) : null;
   }
 
   return (
@@ -55,12 +61,7 @@ export const InitialStats = () => {
             {renderGasFee()} {renderAssetSymbol()}
           </span>
         </li>
-        {destChain?.module === "evm" && (
-          <li className="flex justify-between">
-            <span>Maximum Transfer Amount:</span>
-            <span className="font-semibold">{renderMax()}</span>
-          </li>
-        )}
+        {destChain?.module === "evm" && renderMax()}
         <li className="flex justify-between ">
           <span>Estimated wait time:</span>
           <span className="font-semibold">{renderWaitTime()}</span>
