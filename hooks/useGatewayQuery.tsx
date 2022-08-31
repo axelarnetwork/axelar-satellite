@@ -4,7 +4,7 @@ import { useSwapStore } from "../store";
 import { formatUnits } from "ethers/lib/utils";
 import { useAxelarRPCQuery } from "./api/useAxelarRPCQuery";
 import { useEffect, useState } from "react";
-import { testnetChains as evmTestnetChains } from "../config/web3/evm/testnet";
+import { getWagmiChains } from "../config/web3";
 
 const UseGatewayQuery = () => {
   const { asset, destChain } = useSwapStore((state) => state);
@@ -13,7 +13,7 @@ const UseGatewayQuery = () => {
 
   const { data: maxTransferAmount, error } = useContractRead({
     addressOrName: gatewayAddr,
-    chainId: evmTestnetChains.find(
+    chainId: getWagmiChains().find(
       (chain) => chain.networkNameOverride === destChain.chainName.toLowerCase()
     )?.id,
     contractInterface: gatewayABI,
