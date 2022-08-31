@@ -43,13 +43,15 @@ export const InitialStats = () => {
   }
 
   function renderMax() {
-    const { maxTransferAmount, jsx } = UseGatewayQuery();
-    return maxTransferAmount && +maxTransferAmount > 0 ? (
-      <li className="flex justify-between">
-        <span>Maximum Transfer Amount:</span>
-        <span className="font-semibold">{jsx}</span>
-      </li>
-    ) : null;
+    const max = <UseGatewayQuery />;
+    return (
+      max && (
+        <li className="flex justify-between">
+          <span>Maximum Transfer Amount:</span>
+          <span className="font-semibold">{max}</span>
+        </li>
+      )
+    );
   }
 
   return (

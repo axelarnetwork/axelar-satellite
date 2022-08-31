@@ -34,17 +34,13 @@ const UseGatewayQuery = () => {
     })();
   }, [destChain, api]);
 
-  return {
-    maxTransferAmount,
-    jsx: maxTransferAmount ? (
-      <div>
-        {commify(formatUnits(
-          BigNumber.from(maxTransferAmount).div(4),
-          asset?.decimals,
-        ))}{" "}
-        {asset?.chain_aliases[destChain?.chainName.toLowerCase()].assetSymbol}
-      </div>
-    ) : null,
-  };
+  return maxTransferAmount && +maxTransferAmount > 0 ? (
+    <div>
+      {commify(
+        formatUnits(BigNumber.from(maxTransferAmount).div(4), asset?.decimals)
+      )}{" "}
+      {asset?.chain_aliases[destChain?.chainName.toLowerCase()].assetSymbol}
+    </div>
+  ) : null;
 };
 export default UseGatewayQuery;
