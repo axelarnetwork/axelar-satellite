@@ -100,16 +100,16 @@ export const TokenSelector = () => {
   }
 
   function handleOnMaxButtonClick() {
-    if (max && (+max - (+balance) < 0)) setTokensToTransfer(balance);
+    if (max && +max - +balance < 0) setTokensToTransfer(balance);
     if (Number(balance)) setTokensToTransfer(balance);
   }
 
   function renderTokenInput() {
     if (!srcChain) return null;
     return (
-      <div className="text-end">
+      <div className="w-2/4 text-end">
         <input
-          className="w-24 text-lg font-bold text-right bg-transparent outline-none"
+          className="w-full text-lg font-bold text-right bg-transparent outline-none"
           type="number"
           value={tokensToTransfer}
           placeholder="0"
