@@ -4,11 +4,13 @@ import { ENVIRONMENT } from "../../../config/constants";
 import { useSwapStore } from "../../../store";
 import { StatsWrapper } from "../../common";
 import UseGatewayQuery from "../../../hooks/useGatewayQuery";
+import { commify } from "ethers/lib/utils";
 
 export const InitialStats = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
+  const max = UseGatewayQuery();
 
   function renderWaitTime() {
     if (!srcChain) return "";
@@ -43,12 +45,18 @@ export const InitialStats = () => {
   }
 
   function renderMax() {
-    const max = <UseGatewayQuery />;
     return (
       max && (
         <li className="flex justify-between">
           <span>Maximum Transfer Amount:</span>
-          <span className="font-semibold">{max}</span>
+          <span className="font-semibold">
+            {" "}
+            {commify(max)}{" "}
+            {
+              asset?.chain_aliases[destChain?.chainName.toLowerCase()]
+                .assetSymbol
+            }
+          </span>
         </li>
       )
     );

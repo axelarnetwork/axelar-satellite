@@ -1,10 +1,10 @@
 import { useContractRead } from "wagmi";
 import gatewayABI from "../data/abi/axelarGateway.json";
 import { useSwapStore } from "../store";
-import { commify, formatUnits } from "ethers/lib/utils";
 import { useAxelarRPCQuery } from "./api/useAxelarRPCQuery";
 import { useEffect, useState } from "react";
 import { getWagmiChains } from "../config/web3";
+import { formatUnits } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
 
 const UseGatewayQuery = () => {
@@ -19,13 +19,20 @@ const UseGatewayQuery = () => {
     )?.id,
     contractInterface: gatewayABI,
     functionName: "tokenMintLimit",
-    enabled: !!(gatewayAddr && asset && destChain && api),
+    enabled: !!(
+      gatewayAddr &&
+      asset &&
+      destChain &&
+      api &&
+      destChain.module === "evm"
+    ),
     args: asset?.chain_aliases[destChain?.chainName.toLowerCase()].assetSymbol,
   });
 
   useEffect(() => {
     (async () => {
       if (!api) return;
+      if (destChain.module !== "evm") return;
       const chain = destChain?.chainName.toLowerCase();
       const gatewayAddress = await (
         await api?.evm?.GatewayAddress({ chain })
@@ -34,13 +41,8 @@ const UseGatewayQuery = () => {
     })();
   }, [destChain, api]);
 
-  return maxTransferAmount && +maxTransferAmount > 0 ? (
-    <div>
-      {commify(
-        formatUnits(BigNumber.from(maxTransferAmount).div(4), asset?.decimals)
-      )}{" "}
-      {asset?.chain_aliases[destChain?.chainName.toLowerCase()].assetSymbol}
-    </div>
-  ) : null;
+  return maxTransferAmount
+    ? formatUnits(BigNumber.from(maxTransferAmount).div(4), asset?.decimals) 
+    : null;
 };
 export default UseGatewayQuery;
