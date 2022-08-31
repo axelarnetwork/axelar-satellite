@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useSwapStore } from "../../../store";
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
@@ -40,6 +40,20 @@ export const TopFlows = () => {
     selectableAssetList,
     allChains,
   } = useSwapStore();
+  const [menuOpened, setMenuOpened] = useState(false);
+  const menu = useRef(null);
+
+  useEffect(() => {
+    const el = document;
+    if (!menuOpened) {
+      (el?.activeElement as any)?.blur();
+    } else if (
+      menuOpened &&
+      !(menu?.current as any)?.contains(el.activeElement)
+    ) {
+      setMenuOpened(false);
+    }
+  }, [menuOpened]);
 
   function handleOnFlow1() {
     const avax = allChains.find((chain) =>
@@ -55,6 +69,7 @@ export const TopFlows = () => {
     setAsset(asset);
     setSrcChain(avax);
     setDestChain(moonbeam);
+    setMenuOpened(false);
   }
 
   function handleOnFlow2() {
@@ -71,6 +86,7 @@ export const TopFlows = () => {
     setAsset(asset);
     setSrcChain(osmo);
     setDestChain(moonbeam);
+    setMenuOpened(false);
   }
 
   function handleOnFlow3() {
@@ -87,19 +103,24 @@ export const TopFlows = () => {
     setAsset(asset);
     setSrcChain(moonbeam);
     setDestChain(osmo);
+    setMenuOpened(false);
   }
 
   return (
-    <div className="dropdown dropdown-end">
+    <div ref={menu} className="dropdown dropdown-end">
       <label
         tabIndex={0}
+        onBlur={(e) => setMenuOpened(false)}
         className="px-3 py-1 rounded-lg border border-[#00a7ff] bg-[#003556] text-[#00a7ff] text-xs cursor-pointer font-semibold"
+        onClick={(e) => setMenuOpened(menuOpened)
+        }
       >
         Top Flows
       </label>
       <ul
         tabIndex={0}
         className="z-50 p-2 shadow shadow-lg gap-y-2 dropdown-content menu bg-neutral rounded-box w-52 top-8"
+        onFocus={(e) => setMenuOpened(true)}
       >
         <li
           onClick={handleOnFlow1}
