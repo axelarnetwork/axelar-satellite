@@ -13,15 +13,10 @@ const SatelliteLogo = () => {
   return (
     <div>
       <div className="relative flex items-center">
-        <div className="relative flex items-center w-16 h-16">
-          <Image
-            layout="intrinsic"
-            width={50}
-            height={50}
-            src="/assets/ui/satellite.logo.svg"
-          />
+        <div className="relative flex items-center w-11 h-11">
+          <Image layout="fill" src="/assets/ui/satellite.logo.svg" />
         </div>
-        <div className="relative">
+        <div className="relative ml-4">
           <div className="text-4xl font-bold">Satellite</div>
           <div className="absolute">
             <a href="https://axelar.network">
