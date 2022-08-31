@@ -1,5 +1,5 @@
 export default {
-  id: 43_114,
+  id: 1284,
   name: "Moonbeam",
   network: "moonbeam",
   networkNameOverride: "moonbeam",
