@@ -1,7 +1,7 @@
 export default {
   id: 1,
-  name: "Ethereum Mainnet",
-  network: "mainnet",
+  name: "Ethereum",
+  network: "homestead",
   networkNameOverride: "ethereum",
   nativeCurrency: {
     name: "Ether",

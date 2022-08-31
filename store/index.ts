@@ -11,6 +11,7 @@ import { SwapOrigin, SwapStatus } from "../utils/enums";
 const getWagmiChainOverride = (wagmiNetwork: string) => {
   const map: Record<string, string> = {
     ropsten: "ethereum",
+    homestead: "ethereum"
   };
   return map[wagmiNetwork] || wagmiNetwork;
 };

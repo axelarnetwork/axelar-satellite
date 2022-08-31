@@ -35,7 +35,12 @@ export const ConfirmTransferState = () => {
   const { depositAddress, destAddress, txInfo, asset, destChain } =
     useSwapStore();
   const { chains, error, isLoading, pendingChainId, switchNetwork } =
-    useSwitchNetwork();
+    useSwitchNetwork({
+      onSuccess(data) {
+        console.log("Success", data);
+        setTimeout(() => addTokenToMetamask(asset as AssetConfig, destChain), 2000);
+      },
+    });
 
   function renderTxConfirmationInfo() {
     return (
@@ -102,8 +107,13 @@ export const ConfirmTransferState = () => {
           <div
             className="flex items-center hover:underline hover:cursor-pointer gap-x-2"
             onClick={() => {
-              switchNetwork?.(getWagmiChains().find(chain => chain.networkNameOverride === destChain.chainName.toLowerCase())?.id);
-              addTokenToMetamask(asset as AssetConfig, destChain)
+              switchNetwork?.(
+                getWagmiChains().find(
+                  (chain) =>
+                    chain.networkNameOverride ===
+                    destChain.chainName.toLowerCase()
+                )?.id
+              );
             }}
           >
             <span>Add token to Metamask</span>
