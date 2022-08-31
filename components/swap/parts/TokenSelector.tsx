@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { useSwapStore, useWalletStore } from "../../../store";
+import {
+  getSelectedAssetSymbol,
+  useSwapStore,
+  useWalletStore,
+} from "../../../store";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapOrigin } from "../../../utils/enums";
 import { useGetAssetBalance } from "../../../hooks";
@@ -25,6 +29,7 @@ export const TokenSelector = () => {
     tokensToTransfer,
     setTokensToTransfer,
   } = useSwapStore((state) => state);
+  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const { wagmiConnected, keplrConnected } = useWalletStore();
   const max = UseGatewayQuery();
 
@@ -159,7 +164,7 @@ export const TokenSelector = () => {
                   <span>
                     {
                       asset.chain_aliases[srcChain.chainName.toLowerCase()]
-                        ?.assetName
+                        ?.assetSymbol
                     }
                   </span>
                 </button>
@@ -206,7 +211,7 @@ export const TokenSelector = () => {
                     e.currentTarget.srcset = defaultAssetImg;
                   }}
                 />
-                <span>{renderAssetName()}</span>
+                <span>{selectedAssetSymbol}</span>
                 <div className="flex items-center">
                   <Image
                     src="/assets/ui/arrow-down.svg"
