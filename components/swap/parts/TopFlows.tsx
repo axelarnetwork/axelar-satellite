@@ -49,7 +49,7 @@ export const TopFlows = () => {
       chain.chainName.toLowerCase().includes("moonbeam")
     ) as ChainInfo;
     const asset = selectableAssetList.find((asset) =>
-      asset.common_key[ENVIRONMENT].includes("uausdc")
+      asset.common_key[ENVIRONMENT].includes("usdc")
     ) as AssetConfig;
 
     setAsset(asset);
@@ -65,7 +65,7 @@ export const TopFlows = () => {
       chain.chainName.toLowerCase().includes("moonbeam")
     ) as ChainInfo;
     const asset = selectableAssetList.find((asset) =>
-      asset.common_key[ENVIRONMENT].includes("uausdc")
+      asset.common_key[ENVIRONMENT].includes("usdc")
     ) as AssetConfig;
 
     setAsset(asset);
@@ -81,7 +81,7 @@ export const TopFlows = () => {
       chain.chainName.toLowerCase().includes("osmosis")
     ) as ChainInfo;
     const asset = selectableAssetList.find((asset) =>
-      asset.common_key[ENVIRONMENT].includes("uausdc")
+      asset.common_key[ENVIRONMENT].includes("usdc")
     ) as AssetConfig;
 
     setAsset(asset);
