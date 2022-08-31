@@ -1,7 +1,4 @@
-import Big from "big.js";
-
-import { ENVIRONMENT } from "../../../config/constants";
-import { useSwapStore } from "../../../store";
+import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
 import { StatsWrapper } from "../../common";
 import UseGatewayQuery from "../../../hooks/useGatewayQuery";
 import { commify } from "ethers/lib/utils";
@@ -9,9 +6,8 @@ import { renderGasFee } from "../../../utils/renderGasFee";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 
 export const InitialStats = () => {
-  const srcChain = useSwapStore((state) => state.srcChain);
-  const destChain = useSwapStore((state) => state.destChain);
-  const asset = useSwapStore((state) => state.asset);
+  const { srcChain, destChain, asset } = useSwapStore((state) => state);
+  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const max = UseGatewayQuery();
 
   function renderWaitTime() {
@@ -25,26 +21,13 @@ export const InitialStats = () => {
     return "~3 minutes";
   }
 
-  function renderAssetSymbol() {
-    if (!asset) return null;
-    const assetForChain =
-      asset.chain_aliases[srcChain?.chainName?.toLowerCase()];
-    if (!assetForChain) return null;
-    return assetForChain.assetName;
-  }
-
   function renderMax() {
     return (
       max && (
         <li className="flex justify-between">
           <span>Maximum Transfer Amount:</span>
           <span className="font-semibold">
-            {" "}
-            {commify(max)}{" "}
-            {
-              asset?.chain_aliases[destChain?.chainName.toLowerCase()]
-                .assetSymbol
-            }
+            {commify(max)} {selectedAssetSymbol}
           </span>
         </li>
       )
@@ -57,7 +40,8 @@ export const InitialStats = () => {
         <li className="flex justify-between">
           <span>Relayer Gas Fees:</span>
           <span className="font-semibold">
-            {renderGasFee(srcChain, destChain, asset as AssetConfig)} {renderAssetSymbol()}
+            {renderGasFee(srcChain, destChain, asset as AssetConfig)}{" "}
+            {selectedAssetSymbol}
           </span>
         </li>
         {destChain?.module === "evm" && renderMax()}
