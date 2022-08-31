@@ -5,13 +5,14 @@ import { erc20ABI } from "wagmi";
 import { BigNumber } from "bignumber.js";
 import { utils } from "ethers";
 import toast from "react-hot-toast";
-import { AssetInfo } from "@axelar-network/axelarjs-sdk";
+import { AssetConfig, AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { SpinnerRoundOutlined } from "spinners-react";
 
 import { useSwapStore } from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
 import { SwapStatus } from "../../../../utils/enums";
 import { useDetectDepositConfirmation } from "../../../../hooks";
+import { renderGasFee } from "../../../../utils/renderGasFee";
 
 export const EvmWalletTransfer = () => {
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
@@ -61,21 +62,26 @@ export const EvmWalletTransfer = () => {
   }, [asset]);
 
   function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit = minAmount || 0;
-    if (new BigNumber(amount || "0") < new BigNumber(minDeposit)) return false;
-    return true;
+    const minDeposit = renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+    console.log("min Deposit",minDeposit);
+    if (new BigNumber(amount || "0") < new BigNumber(minDeposit)) return {minDeposit, minAmountOk: false};
+    return {
+      minDeposit,
+      minAmountOk: true
+    };
   }
 
   async function handleOnTokensTransfer() {
+    console.log(currentAsset);
     // token amount should not be null
-    const minAmountOk = checkMinAmount(
+    const {minAmountOk, minDeposit} = checkMinAmount(
       tokensToTransfer,
       currentAsset?.minDepositAmt
     );
 
     if (!minAmountOk)
       return toast.error(
-        `Token amount to transfer should be bigger than ${currentAsset?.minDepositAmt}`
+        `Token amount to transfer should be bigger than ${minDeposit} ${asset?.chain_aliases[srcChain.chainName.toLowerCase()].assetSymbol}`
       );
 
     await writeAsync({

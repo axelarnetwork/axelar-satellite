@@ -5,6 +5,8 @@ import { useSwapStore } from "../../../store";
 import { StatsWrapper } from "../../common";
 import UseGatewayQuery from "../../../hooks/useGatewayQuery";
 import { commify } from "ethers/lib/utils";
+import { renderGasFee } from "../../../utils/renderGasFee";
+import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 
 export const InitialStats = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -21,19 +23,6 @@ export const InitialStats = () => {
       return "~15 minutes";
 
     return "~3 minutes";
-  }
-
-  function renderGasFee() {
-    if (!srcChain || !destChain) return "";
-
-    const sourceChainName = srcChain.chainIdentifier[ENVIRONMENT];
-    const destChainName = destChain.chainIdentifier[ENVIRONMENT];
-
-    const sourceFee = asset?.chain_aliases[sourceChainName]?.minDepositAmt;
-    const destFee = asset?.chain_aliases[destChainName]?.minDepositAmt;
-
-    if (!sourceFee || !destFee) return "0";
-    return Big(sourceFee).add(Big(destFee)).toString();
   }
 
   function renderAssetSymbol() {
@@ -68,7 +57,7 @@ export const InitialStats = () => {
         <li className="flex justify-between">
           <span>Relayer Gas Fees:</span>
           <span className="font-semibold">
-            {renderGasFee()} {renderAssetSymbol()}
+            {renderGasFee(srcChain, destChain, asset as AssetConfig)} {renderAssetSymbol()}
           </span>
         </li>
         {destChain?.module === "evm" && renderMax()}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { AssetInfo } from "@axelar-network/axelarjs-sdk";
+import { AssetConfig, AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { BigNumber } from "bignumber.js";
 import {
   SigningStargateClient,
@@ -24,6 +24,7 @@ import { Height } from "cosmjs-types/ibc/core/client/v1/client";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { SwapStatus } from "../../../../utils/enums";
 import { SpinnerRoundOutlined } from "spinners-react";
+import { renderGasFee } from "../../../../utils/renderGasFee";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -35,6 +36,7 @@ export const CosmosWalletTransfer = () => {
 
   const {
     srcChain,
+    destChain,
     asset,
     tokensToTransfer,
     depositAddress,
@@ -57,9 +59,13 @@ export const CosmosWalletTransfer = () => {
   }, [asset]);
 
   function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit = minAmount || 0;
-    if (new BigNumber(amount || "0") < new BigNumber(minDeposit)) return false;
-    return true;
+    const minDeposit = renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+    console.log("min Deposit",minDeposit);
+    if (new BigNumber(amount || "0") < new BigNumber(minDeposit)) return {minDeposit, minAmountOk: false};
+    return {
+      minDeposit,
+      minAmountOk: true
+    };
   }
 
   async function handleOnTokensTransfer() {
@@ -91,14 +97,14 @@ export const CosmosWalletTransfer = () => {
       offlineSigner
     );
 
-    const minAmountOk = checkMinAmount(
+    const {minAmountOk, minDeposit} = checkMinAmount(
       tokensToTransfer,
       currentAsset?.minDepositAmt
     );
 
     if (!minAmountOk)
       return toast.error(
-        `Token amount to transfer should be bigger than ${currentAsset?.minDepositAmt}`
+        `Token amount to transfer should be bigger than ${minDeposit}`
       );
 
     const sendCoin = {
