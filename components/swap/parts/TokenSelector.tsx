@@ -14,7 +14,6 @@ import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { Blockable } from "../../common";
 import { useRouter } from "next/router";
 import UseGatewayQuery from "../../../hooks/useGatewayQuery";
-import { BigNumber, FixedNumber } from "ethers";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -105,8 +104,8 @@ export const TokenSelector = () => {
   }
 
   function handleOnMaxButtonClick() {
-    if (max && +max - +balance < 0) setTokensToTransfer(balance);
-    if (Number(balance)) setTokensToTransfer(balance);
+    if (max && (+max !== 0) && ((+balance > +max))) setTokensToTransfer(max);
+    else if (Number(balance)) setTokensToTransfer(balance);
   }
 
   function renderTokenInput() {
