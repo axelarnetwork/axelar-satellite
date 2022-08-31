@@ -5,5 +5,13 @@ export default {
   rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=secret",
   chainId: "secret-4",
   chainIdentifier: "secret",
+  currencies: [
+    {
+      coinDenom: "SCRT",
+      coinMinimalDenom: "uscrt",
+      coinDecimals: 6,
+      coinGeckoId: "secret",
+    },
+  ],
   chainToAxelarChannelId: "channel-20",
 } as CosmosChain;

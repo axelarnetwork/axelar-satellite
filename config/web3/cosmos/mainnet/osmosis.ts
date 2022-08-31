@@ -5,5 +5,13 @@ export default {
   rpc: "https://osmosis-1--rpc--full.datahub.figment.io/apikey/6d8baa3d3e97e427db4bd7ffcfb21be4",
   chainId: "osmosis-1",
   chainToAxelarChannelId: "channel-208",
-  chainIdentifier: "osmosis"
+  currencies: [
+    {
+      coinDenom: "OSMO",
+      coinMinimalDenom: "uosmo",
+      coinDecimals: 6,
+      coinGeckoId: "osmosis",
+    },
+  ],
+  chainIdentifier: "osmosis",
 } as CosmosChain;
