@@ -32,7 +32,7 @@ const addTokenToMetamask = async (asset: AssetConfig, destChain: ChainInfo) => {
 };
 
 export const ConfirmTransferState = () => {
-  const { depositAddress, destAddress, txInfo, asset, destChain, srcChain } =
+  const { depositAddress, destAddress, txInfo, asset, destChain } =
     useSwapStore();
   const { chains, error, isLoading, pendingChainId, switchNetwork } =
     useSwitchNetwork({
@@ -82,13 +82,7 @@ export const ConfirmTransferState = () => {
                 <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
               </div>
               <a
-                href={`${
-                  getWagmiChains().find(
-                    (chain) =>
-                      chain.networkNameOverride ===
-                      srcChain?.chainName.toLowerCase()
-                  )?.blockExplorers?.default.url
-                }/tx/${txInfo.sourceTxHash}`}
+                href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
                 target="_blank"
                 rel="noreferrer"
               >
