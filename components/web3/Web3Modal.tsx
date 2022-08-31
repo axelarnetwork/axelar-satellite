@@ -28,7 +28,7 @@ export const Web3Modal = () => {
 
   // notify user that he already has a connected account but it's not the active one
   useEffect(() => {
-    if (error) toast.error(error?.message);
+    if (error) toast.error("Wallet already connected");
   }, [error]);
 
   function closeModal() {
@@ -65,7 +65,7 @@ export const Web3Modal = () => {
       axelar.chainId
     )) as OfflineSigner;
     const [account] = await _signer.getAccounts();
-    if (keplrConnected) toast.error("Kepler already connected");
+    if (keplrConnected) toast.error("Wallet already connected");
     setKeplrConnected(true);
   }
 
