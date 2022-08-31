@@ -9,12 +9,18 @@ export function renderGasFee(
 ) {
   if (!srcChain || !destChain) return "";
 
-  const sourceChainName = srcChain.chainIdentifier[ENVIRONMENT];
-  const destChainName = destChain.chainIdentifier[ENVIRONMENT];
+  const sourceChainName = srcChain.chainName;
+  const destChainName = destChain.chainName;
 
   const sourceFee = asset?.chain_aliases[sourceChainName]?.minDepositAmt;
   const destFee = asset?.chain_aliases[destChainName]?.minDepositAmt;
 
-  if (!sourceFee || !destFee) return "0";
+  if (!sourceFee && !destFee) return "0";
+  console.log({
+    sourceChainName,
+    sourceAsset: asset?.chain_aliases[sourceChainName],
+    sourceFee,
+    destFee,
+  });
   return Big(sourceFee).add(Big(destFee)).toString();
 }

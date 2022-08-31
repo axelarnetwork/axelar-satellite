@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { AssetConfig, AssetInfo } from "@axelar-network/axelarjs-sdk";
+import {
+  AssetConfig,
+  AssetInfo,
+  CosmosChain,
+} from "@axelar-network/axelarjs-sdk";
 import { BigNumber } from "bignumber.js";
 import {
   SigningStargateClient,
@@ -9,7 +13,7 @@ import {
 } from "@cosmjs/stargate";
 import { OfflineSigner } from "@cosmjs/launchpad";
 import { ENVIRONMENT } from "../../../../config/constants";
-import { useSwapStore } from "../../../../store";
+import { useSwapStore, useWalletStore } from "../../../../store";
 import {
   useDetectDepositConfirmation,
   useGetKeplerWallet,
@@ -43,6 +47,9 @@ export const CosmosWalletTransfer = () => {
     setSwapStatus,
     setTxInfo,
   } = useSwapStore((state) => state);
+  const { setKeplrConnected, keplrConnected } = useWalletStore(
+    (state) => state
+  );
   const keplerWallet = useGetKeplerWallet();
   const hasKeplerWallet = useHasKeplerWallet();
 
@@ -59,17 +66,52 @@ export const CosmosWalletTransfer = () => {
   }, [asset]);
 
   function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit = renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
-    console.log("min Deposit",minDeposit);
-    if (new BigNumber(amount || "0") < new BigNumber(minDeposit)) return {minDeposit, minAmountOk: false};
+    const minDeposit =
+      renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+    console.log("min Deposit", minDeposit);
+    if (new BigNumber(amount || "0") < new BigNumber(minDeposit))
+      return { minDeposit, minAmountOk: false };
     return {
       minDeposit,
-      minAmountOk: true
+      minAmountOk: true,
     };
   }
 
+  async function handleOnKeplrConnect() {
+    const { keplr } = window;
+    const chain = getCosmosChains(allAssets).find(
+      (chain) => chain.chainIdentifier === "axelar"
+    );
+    if (!chain) return;
+    try {
+      await keplr?.enable(chain.chainId);
+    } catch (e) {
+      console.log(
+        "unable to connect to wallet natively, so trying experimental chain",
+        e,
+        chain.chainId
+      );
+      try {
+        await keplr?.experimentalSuggestChain(chain);
+        await keplr?.enable(chain.chainId);
+      } catch (e2: any) {
+        console.log("and yet there is a problem in trying to do that too", e2);
+      }
+    }
+    const _signer = (await keplr?.getOfflineSignerAuto(
+      chain.chainId
+    )) as OfflineSigner;
+    const [account] = await _signer.getAccounts();
+    if (keplrConnected) toast.error("Wallet already connected");
+    setKeplrConnected(true);
+    return true;
+  }
+
   async function handleOnTokensTransfer() {
-    if (!hasKeplerWallet) return;
+    // if (!hasKeplerWallet) {
+    //   const connectionResult = await handleOnKeplrConnect();
+    //   if (!connectionResult) return;
+    // }
 
     const cosmosChains = getCosmosChains(allAssets);
     const chainIdentifier = srcChain.chainName.toLowerCase();
@@ -97,10 +139,15 @@ export const CosmosWalletTransfer = () => {
       offlineSigner
     );
 
-    const {minAmountOk, minDeposit} = checkMinAmount(
+    const { minAmountOk, minDeposit } = checkMinAmount(
       tokensToTransfer,
       currentAsset?.minDepositAmt
     );
+
+    console.log({
+      minAmountOk,
+      minDeposit,
+    });
 
     if (!minAmountOk)
       return toast.error(

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { useBlockNumber, useContractWrite, useNetwork } from "wagmi";
+import {
+  useBlockNumber,
+  useConnect,
+  useContractWrite,
+  useNetwork,
+} from "wagmi";
 import { erc20ABI } from "wagmi";
 import { BigNumber } from "bignumber.js";
 import { utils } from "ethers";
@@ -8,13 +13,14 @@ import toast from "react-hot-toast";
 import { AssetConfig, AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { SpinnerRoundOutlined } from "spinners-react";
 
-import { useSwapStore } from "../../../../store";
+import { useSwapStore, useWalletStore } from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
 import { SwapStatus } from "../../../../utils/enums";
 import { useDetectDepositConfirmation } from "../../../../hooks";
 import { renderGasFee } from "../../../../utils/renderGasFee";
 
 export const EvmWalletTransfer = () => {
+  const { connectAsync, connectors, error } = useConnect();
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
 
@@ -30,6 +36,7 @@ export const EvmWalletTransfer = () => {
     setSwapStatus,
     setTxInfo,
   } = useSwapStore((state) => state);
+  const { wagmiConnected } = useWalletStore();
   const { chains } = useNetwork();
 
   const srcChainId = chains.find(
@@ -62,26 +69,35 @@ export const EvmWalletTransfer = () => {
   }, [asset]);
 
   function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit = renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
-    console.log("min Deposit",minDeposit);
-    if (new BigNumber(amount || "0") < new BigNumber(minDeposit)) return {minDeposit, minAmountOk: false};
+    const minDeposit =
+      renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+    console.log("min Deposit", minDeposit);
+    if (new BigNumber(amount || "0") < new BigNumber(minDeposit))
+      return { minDeposit, minAmountOk: false };
     return {
       minDeposit,
-      minAmountOk: true
+      minAmountOk: true,
     };
   }
 
+  async function handleOnMetamaskSwitch() {
+    const connector = connectors.find((c) => c.name === "MetaMask");
+    return connectAsync({ connector });
+  }
+
   async function handleOnTokensTransfer() {
-    console.log(currentAsset);
+    if (!wagmiConnected) await handleOnMetamaskSwitch();
     // token amount should not be null
-    const {minAmountOk, minDeposit} = checkMinAmount(
+    const { minAmountOk, minDeposit } = checkMinAmount(
       tokensToTransfer,
       currentAsset?.minDepositAmt
     );
 
     if (!minAmountOk)
       return toast.error(
-        `Token amount to transfer should be bigger than ${minDeposit} ${asset?.chain_aliases[srcChain.chainName.toLowerCase()].assetSymbol}`
+        `Token amount to transfer should be bigger than ${minDeposit} ${
+          asset?.chain_aliases[srcChain.chainName.toLowerCase()].assetSymbol
+        }`
       );
 
     await writeAsync({

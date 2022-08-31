@@ -30,7 +30,7 @@ export const WaitDepositState = () => {
   }
 
   function renderWalletSection() {
-    if (!wagmiConnected && !keplrConnected) return;
+    // if (!wagmiConnected && !keplrConnected) return;
 
     return (
       <div>
