@@ -1,13 +1,41 @@
 import React from "react";
 import Image from "next/image";
+import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwapStore } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
 import { AXELARSCAN_URL } from "../../../config/constants";
 import { ProgressBar } from "./parts";
 import { copyToClipboard } from "../../../utils";
+import { useSwitchNetwork } from "wagmi";
+import { getWagmiChains } from "../../../config/web3";
+
+const addTokenToMetamask = async (asset: AssetConfig, destChain: ChainInfo) => {
+  try {
+    const { tokenAddress: address, assetSymbol: symbol } =
+      asset.chain_aliases[destChain.chainName.toLowerCase()];
+    const { decimals } = asset;
+    return await (window as any).ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC20",
+        options: {
+          address,
+          symbol,
+          decimals,
+          image: "",
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const ConfirmTransferState = () => {
-  const { depositAddress, destAddress, txInfo } = useSwapStore();
+  const { depositAddress, destAddress, txInfo, asset, destChain } =
+    useSwapStore();
+  const { chains, error, isLoading, pendingChainId, switchNetwork } =
+    useSwitchNetwork();
 
   function renderTxConfirmationInfo() {
     return (
@@ -66,10 +94,26 @@ export const ConfirmTransferState = () => {
             target="_blank"
             rel="noreferrer"
           >
-            <span>Visit axelarscan for more information</span>
+            <span>Visit Axelarscan for more information</span>
             <Image src={"/assets/ui/link.svg"} height={16} width={16} />
           </a>
         </div>
+        {destChain.module === "evm" && (
+          <div
+            className="flex items-center hover:underline hover:cursor-pointer gap-x-2"
+            onClick={() => {
+              switchNetwork?.(getWagmiChains().find(chain => chain.networkNameOverride === destChain.chainName.toLowerCase())?.id);
+              addTokenToMetamask(asset as AssetConfig, destChain)
+            }}
+          >
+            <span>Add token to Metamask</span>
+            <Image
+              src={"/assets/wallets/metamask.logo.svg"}
+              height={16}
+              width={16}
+            />
+          </div>
+        )}
       </div>
     );
   }

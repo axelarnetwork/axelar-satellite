@@ -28,11 +28,13 @@ export const SwapBox = () => {
       <EvmAssetWarningModal />
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
         <div className="relative flex justify-between mb-0 space-x-8">
-          {ENVIRONMENT === "testnet" && (
-            <div className="font-bold text-white bg-red-500 border-0 badge badge-primary">
-              {ENVIRONMENT.toUpperCase()}
-            </div>
-          )}
+          <div
+            className={`font-bold text-white ${
+              ENVIRONMENT === "mainnet" ? "bg-green-900" : "bg-red-500"
+            } border-0 badge badge-primary`}
+          >
+            {ENVIRONMENT.toUpperCase()}
+          </div>
           <div className="flex gap-x-4">
             <StopButton />
             <Blockable>

@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { SpinnerRoundOutlined } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
-import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
+import { ENVIRONMENT } from "../../../config/constants";
 import {
   getDestChainId,
   getSelectedAssetSymbol,
@@ -13,6 +13,7 @@ import { copyToClipboard } from "../../../utils";
 import { SwapStatus } from "../../../utils/enums";
 import { AddressShortener, InputWrapper } from "../../common";
 import { ProgressBar } from "./parts";
+import { getWagmiChains } from "../../../config/web3";
 
 export const WaitEvmConfirmationState = () => {
   const {
@@ -75,7 +76,13 @@ export const WaitEvmConfirmationState = () => {
                 <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
               </div>
               <a
-                href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
+                href={`${
+                  getWagmiChains().find(
+                    (chain) =>
+                      chain.networkNameOverride ===
+                      srcChain?.chainName.toLowerCase()
+                  )?.blockExplorers?.default.url
+                }/tx/${txInfo.sourceTxHash}`}
                 target="_blank"
                 rel="noreferrer"
               >
