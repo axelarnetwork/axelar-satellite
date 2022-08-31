@@ -9,8 +9,8 @@ export function renderGasFee(
 ) {
   if (!srcChain || !destChain) return "";
 
-  const sourceChainName = srcChain.chainName;
-  const destChainName = destChain.chainName;
+  const sourceChainName = srcChain.chainName?.toLowerCase();
+  const destChainName = destChain.chainName?.toLowerCase();
 
   const sourceFee = asset?.chain_aliases[sourceChainName]?.minDepositAmt;
   const destFee = asset?.chain_aliases[destChainName]?.minDepositAmt;
