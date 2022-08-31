@@ -43,7 +43,7 @@ export const AddressFiller = () => {
 
   async function fillCosmosDestinationAddress() {
     const chain = getCosmosChains(allAssets).find(
-      (_chain) => _chain.chainIdentifier === destChain.chainName
+      (_chain) => _chain.chainIdentifier === destChain.chainName.toLowerCase()
     );
     if (!chain) return;
     await keplerWallet?.experimentalSuggestChain(chain);
