@@ -11,7 +11,7 @@ import { SwapOrigin, SwapStatus } from "../utils/enums";
 const getWagmiChainOverride = (wagmiNetwork: string) => {
   const map: Record<string, string> = {
     ropsten: "ethereum",
-    homestead: "ethereum"
+    homestead: "ethereum",
   };
   return map[wagmiNetwork] || wagmiNetwork;
 };
@@ -260,12 +260,8 @@ export const useSwapStore = create<SwapStore>()(
           allChains: get().allChains,
           allAssets: get().allAssets,
           selectableAssetList: get().selectableAssetList,
-          srcChain: get().allChains.find(
-            (chain) => chain.chainName.toLowerCase() === "avalanche"
-          ),
-          destChain: get().allChains.find(
-            (chain) => chain.chainName.toLowerCase() === "moonbeam"
-          ),
+          srcChain: get().srcChain,
+          destChain: get().destChain,
           asset: get().allAssets.find((asset) =>
             asset?.common_key[ENVIRONMENT].includes("usdc")
           ),
