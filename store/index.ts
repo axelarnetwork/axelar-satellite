@@ -3,7 +3,7 @@ import memoize from "proxy-memoize";
 import create, { createStore } from "zustand";
 import { persist } from "zustand/middleware";
 import { devtools } from "zustand/middleware";
-import { ENVIRONMENT } from "../config/constants";
+import { DEFAULT_ASSET, ENVIRONMENT } from "../config/constants";
 import { getWagmiChains } from "../config/web3";
 
 import { SwapOrigin, SwapStatus } from "../utils/enums";
@@ -161,22 +161,61 @@ export const useSwapStore = create<SwapStore>()(
       );
     },
     setSrcChain: (chain) => {
-      set(
-        {
-          srcChain: chain,
-        },
-        false,
-        "setSrcChain"
-      );
+      const currentAsset = get().asset;
+      if (
+        !chain?.assets?.find(
+          (asset) => asset.common_key === currentAsset?.common_key
+        )
+      ) {
+        const allAssets = get().allAssets;
+        set(
+          {
+            srcChain: chain,
+            asset: allAssets?.find((asset) =>
+              asset.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
+            ),
+          },
+          false,
+          "setSrcChain"
+        );
+      } else {
+        set(
+          {
+            srcChain: chain,
+          },
+          false,
+          "setSrcChain"
+        );
+      }
     },
-    setDestChain: (chain) =>
-      set(
-        {
-          destChain: chain,
-        },
-        false,
-        "setDestChain"
-      ),
+    setDestChain: (chain) => {
+      const currentAsset = get().asset;
+      if (
+        !chain?.assets?.find(
+          (asset) => asset.common_key === currentAsset?.common_key
+        )
+      ) {
+        const allAssets = get().allAssets;
+        set(
+          {
+            destChain: chain,
+            asset: allAssets?.find((asset) =>
+              asset.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
+            ),
+          },
+          false,
+          "setDestChain"
+        );
+      } else {
+        set(
+          {
+            destChain: chain,
+          },
+          false,
+          "setDestChain"
+        );
+      }
+    },
     setDestAddress: (address) =>
       set(
         {
