@@ -161,14 +161,14 @@ export const useSwapStore = create<SwapStore>()(
       );
     },
     setSrcChain: (chain) => {
+      const allAssets = get().allAssets;
       const currentAsset = get().asset;
-      if (
-        !chain?.assets?.find(
-          (asset) => asset.common_key === currentAsset?.common_key
-        )
-      ) {
-        const allAssets = get().allAssets;
-        set(
+      const isAssetSupported = chain?.assets?.find(
+        (asset) => asset.common_key === currentAsset?.common_key[ENVIRONMENT]
+      );
+
+      if (!isAssetSupported)
+        return set(
           {
             srcChain: chain,
             asset: allAssets?.find((asset) =>
@@ -178,25 +178,24 @@ export const useSwapStore = create<SwapStore>()(
           false,
           "setSrcChain"
         );
-      } else {
-        set(
-          {
-            srcChain: chain,
-          },
-          false,
-          "setSrcChain"
-        );
-      }
+
+      set(
+        {
+          srcChain: chain,
+        },
+        false,
+        "setSrcChain"
+      );
     },
     setDestChain: (chain) => {
+      const allAssets = get().allAssets;
       const currentAsset = get().asset;
-      if (
-        !chain?.assets?.find(
-          (asset) => asset.common_key === currentAsset?.common_key
-        )
-      ) {
-        const allAssets = get().allAssets;
-        set(
+      const isAssetSupported = chain?.assets?.find(
+        (asset) => asset.common_key === currentAsset?.common_key[ENVIRONMENT]
+      );
+
+      if (!isAssetSupported)
+        return set(
           {
             destChain: chain,
             asset: allAssets?.find((asset) =>
@@ -206,15 +205,14 @@ export const useSwapStore = create<SwapStore>()(
           false,
           "setDestChain"
         );
-      } else {
-        set(
-          {
-            destChain: chain,
-          },
-          false,
-          "setDestChain"
-        );
-      }
+
+      set(
+        {
+          destChain: chain,
+        },
+        false,
+        "setDestChain"
+      );
     },
     setDestAddress: (address) =>
       set(
