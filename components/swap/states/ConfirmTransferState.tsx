@@ -38,7 +38,10 @@ export const ConfirmTransferState = () => {
     useSwitchNetwork({
       onSuccess(data) {
         console.log("Success", data);
-        setTimeout(() => addTokenToMetamask(asset as AssetConfig, destChain), 2000);
+        setTimeout(
+          () => addTokenToMetamask(asset as AssetConfig, destChain),
+          2000
+        );
       },
     });
 
@@ -105,7 +108,7 @@ export const ConfirmTransferState = () => {
         </div>
         {destChain.module === "evm" && (
           <div
-            className="flex items-center hover:underline hover:cursor-pointer gap-x-2"
+            className="flex items-center justify-center hover:underline hover:cursor-pointer gap-x-2"
             onClick={() => {
               switchNetwork?.(
                 getWagmiChains().find(
