@@ -5,6 +5,7 @@ import { ENVIRONMENT } from "../constants";
 
 // wagmi ready chains
 import { testnetChains as evmTestnetChains } from "./evm/testnet";
+import { mainnetChains as evmMainnetChains } from "./evm/mainnet";
 import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
 import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";
 import { CosmosChain } from "./cosmos/interface";
@@ -20,7 +21,7 @@ import { CosmosChain } from "./cosmos/interface";
 
 export const getWagmiChains = () => {
   if (ENVIRONMENT === Environment.TESTNET) return evmTestnetChains;
-  if (ENVIRONMENT === Environment.MAINNET) return [];
+  if (ENVIRONMENT === Environment.MAINNET) return evmMainnetChains;
 
   toast.error(`Environment "${ENVIRONMENT}" not supported`);
 
