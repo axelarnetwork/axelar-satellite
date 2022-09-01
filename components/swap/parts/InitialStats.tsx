@@ -32,7 +32,12 @@ export const InitialStats = () => {
         </li>
       );
     }
-    return null;
+    return (
+      <li className="flex justify-between">
+        <span>Maximum Transfer Amount:</span>
+        <span className="italic font-light">unlimited</span>
+      </li>
+    );
   }
 
   return (
