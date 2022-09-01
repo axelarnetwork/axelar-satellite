@@ -9,11 +9,10 @@ import {
 } from "../../../store";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapOrigin } from "../../../utils/enums";
-import { useGetAssetBalance } from "../../../hooks";
+import { useGatewayQuery, useGetAssetBalance } from "../../../hooks";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { Blockable } from "../../common";
 import { useRouter } from "next/router";
-import UseGatewayQuery from "../../../hooks/useGatewayQuery";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -30,7 +29,7 @@ export const TokenSelector = () => {
   } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const { wagmiConnected, keplrConnected } = useWalletStore();
-  const max = UseGatewayQuery();
+  const max = useGatewayQuery();
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
   const [filteredAssets, setFilteredAssets] =
@@ -104,7 +103,7 @@ export const TokenSelector = () => {
   }
 
   function handleOnMaxButtonClick() {
-    if (max && (+max !== 0) && ((+balance > +max))) setTokensToTransfer(max);
+    if (max && +max !== 0 && +balance > +max) setTokensToTransfer(max);
     else if (Number(balance)) setTokensToTransfer(balance);
   }
 

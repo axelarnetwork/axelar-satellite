@@ -1,14 +1,14 @@
 import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
 import { StatsWrapper } from "../../common";
-import UseGatewayQuery from "../../../hooks/useGatewayQuery";
 import { commify } from "ethers/lib/utils";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+import { useGatewayQuery } from "../../../hooks";
 
 export const InitialStats = () => {
   const { srcChain, destChain, asset } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
-  const max = UseGatewayQuery();
+  const max = useGatewayQuery();
 
   function renderWaitTime() {
     if (!srcChain) return "";

@@ -7,7 +7,7 @@ import { getWagmiChains } from "../config/web3";
 import { formatUnits } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
 
-const UseGatewayQuery = () => {
+export const useGatewayQuery = () => {
   const { asset, destChain } = useSwapStore((state) => state);
   const [gatewayAddr, setGatewayAddr] = useState<string>("");
   const { api } = useAxelarRPCQuery();
@@ -42,7 +42,6 @@ const UseGatewayQuery = () => {
   }, [destChain, api]);
 
   return maxTransferAmount
-    ? formatUnits(BigNumber.from(maxTransferAmount).div(4), asset?.decimals) 
+    ? formatUnits(BigNumber.from(maxTransferAmount).div(4), asset?.decimals)
     : null;
 };
-export default UseGatewayQuery;
