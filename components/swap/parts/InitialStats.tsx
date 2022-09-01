@@ -1,8 +1,9 @@
 import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
-import { StatsWrapper } from "../../common";
-import { commify } from "ethers/lib/utils";
-import { renderGasFee } from "../../../utils/renderGasFee";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+import { commify } from "ethers/lib/utils";
+
+import { StatsWrapper } from "../../common";
+import { renderGasFee } from "../../../utils/renderGasFee";
 import { useGatewayQuery } from "../../../hooks";
 
 export const InitialStats = () => {
@@ -21,7 +22,7 @@ export const InitialStats = () => {
     return "~3 minutes";
   }
 
-  function renderMax() {
+  function renderMaxTransferAmount() {
     if (max && Number(max) > 0) {
       return (
         <li className="flex justify-between">
@@ -54,7 +55,7 @@ export const InitialStats = () => {
           <span>Estimated wait time:</span>
           <span className="font-semibold">{renderWaitTime()}</span>
         </li>
-        {renderMax()}
+        {renderMaxTransferAmount()}
       </ul>
     </StatsWrapper>
   );
