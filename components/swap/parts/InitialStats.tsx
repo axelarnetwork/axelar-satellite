@@ -24,7 +24,7 @@ export const InitialStats = () => {
   function renderMax() {
     return (
       max &&
-      +max > 0 && (
+      +max > 0 ? (
         <li className="flex justify-between">
           <span>Maximum Transfer Amount:</span>
           <span className="font-semibold">
@@ -32,7 +32,7 @@ export const InitialStats = () => {
           </span>
         </li>
       )
-    );
+     : <li className="flex invisible">.</li>);
   }
 
   return (
