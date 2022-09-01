@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useSwapStore } from "../../../store";
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../../config/constants";
+import { SwapStatus } from "../../../utils/enums";
 
 const Arrow = () => (
   <svg
@@ -39,6 +40,7 @@ export const TopFlows = () => {
     setAsset,
     selectableAssetList,
     allChains,
+    swapStatus
   } = useSwapStore();
   const [menuOpened, setMenuOpened] = useState(false);
   const menu = useRef(null);
@@ -54,6 +56,8 @@ export const TopFlows = () => {
       setMenuOpened(false);
     }
   }, [menuOpened]);
+
+  if (![SwapStatus.IDLE, SwapStatus.GEN_DEPOSIT_ADDRESS].includes(swapStatus)) return null;
 
   function handleOnFlow1() {
     const avax = allChains.find((chain) =>

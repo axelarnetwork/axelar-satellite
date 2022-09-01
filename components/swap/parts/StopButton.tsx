@@ -19,10 +19,10 @@ export const StopButton = () => {
   return (
     <div
       onClick={handleOnClick}
-      className="relative w-6 h-6 cursor-pointer tooltip"
-      data-tip="Click to cancel the current transfer"
+      className="relative cursor-pointer tooltip px-2 py-1 rounded-lg border border-[#00a7ff] bg-[#003556] text-[#00a7ff] text-xs cursor-pointer font-semibold" //"relative w-6 h-6 cursor-pointer tooltip"
+      data-tip="Refresh and make another transfer"
     >
-      <Image src="/assets/ui/stop.svg" layout="fill" />
+      Start Over
     </div>
   );
 };

@@ -21,7 +21,7 @@ const SatelliteLogo = () => {
           <div className="absolute">
             <a href="https://axelar.network">
               <img
-                className="ml-5"
+                className="ml-3"
                 src="/assets/ui/powered.logo.svg"
                 width={150}
               />

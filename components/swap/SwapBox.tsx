@@ -35,7 +35,7 @@ export const SwapBox = () => {
           >
             {ENVIRONMENT.toUpperCase()}
           </div>
-          <div className="flex gap-x-4">
+          <div className="flex">
             <StopButton />
             <Blockable>
               <TopFlows />

@@ -34,8 +34,8 @@ export const WaitDepositState = () => {
 
     return (
       <div>
-        <div className="px-10 mx-auto my-1 text-xs divider">
-          OR USE FROM SATELLITE
+        <div className="px-10 mx-auto my-1 mt-5 text-xs divider">
+          OR SEND VIA YOUR CONNECTED WALLET:
         </div>
         {srcChain.module === "evm" && <EvmWalletTransfer />}
         {srcChain.module === "axelarnet" && <CosmosWalletTransfer />}
@@ -71,7 +71,7 @@ export const WaitDepositState = () => {
           <div className="w-full mt-auto">
             <div className="my-0 divider" />
             <div className="w-full text-xs font-medium text-center text-gray-500">
-              Execution of asset transfer to {destAddress}
+              Your destination address {destAddress}
             </div>
           </div>
         </div>

@@ -23,7 +23,8 @@ export const InitialStats = () => {
 
   function renderMax() {
     return (
-      max && (+max > 0) && (
+      max &&
+      +max > 0 && (
         <li className="flex justify-between">
           <span>Maximum Transfer Amount:</span>
           <span className="font-semibold">
@@ -44,11 +45,11 @@ export const InitialStats = () => {
             {selectedAssetSymbol}
           </span>
         </li>
-        {destChain?.module === "evm" && renderMax()}
         <li className="flex justify-between ">
           <span>Estimated wait time:</span>
           <span className="font-semibold">{renderWaitTime()}</span>
         </li>
+        {renderMax()}
       </ul>
     </StatsWrapper>
   );
