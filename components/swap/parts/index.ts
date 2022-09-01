@@ -5,7 +5,7 @@ export * from "./TokenSelector";
 export * from "./AddressFiller";
 export * from "./ConnectButton";
 export * from "./GenerateDepositAddressButton";
-export * from "./InitialStats";
+export * from "./TransferStats";
 export * from "./SwapActions";
 export * from "./OriginSwapper";
 export * from "./ActionButton";

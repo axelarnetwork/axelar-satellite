@@ -6,7 +6,7 @@ import { StatsWrapper } from "../../common";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import { useGatewayQuery } from "../../../hooks";
 
-export const InitialStats = () => {
+export const TransferStats = () => {
   const { srcChain, destChain, asset } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const max = useGatewayQuery();

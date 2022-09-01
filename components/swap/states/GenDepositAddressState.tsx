@@ -1,13 +1,13 @@
 import React from "react";
 import { SpinnerCircular } from "spinners-react";
 import { InputWrapper } from "../../common";
-import { InitialStats } from "../parts";
+import { TransferStats } from "../parts";
 import { ProgressBar } from "./parts";
 
 export const GenDepositAddressState = () => {
   return (
     <>
-      <InitialStats />
+      <TransferStats />
       <InputWrapper className="h-40">
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">

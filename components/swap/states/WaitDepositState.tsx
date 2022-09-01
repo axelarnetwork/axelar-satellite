@@ -10,7 +10,7 @@ import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
 import { copyToClipboard } from "../../../utils";
 
 import { convertChainName } from "../../../utils/transformers";
-import { InitialStats } from "../parts";
+import { TransferStats } from "../parts";
 
 export const WaitDepositState = () => {
   const { depositAddress, destAddress, srcChain } = useSwapStore(
@@ -46,7 +46,7 @@ export const WaitDepositState = () => {
 
   return (
     <>
-      <InitialStats />
+      <TransferStats />
       <InputWrapper className="h-auto">
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">
