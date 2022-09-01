@@ -78,8 +78,8 @@ export const IdleState = () => {
 
   return (
     <>
-      <TransferStats />
       {renderAddressFiller()}
+      <TransferStats />
     </>
   );
 };

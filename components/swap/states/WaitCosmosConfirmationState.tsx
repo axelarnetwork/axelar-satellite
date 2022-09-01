@@ -32,12 +32,6 @@ export const WaitCosmosConfirmationState = () => {
               {renderConfirmations()}
             </div>
           </div>
-          <div className="w-full mt-auto">
-            <div className="my-0 divider" />
-            <div className="w-full text-xs font-medium text-center text-gray-500">
-              Waiting for confirmations
-            </div>
-          </div>
         </div>
       </div>
     </InputWrapper>
