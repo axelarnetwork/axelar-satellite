@@ -22,17 +22,17 @@ export const InitialStats = () => {
   }
 
   function renderMax() {
-    return (
-      max &&
-      +max > 0 ? (
+    if (max && Number(max) > 0) {
+      return (
         <li className="flex justify-between">
           <span>Maximum Transfer Amount:</span>
           <span className="font-semibold">
             {commify(max)} {selectedAssetSymbol}
           </span>
         </li>
-      )
-     : <li className="flex invisible">.</li>);
+      );
+    }
+    return null;
   }
 
   return (
