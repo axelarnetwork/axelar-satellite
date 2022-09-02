@@ -14,6 +14,7 @@ import { SwapStatus } from "../../../utils/enums";
 import { AddressShortener, InputWrapper } from "../../common";
 import { ProgressBar } from "./parts";
 import { getWagmiChains } from "../../../config/web3";
+import { TransferStats } from "../parts";
 
 export const WaitEvmConfirmationState = () => {
   const {
@@ -52,7 +53,7 @@ export const WaitEvmConfirmationState = () => {
   function renderConfirmations() {
     return (
       <div className="flex flex-col justify-center h-full text-center gap-y-1">
-        <div>
+        {/* <div>
           <h4 className="text-sm">Deposit Address</h4>
           <div className="flex justify-center text-sm font-bold text-info gap-x-2">
             <AddressShortener value={depositAddress} />
@@ -84,8 +85,8 @@ export const WaitEvmConfirmationState = () => {
               </a>
             </div>
           </div>
-        </div>
-        <div className="w-48 mx-auto my-1 text-xs divider" />
+        </div> */}
+        {/* <div className="w-48 mx-auto my-1 text-xs divider" /> */}
         <div className="flex justify-center gap-x-2">
           <SpinnerRoundOutlined
             className="text-blue-500"
@@ -108,24 +109,21 @@ export const WaitEvmConfirmationState = () => {
   }
 
   return (
-    <InputWrapper className="h-72">
-      <div className="h-full space-x-2">
-        <div className="flex flex-col w-full h-full">
-          <div className="relative flex flex-col h-full">
-            <ProgressBar level={2} />
+    <>
+      <TransferStats />
+      <InputWrapper className="h-40">
+        <div className="h-full space-x-2">
+          <div className="flex flex-col w-full h-full">
+            <div className="relative flex flex-col h-full">
+              <ProgressBar level={2} />
 
-            <div className="flex items-center justify-center h-full mt-auto text-xs gap-x-2">
-              {renderConfirmations()}
-            </div>
-          </div>
-          <div className="w-full mt-auto">
-            <div className="my-0 divider" />
-            <div className="w-full text-xs font-medium text-center text-gray-500">
-              Waiting for confirmations
+              <div className="flex items-center justify-center h-full mt-auto text-xs gap-x-2">
+                {renderConfirmations()}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </InputWrapper>
+      </InputWrapper>
+    </>
   );
 };

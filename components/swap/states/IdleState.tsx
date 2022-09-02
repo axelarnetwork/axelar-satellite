@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useSwapStore, useWalletStore } from "../../../store";
 import { InputWrapper } from "../../common";
-import { AddressFiller, InitialStats } from "../parts";
+import { AddressFiller, TransferStats } from "../parts";
 
 export const IdleState = () => {
   const { destAddress, setDestAddress } = useSwapStore((state) => state);
@@ -78,7 +78,7 @@ export const IdleState = () => {
 
   return (
     <>
-      <InitialStats />
+      <TransferStats />
       {renderAddressFiller()}
     </>
   );
