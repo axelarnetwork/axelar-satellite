@@ -40,7 +40,7 @@ export const TopFlows = () => {
     setAsset,
     selectableAssetList,
     allChains,
-    swapStatus
+    swapStatus,
   } = useSwapStore();
   const [menuOpened, setMenuOpened] = useState(false);
   const menu = useRef(null);
@@ -57,7 +57,7 @@ export const TopFlows = () => {
     }
   }, [menuOpened]);
 
-  if (![SwapStatus.IDLE, SwapStatus.GEN_DEPOSIT_ADDRESS].includes(swapStatus)) return null;
+  if (![SwapStatus.IDLE].includes(swapStatus)) return null;
 
   function handleOnFlow1() {
     const avax = allChains.find((chain) =>
@@ -116,14 +116,13 @@ export const TopFlows = () => {
         tabIndex={0}
         onBlur={(e) => setMenuOpened(false)}
         className="px-3 py-1 rounded-lg border border-[#00a7ff] bg-[#003556] text-[#00a7ff] text-xs cursor-pointer font-semibold"
-        onClick={(e) => setMenuOpened(menuOpened)
-        }
+        onClick={(e) => setMenuOpened(menuOpened)}
       >
         Top Flows
       </label>
       <ul
         tabIndex={0}
-        className="z-50 p-2 shadow shadow-lg gap-y-2 dropdown-content menu bg-neutral rounded-box w-52 top-8"
+        className="z-50 p-2 shadow-lg gap-y-2 dropdown-content menu bg-neutral rounded-box w-52 top-8"
         onFocus={(e) => setMenuOpened(true)}
       >
         <li
