@@ -16,11 +16,5 @@ export function renderGasFee(
   const destFee = asset?.chain_aliases[destChainName]?.minDepositAmt;
 
   if (!sourceFee && !destFee) return "0";
-  console.log({
-    sourceChainName,
-    sourceAsset: asset?.chain_aliases[sourceChainName],
-    sourceFee,
-    destFee,
-  });
   return Big(sourceFee).add(Big(destFee)).toString();
 }
