@@ -1,15 +1,20 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import { useAccount } from "wagmi";
+
 import { tokenContractDocs } from "../../config/constants";
 import { useGetAssetBalance } from "../../hooks";
-import { useSwapStore } from "../../store";
+import { getSelectedAssetSymbol, useSwapStore } from "../../store";
+import { copyToClipboard } from "../../utils";
 import { SwapStatus } from "../../utils/enums";
-import { truncateEthAddress } from "../../utils/truncateEthAddress";
+import { AddressShortener } from "../common";
 
 export const EvmAssetWarningModal = () => {
   const { asset, destChain, resetState, srcChain, swapStatus } = useSwapStore(
     (state) => state
   );
+  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+
   const { balance } = useGetAssetBalance();
   const { address } = useAccount();
 
@@ -28,59 +33,80 @@ export const EvmAssetWarningModal = () => {
     setShowAssetWarning(true);
   }, [setShowAssetWarning, userAcknowledged, swapStatus]);
 
+  function handleOnResetState() {
+    setShowAssetWarning(false);
+    resetState();
+  }
+
   const onConfirm = useCallback(() => {
     setUserAcknowledged(true);
     setShowAssetWarning(false);
   }, [setShowAssetWarning, setUserAcknowledged]);
 
+  const tokenAddress = asset?.chain_aliases[srcChain.chainName.toLowerCase()]
+    .tokenAddress as string;
+
   return (
-    <div className={`modal modal-${showAssetWarning ? "open" : "close"}`}>
+    <div
+      className={`text-center modal modal-${
+        showAssetWarning ? "open" : "close"
+      }`}
+    >
       <div className="modal-box">
         {srcChain?.module === "evm" && (
           <div>
             <div>
-              {" "}
               Only send{" "}
-              <span className="font-bold">
-                {
-                  asset?.chain_aliases[srcChain.chainName.toLowerCase()]
-                    .assetName
-                }
-              </span>{" "}
-              to this deposit address on{" "}
-              <span className="capitalize">{srcChain.chainName}</span>. Any
-              other tokens sent to this address will be lost.
+              <span className="font-bold">{selectedAssetSymbol} </span>
+              to this deposit address on
+              <strong className="capitalize"> {srcChain.chainName}</strong>
+              <div>Any other tokens sent to this address will be lost.</div>
             </div>
 
-            <div className="mt-2">
-              <div className="w-auto text-[#86d6ff]">
-                {
-                  asset?.chain_aliases[srcChain.chainName.toLowerCase()]
-                    .assetName
-                }{" "}
-                contract address on{" "}
-                <span className="capitalize text-[#86d6ff]">
-                  {srcChain.chainName}
-                </span>
-                :{" "}
-                {truncateEthAddress(
-                  asset?.chain_aliases[srcChain.chainName.toLowerCase()]
-                    .tokenAddress as string
-                )}
+            <div className="py-2 text-center">
+              <div className="mt-2">
+                <div className="font-light text-gray-300">
+                  {selectedAssetSymbol} contract |{" "}
+                  <strong className="capitalize">{srcChain.chainName}</strong>
+                  <div className="flex items-center justify-center font-bold gap-x-2">
+                    <AddressShortener value={tokenAddress} />
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => copyToClipboard(tokenAddress)}
+                    >
+                      <Image
+                        src={"/assets/ui/copy.svg"}
+                        height={16}
+                        width={16}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-2">
+                <div className="font-light text-gray-300">
+                  Your balance |{" "}
+                  <strong className="">
+                    {balance} {selectedAssetSymbol}
+                  </strong>
+                  <div className="flex items-center justify-center font-bold gap-x-2">
+                    <AddressShortener value={address} />
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => copyToClipboard(address as string)}
+                    >
+                      <Image
+                        src={"/assets/ui/copy.svg"}
+                        height={16}
+                        width={16}
+                      />
+                    </div>
+                    <span className="font-light">(token address)</span>
+                  </div>
+                </div>
               </div>
             </div>
-
-            {address && balance && (
-              <div>
-                <span className="w-auto text-[#86d6ff]">
-                  Your balance ({truncateEthAddress(address)}): {balance}{" "}
-                  {
-                    asset?.chain_aliases[srcChain.chainName.toLowerCase()]
-                      .assetName
-                  }
-                </span>
-              </div>
-            )}
           </div>
         )}
 
@@ -88,21 +114,13 @@ export const EvmAssetWarningModal = () => {
           <div className="mt-5">
             <span>
               The recipient will receive{" "}
-              <span className="font-bold">
-                {
-                  asset?.chain_aliases[destChain.chainName.toLowerCase()]
-                    .assetName
-                }
-              </span>{" "}
-              on <span className="capitalize">{destChain.chainName}</span>. If
-              your recipient doesn’t support{" "}
-              <span className="font-bold">
-                {
-                  asset?.chain_aliases[destChain.chainName.toLowerCase()]
-                    .assetName
-                }
-              </span>
-              , the funds will be lost.
+              <span className="font-bold">{selectedAssetSymbol}</span> on{" "}
+              <span className="capitalize">{destChain.chainName}</span>. If your
+              recipient doesn’t support{" "}
+              <span className="font-bold">{selectedAssetSymbol}</span>{" "}
+              <strong className="font-bold text-red-400">
+                the funds will be lost!
+              </strong>
             </span>
           </div>
         )}
@@ -122,12 +140,11 @@ export const EvmAssetWarningModal = () => {
           .
         </div>
 
-        <div className="flex justify-center mt-5">
-          {" "}
-          <button className="mx-5 btn" onClick={resetState}>
+        <div className="flex justify-between mt-10">
+          <button className="mx-5 btn btn-ghost" onClick={handleOnResetState}>
             Go Back
           </button>
-          <button className="btn" onClick={onConfirm}>
+          <button className="btn btn-primary" onClick={onConfirm}>
             Confirm
           </button>
         </div>
