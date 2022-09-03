@@ -25,7 +25,7 @@ const Home: NextPage = () => {
     if (UNDER_MAINTENANCE) return <UnderMaintenance />;
 
     return (
-      <div className="h-full grid grid-cols-1 pt-[200px] lg:grid-cols-1 justify-items-center lg:justify-items-stretch gap-10">
+      <div className="h-full grid grid-cols-1 pt-[150px] lg:grid-cols-1 justify-items-center lg:justify-items-stretch gap-10">
         <div className="flex items-start justify-center">
           {storeReady && <SwapBox />}
         </div>
