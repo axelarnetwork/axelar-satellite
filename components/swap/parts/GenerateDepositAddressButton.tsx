@@ -72,7 +72,7 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
 
   function renderLoadingButton() {
     return (
-      <div className="w-full btn btn-primary loading">
+      <div className="w-full text-lg btn btn-primary loading">
         Generating Deposit Address
       </div>
     );

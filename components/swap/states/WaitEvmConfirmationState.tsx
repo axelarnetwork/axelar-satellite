@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import { SpinnerRoundOutlined } from "spinners-react";
+import { SpinnerRoundFilled } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
 import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
 import {
@@ -103,7 +103,7 @@ export const WaitEvmConfirmationState = () => {
             </div>
             <div className="my-0 divider" />
             <div className="flex gap-x-2">
-              <SpinnerRoundOutlined
+              <SpinnerRoundFilled
                 className="text-blue-500"
                 size={20}
                 color="#00a6ff"

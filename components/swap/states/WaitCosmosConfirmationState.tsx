@@ -1,5 +1,5 @@
 import React from "react";
-import { SpinnerCircular } from "spinners-react";
+import { SpinnerRoundFilled } from "spinners-react";
 import { useDetectDestTransferConfirmation } from "../../../hooks";
 import { InputWrapper } from "../../common";
 import { ProgressBar } from "./parts";
@@ -10,12 +10,7 @@ export const WaitCosmosConfirmationState = () => {
   function renderConfirmations() {
     return (
       <>
-        <SpinnerCircular
-          size={20}
-          thickness={147}
-          color={"#00a5ff"}
-          secondaryColor={"#375f73"}
-        />
+        <SpinnerRoundFilled size={20} thickness={147} color={"#00a5ff"} />
         <span className="font-semibold">Waiting for confirmations...</span>
       </>
     );
