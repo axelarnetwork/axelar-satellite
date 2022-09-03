@@ -50,7 +50,7 @@ export const ConfirmTransferState = () => {
     return (
       <div className="flex flex-col justify-center h-full text-base text-md gap-y-1">
         <h2 className="text-lg font-bold text-center">Transfer complete!</h2>
-        <div className="my-2 divider" />
+        <div className="my-0 divider" />
         <div>
           <a
             className="flex items-center text-primary hover:underline gap-x-2"

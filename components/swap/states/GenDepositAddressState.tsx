@@ -14,7 +14,7 @@ export const GenDepositAddressState = () => {
             <div className="relative flex flex-col h-full">
               <ProgressBar level={1} />
 
-              <div className="flex items-center justify-center h-full py-4 text-lg gap-x-2">
+              <div className="flex items-center justify-center h-full py-4 text-base gap-x-2">
                 <SpinnerRoundFilled
                   size={20}
                   thickness={147}
