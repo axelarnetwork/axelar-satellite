@@ -13,6 +13,8 @@ import { useGatewayQuery, useGetAssetBalance } from "../../../hooks";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { Blockable } from "../../common";
 import { useRouter } from "next/router";
+import { renderGasFee } from "../../../utils/renderGasFee";
+import BigNumber from "bignumber.js";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -23,6 +25,7 @@ export const TokenSelector = () => {
     selectableAssetList,
     setAsset,
     srcChain,
+    destChain,
     swapOrigin,
     tokensToTransfer,
     setTokensToTransfer,

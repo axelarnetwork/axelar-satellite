@@ -1,9 +1,16 @@
+import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+import BigNumber from "bignumber.js";
 import React from "react";
 import toast from "react-hot-toast";
 
 import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
-import { getReservedAddresses, useSwapStore } from "../../../store";
+import {
+  getReservedAddresses,
+  getSelectedAssetSymbol,
+  useSwapStore,
+} from "../../../store";
 import { SwapStatus } from "../../../utils/enums";
+import { renderGasFee } from "../../../utils/renderGasFee";
 
 type Props = {
   loading: boolean;
@@ -14,13 +21,39 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
   genDepositAddress,
   loading,
 }) => {
-  const { srcChain, destChain, destAddress, asset, setSwapStatus } =
-    useSwapStore((state) => state);
+  const {
+    srcChain,
+    destChain,
+    destAddress,
+    asset,
+    setSwapStatus,
+    tokensToTransfer,
+  } = useSwapStore((state) => state);
 
   const reservedAddresses = useSwapStore(getReservedAddresses);
+  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+
+  function checkMinAmount(amount: string, minAmount?: number) {
+    const minDeposit =
+      renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+    if (new BigNumber(amount || "0") <= new BigNumber(minDeposit))
+      return { minDeposit, minAmountOk: false };
+    return {
+      minDeposit,
+      minAmountOk: true,
+    };
+  }
 
   async function handleOnGenerateDepositAddress() {
     if (!asset) return toast.error("Asset can't be empty");
+    if (!Number(tokensToTransfer))
+      return toast.error("Please enter the amount of tokens to transfer");
+    const { minAmountOk, minDeposit } = checkMinAmount(tokensToTransfer);
+
+    if (!minAmountOk)
+      return toast.error(
+        `Token amount to transfer should be bigger than ${minDeposit} ${selectedAssetSymbol}`
+      );
     if (!destAddress) return toast.error("Destination address can't be empty");
     if (
       RESERVED_ADDRESSES?.includes(destAddress) ||
