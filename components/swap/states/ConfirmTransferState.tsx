@@ -75,7 +75,9 @@ export const ConfirmTransferState = () => {
               );
             }}
           >
-            <span>Add token to Metamask</span>
+            <span className="font-light text-gray-200">
+              Add token to Metamask ({destChain.chainName})
+            </span>
             <Image
               src={"/assets/wallets/metamask.logo.svg"}
               height={16}
