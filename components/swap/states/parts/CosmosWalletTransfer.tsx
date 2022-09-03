@@ -27,7 +27,7 @@ import Long from "long";
 import { Height } from "cosmjs-types/ibc/core/client/v1/client";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { SwapStatus } from "../../../../utils/enums";
-import { SpinnerRoundOutlined } from "spinners-react";
+import { SpinnerRoundFilled } from "spinners-react";
 import { renderGasFee } from "../../../../utils/renderGasFee";
 
 export const CosmosWalletTransfer = () => {
@@ -225,7 +225,7 @@ export const CosmosWalletTransfer = () => {
       <div className="flex justify-center my-2 gap-x-5">
         {isTxOngoing ? (
           <div className="flex items-center gap-x-2">
-            <SpinnerRoundOutlined
+            <SpinnerRoundFilled
               className="text-blue-500"
               size={20}
               color="#00a6ff"

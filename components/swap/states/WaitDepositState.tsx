@@ -36,7 +36,7 @@ export const WaitDepositState = () => {
     return (
       <div>
         <div className="px-10 mx-auto my-1 text-xs divider">
-          OR SEND VIA YOUR CONNECTED WALLET:
+          OR SEND VIA YOUR CONNECTED WALLET
         </div>
         {srcChain.module === "evm" && <EvmWalletTransfer />}
         {srcChain.module === "axelarnet" && <CosmosWalletTransfer />}

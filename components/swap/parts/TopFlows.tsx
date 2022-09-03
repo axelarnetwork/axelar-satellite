@@ -40,7 +40,7 @@ export const TopFlows = () => {
     setAsset,
     selectableAssetList,
     allChains,
-    swapStatus
+    swapStatus,
   } = useSwapStore();
   const [menuOpened, setMenuOpened] = useState(false);
   const menu = useRef(null);
@@ -57,14 +57,14 @@ export const TopFlows = () => {
     }
   }, [menuOpened]);
 
-  if (![SwapStatus.IDLE, SwapStatus.GEN_DEPOSIT_ADDRESS].includes(swapStatus)) return null;
+  if (![SwapStatus.IDLE].includes(swapStatus)) return null;
 
   function handleOnFlow1() {
     const avax = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("avalanche")
+      chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("moonbeam")
+      chain.chainName.toLowerCase().includes("osmosis")
     ) as ChainInfo;
     const asset = selectableAssetList.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("usdc")
@@ -78,13 +78,13 @@ export const TopFlows = () => {
 
   function handleOnFlow2() {
     const osmo = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("osmosis")
+      chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("moonbeam")
+      chain.chainName.toLowerCase().includes("osmosis")
     ) as ChainInfo;
     const asset = selectableAssetList.find((asset) =>
-      asset.common_key[ENVIRONMENT].includes("usdc")
+      asset.common_key[ENVIRONMENT].includes("weth")
     ) as AssetConfig;
 
     setAsset(asset);
@@ -101,7 +101,7 @@ export const TopFlows = () => {
       chain.chainName.toLowerCase().includes("osmosis")
     ) as ChainInfo;
     const asset = selectableAssetList.find((asset) =>
-      asset.common_key[ENVIRONMENT].includes("usdc")
+      asset.common_key[ENVIRONMENT].includes("wmatic")
     ) as AssetConfig;
 
     setAsset(asset);
@@ -116,14 +116,13 @@ export const TopFlows = () => {
         tabIndex={0}
         onBlur={(e) => setMenuOpened(false)}
         className="px-3 py-1 rounded-lg border border-[#00a7ff] bg-[#003556] text-[#00a7ff] text-xs cursor-pointer font-semibold"
-        onClick={(e) => setMenuOpened(menuOpened)
-        }
+        onClick={(e) => setMenuOpened(menuOpened)}
       >
         Top Flows
       </label>
       <ul
         tabIndex={0}
-        className="z-50 p-2 shadow shadow-lg gap-y-2 dropdown-content menu bg-neutral rounded-box w-52 top-8"
+        className="z-50 p-2 shadow-lg gap-y-2 dropdown-content menu bg-neutral rounded-box w-52 top-8"
         onFocus={(e) => setMenuOpened(true)}
       >
         <li
@@ -132,7 +131,7 @@ export const TopFlows = () => {
         >
           <div className="flex">
             <Image
-              src={`/assets/chains/avalanche.logo.svg`}
+              src={`/assets/chains/ethereum.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -146,7 +145,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/chains/moonbeam.logo.svg`}
+              src={`/assets/chains/osmosis.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -159,21 +158,21 @@ export const TopFlows = () => {
         >
           <div className="flex">
             <Image
+              src={`/assets/chains/ethereum.logo.svg`}
+              layout="intrinsic"
+              width={35}
+              height={35}
+            />
+            <Arrow />
+            <Image
+              src={`/assets/tokens/weth-wei.logo.svg`}
+              layout="intrinsic"
+              width={35}
+              height={35}
+            />
+            <Arrow />
+            <Image
               src={`/assets/chains/osmosis.logo.svg`}
-              layout="intrinsic"
-              width={35}
-              height={35}
-            />
-            <Arrow />
-            <Image
-              src={`/assets/tokens/uausdc.logo.svg`}
-              layout="intrinsic"
-              width={35}
-              height={35}
-            />
-            <Arrow />
-            <Image
-              src={`/assets/chains/moonbeam.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -193,7 +192,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/uausdc.logo.svg`}
+              src={`/assets/tokens/wmatic-wei.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}

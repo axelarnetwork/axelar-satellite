@@ -65,6 +65,7 @@ export const DestChainSelector = () => {
       query: {
         ...router.query,
         destination: chain.chainName.toLowerCase(),
+        destination_address: "",
       },
     });
   }

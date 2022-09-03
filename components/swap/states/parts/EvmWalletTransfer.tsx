@@ -11,7 +11,7 @@ import { BigNumber } from "bignumber.js";
 import { utils } from "ethers";
 import toast from "react-hot-toast";
 import { AssetConfig, AssetInfo } from "@axelar-network/axelarjs-sdk";
-import { SpinnerRoundOutlined } from "spinners-react";
+import { SpinnerRoundFilled } from "spinners-react";
 
 import { useSwapStore, useWalletStore } from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
@@ -122,7 +122,7 @@ export const EvmWalletTransfer = () => {
       <div className="flex justify-center my-2 gap-x-5">
         {isTxOngoing ? (
           <div className="flex items-center gap-x-2">
-            <SpinnerRoundOutlined
+            <SpinnerRoundFilled
               className="text-blue-500"
               size={20}
               color="#00a6ff"
