@@ -6,8 +6,14 @@ import { SwapStatus } from "../../../utils/enums";
 import { GenerateDepositAddressButton } from "./GenerateDepositAddressButton";
 
 export const ActionButton = () => {
-  const { swapStatus, resetState, setDepositAddress, setSwapStatus } =
-    useSwapStore((state) => state);
+  const {
+    srcChain,
+    destChain,
+    swapStatus,
+    resetState,
+    setDepositAddress,
+    setSwapStatus,
+  } = useSwapStore((state) => state);
   const { mutate, isLoading, isSuccess, data } = useGenerateDepositAddress();
 
   useEffect(() => {
@@ -35,7 +41,7 @@ export const ActionButton = () => {
     return (
       <button className="w-full btn btn-primary cursor-not-allowedy">
         <div className="flex items-center gap-3">
-          <span>Processing...</span>
+          <span>Generating Deposit Address...</span>
         </div>
       </button>
     );
@@ -43,7 +49,9 @@ export const ActionButton = () => {
     return (
       <button className="w-full cursor-not-allowed btn btn-primary">
         <div className="flex items-center gap-3">
-          <span>Waiting for deposit...</span>
+          <span>
+            Waiting for Transfer on <strong>{srcChain.chainName}</strong>...
+          </span>
         </div>
       </button>
     );
@@ -51,7 +59,10 @@ export const ActionButton = () => {
     return (
       <button className="w-full cursor-not-allowed btn btn-primary">
         <div className="flex items-center gap-3">
-          <span>Waiting for confirmation...</span>
+          <span>
+            Waiting for Confirmation on <strong>{destChain.chainName}</strong>
+            ...
+          </span>
         </div>
       </button>
     );
@@ -59,7 +70,7 @@ export const ActionButton = () => {
     return (
       <button className="w-full btn btn-primary" onClick={resetState}>
         <div className="flex items-center gap-3">
-          <span>Make another transfer?</span>
+          <span>Transfer Complete! Make another?</span>
         </div>
       </button>
     );
