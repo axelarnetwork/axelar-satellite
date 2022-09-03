@@ -53,40 +53,6 @@ export const WaitEvmConfirmationState = () => {
   function renderConfirmations() {
     return (
       <div className="flex flex-col justify-center h-full text-center gap-y-1">
-        {/* <div>
-          <h4 className="text-sm">Deposit Address</h4>
-          <div className="flex justify-center text-sm font-bold text-info gap-x-2">
-            <AddressShortener value={depositAddress} />
-            <div
-              className="cursor-pointer"
-              onClick={() => copyToClipboard(depositAddress)}
-            >
-              <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
-            </div>
-          </div>
-        </div>
-        <div>
-          <h4 className="text-sm">Deposit Confirmation</h4>
-          <div className="flex justify-center text-sm font-bold text-info gap-x-2">
-            <AddressShortener value={txInfo.sourceTxHash} />
-            <div className="flex items-center gap-x-2">
-              <div
-                className="cursor-pointer"
-                onClick={() => copyToClipboard(txInfo.sourceTxHash as string)}
-              >
-                <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
-              </div>
-              <a
-                href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Image src={"/assets/ui/link.svg"} height={16} width={16} />
-              </a>
-            </div>
-          </div>
-        </div> */}
-        {/* <div className="w-48 mx-auto my-1 text-xs divider" /> */}
         <div className="flex justify-center gap-x-2">
           <div className="flex flex-col text-center">
             <h2 className="text-lg text-center">
