@@ -26,11 +26,14 @@ const Home: NextPage = () => {
     if (UNDER_MAINTENANCE) return <UnderMaintenance />;
 
     return (
-      <div className="h-full grid grid-cols-1 pt-[150px] lg:grid-cols-1 justify-items-center lg:justify-items-stretch gap-10">
-        <div className="flex items-start justify-center">
-          {storeReady && <SwapBox />}
+      <>
+        <div className="h-full grid grid-cols-1 pt-[150px] lg:grid-cols-1 justify-items-center lg:justify-items-stretch gap-10">
+          {ENVIRONMENT === "mainnet" && <FirstTimeWarning />}
+          <div className="flex items-start justify-center">
+            {storeReady && <SwapBox />}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -44,7 +47,7 @@ const Home: NextPage = () => {
       <canvas id="canvas" className="absolute w-screen h-screen -z-5 "></canvas>
       <Layout>
         <VideoBackground />
-        {ENVIRONMENT === "mainnet" && <FirstTimeWarning />}
+
         {renderContent()}
       </Layout>
     </>
