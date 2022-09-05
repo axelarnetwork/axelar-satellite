@@ -1,6 +1,6 @@
 import React from "react";
 
-const truncate = function (
+export const truncate = function (
   fullStr: string | undefined,
   strLen: number,
   separator?: string

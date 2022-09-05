@@ -11,10 +11,11 @@ import {
 } from "../../../store";
 import { copyToClipboard } from "../../../utils";
 import { SwapStatus } from "../../../utils/enums";
-import { AddressShortener, InputWrapper } from "../../common";
+import { AddressShortener, InputWrapper, truncate } from "../../common";
 import { ProgressBar } from "./parts";
 import { getWagmiChains } from "../../../config/web3";
 import { TransferStats } from "../parts";
+import { truncateEthAddress } from "../../../utils/truncateEthAddress";
 
 export const WaitEvmConfirmationState = () => {
   const {
@@ -61,7 +62,7 @@ export const WaitEvmConfirmationState = () => {
               <span>detected!</span>
             </h2>
             <div className="text-base text-green-300">
-              Your transfer will soon arrive on{" "}
+              Tokens will soon arrive at <>{truncate(destAddress, 24)}</> on{" "}
               <strong className="capitalize">{destChain.chainName}</strong>
             </div>
             <div className="text-sm text-gray-300">

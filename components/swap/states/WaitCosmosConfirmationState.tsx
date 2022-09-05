@@ -2,12 +2,13 @@ import React from "react";
 import { SpinnerRoundFilled } from "spinners-react";
 import { useDetectDestTransferConfirmation } from "../../../hooks";
 import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
-import { InputWrapper } from "../../common";
+import { truncateEthAddress } from "../../../utils/truncateEthAddress";
+import { AddressShortener, InputWrapper, truncate } from "../../common";
 import { TransferStats } from "../parts";
 import { ProgressBar } from "./parts";
 
 export const WaitCosmosConfirmationState = () => {
-  const { srcChain, destChain } = useSwapStore((state) => state);
+  const { srcChain, destAddress, destChain } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   useDetectDestTransferConfirmation();
 
@@ -22,7 +23,7 @@ export const WaitCosmosConfirmationState = () => {
               <span>detected!</span>
             </h2>
             <div className="text-base text-green-300">
-              Your transfer will soon arrive on{" "}
+              Tokens will soon arrive at <>{truncate(destAddress, 24)}</> on{" "}
               <strong className="capitalize">{destChain.chainName}</strong>
             </div>
             <div className="text-sm text-gray-300">
