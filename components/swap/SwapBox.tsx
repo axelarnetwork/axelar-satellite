@@ -16,7 +16,7 @@ import {
 } from "../../hooks";
 import { TopFlows } from "./parts/TopFlows";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
-import { ENVIRONMENT } from "../../config/constants";
+import { ENVIRONMENT as env } from "../../config/constants";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
@@ -27,12 +27,16 @@ export const SwapBox = () => {
       <ModalWindow />
       <EvmAssetWarningModal />
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
-        <div className="relative flex justify-between mb-0 space-x-8">
-          {ENVIRONMENT === "testnet" && (
+        <div
+          className={`relative flex mb-0 space-x-8 justify-${
+            env === "mainnet" ? "end" : "between"
+          }`}
+        >
+          {env !== "mainnet" && (
             <div
               className={`font-bold text-white bg-red-500 border-0 badge badge-primary`}
             >
-              {ENVIRONMENT.toUpperCase()}
+              {env.toUpperCase()}
             </div>
           )}
           <div className="flex">

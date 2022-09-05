@@ -8,6 +8,7 @@ import {
 } from "../components/layout";
 import { PageSEO } from "../components/seo";
 import { SwapBox } from "../components/swap";
+import { FirstTimeWarning } from "../components/swap/parts/FirstTimeWarning";
 import { UNDER_MAINTENANCE } from "../config/constants";
 import { siteMetadata } from "../data";
 import { useInitialChainList } from "../hooks";
@@ -43,6 +44,7 @@ const Home: NextPage = () => {
       <canvas id="canvas" className="absolute w-screen h-screen -z-5 "></canvas>
       <Layout>
         <VideoBackground />
+        <FirstTimeWarning />
         {renderContent()}
       </Layout>
     </>

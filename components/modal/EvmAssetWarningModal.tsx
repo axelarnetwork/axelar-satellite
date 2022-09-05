@@ -66,7 +66,7 @@ export const EvmAssetWarningModal = () => {
             <div className="py-2 text-center">
               <div className="mt-2">
                 <div className="font-light text-gray-300">
-                  {selectedAssetSymbol} contract |{" "}
+                  {selectedAssetSymbol} token contract address |{" "}
                   <strong className="capitalize">{srcChain.chainName}</strong>
                   <div className="flex items-center justify-center font-bold gap-x-2">
                     <AddressShortener value={tokenAddress} />
@@ -83,29 +83,29 @@ export const EvmAssetWarningModal = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="mt-2">
-                <div className="font-light text-gray-300">
-                  Your balance |{" "}
-                  <strong className="">
-                    {balance} {selectedAssetSymbol}
-                  </strong>
-                  <div className="flex items-center justify-center font-bold gap-x-2">
-                    <AddressShortener value={address} />
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => copyToClipboard(address as string)}
-                    >
-                      <Image
-                        src={"/assets/ui/copy.svg"}
-                        height={16}
-                        width={16}
-                      />
+              {address && (
+                <div className="mt-2">
+                  <div className="font-light text-gray-300">
+                    Connected wallet balance |{" "}
+                    <strong className="">
+                      {balance} {selectedAssetSymbol}
+                    </strong>
+                    <div className="flex items-center justify-center font-bold gap-x-2">
+                      <AddressShortener value={address} />
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => copyToClipboard(address as string)}
+                      >
+                        <Image
+                          src={"/assets/ui/copy.svg"}
+                          height={16}
+                          width={16}
+                        />
+                      </div>
                     </div>
-                    <span className="font-light">(token address)</span>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         )}

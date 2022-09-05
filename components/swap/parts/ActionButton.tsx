@@ -50,7 +50,7 @@ export const ActionButton = () => {
       <button className="w-full cursor-not-allowed btn btn-primary">
         <div className="flex items-center gap-3">
           <span>
-            Waiting for Transfer on <strong>{srcChain.chainName}</strong>...
+            Waiting for Deposit on <strong>{srcChain.chainName}</strong>...
           </span>
         </div>
       </button>
