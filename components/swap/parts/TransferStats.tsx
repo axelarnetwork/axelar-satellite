@@ -67,7 +67,7 @@ export const TransferStats = () => {
           <AddressShortener value={depositAddress} />
           <div
             className="cursor-pointer"
-            onClick={() => copyToClipboard(destAddress)}
+            onClick={() => copyToClipboard(depositAddress)}
           >
             <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
           </div>
