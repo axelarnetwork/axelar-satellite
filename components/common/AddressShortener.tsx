@@ -24,5 +24,5 @@ export const truncate = function (
 
 export const AddressShortener = (props: { value?: string }) => {
   const { value } = props;
-  return <div className="text-primary">{truncate(value, 24)}</div>;
+  return <div className="text-primary">{truncate(value, 12)}</div>;
 };
