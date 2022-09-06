@@ -43,9 +43,7 @@ export const EvmWalletTransfer = () => {
   const destChainId = useSwapStore(getDestChainId);
   const { wagmiConnected } = useWalletStore();
 
-  console.log("srcChainId",srcChainId, destChainId);
-
-  const waitForTransaction = useWaitForTransaction({
+  useWaitForTransaction({
     chainId: srcChainId,
     hash: txInfo?.sourceTxHash,
     onSettled(data, error) {

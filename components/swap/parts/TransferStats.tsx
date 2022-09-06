@@ -108,12 +108,6 @@ export const TransferStats = () => {
           rel="noreferrer"
           className="flex font-normal gap-x-2"
         >
-        {/* <a
-          href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
-          target="_blank"
-          rel="noreferrer"
-          className="flex font-normal gap-x-2"
-        > */}
           <span className="text-[#00a6ff]">View on {srcChain.module === "evm" ? evmRpc?.blockExplorers?.default?.name : "Axelarscan"}</span>
           <Image
             src={"/assets/ui/link.svg"}
