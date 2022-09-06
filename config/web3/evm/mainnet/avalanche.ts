@@ -9,7 +9,7 @@ export default {
     symbol: "AVAX",
   },
   rpcUrls: {
-    default: "https://api.avax.network/ext/bc/C/rpc",
+    default: "https://api.avax.network/ext/bc/C/rpc/",
   },
   blockExplorers: {
     default: { name: "SnowTrace", url: "https://snowtrace.io" },
