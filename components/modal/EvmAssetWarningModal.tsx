@@ -53,7 +53,7 @@ export const EvmAssetWarningModal = () => {
         "modal-close": !showAssetWarning,
         "modal-open": !!showAssetWarning,
       })}
-      style={{ paddingTop: "calc(180px + 10vh)" }}
+      style={{ paddingTop: "calc(80px + 10vh)" }}
     >
       <div className="modal-box">
         {srcChain?.module === "evm" && (

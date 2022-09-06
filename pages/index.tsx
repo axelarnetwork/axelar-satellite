@@ -31,7 +31,7 @@ const Home: NextPage = () => {
           {ENVIRONMENT === "mainnet" && <FirstTimeWarning />}
           <div
             className="flex items-start justify-center"
-            style={{ paddingTop: "calc(150px + 10vh)" }}
+            style={{ paddingTop: "calc(50px + 10vh)" }}
           >
             {storeReady && <SwapBox />}
           </div>
