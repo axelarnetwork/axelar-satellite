@@ -183,7 +183,31 @@ export const CosmosWalletTransfer = () => {
       },
       timeoutTimestamp = 0;
 
-    const result = await cosmjs
+    let result;
+
+    if (srcChain.chainName.toLowerCase() === "axelar") {
+    try {
+      result = cosmjs.sendTokens(
+        sourceAddress,
+        depositAddress,
+        [sendCoin],
+        fee
+      )
+      .then((e) => {
+        console.log("CosmosWalletTransfer: send tokens");
+        setTxInfo({
+          sourceTxHash: e.transactionHash,
+        });
+
+        setIsTxOngoing(true);
+        // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+      })
+      .catch((error) => console.log(error));
+    } catch (error: any) {
+      throw new Error(error)
+    }
+    } else {
+      result = await cosmjs
       .sendIbcTokens(
         sourceAddress,
         depositAddress,
@@ -197,7 +221,7 @@ export const CosmosWalletTransfer = () => {
         fee
       )
       .then((e) => {
-        console.log("CosmosWalletTransfer");
+        console.log("CosmosWalletTransfer: IBC transfer");
         setTxInfo({
           sourceTxHash: e.transactionHash,
         });
@@ -206,6 +230,7 @@ export const CosmosWalletTransfer = () => {
         // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
       })
       .catch((error) => console.log(error));
+    }
 
     // let result
     // try {
