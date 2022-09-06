@@ -12,7 +12,7 @@ export default {
     coinDecimals: 6,
     coinGeckoId: "terra-luna-2",
   },
-  chainIdentifier: "terra-2",
+  chainIdentifier: "terra",
   bip44: {
     coinType: 330,
   },
