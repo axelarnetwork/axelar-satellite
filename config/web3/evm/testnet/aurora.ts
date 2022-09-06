@@ -10,7 +10,7 @@ export default {
   },
   blockExplorers: {
     default: {
-      name: "polygonscan",
+      name: "aurorascan",
       url: "https://testnet.aurorascan.dev/",
     },
   },

@@ -12,7 +12,7 @@ export default {
       default: "https://rpc.ftm.tools",
     },
     blockExplorers: {
-      default: { name: "FTMScan", url: "https://ftmscan.com" },
+      default: { name: "FTMScan", url: "https://ftmscan.com/" },
     },
     testnet: false,
   };

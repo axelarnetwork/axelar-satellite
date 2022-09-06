@@ -5,6 +5,7 @@ import {
   useConnect,
   useContractWrite,
   useNetwork,
+  useWaitForTransaction,
 } from "wagmi";
 import { erc20ABI } from "wagmi";
 import { BigNumber } from "bignumber.js";
@@ -13,7 +14,7 @@ import toast from "react-hot-toast";
 import { AssetConfig, AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { SpinnerRoundFilled } from "spinners-react";
 
-import { useSwapStore, useWalletStore } from "../../../../store";
+import { getDestChainId, getSrcChainId, useSwapStore, useWalletStore } from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
 import { SwapStatus } from "../../../../utils/enums";
 import { useDetectDepositConfirmation } from "../../../../hooks";
@@ -23,6 +24,7 @@ export const EvmWalletTransfer = () => {
   const { connectAsync, connectors, error } = useConnect();
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
+  const [numConfirmationsSoFar, setNumConfirmationsSoFar] = useState(1);
 
   // used to hide wallets when transaction has been triggered
   const [isTxOngoing, setIsTxOngoing] = useState(false);
@@ -35,26 +37,34 @@ export const EvmWalletTransfer = () => {
     tokensToTransfer,
     setSwapStatus,
     setTxInfo,
+    txInfo,
   } = useSwapStore((state) => state);
+  const srcChainId = useSwapStore(getSrcChainId);
+  const destChainId = useSwapStore(getDestChainId);
   const { wagmiConnected } = useWalletStore();
-  const { chains } = useNetwork();
 
-  const srcChainId = chains.find(
-    (_chain) => _chain.network === srcChain.chainName.toLowerCase()
-  );
-  const destChainId = chains.find(
-    (chain) => chain.network === destChain.chainName.toLowerCase()
-  )?.id;
+  useWaitForTransaction({
+    chainId: srcChainId,
+    hash: txInfo?.sourceTxHash,
+    onSettled(data, error) {
+      setNumConfirmationsSoFar(numConfirmationsSoFar + 1);
+    },
+    confirmations: Math.min(
+      numConfirmationsSoFar,
+      srcChain.confirmLevel as number
+    ),
+    enabled: !!(txInfo && txInfo.sourceTxHash),
+  });
 
   const { writeAsync } = useContractWrite({
-    chainId: srcChainId?.id, // call transfer on source chain
+    chainId: srcChainId, // call transfer on source chain
     addressOrName: tokenAddress,
     contractInterface: erc20ABI,
     functionName: "transfer",
   });
 
   const { data: blockNumber } = useBlockNumber({
-    chainId: destChainId,
+    chainId: destChainId as number,
     enabled: !!destChainId,
   });
 
@@ -119,8 +129,9 @@ export const EvmWalletTransfer = () => {
 
   return (
     <div>
-      <div className="flex justify-center my-2 gap-x-5">
-        {isTxOngoing ? (
+      {isTxOngoing ? (
+        <div className="flex flex-col items-center my-2 gap-x-5">
+          {" "}
           <div className="flex items-center gap-x-2">
             <SpinnerRoundFilled
               className="text-blue-500"
@@ -128,10 +139,19 @@ export const EvmWalletTransfer = () => {
               color="#00a6ff"
             />
             <span className="text-sm">
-              Waiting for transaction confirmation...
+              Waiting for {Math.min(numConfirmationsSoFar, srcChain.confirmLevel as number)}/{srcChain.confirmLevel} confirmations before forwarding to Axelar...
             </span>
           </div>
-        ) : (
+          <div className="flex items-center mt-2 gap-x-2">
+            <progress
+              className="w-56 progress progress-success"
+              value={numConfirmationsSoFar}
+              max={srcChain.confirmLevel}
+            ></progress>
+          </div>
+        </div>
+      ) : (
+        <div className="flex justify-center my-2 gap-x-5">
           <button onClick={handleOnTokensTransfer}>
             <Image
               src="/assets/wallets/metamask.logo.svg"
@@ -139,8 +159,8 @@ export const EvmWalletTransfer = () => {
               width={30}
             />
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

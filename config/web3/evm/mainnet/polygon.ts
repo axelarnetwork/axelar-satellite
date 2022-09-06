@@ -12,7 +12,7 @@ export default {
     default: "https://polygon-rpc.com",
   },
   blockExplorers: {
-    default: { name: "Polygonscan", url: "https://polygonscan.com" },
+    default: { name: "Polygonscan", url: "https://polygonscan.com/" },
   },
   testnet: false,
 };

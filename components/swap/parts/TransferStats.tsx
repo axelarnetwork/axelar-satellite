@@ -9,6 +9,7 @@ import { useGatewayQuery } from "../../../hooks";
 import { copyToClipboard } from "../../../utils";
 import { SwapStatus } from "../../../utils/enums";
 import { AXELARSCAN_URL } from "../../../config/constants";
+import { getWagmiChains } from "../../../config/web3";
 
 export const TransferStats = () => {
   const {
@@ -95,16 +96,19 @@ export const TransferStats = () => {
 
   function renderDepositConfirmationLink() {
     if (!txInfo.sourceTxHash) return null;
+    const evmRpc = getWagmiChains().find(network => network.networkNameOverride === srcChain.chainName.toLowerCase());
+    const rootUrl = srcChain.module === "evm" ? 
+      `${evmRpc?.blockExplorers?.default.url}tx/` : `${AXELARSCAN_URL}/transfer/`
     return (
       <li className="flex justify-between">
         <span>Deposit Confirmation</span>
         <a
-          href={`${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`}
+          href={`${rootUrl}${txInfo.sourceTxHash}`}
           target="_blank"
           rel="noreferrer"
           className="flex font-normal gap-x-2"
         >
-          <span className="text-[#00a6ff]">View on AxelarScan</span>
+          <span className="text-[#00a6ff]">View on {srcChain.module === "evm" ? evmRpc?.blockExplorers?.default?.name : "Axelarscan"}</span>
           <Image
             src={"/assets/ui/link.svg"}
             height={16}

@@ -12,7 +12,7 @@ export default {
     default: "https://api.avax.network/ext/bc/C/rpc",
   },
   blockExplorers: {
-    default: { name: "SnowTrace", url: "https://snowtrace.io" },
+    default: { name: "SnowTrace", url: "https://snowtrace.io/" },
   },
   testnet: false,
 };
