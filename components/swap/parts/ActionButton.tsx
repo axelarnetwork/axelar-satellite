@@ -37,42 +37,57 @@ export const ActionButton = () => {
         loading={isLoading && swapStatus !== SwapStatus.IDLE}
       />
     );
-  if (swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS)
-    return (
-      <button className="w-full btn btn-primary cursor-not-allowedy">
-        <div className="flex items-center gap-3">
-          <span>Generating Deposit Address...</span>
-        </div>
-      </button>
-    );
-  if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT)
-    return (
-      <button className="w-full cursor-not-allowed btn btn-primary">
-        <div className="flex items-center gap-3">
-          <span>
-            Waiting for Deposit on <strong>{srcChain.chainName}</strong>...
-          </span>
-        </div>
-      </button>
-    );
-  if (swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION)
-    return (
-      <button className="w-full cursor-not-allowed btn btn-primary">
-        <div className="flex items-center gap-3">
-          <span>
-            Waiting for Confirmation on <strong>{destChain.chainName}</strong>
-            ...
-          </span>
-        </div>
-      </button>
-    );
+
   if (swapStatus === SwapStatus.FINISHED)
     return (
       <button className="w-full btn btn-primary" onClick={resetState}>
         <div className="flex items-center gap-3">
-          <span>Transfer Complete! Make another?</span>
+          <span>Make another transfer?</span>
         </div>
       </button>
     );
+
+  return (
+    <div className="flex justify-center">
+      <div className="relative w-8 h-8">
+        <div className="loader">
+          <div className="inner one"></div>
+          <div className="inner two"></div>
+          <div className="inner three"></div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // if (swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS)
+  //   return (
+  //     <button className="w-full btn btn-primary cursor-not-allowedy">
+  //       <div className="flex items-center gap-3">
+  //         <span>Generating Deposit Address...</span>
+  //       </div>
+  //     </button>
+  //   );
+  // if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT)
+  //   return (
+  //     <button className="w-full cursor-not-allowed btn btn-primary">
+  //       <div className="flex items-center gap-3">
+  //         <span>
+  //           Waiting for Deposit on <strong>{srcChain.chainName}</strong>...
+  //         </span>
+  //       </div>
+  //     </button>
+  //   );
+  // if (swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION)
+  //   return (
+  //     <button className="w-full cursor-not-allowed btn btn-primary">
+  //       <div className="flex items-center gap-3">
+  //         <span>
+  //           Waiting for Confirmation on <strong>{destChain.chainName}</strong>
+  //           ...
+  //         </span>
+  //       </div>
+  //     </button>
+  //   );
+
   return null;
 };
