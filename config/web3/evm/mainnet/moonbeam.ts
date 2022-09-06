@@ -9,10 +9,10 @@ export default {
     symbol: "GLMR",
   },
   rpcUrls: {
-    default: "https://rpc.api.moonbeam.network/",
+    default: "https://rpc.api.moonbeam.network",
   },
   blockExplorers: {
-    default: { name: "Moonscan", url: "https://moonscan.io" },
+    default: { name: "Moonscan", url: "https://moonscan.io/" },
   },
   testnet: false,
 };

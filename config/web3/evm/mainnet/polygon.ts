@@ -9,10 +9,10 @@ export default {
     symbol: "MATIC",
   },
   rpcUrls: {
-    default: "https://polygon-rpc.com/",
+    default: "https://polygon-rpc.com",
   },
   blockExplorers: {
-    default: { name: "Polygonscan", url: "https://polygonscan.com" },
+    default: { name: "Polygonscan", url: "https://polygonscan.com/" },
   },
   testnet: false,
 };

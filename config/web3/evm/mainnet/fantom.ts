@@ -9,10 +9,10 @@ export default {
       symbol: "FTM",
     },
     rpcUrls: {
-      default: "https://rpc.ftm.tools/",
+      default: "https://rpc.ftm.tools",
     },
     blockExplorers: {
-      default: { name: "FTMScan", url: "https://ftmscan.com" },
+      default: { name: "FTMScan", url: "https://ftmscan.com/" },
     },
     testnet: false,
   };
