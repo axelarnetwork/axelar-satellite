@@ -10,6 +10,7 @@ import {
   DEFAULT_ASSET,
   DEFAULT_DEST_CHAIN,
   DEFAULT_SRC_CHAIN,
+  DISABLED_CHAIN_NAMES,
   ENVIRONMENT as environment,
 } from "../config/constants";
 import { useSwapStore } from "../store";
@@ -48,7 +49,9 @@ export const useInitialChainList = () => {
   // TODO: load chains upon project installation
   async function loadInitialChains() {
     return loadChains({ environment }).then((chains) => {
-      setAllChains(chains.sort((a,b) => (a.chainName.localeCompare(b.chainName))));
+      const sortedChains = chains.sort((a,b) => (a.chainName.localeCompare(b.chainName)));
+      const filteredChains = sortedChains.filter(chain => !DISABLED_CHAIN_NAMES.includes(chain.chainName.toLowerCase()))
+      setAllChains(filteredChains);
 
       // handle same srcChain === destChain. eg: moonbeam - moonbeam
       if (source === destination) {
