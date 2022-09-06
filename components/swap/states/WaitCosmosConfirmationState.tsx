@@ -30,7 +30,7 @@ export const WaitCosmosConfirmationState = () => {
               You can now safely close Satellite
             </div>
             <div className="my-0 divider" />
-            <div className="flex gap-x-2">
+            <div className="flex justify-center gap-x-2">
               <SpinnerRoundFilled
                 className="text-blue-500"
                 size={20}
