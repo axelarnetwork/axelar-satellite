@@ -76,7 +76,7 @@ export const WaitEvmConfirmationState = () => {
                 color="#00a6ff"
               />
               <div className="text-base font-light text-gray-200">
-                Transfering your {selectedAssetSymbol} to {destChain.chainName}
+                Transferring your {selectedAssetSymbol} to {destChain.chainName}
                 ...
               </div>
             </div>

@@ -95,7 +95,7 @@ export const TopFlows = () => {
 
   function handleOnFlow3() {
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("moonbeam")
+      chain.chainName.toLowerCase().includes("polygon")
     ) as ChainInfo;
     const osmo = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("osmosis")
@@ -185,7 +185,7 @@ export const TopFlows = () => {
         >
           <div className="flex">
             <Image
-              src={`/assets/chains/moonbeam.logo.svg`}
+              src={`/assets/chains/polygon.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}

@@ -8,6 +8,7 @@ import { wagmiClient } from "../wagmi.config";
 
 import "animate.css";
 import "../styles/globals.css";
+import "../styles/loader.css";
 
 const queryClient = new QueryClient();
 

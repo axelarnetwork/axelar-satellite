@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { useAccount } from "wagmi";
+import cn from "classnames";
 
 import { tokenContractDocs } from "../../config/constants";
 import { useGetAssetBalance } from "../../hooks";
@@ -48,9 +49,11 @@ export const EvmAssetWarningModal = () => {
 
   return (
     <div
-      className={`text-center modal modal-${
-        showAssetWarning ? "open" : "close"
-      }`}
+      className={cn("text-center modal items-start bg-black bg-opacity-50", {
+        "modal-close": !showAssetWarning,
+        "modal-open": !!showAssetWarning,
+      })}
+      style={{ paddingTop: "calc(180px + 10vh)" }}
     >
       <div className="modal-box">
         {srcChain?.module === "evm" && (
