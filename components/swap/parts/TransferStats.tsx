@@ -5,11 +5,11 @@ import { commify } from "ethers/lib/utils";
 
 import { AddressShortener, StatsWrapper } from "../../common";
 import { renderGasFee } from "../../../utils/renderGasFee";
-import { useGatewayQuery } from "../../../hooks";
 import { copyToClipboard } from "../../../utils";
 import { SwapStatus } from "../../../utils/enums";
 import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
+import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
 
 export const TransferStats = () => {
   const {
@@ -22,7 +22,7 @@ export const TransferStats = () => {
     swapStatus,
   } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
-  const max = useGatewayQuery();
+  const max = useGetMaxTransferAmount();
 
   function renderWaitTime() {
     if (!srcChain) return "";

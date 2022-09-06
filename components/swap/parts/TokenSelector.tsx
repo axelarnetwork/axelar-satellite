@@ -9,7 +9,7 @@ import {
 } from "../../../store";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapOrigin } from "../../../utils/enums";
-import { useGatewayQuery, useGetAssetBalance } from "../../../hooks";
+import { useGetAssetBalance, useGetMaxTransferAmount } from "../../../hooks";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { Blockable } from "../../common";
 import { useRouter } from "next/router";
@@ -32,7 +32,7 @@ export const TokenSelector = () => {
   } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const { wagmiConnected, keplrConnected } = useWalletStore();
-  const max = useGatewayQuery();
+  const max = useGetMaxTransferAmount();
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
   const [filteredAssets, setFilteredAssets] =
