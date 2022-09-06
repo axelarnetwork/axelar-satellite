@@ -1,4 +1,5 @@
 import React from "react";
+import cn from "classnames";
 import { Blockable, InputWrapper } from "../common";
 import {
   ActionButton,
@@ -28,9 +29,10 @@ export const SwapBox = () => {
       <EvmAssetWarningModal />
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
         <div
-          className={`relative flex mb-0 space-x-8 justify-${
-            env === "mainnet" ? "end" : "between"
-          }`}
+          className={cn("relative flex mb-0 space-x-8", {
+            "justify-end": env === "mainnet",
+            "justify-between": env === "testnet",
+          })}
         >
           {env !== "mainnet" && (
             <div
