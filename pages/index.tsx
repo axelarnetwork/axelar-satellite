@@ -27,9 +27,12 @@ const Home: NextPage = () => {
 
     return (
       <>
-        <div className="h-full grid grid-cols-1 pt-[150px] lg:grid-cols-1 justify-items-center lg:justify-items-stretch gap-10">
+        <div className="grid h-full grid-cols-1 gap-10 lg:grid-cols-1 justify-items-center lg:justify-items-stretch">
           {ENVIRONMENT === "mainnet" && <FirstTimeWarning />}
-          <div className="flex items-start justify-center">
+          <div
+            className="flex items-start justify-center"
+            style={{ paddingTop: "calc(150px + 10vh)" }}
+          >
             {storeReady && <SwapBox />}
           </div>
         </div>
