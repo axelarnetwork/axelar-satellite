@@ -14,39 +14,26 @@ export const FirstTimeWarning = () => {
   if (!showFirstTimeWarning) return null;
 
   return (
-    <div className="left-0 z-50 flex items-center justify-center w-full">
-      <div className="relative w-7/12 shadow-lg alert">
+    <div className="fixed w-full max-w-screen-md bottom-10 left-10">
+      <div className="relative block w-7/12 p-4 shadow-lg alert backdrop-blur-md bg-neutral/80">
+        <label
+          className="absolute btn btn-sm btn-circle right-2 top-2"
+          onClick={() => setShowFirstTimeWarning(false)}
+        >
+          ✕
+        </label>
         <div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="#fff"
-            viewBox="0 0 24 24"
-            className="flex-shrink-0 w-6 h-6 stroke-info"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
           <div>
-            <h3 className="font-bold">New to Satellite?</h3>
+            <h3 className="text-lg font-bold">New to Satellite?</h3>
             <div className="text-xs">
               Run a few flows in our testnet (with test tokens) and experiment
               here with small amounts first.
             </div>
           </div>
         </div>
-        <div className="flex-none">
-          <button
-            className="btn btn-sm btn-ghost"
-            onClick={() => setShowFirstTimeWarning(false)}
-          >
-            Close
-          </button>
+        <div className="flex justify-end">
           <a
-            className="btn btn-sm btn-primary"
+            className="mt-5 btn btn-xs btn-primary"
             href="https://testnet.satellite.money"
             rel="noopener noreferrer"
             target="_blank"
