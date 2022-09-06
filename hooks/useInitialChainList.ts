@@ -48,7 +48,7 @@ export const useInitialChainList = () => {
   // TODO: load chains upon project installation
   async function loadInitialChains() {
     return loadChains({ environment }).then((chains) => {
-      setAllChains(chains);
+      setAllChains(chains.sort((a,b) => (a.chainName.localeCompare(b.chainName))));
 
       // handle same srcChain === destChain. eg: moonbeam - moonbeam
       if (source === destination) {
