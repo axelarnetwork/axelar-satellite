@@ -124,7 +124,9 @@ export const TokenSelector = () => {
         {balance && (!!wagmiConnected || !!keplrConnected) ? (
           <div className="space-x-2">
             <span className="text-xs text-gray-500">Available</span>
-            <span className="w-auto text-xs text-[#86d6ff]">{balance}</span>
+            <span className="w-auto text-xs text-[#86d6ff]">
+              {Number(balance)?.toFixed(5)}
+            </span>
           </div>
         ) : (
           <div className="h-6 space-x-2"></div>
