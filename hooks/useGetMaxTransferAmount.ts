@@ -1,7 +1,6 @@
 import { useSwapStore } from "../store";
 import { useEffect, useState } from "react";
-import { formatUnits } from "ethers/lib/utils";
-import { BigNumber } from "ethers";
+import { BigNumber } from "bignumber.js";
 
 export const useGetMaxTransferAmount = () => {
   const { asset, destChain } = useSwapStore((state) => state);
@@ -19,7 +18,9 @@ export const useGetMaxTransferAmount = () => {
     }
   }, [destChain, asset]);
 
-  return maxTransferAmount
-    ? formatUnits(BigNumber.from(maxTransferAmount).div(4), asset?.decimals)
-    : null;
+  const amount = new BigNumber(maxTransferAmount.toString())
+    .div(4)
+    .div(10 ** Number(asset?.decimals))
+    .toString();
+  return amount;
 };
