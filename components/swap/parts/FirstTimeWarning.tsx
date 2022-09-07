@@ -14,7 +14,7 @@ export const FirstTimeWarning = () => {
   if (!showFirstTimeWarning) return null;
 
   return (
-    <div className="fixed w-full max-w-screen-md bottom-10 left-10">
+    <div className="fixed z-50 w-full max-w-screen-md bottom-10 left-10">
       <div className="relative block w-7/12 p-4 shadow-lg alert backdrop-blur-md bg-neutral/80">
         <label
           className="absolute btn btn-sm btn-circle right-2 top-2"

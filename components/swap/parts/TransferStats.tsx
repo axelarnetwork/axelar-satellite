@@ -5,11 +5,11 @@ import { commify } from "ethers/lib/utils";
 
 import { AddressShortener, StatsWrapper } from "../../common";
 import { renderGasFee } from "../../../utils/renderGasFee";
-import { useGatewayQuery } from "../../../hooks";
 import { copyToClipboard } from "../../../utils";
 import { SwapStatus } from "../../../utils/enums";
 import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
+import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
 
 export const TransferStats = () => {
   const {
@@ -22,7 +22,7 @@ export const TransferStats = () => {
     swapStatus,
   } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
-  const max = useGatewayQuery();
+  const max = useGetMaxTransferAmount();
 
   function renderWaitTime() {
     if (!srcChain) return "";
@@ -37,9 +37,29 @@ export const TransferStats = () => {
 
   function renderMaxTransferAmount() {
     if (max && Number(max) > 0) {
+      const tooltipText = "Any transfers in excess may result in longer settlement times. Contact us on Discord if you encounter any issues.";
       return (
         <li className="flex justify-between">
-          <span>Maximum Transfer Amount:</span>
+          <span
+            className="flex flex-row cursor-pointer tooltip tooltip-warning"
+            data-tip={tooltipText}
+          >
+            <span>Maximum Transfer Amount{" "}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="w-5 h-5 pb-1 stroke-current"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            <span>:</span>
+          </span>
           <span className="font-semibold">
             {commify(max)} {selectedAssetSymbol}
           </span>
@@ -96,9 +116,14 @@ export const TransferStats = () => {
 
   function renderDepositConfirmationLink() {
     if (!txInfo.sourceTxHash) return null;
-    const evmRpc = getWagmiChains().find(network => network.networkNameOverride === srcChain.chainName.toLowerCase());
-    const rootUrl = srcChain.module === "evm" ? 
-      `${evmRpc?.blockExplorers?.default.url}tx/` : `${AXELARSCAN_URL}/transfer/`
+    const evmRpc = getWagmiChains().find(
+      (network) =>
+        network.networkNameOverride === srcChain.chainName.toLowerCase()
+    );
+    const rootUrl =
+      srcChain.module === "evm"
+        ? `${evmRpc?.blockExplorers?.default.url}tx/`
+        : `${AXELARSCAN_URL}/transfer/`;
     return (
       <li className="flex justify-between">
         <span>Deposit Confirmation</span>
@@ -108,7 +133,12 @@ export const TransferStats = () => {
           rel="noreferrer"
           className="flex font-normal gap-x-2"
         >
-          <span className="text-[#00a6ff]">View on {srcChain.module === "evm" ? evmRpc?.blockExplorers?.default?.name : "Axelarscan"}</span>
+          <span className="text-[#00a6ff]">
+            View on{" "}
+            {srcChain.module === "evm"
+              ? evmRpc?.blockExplorers?.default?.name
+              : "Axelarscan"}
+          </span>
           <Image
             src={"/assets/ui/link.svg"}
             height={16}

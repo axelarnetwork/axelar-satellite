@@ -15,19 +15,26 @@ import { renderGasFee } from "../../../utils/renderGasFee";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 
 export const WaitDepositState = () => {
-  const { depositAddress, destAddress, srcChain, destChain, asset } = useSwapStore(
-    (state) => state
-  );
+  const { depositAddress, destAddress, srcChain, destChain, asset } =
+    useSwapStore((state) => state);
   const { wagmiConnected, keplrConnected } = useWalletStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   function renderTransferInfo() {
-    const relayerGasFee = renderGasFee(srcChain, destChain, asset as AssetConfig);
+    const relayerGasFee = renderGasFee(
+      srcChain,
+      destChain,
+      asset as AssetConfig
+    );
     return (
       <div>
         <div>
-          Please transfer <strong>{">"}{relayerGasFee}{" "}{selectedAssetSymbol}</strong> on{" "}
-          {convertChainName(srcChain.chainName)} to
+          Please transfer{" "}
+          <strong>
+            {">"}
+            {relayerGasFee} {selectedAssetSymbol}
+          </strong>{" "}
+          on {convertChainName(srcChain.chainName)} to
         </div>
       </div>
     );
@@ -38,9 +45,6 @@ export const WaitDepositState = () => {
 
     return (
       <div>
-        <div className="px-10 mx-auto my-1 text-xs divider">
-          OR SEND FROM YOUR CONNECTED WALLET
-        </div>
         {srcChain.module === "evm" && <EvmWalletTransfer />}
         {srcChain.module === "axelarnet" && <CosmosWalletTransfer />}
       </div>

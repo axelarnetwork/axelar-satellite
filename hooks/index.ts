@@ -7,6 +7,7 @@ export * from "./useDetectDestTransferConfirmation";
 export * from "./usePreventDuplicateChains";
 export * from "./useInitialChainList";
 export * from "./useGatewayQuery";
+export * from "./useGetMaxTransferAmount";
 
 export * from "./kepler/useHasKeplerWallet";
 export * from "./kepler/useGetKeplerWallet";

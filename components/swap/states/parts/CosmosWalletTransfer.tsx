@@ -260,13 +260,20 @@ export const CosmosWalletTransfer = () => {
             </span>
           </div>
         ) : (
-          <button onClick={handleOnTokensTransfer}>
+
+        <button
+          className="w-full mb-5 btn btn-accent btn-outline"
+          onClick={handleOnTokensTransfer}
+        >
+          <span className="mr-2">OR SEND HERE FROM KEPLR</span>
+          <div className="flex justify-center my-2 gap-x-5">
             <Image
               src="/assets/wallets/kepler.logo.svg"
               height={25}
               width={25}
             />
-          </button>
+          </div>
+        </button>
         )}
       </div>
     </div>

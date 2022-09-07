@@ -14,7 +14,12 @@ import toast from "react-hot-toast";
 import { AssetConfig, AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { SpinnerRoundFilled } from "spinners-react";
 
-import { getDestChainId, getSrcChainId, useSwapStore, useWalletStore } from "../../../../store";
+import {
+  getDestChainId,
+  getSrcChainId,
+  useSwapStore,
+  useWalletStore,
+} from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
 import { SwapStatus } from "../../../../utils/enums";
 import { useDetectDepositConfirmation } from "../../../../hooks";
@@ -139,7 +144,10 @@ export const EvmWalletTransfer = () => {
               color="#00a6ff"
             />
             <span className="text-sm">
-              Waiting for {Math.min(numConfirmationsSoFar, srcChain.confirmLevel as number)}/{srcChain.confirmLevel} confirmations before forwarding to Axelar...
+              Waiting for{" "}
+              {Math.min(numConfirmationsSoFar, srcChain.confirmLevel as number)}
+              /{srcChain.confirmLevel} confirmations before forwarding to
+              Axelar...
             </span>
           </div>
           <div className="flex items-center mt-2 gap-x-2">
@@ -151,15 +159,19 @@ export const EvmWalletTransfer = () => {
           </div>
         </div>
       ) : (
-        <div className="flex justify-center my-2 gap-x-5">
-          <button onClick={handleOnTokensTransfer}>
+        <button
+        className="w-full mb-5 btn btn-accent btn-outline"
+          onClick={handleOnTokensTransfer}
+        >
+          <span className="mr-2">OR SEND HERE FROM METAMASK</span>
+          <div className="flex justify-center my-2 gap-x-5">
             <Image
               src="/assets/wallets/metamask.logo.svg"
               height={30}
               width={30}
             />
-          </button>
-        </div>
+          </div>
+        </button>
       )}
     </div>
   );
