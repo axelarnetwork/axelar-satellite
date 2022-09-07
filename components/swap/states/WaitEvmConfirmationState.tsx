@@ -66,7 +66,7 @@ export const WaitEvmConfirmationState = () => {
               <strong className="capitalize">{destChain.chainName}</strong>
             </div>
             <div className="text-sm text-gray-300">
-            and you may now exit this session if you wish
+              and you may now exit this session if you wish
             </div>
             <div className="my-0 divider" />
             <div className="flex justify-center gap-x-2">
@@ -76,8 +76,7 @@ export const WaitEvmConfirmationState = () => {
                 color="#00a6ff"
               />
               <div className="text-base font-light text-gray-200">
-                Transferring your {selectedAssetSymbol} to {destChain.chainName}
-                ...
+                Completing your transfer to {destChain.chainName} ...
               </div>
             </div>
           </div>
