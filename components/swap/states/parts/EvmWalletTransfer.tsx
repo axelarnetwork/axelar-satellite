@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
+  useAccount,
+  useBalance,
   useBlockNumber,
   useConnect,
+  useContractRead,
   useContractWrite,
-  useNetwork,
   useWaitForTransaction,
 } from "wagmi";
 import { erc20ABI } from "wagmi";
@@ -19,10 +21,10 @@ import {
   getSrcChainId,
   useSwapStore,
   useWalletStore,
+  getSrcTokenAddress,
+  getSelectedAssetSymbol,
 } from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
-import { SwapStatus } from "../../../../utils/enums";
-import { useDetectDepositConfirmation } from "../../../../hooks";
 import { renderGasFee } from "../../../../utils/renderGasFee";
 
 export const EvmWalletTransfer = () => {
@@ -40,13 +42,31 @@ export const EvmWalletTransfer = () => {
     asset,
     depositAddress,
     tokensToTransfer,
-    setSwapStatus,
     setTxInfo,
     txInfo,
   } = useSwapStore((state) => state);
   const srcChainId = useSwapStore(getSrcChainId);
   const destChainId = useSwapStore(getDestChainId);
   const { wagmiConnected } = useWalletStore();
+
+  const { address } = useAccount();
+
+  const { data: accountBalance } = useBalance({
+    enabled: !!srcChainId,
+    chainId: srcChainId,
+    addressOrName: address,
+  });
+  const srcTokenAddress = useSwapStore(getSrcTokenAddress);
+  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+
+  const { data: tokenAmount } = useContractRead({
+    enabled: !!(srcTokenAddress && srcChainId),
+    addressOrName: srcTokenAddress as string,
+    contractInterface: erc20ABI,
+    chainId: srcChainId,
+    functionName: "balanceOf",
+    args: [address],
+  });
 
   useWaitForTransaction({
     chainId: srcChainId,
@@ -114,6 +134,40 @@ export const EvmWalletTransfer = () => {
           asset?.chain_aliases[srcChain.chainName.toLowerCase()].assetSymbol
         }`
       );
+
+    // check if user has enough gas
+    const nativeBalance = accountBalance?.value.toString() as string;
+    const minNativeBalance = new BigNumber("0.05")
+      .times(10 ** Number(accountBalance?.decimals))
+      .toString();
+    if (!nativeBalance) {
+      return toast.error(`Could not read native token balance`);
+    }
+    // show error if native token balance is smalled than an arbitrary 0.05
+    if (new BigNumber(nativeBalance).lt(new BigNumber(minNativeBalance))) {
+      return toast.error(
+        `Insufficient ${accountBalance?.symbol} amount: ${new BigNumber(
+          nativeBalance
+        )
+          .div(10 ** Number(accountBalance?.decimals))
+          .toString()} available`
+      );
+    }
+
+    // check that the user has enough tokens
+    const tokenBalance = tokenAmount?.toString() as string;
+    const minTokenBalance = new BigNumber(minDeposit)
+      .times(10 ** Number(asset?.decimals))
+      .toString();
+    if (new BigNumber(tokenBalance).lt(new BigNumber(minTokenBalance))) {
+      return toast.error(
+        `Insufficient ${selectedAssetSymbol} amount: ${new BigNumber(
+          tokenBalance
+        )
+          .div(10 ** Number(asset?.decimals))
+          .toString()} available`
+      );
+    }
 
     await writeAsync({
       args: [
