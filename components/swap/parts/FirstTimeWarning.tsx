@@ -15,7 +15,7 @@ export const FirstTimeWarning = () => {
 
   return (
     <div className="fixed z-50 w-full max-w-screen-md bottom-10 left-10">
-      <div className="relative block w-7/12 p-4 shadow-lg alert backdrop-blur-md bg-neutral/80">
+      <div className="relative block w-7/12 p-4 shadow-lg alert bg-base-100/50 backdrop-blur-lg">
         <label
           className="absolute btn btn-sm btn-circle right-2 top-2"
           onClick={() => setShowFirstTimeWarning(false)}
@@ -24,7 +24,7 @@ export const FirstTimeWarning = () => {
         </label>
         <div>
           <div>
-            <h3 className="text-lg font-bold">New to Satellite?</h3>
+            <h3 className="mb-2 text-lg font-bold">New to Satellite?</h3>
             <div className="text-xs">
               Run a few flows in our testnet (with test tokens) and experiment
               here with small amounts first.
