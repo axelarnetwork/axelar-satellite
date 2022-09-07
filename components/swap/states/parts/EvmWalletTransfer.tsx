@@ -136,7 +136,6 @@ export const EvmWalletTransfer = () => {
     <div>
       {isTxOngoing ? (
         <div className="flex flex-col items-center my-2 gap-x-5">
-          {" "}
           <div className="flex items-center gap-x-2">
             <SpinnerRoundFilled
               className="text-blue-500"
@@ -159,19 +158,24 @@ export const EvmWalletTransfer = () => {
           </div>
         </div>
       ) : (
-        <button
-        className="w-full mb-5 btn btn-accent btn-outline"
-          onClick={handleOnTokensTransfer}
-        >
-          <span className="mr-2">OR SEND HERE FROM METAMASK</span>
-          <div className="flex justify-center my-2 gap-x-5">
-            <Image
-              src="/assets/wallets/metamask.logo.svg"
-              height={30}
-              width={30}
-            />
+        <div>
+          <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
+          <div className="flex justify-center">
+            <button
+              className="mb-5 btn btn-primary"
+              onClick={handleOnTokensTransfer}
+            >
+              <span className="mr-2">Send From Metamask</span>
+              <div className="flex justify-center my-2 gap-x-5">
+                <Image
+                  src="/assets/wallets/metamask.logo.svg"
+                  height={30}
+                  width={30}
+                />
+              </div>
+            </button>
           </div>
-        </button>
+        </div>
       )}
     </div>
   );
