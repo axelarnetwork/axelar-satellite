@@ -18,6 +18,7 @@ export const useGetMaxTransferAmount = () => {
     }
   }, [destChain, asset]);
 
+  if (!maxTransferAmount) return null;
   const amount = new BigNumber(maxTransferAmount.toString())
     .div(4)
     .div(10 ** Number(asset?.decimals))
