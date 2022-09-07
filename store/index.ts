@@ -167,13 +167,19 @@ export const useSwapStore = create<SwapStore>()(
         (asset) => asset.common_key === currentAsset?.common_key[ENVIRONMENT]
       );
 
+      const supportedAsset = allAssets.find(
+        (asset: AssetConfig) =>
+          asset.chain_aliases[chain?.chainName?.toLowerCase()]
+      );
+
       if (!isAssetSupported)
         return set(
           {
             srcChain: chain,
-            asset: allAssets?.find((asset) =>
-              asset.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
-            ),
+            asset: supportedAsset,
+            // asset: allAssets?.find((asset: AssetConfig) => {
+            //   const _chain = asset.chain_aliases[chain.chainName.toLowerCase()];
+            // }),
           },
           false,
           "setSrcChain"
@@ -194,13 +200,19 @@ export const useSwapStore = create<SwapStore>()(
         (asset) => asset.common_key === currentAsset?.common_key[ENVIRONMENT]
       );
 
+      const supportedAsset = allAssets.find(
+        (asset: AssetConfig) =>
+          asset.chain_aliases[chain?.chainName?.toLowerCase()]
+      );
+
       if (!isAssetSupported)
         return set(
           {
             destChain: chain,
-            asset: allAssets?.find((asset) =>
-              asset.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
-            ),
+            asset: supportedAsset,
+            // asset: allAssets?.find((asset) =>
+            //   asset.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
+            // ),
           },
           false,
           "setDestChain"

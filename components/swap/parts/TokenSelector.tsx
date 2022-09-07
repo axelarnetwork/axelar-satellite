@@ -77,6 +77,16 @@ export const TokenSelector = () => {
     setFilteredAssets(chains);
   }, [searchAssetInput]);
 
+  useEffect(() => {
+    if (!asset) return;
+    router.push({
+      query: {
+        ...router.query,
+        asset_denom: asset.common_key[ENVIRONMENT],
+      },
+    });
+  }, [asset]);
+
   // update filtered assets state on chain change
   useEffect(() => {
     setFilteredAssets(selectableAssetList);
