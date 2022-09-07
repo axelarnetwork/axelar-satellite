@@ -132,7 +132,9 @@ export const TokenSelector = () => {
           placeholder="0"
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
-        {balance && (!!wagmiConnected || !!keplrConnected) ? (
+        {balance &&
+        (!!(srcChain?.module === "evm" && wagmiConnected) ||
+          !!(srcChain?.module === "axelarnet" && keplrConnected)) ? (
           <div className="flex flex-row justify-end space-x-2">
             <span className="text-xs text-gray-500">Available</span>
             <span className="w-auto text-xs text-[#86d6ff]">
@@ -148,7 +150,13 @@ export const TokenSelector = () => {
             </span>
           </div>
         ) : (
-          <div className="h-6 space-x-2"></div>
+          <label
+            htmlFor="web3-modal"
+            className="h-6 space-x-2 text-xs text-gray-500 cursor-pointer hover:underline"
+          >
+            Connect {srcChain.module === "axelarnet" ? "Keplr" : "Metamask"} to
+            see balance
+          </label>
         )}
       </div>
     );
