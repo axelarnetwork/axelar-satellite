@@ -23,7 +23,7 @@ export const WaitCosmosConfirmationState = () => {
               <span>detected!</span>
             </h2>
             <div className="text-base text-green-300">
-              Tokens will soon arrive at <>{truncate(destAddress, 24)}</> on{" "}
+              Tokens will soon arrive at <>{truncate(destAddress, 12)}</> on{" "}
               <strong className="capitalize">{destChain.chainName}</strong>
             </div>
             <div className="text-sm text-gray-300">
