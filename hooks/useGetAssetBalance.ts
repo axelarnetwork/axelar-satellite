@@ -17,6 +17,7 @@ import { getCosmosChains } from "../config/web3";
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
   const { asset, allAssets } = useSwapStore((state) => state);
+  const [loading, setLoading] = useState(false);
   const { keplrConnected } = useWalletStore();
 
   const srcChainId = useSwapStore(getSrcChainId);
@@ -37,20 +38,25 @@ export const useGetAssetBalance = () => {
   // convert fetched token balance to a readable format
   useEffect(() => {
     if (srcChain?.module !== "evm") return;
+    setLoading(true);
     if (!isSuccess || !data) {
       setBalance("0");
+      setLoading(false);
       return;
     }
     const bigNum = new BigNumber(ethers.BigNumber.from(data).toString());
     const num = bigNum.div(10 ** Number(asset?.decimals));
 
     setBalance(num.toFixed());
+    setLoading(false);
   }, [srcChainId, srcTokenAddress, data, isSuccess]);
 
   const setKeplrBalance = useCallback(async (): Promise<void> => {
     if (!keplrConnected) return;
     if (!asset) return;
     if (!srcChain) return;
+
+    setLoading(true);
 
     const { decimals, common_key } = asset;
     const { chainName } = srcChain;
@@ -84,10 +90,12 @@ export const useGetAssetBalance = () => {
       const msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
       toast.error(msg);
     }
+    setLoading(false);
   }, [asset, srcChain, allAssets]);
 
   return {
     balance,
     setKeplrBalance,
+    loading
   };
 };

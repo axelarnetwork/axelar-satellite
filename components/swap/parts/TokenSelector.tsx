@@ -15,6 +15,7 @@ import { Blockable } from "../../common";
 import { useRouter } from "next/router";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import BigNumber from "bignumber.js";
+import { SpinnerDotted } from "spinners-react";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -38,7 +39,7 @@ export const TokenSelector = () => {
   const [filteredAssets, setFilteredAssets] =
     useState<AssetConfig[]>(selectableAssetList);
 
-  const { balance, setKeplrBalance } = useGetAssetBalance();
+  const { balance, setKeplrBalance, loading } = useGetAssetBalance();
   const ref = useRef(null);
   const router = useRouter();
 
@@ -131,15 +132,31 @@ export const TokenSelector = () => {
           placeholder="0"
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
-        {balance && (!!wagmiConnected || !!keplrConnected) ? (
-          <div className="space-x-2">
+        {balance &&
+        (!!(srcChain?.module === "evm" && wagmiConnected) ||
+          !!(srcChain?.module === "axelarnet" && keplrConnected)) ? (
+          <div className="flex flex-row justify-end space-x-2">
             <span className="text-xs text-gray-500">Available</span>
             <span className="w-auto text-xs text-[#86d6ff]">
-              {Number(balance)?.toFixed(5)}
+              {loading ? (
+                <SpinnerDotted
+                  className="text-blue-500"
+                  size={15}
+                  color="#00a6ff"
+                />
+              ) : (
+                Number(balance)?.toFixed(5)
+              )}
             </span>
           </div>
         ) : (
-          <div className="h-6 space-x-2"></div>
+          <label
+            htmlFor="web3-modal"
+            className="h-6 space-x-2 text-xs text-gray-500 cursor-pointer hover:underline"
+          >
+            Connect {srcChain.module === "axelarnet" ? "Keplr" : "Metamask"} to
+            see balance
+          </label>
         )}
       </div>
     );
