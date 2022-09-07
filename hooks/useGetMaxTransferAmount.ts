@@ -12,16 +12,17 @@ export const useGetMaxTransferAmount = () => {
       setMaxTransferAmount("0");
     } else {
       setMaxTransferAmount(
-        //@ts-ignore
-        asset.chain_aliases[destChain.chainName.toLowerCase()]?.mintLimit
+        (asset.chain_aliases[destChain.chainName.toLowerCase()] as any)
+          ?.mintLimit || 0
       );
     }
   }, [srcChain, destChain, asset]);
 
   if (!maxTransferAmount) return null;
-  const amount = new BigNumber(maxTransferAmount.toString())
+  const bigAmount = new BigNumber(maxTransferAmount)
     .div(4)
     .div(10 ** Number(asset?.decimals))
-    .toString();
-  return amount;
+    .toFixed(0);
+
+  return BigInt(bigAmount).toString() || null;
 };
