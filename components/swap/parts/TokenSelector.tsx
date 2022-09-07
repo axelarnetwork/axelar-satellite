@@ -15,7 +15,7 @@ import { Blockable } from "../../common";
 import { useRouter } from "next/router";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import BigNumber from "bignumber.js";
-import { SpinnerDiamond, SpinnerDotted } from "spinners-react";
+import { SpinnerDotted } from "spinners-react";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
