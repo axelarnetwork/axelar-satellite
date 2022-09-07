@@ -38,7 +38,7 @@ export const TopFlows = () => {
     setSrcChain,
     setDestChain,
     setAsset,
-    selectableAssetList,
+    allAssets,
     allChains,
     swapStatus,
   } = useSwapStore();
@@ -66,7 +66,7 @@ export const TopFlows = () => {
     const moonbeam = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("osmosis")
     ) as ChainInfo;
-    const asset = selectableAssetList.find((asset) =>
+    const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("usdc")
     ) as AssetConfig;
 
@@ -83,7 +83,7 @@ export const TopFlows = () => {
     const moonbeam = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("osmosis")
     ) as ChainInfo;
-    const asset = selectableAssetList.find((asset) =>
+    const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("weth")
     ) as AssetConfig;
 
@@ -100,7 +100,7 @@ export const TopFlows = () => {
     const osmo = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("osmosis")
     ) as ChainInfo;
-    const asset = selectableAssetList.find((asset) =>
+    const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("wmatic")
     ) as AssetConfig;
 
