@@ -49,10 +49,13 @@ export const EvmAssetWarningModal = () => {
 
   return (
     <div
-      className={cn("text-center modal items-start bg-black bg-opacity-50", {
-        "modal-close": !showAssetWarning,
-        "modal-open": !!showAssetWarning,
-      })}
+      className={cn(
+        "text-center modal items-start bg-black/40 backdrop-blur-sm",
+        {
+          "modal-close": !showAssetWarning,
+          "modal-open": !!showAssetWarning,
+        }
+      )}
       style={{ paddingTop: "calc(80px + 10vh)" }}
     >
       <div className="modal-box">
