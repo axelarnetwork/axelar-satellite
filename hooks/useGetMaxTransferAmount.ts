@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { BigNumber } from "bignumber.js";
 
 export const useGetMaxTransferAmount = () => {
-  const { asset, destChain } = useSwapStore((state) => state);
+  const { asset, srcChain, destChain } = useSwapStore((state) => state);
   const [maxTransferAmount, setMaxTransferAmount] = useState("0");
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export const useGetMaxTransferAmount = () => {
         asset.chain_aliases[destChain.chainName.toLowerCase()]?.mintLimit
       );
     }
-  }, [destChain, asset]);
+  }, [srcChain, destChain, asset]);
 
   if (!maxTransferAmount) return null;
   const amount = new BigNumber(maxTransferAmount.toString())
