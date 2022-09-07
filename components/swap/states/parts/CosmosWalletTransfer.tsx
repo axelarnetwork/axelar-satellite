@@ -186,50 +186,46 @@ export const CosmosWalletTransfer = () => {
     let result;
 
     if (srcChain.chainName.toLowerCase() === "axelar") {
-    try {
-      result = cosmjs.sendTokens(
-        sourceAddress,
-        depositAddress,
-        [sendCoin],
-        fee
-      )
-      .then((e) => {
-        console.log("CosmosWalletTransfer: send tokens");
-        setTxInfo({
-          sourceTxHash: e.transactionHash,
-        });
+      try {
+        result = cosmjs
+          .sendTokens(sourceAddress, depositAddress, [sendCoin], fee)
+          .then((e) => {
+            console.log("CosmosWalletTransfer: send tokens");
+            setTxInfo({
+              sourceTxHash: e.transactionHash,
+            });
 
-        setIsTxOngoing(true);
-        // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
-      })
-      .catch((error) => console.log(error));
-    } catch (error: any) {
-      throw new Error(error)
-    }
+            setIsTxOngoing(true);
+            // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+          })
+          .catch((error) => console.log(error));
+      } catch (error: any) {
+        throw new Error(error);
+      }
     } else {
       result = await cosmjs
-      .sendIbcTokens(
-        sourceAddress,
-        depositAddress,
-        Coin.fromPartial({
-          ...sendCoin,
-        }),
-        _action,
-        _channel,
-        timeoutHeight,
-        timeoutTimestamp,
-        fee
-      )
-      .then((e) => {
-        console.log("CosmosWalletTransfer: IBC transfer");
-        setTxInfo({
-          sourceTxHash: e.transactionHash,
-        });
+        .sendIbcTokens(
+          sourceAddress,
+          depositAddress,
+          Coin.fromPartial({
+            ...sendCoin,
+          }),
+          _action,
+          _channel,
+          timeoutHeight,
+          timeoutTimestamp,
+          fee
+        )
+        .then((e) => {
+          console.log("CosmosWalletTransfer: IBC transfer");
+          setTxInfo({
+            sourceTxHash: e.transactionHash,
+          });
 
-        setIsTxOngoing(true);
-        // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
-      })
-      .catch((error) => console.log(error));
+          setIsTxOngoing(true);
+          // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+        })
+        .catch((error) => console.log(error));
     }
 
     // let result
@@ -260,20 +256,24 @@ export const CosmosWalletTransfer = () => {
             </span>
           </div>
         ) : (
-
-        <button
-          className="w-full mb-5 btn btn-accent btn-outline"
-          onClick={handleOnTokensTransfer}
-        >
-          <span className="mr-2">OR SEND HERE FROM KEPLR</span>
-          <div className="flex justify-center my-2 gap-x-5">
-            <Image
-              src="/assets/wallets/kepler.logo.svg"
-              height={25}
-              width={25}
-            />
+          <div>
+            <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
+            <div className="flex justify-center">
+              <button
+                className="mb-5 btn btn-primary"
+                onClick={handleOnTokensTransfer}
+              >
+                <span className="mr-2">Send from Keplr</span>
+                <div className="flex justify-center my-2 gap-x-5">
+                  <Image
+                    src="/assets/wallets/kepler.logo.svg"
+                    height={25}
+                    width={25}
+                  />
+                </div>
+              </button>
+            </div>
           </div>
-        </button>
         )}
       </div>
     </div>
