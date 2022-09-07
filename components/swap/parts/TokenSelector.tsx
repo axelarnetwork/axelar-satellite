@@ -15,6 +15,7 @@ import { Blockable } from "../../common";
 import { useRouter } from "next/router";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import BigNumber from "bignumber.js";
+import { SpinnerDiamond, SpinnerDotted } from "spinners-react";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -38,7 +39,7 @@ export const TokenSelector = () => {
   const [filteredAssets, setFilteredAssets] =
     useState<AssetConfig[]>(selectableAssetList);
 
-  const { balance, setKeplrBalance } = useGetAssetBalance();
+  const { balance, setKeplrBalance, loading } = useGetAssetBalance();
   const ref = useRef(null);
   const router = useRouter();
 
@@ -122,10 +123,18 @@ export const TokenSelector = () => {
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
         {balance && (!!wagmiConnected || !!keplrConnected) ? (
-          <div className="space-x-2">
+          <div className="flex flex-row justify-end space-x-2">
             <span className="text-xs text-gray-500">Available</span>
             <span className="w-auto text-xs text-[#86d6ff]">
-              {Number(balance)?.toFixed(5)}
+              {loading ? (
+                <SpinnerDotted
+                  className="text-blue-500"
+                  size={15}
+                  color="#00a6ff"
+                />
+              ) : (
+                Number(balance)?.toFixed(5)
+              )}
             </span>
           </div>
         ) : (
