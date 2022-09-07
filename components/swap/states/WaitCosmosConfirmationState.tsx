@@ -27,7 +27,7 @@ export const WaitCosmosConfirmationState = () => {
               <strong className="capitalize">{destChain.chainName}</strong>
             </div>
             <div className="text-sm text-gray-300">
-              You can now safely close Satellite
+              and you may now exit this session if you wish
             </div>
             <div className="my-0 divider" />
             <div className="flex justify-center gap-x-2">
