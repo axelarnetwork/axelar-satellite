@@ -36,7 +36,7 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
   function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit =
       renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
-    if (new BigNumber(amount || "0") <= new BigNumber(minDeposit))
+    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
     return {
       minDeposit,

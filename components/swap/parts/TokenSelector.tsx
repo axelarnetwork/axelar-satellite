@@ -256,7 +256,7 @@ export const TokenSelector = () => {
             {renderAssetDropdown()}
           </div>
         </Blockable>
-        {swapOrigin === SwapOrigin.APP && renderTokenInput()}
+        {renderTokenInput()}
       </div>
     </div>
   ) : null;

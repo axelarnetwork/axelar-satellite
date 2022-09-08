@@ -107,7 +107,7 @@ export const EvmWalletTransfer = () => {
     const minDeposit =
       renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
     console.log("min Deposit", minDeposit);
-    if (new BigNumber(amount || "0") <= new BigNumber(minDeposit))
+    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
     return {
       minDeposit,
