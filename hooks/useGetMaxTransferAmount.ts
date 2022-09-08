@@ -21,7 +21,7 @@ export const useGetMaxTransferAmount = () => {
   if (!maxTransferAmount) return null;
 
   const bigAmount = new BigNumber(maxTransferAmount)
-    ?.div(4)
+    ?.div(5)
     ?.div(10 ** Number(asset?.decimals))
     ?.toFixed(0);
 
