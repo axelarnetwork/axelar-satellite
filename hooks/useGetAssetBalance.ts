@@ -91,7 +91,7 @@ export const useGetAssetBalance = () => {
       toast.error(msg);
     }
     setLoading(false);
-  }, [asset, srcChain, allAssets]);
+  }, [asset, srcChain, allAssets, keplrConnected]);
 
   return {
     balance,

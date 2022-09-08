@@ -94,8 +94,8 @@ export const TokenSelector = () => {
 
   // update asset balance from useGetAssetBalance hook if srcChain or asset changes
   useEffect(() => {
-    if (srcChain?.module === "axelarnet") setKeplrBalance();
-  }, [asset, srcChain]);
+    if (srcChain?.module === "axelarnet" && keplrConnected) setKeplrBalance();
+  }, [asset, srcChain, keplrConnected]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
