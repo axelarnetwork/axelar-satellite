@@ -40,9 +40,9 @@ export default {
     },
   ],
   gasPriceStep: {
-    low: 25000000000,
-    average: 25000000000,
-    high: 40000000000,
+    low: 0.001,
+    average: 0.0025,
+    high: 0.004,
   },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainToAxelarChannelId: "channel-18"
