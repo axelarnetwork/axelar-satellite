@@ -4,7 +4,7 @@ export default {
   rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=assetmantle",
   rest: "https://rest.assetmantle.one",
   chainId: "mantle-1",
-  chainName: "assetmantle",
+  chainName: "AssetMantle",
   stakeCurrency: {
     coinDenom: "MNTL",
     coinMinimalDenom: "umntl",

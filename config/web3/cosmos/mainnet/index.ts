@@ -13,6 +13,7 @@ import evmos from "../testnet/evmos";
 import stargaze from "./stargaze";
 import assetmantle from "./assetmantle";
 import kichain from "./kichain";
+import fetch from "./fetch";
 
 export const mainnetChains: CosmosChain[] = [
   terra,
@@ -28,5 +29,6 @@ export const mainnetChains: CosmosChain[] = [
   evmos,
   stargaze,
   assetmantle,
-  kichain
+  kichain,
+  fetch
 ];

@@ -4,7 +4,7 @@ export default {
   rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=fetch",
   rest: "https://rest-fetchhub.fetch.ai:443",
   chainId: "fetchhub-4",
-  chainName: "FetchHub",
+  chainName: "Fetch",
   stakeCurrency: {
     coinDenom: "FET",
     coinMinimalDenom: "afet",
