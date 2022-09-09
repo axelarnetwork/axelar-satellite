@@ -9,7 +9,7 @@ import secret from "./secret";
 import juno from "./juno";
 import eMoney from "./e-money";
 import injective from "./injective";
-import evmos from "../testnet/evmos";
+import evmos from "./evmos";
 import stargaze from "./stargaze";
 import assetmantle from "./assetmantle";
 import kichain from "./kichain";

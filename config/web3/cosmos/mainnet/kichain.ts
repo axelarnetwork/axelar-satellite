@@ -4,7 +4,7 @@ export default {
   rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=kichain",
   rest: "https://api-mainnet.blockchain.ki",
   chainId: "kichain-2",
-  chainName: "kichain",
+  chainName: "Ki Chain",
   stakeCurrency: {
     coinDenom: "XKI",
     coinMinimalDenom: "uxki",
