@@ -1,3 +1,5 @@
+import { CosmosChain } from "../interface";
+
 export default {
   rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=fetch",
   rest: "https://rest-fetchhub.fetch.ai:443",
@@ -38,4 +40,6 @@ export default {
   ],
   gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
-};
+  chainIdentifier: "fetch",
+  chainToAxelarChannelId: "channel-14"
+} as CosmosChain;
