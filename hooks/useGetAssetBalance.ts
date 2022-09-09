@@ -1,4 +1,4 @@
-import { formatUnits } from "ethers/lib/utils";
+import { formatUnits, parseUnits } from "ethers/lib/utils";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
@@ -13,12 +13,20 @@ import {
 import { ENVIRONMENT } from "../config/constants";
 import { getAddress, queryBalance } from "../utils/wallet/keplr";
 import { getCosmosChains } from "../config/web3";
+import {
+  useWallet as useTerraWallet,
+  useLCDClient as useTerraLCDClient,
+  WalletStatus,
+} from "@terra-money/wallet-provider";
+import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
 
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
   const { asset, allAssets } = useSwapStore((state) => state);
   const [loading, setLoading] = useState(false);
   const { keplrConnected } = useWalletStore();
+  const { status, network, wallets } = useTerraWallet();
+  const terraLcdClient = useTerraLCDClient();
 
   const srcChainId = useSwapStore(getSrcChainId);
   const srcChain = useSwapStore((state) => state?.srcChain);
@@ -51,10 +59,30 @@ export const useGetAssetBalance = () => {
     setLoading(false);
   }, [srcChainId, srcTokenAddress, data, isSuccess]);
 
+  useEffect(() => {
+    if (srcChain?.chainName?.toLowerCase() !== "terra") return;
+    if (status !== WalletStatus.WALLET_CONNECTED) return;
+    const denom = asset?.chain_aliases["terra"].ibcDenom as string;
+    if (!denom) return;
+
+    terraLcdClient.bank
+      .balance(wallets[0].terraAddress)
+      .then(([coins]) => {
+        setBalance(
+          formatUnits(
+            coins.get(denom)?.amount.toNumber() as number,
+            asset?.decimals
+          )
+        );
+      })
+      .catch(() => setBalance("0"));
+  }, [srcChain, status, asset]);
+
   const setKeplrBalance = useCallback(async (): Promise<void> => {
     if (!keplrConnected) return;
     if (!asset) return;
     if (!srcChain) return;
+    if (srcChain.chainName.toLowerCase() === "terra") return;
 
     setLoading(true);
 
@@ -96,6 +124,6 @@ export const useGetAssetBalance = () => {
   return {
     balance,
     setKeplrBalance,
-    loading
+    loading,
   };
 };
