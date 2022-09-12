@@ -4,7 +4,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useRouter } from "next/router";
 
-import { useSwapStore } from "../../../store";
+import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
 import { convertChainName } from "../../../utils/transformers";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
@@ -16,17 +16,24 @@ export const SourceChainSelector = () => {
   const { allChains, srcChain, destChain, setSrcChain } = useSwapStore(
     (state) => state
   );
+  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   const ref = useRef(null);
   const router = useRouter();
 
   // avoid same chain selection
   useEffect(() => {
-    const newChains = allChains.filter(
-      (chain) =>
-        chain.chainName !== destChain.chainName &&
-        chain.chainName !== srcChain.chainName
-    );
+    const newChains = allChains
+      .filter(
+        (chain) =>
+          chain.chainName !== destChain.chainName &&
+          chain.chainName !== srcChain.chainName
+      )
+      .filter((chain) =>
+        chain.assets
+          ?.map((a) => a.assetSymbol?.toLowerCase())
+          .includes(selectedAssetSymbol?.toLowerCase())
+      );
     setFilteredChains(newChains);
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
 
@@ -62,14 +69,14 @@ export const SourceChainSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }
 
-  function handleOnSourceChainChange(chain: ChainInfo) {
+  async function handleOnSourceChainChange(chain: ChainInfo) {
+    // await router.push({
+    //   query: {
+    //     ...router.query,
+    //     source: chain.chainName.toLowerCase(),
+    //   },
+    // });
     setSrcChain(chain);
-    router.push({
-      query: {
-        ...router.query,
-        source: chain.chainName.toLowerCase(),
-      },
-    });
   }
 
   function renderChainDropdown() {

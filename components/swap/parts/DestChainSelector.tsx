@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useSwapStore } from "../../../store";
+import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
 import { useOnClickOutside } from "usehooks-ts";
 import { convertChainName } from "../../../utils/transformers";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
@@ -10,7 +10,8 @@ const defaultChainImg = "/assets/chains/default.logo.svg";
 
 export const DestChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
-  const { srcChain, allChains, setAllChains } = useSwapStore();
+  const { srcChain, allChains, setAllChains, asset } = useSwapStore();
+  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { destChain, setDestChain } = useSwapStore((state) => state);
@@ -19,11 +20,17 @@ export const DestChainSelector = () => {
 
   // avoid same chain selection
   useEffect(() => {
-    const newChains = allChains.filter(
-      (chain) =>
-        chain.chainName !== srcChain.chainName &&
-        chain.chainName !== destChain.chainName
-    );
+    const newChains = allChains
+      .filter(
+        (chain) =>
+          chain.chainName !== srcChain.chainName &&
+          chain.chainName !== destChain.chainName
+      )
+      .filter((chain) =>
+        chain.assets
+          ?.map((a) => a.assetSymbol?.toLowerCase())
+          .includes(selectedAssetSymbol?.toLowerCase())
+      );
     setFilteredChains(newChains);
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
 
@@ -39,6 +46,7 @@ export const DestChainSelector = () => {
     if (chain) setDestChain(chain);
   }, [router.query]);
 
+  // search chain input
   useEffect(() => {
     if (!searchChainInput) return;
 
@@ -59,15 +67,15 @@ export const DestChainSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }
 
-  function handleOnDestChainChainChange(chain: ChainInfo) {
+  async function handleOnDestChainChainChange(chain: ChainInfo) {
+    // await router.push({
+    //   query: {
+    //     ...router.query,
+    //     destination: chain.chainName.toLowerCase(),
+    //     destination_address: "",
+    //   },
+    // });
     setDestChain(chain);
-    router.push({
-      query: {
-        ...router.query,
-        destination: chain.chainName.toLowerCase(),
-        destination_address: "",
-      },
-    });
   }
 
   function renderChainDropdown() {

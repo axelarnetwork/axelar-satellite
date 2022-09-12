@@ -20,13 +20,13 @@ export const AddressFiller = () => {
   const keplerWallet = useGetKeplerWallet();
 
   function updateQueryAddress(_address: string) {
-    router.push({
-      pathname: router.pathname,
-      query: {
-        ...router.query,
-        destination_address: _address,
-      },
-    });
+    // router.push({
+    //   pathname: router.pathname,
+    //   query: {
+    //     ...router.query,
+    //     destination_address: _address,
+    //   },
+    // });
   }
 
   function fillEvmDestinationAddress() {
