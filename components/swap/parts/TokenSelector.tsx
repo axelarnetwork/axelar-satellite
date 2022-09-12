@@ -16,6 +16,11 @@ import { useRouter } from "next/router";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import BigNumber from "bignumber.js";
 import { SpinnerDotted } from "spinners-react";
+import {
+  useWallet as useTerraWallet,
+  WalletStatus,
+} from "@terra-money/wallet-provider";
+import { roundNumberTo } from "../../../utils/roundNumberTo";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -34,12 +39,15 @@ export const TokenSelector = () => {
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const { wagmiConnected, keplrConnected } = useWalletStore();
   const max = useGetMaxTransferAmount();
+  const { status: TerraWalletStatus } = useTerraWallet();
+  const [showBalance, setShowBalance] = useState(false);
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
   const [filteredAssets, setFilteredAssets] =
     useState<AssetConfig[]>(selectableAssetList);
 
-  const { balance, setKeplrBalance, loading } = useGetAssetBalance();
+  const { balance, setKeplrBalance, loading, terraStationBalance } =
+    useGetAssetBalance();
   const ref = useRef(null);
   const router = useRouter();
 
@@ -67,6 +75,15 @@ export const TokenSelector = () => {
       setAsset(asset);
     }
   }, [router.query, selectableAssetList]);
+
+  useEffect(() => {
+    setShowBalance(
+      !!(srcChain?.module === "evm" && wagmiConnected) ||
+        !!(srcChain?.module === "axelarnet" && keplrConnected) ||
+        (srcChain?.chainName.toLowerCase() === "terra" &&
+          TerraWalletStatus === WalletStatus.WALLET_CONNECTED)
+    );
+  }, [srcChain, wagmiConnected, TerraWalletStatus, keplrConnected]);
 
   useEffect(() => {
     if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
@@ -132,10 +149,8 @@ export const TokenSelector = () => {
           placeholder="0"
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
-        {balance &&
-        (!!(srcChain?.module === "evm" && wagmiConnected) ||
-          !!(srcChain?.module === "axelarnet" && keplrConnected)) ? (
-          <div className="flex flex-row justify-end space-x-2">
+        {balance && showBalance ? (
+          <div className="flex flex-row justify-end space-x-1">
             <span className="text-xs text-gray-500">Available</span>
             <span className="w-auto text-xs text-[#86d6ff]">
               {loading ? (
@@ -145,17 +160,44 @@ export const TokenSelector = () => {
                   color="#00a6ff"
                 />
               ) : (
-                Number(balance)?.toFixed(5)
+                roundNumberTo(balance, 1)
               )}
             </span>
+            {TerraWalletStatus === WalletStatus.WALLET_CONNECTED &&
+            terraStationBalance ? (
+              <span className="w-auto text-xs text-[#86d6ff]">
+                <span className="mr-2">
+                  <Image
+                    src="/assets/wallets/kepler.logo.svg"
+                    alt="walletconnect"
+                    height={13}
+                    width={13}
+                  />
+                </span>
+                {roundNumberTo(terraStationBalance, 1)}
+                <span className="ml-0.5">
+                  <Image
+                    src="/assets/wallets/terra-station.logo.svg"
+                    alt="walletconnect"
+                    height={14}
+                    width={14}
+                  />
+                </span>
+              </span>
+            ) : null}
           </div>
         ) : (
           <label
             htmlFor="web3-modal"
             className="h-6 space-x-2 text-xs text-gray-500 cursor-pointer hover:underline"
           >
-            Connect {srcChain.module === "axelarnet" ? "Keplr" : "Metamask"} to
-            see balance
+            Connect{" "}
+            {srcChain.module === "axelarnet"
+              ? srcChain.chainName.toLowerCase() === "terra"
+                ? "Terra Station or Keplr"
+                : "Keplr"
+              : "Metamask"}{" "}
+            to see balance
           </label>
         )}
       </div>

@@ -33,6 +33,7 @@ export const useGetAssetBalance = () => {
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
 
   const [balance, setBalance] = useState<string>("0");
+  const [terraStationBalance, setTerraStationBalance] = useState<string | null>("0");
 
   const { data, isSuccess } = useContractRead({
     enabled: !!(srcTokenAddress && srcChainId),
@@ -60,7 +61,10 @@ export const useGetAssetBalance = () => {
   }, [srcChainId, srcTokenAddress, data, isSuccess]);
 
   useEffect(() => {
-    if (srcChain?.chainName?.toLowerCase() !== "terra") return;
+    if (srcChain?.chainName?.toLowerCase() !== "terra") {
+      setTerraStationBalance(null);
+      return;
+    };
     if (status !== WalletStatus.WALLET_CONNECTED) return;
     const denom = asset?.chain_aliases["terra"].ibcDenom as string;
     if (!denom) return;
@@ -68,14 +72,14 @@ export const useGetAssetBalance = () => {
     terraLcdClient.bank
       .balance(wallets[0].terraAddress)
       .then(([coins]) => {
-        setBalance(
+        setTerraStationBalance(
           formatUnits(
             coins.get(denom)?.amount.toNumber() as number,
             asset?.decimals
           )
         );
       })
-      .catch(() => setBalance("0"));
+      .catch(() => setTerraStationBalance(null));
   }, [srcChain, status, asset]);
 
   const setKeplrBalance = useCallback(async (): Promise<void> => {
@@ -123,6 +127,7 @@ export const useGetAssetBalance = () => {
 
   return {
     balance,
+    terraStationBalance,
     setKeplrBalance,
     loading,
   };
