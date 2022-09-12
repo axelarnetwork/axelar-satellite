@@ -2,7 +2,7 @@ import { CosmosChain } from "../interface";
 
 export default {
   chainId: "euphoria-1",
-  chainName: "Aura euphoria TestNet",
+  chainName: "Aura Testnet",
   rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=aura",
   rest: "https://lcd.euphoria.aura.network",
   bip44: {
