@@ -28,7 +28,7 @@ export const TransferStats = () => {
 
     if (srcChain.module === "axelarnet") return "~2 minutes";
 
-    if (["ethereum", "polygon"].includes(srcChain.chainName.toLowerCase()))
+    if (["ethereum", "polygon"].includes(srcChain?.chainName?.toLowerCase()))
       return "~15 minutes";
 
     return "~3 minutes";
