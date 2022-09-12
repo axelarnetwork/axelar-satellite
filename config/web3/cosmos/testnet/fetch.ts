@@ -5,7 +5,7 @@ export default {
     rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=fetch",
     rest: "https://rest-dorado.fetch.ai",
     chainId: "dorado-1",
-    chainName: "FetchHub Testnet",
+    chainName: "Fetch Testnet",
     chainIdentifier: "fetch",
     bip44: {
       coinType: 118,

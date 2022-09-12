@@ -1,6 +1,6 @@
 export default {
   chainId: "atlantic-1",
-  chainName: "SEI Testnet",
+  chainName: "Sei Testnet",
   chainIdentifier: "sei",
   rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=sei",
   rest: "https://sei-testnet-api.polkachu.com",
