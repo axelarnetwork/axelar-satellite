@@ -9,8 +9,8 @@ export const UnderMaintenance = () => {
           <span className="ml-5">Satellite is under maintenance</span>
         </h1>
         <p className="py-4">
-          We apologise for any inconvenience but Satellite is currently ongoing
-          a maintenance.
+          We apologise for any inconvenience but Satellite is currently
+          undergoing maintenance
         </p>
         <p>We will be back as soon as possible!</p>
       </div>
