@@ -1,3 +1,4 @@
+import { CosmosChain } from "../interface";
 import terra from "./terra";
 import osmosis from "./osmosis";
 import kujira from "./kujira";
@@ -8,7 +9,11 @@ import secret from "./secret";
 import juno from "./juno";
 import eMoney from "./e-money";
 import injective from "./injective";
-import { CosmosChain } from "../interface";
+import evmos from "./evmos";
+import stargaze from "./stargaze";
+import assetmantle from "./assetmantle";
+import kichain from "./kichain";
+import fetch from "./fetch";
 
 export const mainnetChains: CosmosChain[] = [
   terra,
@@ -20,5 +25,10 @@ export const mainnetChains: CosmosChain[] = [
   secret,
   juno,
   eMoney,
-  injective
+  injective,
+  evmos,
+  stargaze,
+  assetmantle,
+  kichain,
+  fetch
 ];
