@@ -29,6 +29,7 @@ import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { SwapStatus } from "../../../../utils/enums";
 import { SpinnerRoundFilled } from "spinners-react";
 import { renderGasFee } from "../../../../utils/renderGasFee";
+import evmosjs from "evmosjs";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -201,6 +202,85 @@ export const CosmosWalletTransfer = () => {
           .catch((error) => console.log(error));
       } catch (error: any) {
         throw new Error(error);
+      }
+    } else if (srcChain.chainName.toLowerCase() === "evmos") {
+      const evmos = getCosmosChains(allAssets).find(
+        (chain) => chain.chainIdentifier === "evmos"
+      );
+      const chain: evmosjs.transactions.Chain = {
+        chainId: +(evmos?.chainId as string).split("-")[0].split("_")[1],
+        cosmosChainId: evmos?.chainId as string,
+      };
+      const evmosFee = {
+        amount: "20",
+        denom: "aevmos",
+        gas: "200000",
+      };
+      const { chainId, rest } = evmos as any;
+      // Query account info, because cosmjs doesn't support Evmos account
+      const { accountNumber, sequence } = await fetch(
+        `${rest}/cosmos/auth/v1beta1/accounts/${account1.address}`
+      )
+        .then((res) => res.json())
+        .then((res) => res.account.base_account);
+      const sender: evmosjs.transactions.Sender = {
+        accountAddress: account1.address,
+        sequence,
+        accountNumber,
+        pubkey: account1.pubkey.toString(),
+      };
+      const params: evmosjs.transactions.MessageIBCMsgTransfer = {
+        sourcePort: _action,
+        sourceChannel: _channel,
+        amount: utils
+          .parseUnits(tokensToTransfer, currentAsset?.decimals)
+          .toString(),
+        denom: _denom,
+        receiver: depositAddress,
+        revisionNumber: timeoutHeight.revisionNumber.toNumber(),
+        revisionHeight: timeoutHeight.revisionHeight.toNumber(),
+        timeoutTimestamp: timeoutTimestamp.toString(),
+      };
+
+      const transaction = evmosjs.transactions.createTxIBCMsgTransfer(
+        chain,
+        sender,
+        evmosFee,
+        "",
+        params
+      );
+      let sign = await window?.keplr?.signDirect(
+        chain.cosmosChainId,
+        sender.accountAddress,
+        {
+          bodyBytes: transaction.signDirect.body.serializeBinary(),
+          authInfoBytes: transaction.signDirect.authInfo.serializeBinary(),
+          chainId: chain.cosmosChainId,
+          accountNumber: new Long(sender.accountNumber),
+        },
+        // @ts-expect-error the types are not updated on Keplr side
+        { isEthereum: true }
+      );
+
+      if (sign !== undefined) {
+        let rawTx = evmosjs.proto.createTxRaw(
+          sign.signed.bodyBytes,
+          sign.signed.authInfoBytes,
+          [new Uint8Array(Buffer.from(sign.signature.signature, "base64"))]
+        );
+
+        // Broadcast it
+        const postOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: evmosjs.provider.generatePostBodyBroadcast(rawTx),
+        };
+
+        let broadcastPost = await fetch(
+          `${rest}${evmosjs.provider.generateEndpointBroadcast()}`,
+          postOptions
+        );
+        result = await broadcastPost.json();
       }
     } else {
       result = await cosmjs
