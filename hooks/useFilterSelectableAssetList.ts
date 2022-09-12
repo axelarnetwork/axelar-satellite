@@ -4,18 +4,18 @@ import { useSwapStore } from "../store";
 import { ENVIRONMENT } from "../config/constants";
 
 export function useFilterSelectableAssetList() {
-  const { srcChain, destChain, setAssetList, setAsset, asset, allAssets } = useSwapStore(
-    (state) => state
-  );
+  const { srcChain, destChain, setAssetList, setAsset, asset, allAssets } =
+    useSwapStore((state) => state);
 
   useEffect(() => {
     if (srcChain && destChain) filterAssetList();
-  }, [srcChain, destChain]);
+  }, [srcChain, destChain, asset]);
 
   function filterAssetList() {
     if (!srcChain || !destChain) return;
     const sourceAssets = srcChain.assets as AssetInfo[];
     const destAssets = destChain.assets as AssetInfo[];
+    if (!sourceAssets || !destAssets) return;
 
     const selectableAssets = allAssets.filter((asset) => {
       const sourceHasAsset = sourceAssets.find(
@@ -30,7 +30,7 @@ export function useFilterSelectableAssetList() {
     setAssetList(selectableAssets);
     const currentAssetValid = selectableAssets.find(
       (_asset) =>
-        _asset.common_key[ENVIRONMENT] !== asset?.common_key[ENVIRONMENT]
+        _asset.common_key[ENVIRONMENT] === asset?.common_key[ENVIRONMENT]
     );
     if (!currentAssetValid) {
       setAsset(null);
