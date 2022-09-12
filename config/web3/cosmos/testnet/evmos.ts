@@ -7,7 +7,7 @@ export default {
   "chainName": "Evmos Testnet",
   "stakeCurrency": {
     "coinDenom": "EVMOS",
-    "coinMinimalDenom": "aevmos",
+    "coinMinimalDenom": "atevmos",
     "coinDecimals": 18,
     "coinGeckoId": "evmos"
   },
