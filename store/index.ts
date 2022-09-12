@@ -25,7 +25,7 @@ export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   const chain = chains.find(
     (_chain) =>
       getWagmiChainOverride(_chain.network) ===
-      state.srcChain.chainIdentifier[ENVIRONMENT]
+      state.srcChain?.chainIdentifier?.[ENVIRONMENT]
   );
   return chain?.id;
 });

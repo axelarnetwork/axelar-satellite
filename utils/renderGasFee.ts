@@ -1,5 +1,4 @@
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
-import { ENVIRONMENT } from "../config/constants";
 import Big from "big.js";
 
 export function renderGasFee(
@@ -15,6 +14,6 @@ export function renderGasFee(
   const sourceFee = asset?.chain_aliases[sourceChainName]?.minDepositAmt;
   const destFee = asset?.chain_aliases[destChainName]?.minDepositAmt;
 
-  if (!sourceFee && !destFee) return "0";
+  if (!sourceFee || !destFee) return "0";
   return Big(sourceFee).add(Big(destFee)).toString();
 }
