@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import { useAccount, useConnect } from "wagmi";
-import { useRouter } from "next/router";
 
 import { useSwapStore, useWalletStore } from "../../../store";
 import { useGetKeplerWallet } from "../../../hooks";
@@ -16,23 +15,11 @@ export const AddressFiller = () => {
   );
   const { destChain } = useSwapStore((state) => state);
   const isEvm = destChain?.module === "evm";
-  const router = useRouter();
   const keplerWallet = useGetKeplerWallet();
-
-  function updateQueryAddress(_address: string) {
-    // router.push({
-    //   pathname: router.pathname,
-    //   query: {
-    //     ...router.query,
-    //     destination_address: _address,
-    //   },
-    // });
-  }
 
   function fillEvmDestinationAddress() {
     if (address) {
       setDestAddress(address);
-      updateQueryAddress(address);
     }
   }
 
@@ -51,8 +38,6 @@ export const AddressFiller = () => {
     const address = await keplerWallet?.getKey(chain.chainId as string);
     setDestAddress(address?.bech32Address as string);
     setKeplrConnected(true);
-
-    updateQueryAddress(address?.bech32Address as string);
   }
 
   if (isEvm)

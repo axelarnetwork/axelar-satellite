@@ -41,10 +41,6 @@ export const useInitialChainList = () => {
     if (!router.isReady) return;
     Promise.all([loadInitialChains(), loadInitialAssets()]).then(
       ([chains, asset]) => {
-        console.log({
-          chains,
-          asset,
-        });
         updateRoutes(
           chains.srcChainName,
           chains.destChainName,
@@ -66,7 +62,7 @@ export const useInitialChainList = () => {
       srcChain.chainName.toLowerCase(),
       destChain.chainName.toLowerCase(),
       asset?.common_key[ENVIRONMENT] as string,
-      ""
+      destAddress
     );
   }, [srcChain, destChain, destAddress, asset]);
 
