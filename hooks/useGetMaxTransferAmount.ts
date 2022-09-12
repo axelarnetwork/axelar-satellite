@@ -25,7 +25,7 @@ export const useGetMaxTransferAmount = () => {
     ?.div(10 ** Number(asset?.decimals))
     ?.toFixed(0);
 
-  if (!bigAmount) return null;
+  if (!bigAmount || isNaN(bigAmount)) return null;
 
   return BigInt(bigAmount).toString() || null;
 };
