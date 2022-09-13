@@ -11,3 +11,6 @@ export * from "./useGetMaxTransferAmount";
 
 export * from "./kepler/useHasKeplerWallet";
 export * from "./kepler/useGetKeplerWallet";
+
+export * from "./useNormalizeUrlPaths";
+export * from "./useNormalizeChains";

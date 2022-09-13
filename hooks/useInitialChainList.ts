@@ -5,7 +5,7 @@ import {
   loadChains,
 } from "@axelar-network/axelarjs-sdk";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   DEFAULT_ASSET,
   DEFAULT_DEST_CHAIN,
@@ -51,20 +51,20 @@ export const useInitialChainList = () => {
     );
   }, [router.isReady]);
 
-  useEffect(() => {
-    if (
-      !srcChain?.chainName ||
-      !destChain?.chainName ||
-      !asset?.common_key[ENVIRONMENT]
-    )
-      return;
-    updateRoutes(
-      srcChain.chainName.toLowerCase(),
-      destChain.chainName.toLowerCase(),
-      asset?.common_key[ENVIRONMENT] as string,
-      destAddress
-    );
-  }, [srcChain, destChain, destAddress, asset]);
+  // useEffect(() => {
+  //   if (
+  //     !srcChain?.chainName ||
+  //     !destChain?.chainName ||
+  //     !asset?.common_key[ENVIRONMENT]
+  //   )
+  //     return;
+  //   updateRoutes(
+  //     srcChain.chainName.toLowerCase(),
+  //     destChain.chainName.toLowerCase(),
+  //     asset?.common_key[ENVIRONMENT] as string,
+  //     destAddress
+  //   );
+  // }, [srcChain, destChain, destAddress, asset]);
 
   function updateRoutes(
     source: string,

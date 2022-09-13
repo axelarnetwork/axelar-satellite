@@ -23,17 +23,16 @@ export const SourceChainSelector = () => {
 
   // avoid same chain selection
   useEffect(() => {
-    const newChains = allChains
-      .filter(
-        (chain) =>
-          chain.chainName !== destChain.chainName &&
-          chain.chainName !== srcChain.chainName
-      )
-      .filter((chain) =>
-        chain.assets
-          ?.map((a) => a.assetSymbol?.toLowerCase())
-          .includes(selectedAssetSymbol?.toLowerCase())
-      );
+    const newChains = allChains.filter(
+      (chain) =>
+        chain.chainName !== destChain.chainName &&
+        chain.chainName !== srcChain.chainName
+    );
+    // .filter((chain) =>
+    //   chain.assets
+    //     ?.map((a) => a.assetSymbol?.toLowerCase())
+    //     .includes(selectedAssetSymbol?.toLowerCase())
+    // );
     setFilteredChains(newChains);
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
 
