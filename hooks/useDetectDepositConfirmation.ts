@@ -28,7 +28,7 @@ export const useDetectDepositConfirmation = () => {
   const { chains } = useNetwork();
 
   const destChainId = chains.find(
-    (chain) => chain.network === destChain.chainName.toLowerCase()
+    (chain) => chain.network === destChain?.chainName?.toLowerCase()
   )?.id;
 
   const { data: blockNumber } = useBlockNumber({

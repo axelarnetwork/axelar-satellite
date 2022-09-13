@@ -7,16 +7,16 @@ export const ChainSwapper = () => {
   const { switchChains, srcChain, destChain } = useSwapStore((state) => state);
   const router = useRouter();
 
-  const updateQueryParamsAndSwitch = () => {
+  const updateQueryParamsAndSwitch = async () => {
+    // await router.push({
+    //   query: {
+    //     ...router.query,
+    //     source: destChain.chainName.toLowerCase(),
+    //     destination: srcChain.chainName.toLowerCase(),
+    //     destination_address: "",
+    //   },
+    // });
     switchChains();
-    router.push({
-      query: {
-        ...router.query,
-        source: destChain.chainName.toLowerCase(),
-        destination: srcChain.chainName.toLowerCase(),
-        destination_address: "",
-      },
-    });
   };
 
   return (
