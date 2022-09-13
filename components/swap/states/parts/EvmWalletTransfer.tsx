@@ -136,23 +136,23 @@ export const EvmWalletTransfer = () => {
       );
 
     // check if user has enough gas
-    const nativeBalance = accountBalance?.value.toString() as string;
-    const minNativeBalance = new BigNumber("0.05")
-      .times(10 ** Number(accountBalance?.decimals))
-      .toString();
-    if (!nativeBalance) {
-      return toast.error(`Could not read native token balance`);
-    }
-    // show error if native token balance is smalled than an arbitrary 0.05
-    if (new BigNumber(nativeBalance).lt(new BigNumber(minNativeBalance))) {
-      return toast.error(
-        `Insufficient ${accountBalance?.symbol} amount: ${new BigNumber(
-          nativeBalance
-        )
-          .div(10 ** Number(accountBalance?.decimals))
-          .toString()} available`
-      );
-    }
+    // const nativeBalance = accountBalance?.value.toString() as string;
+    // const minNativeBalance = new BigNumber("0.05")
+    //   .times(10 ** Number(accountBalance?.decimals))
+    //   .toString();
+    // if (!nativeBalance) {
+    //   return toast.error(`Could not read native token balance`);
+    // }
+    // // show error if native token balance is smalled than an arbitrary 0.05
+    // if (new BigNumber(nativeBalance).lt(new BigNumber(minNativeBalance))) {
+    //   return toast.error(
+    //     `Insufficient ${accountBalance?.symbol} amount: ${new BigNumber(
+    //       nativeBalance
+    //     )
+    //       .div(10 ** Number(accountBalance?.decimals))
+    //       .toString()} available`
+    //   );
+    // }
 
     // check that the user has enough tokens
     const tokenBalance = tokenAmount?.toString() as string;
