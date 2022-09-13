@@ -86,7 +86,6 @@ export const useGetAssetBalance = () => {
     if (!keplrConnected) return;
     if (!asset) return;
     if (!srcChain) return;
-    if (srcChain.chainName.toLowerCase() === "terra") return;
 
     setLoading(true);
 

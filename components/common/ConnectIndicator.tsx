@@ -1,9 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import { useWalletStore } from "../../store";
+import { WalletStatus, useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 
 export const ConnectIndicator = () => {
   const { wagmiConnected, keplrConnected } = useWalletStore();
+  const { status: TerraWalletStatus } = useTerraWallet();
 
   return (
     <div className="flex items-center flex-column">
@@ -28,6 +30,9 @@ export const ConnectIndicator = () => {
         )}
         {keplrConnected && (
           <Image height={18} width={18} src="/assets/wallets/kepler.logo.svg" />
+        )}
+        {TerraWalletStatus === WalletStatus.WALLET_CONNECTED && (
+          <Image height={18} width={18} src="/assets/wallets/terra-station.logo.svg" />
         )}
       </div>
     </div>

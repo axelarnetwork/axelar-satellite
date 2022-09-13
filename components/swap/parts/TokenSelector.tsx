@@ -37,7 +37,8 @@ export const TokenSelector = () => {
     setTokensToTransfer,
   } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
-  const { wagmiConnected, keplrConnected } = useWalletStore();
+  const { wagmiConnected, keplrConnected, userSelectionForCosmosWallet } =
+    useWalletStore();
   const max = useGetMaxTransferAmount();
   const { status: TerraWalletStatus } = useTerraWallet();
   const [showBalance, setShowBalance] = useState(false);
@@ -48,6 +49,7 @@ export const TokenSelector = () => {
 
   const { balance, setKeplrBalance, loading, terraStationBalance } =
     useGetAssetBalance();
+  const [balanceToShow, setBalanceToShow] = useState("0");
   const ref = useRef(null);
   const router = useRouter();
 
@@ -77,13 +79,30 @@ export const TokenSelector = () => {
   }, [router.query, selectableAssetList]);
 
   useEffect(() => {
-    setShowBalance(
-      !!(srcChain?.module === "evm" && wagmiConnected) ||
-        !!(srcChain?.module === "axelarnet" && keplrConnected) ||
-        (srcChain?.chainName.toLowerCase() === "terra" &&
-          TerraWalletStatus === WalletStatus.WALLET_CONNECTED)
-    );
-  }, [srcChain, wagmiConnected, TerraWalletStatus, keplrConnected]);
+    const isEVM = !!(srcChain?.module === "evm" && wagmiConnected);
+    const isAxelarnet = !!(srcChain?.module === "axelarnet" && keplrConnected);
+    const isTerra =
+      srcChain?.chainName.toLowerCase() === "terra" &&
+      TerraWalletStatus === WalletStatus.WALLET_CONNECTED &&
+      userSelectionForCosmosWallet === "terraStation";
+
+    const shouldshowBalance = isEVM || isAxelarnet || isTerra;
+    setShowBalance(shouldshowBalance);
+
+    if (!shouldshowBalance) return;
+
+    if (isEVM) setBalanceToShow(balance);
+    else if (isTerra) setBalanceToShow(terraStationBalance as string);
+    else if (isAxelarnet) setBalanceToShow(balance);
+  }, [
+    srcChain,
+    balance,
+    wagmiConnected,
+    TerraWalletStatus,
+    keplrConnected,
+    terraStationBalance,
+    userSelectionForCosmosWallet
+  ]);
 
   useEffect(() => {
     if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
@@ -151,7 +170,16 @@ export const TokenSelector = () => {
         />
         {balance && showBalance ? (
           <div className="flex flex-row justify-end space-x-1">
-            <span className="text-xs text-gray-500">Available</span>
+            <span className="text-xs text-gray-500">
+              Available{" "}
+              {srcChain.chainName.toLowerCase() === "terra" && (
+                <span className="text-xs text-gray-500">
+                  {userSelectionForCosmosWallet === "terraStation"
+                    ? "(Terra Station)"
+                    : "(Keplr)"}
+                </span>
+              )}
+            </span>
             <span className="w-auto text-xs text-[#86d6ff]">
               {loading ? (
                 <SpinnerDotted
@@ -160,31 +188,40 @@ export const TokenSelector = () => {
                   color="#00a6ff"
                 />
               ) : (
-                roundNumberTo(balance, 1)
+                roundNumberTo(balanceToShow, 1)
               )}
             </span>
             {TerraWalletStatus === WalletStatus.WALLET_CONNECTED &&
+            userSelectionForCosmosWallet === "terraStation" &&
+            srcChain.module === "axelarnet" &&
+            srcChain.chainName.toLowerCase() === "terra" &&
             terraStationBalance ? (
-              <span className="w-auto text-xs text-[#86d6ff]">
-                <span className="mr-2">
-                  <Image
-                    src="/assets/wallets/kepler.logo.svg"
-                    alt="walletconnect"
-                    height={13}
-                    width={13}
-                  />
-                </span>
-                {roundNumberTo(terraStationBalance, 1)}
-                <span className="ml-0.5">
-                  <Image
-                    src="/assets/wallets/terra-station.logo.svg"
-                    alt="walletconnect"
-                    height={14}
-                    width={14}
-                  />
-                </span>
-              </span>
-            ) : null}
+              <label
+                htmlFor="web3-modal"
+                className="h-6 text-xs text-gray-500 cursor-pointer hover:underline"
+              >
+                Keplr
+                <Image
+                  src={`/assets/ui/forward-arrow-link.svg`}
+                  layout="intrinsic"
+                  width={10}
+                  height={10}
+                />
+              </label>
+            ) : (
+              <label
+                htmlFor="web3-modal"
+                className="h-6 text-xs text-gray-500 cursor-pointer hover:underline"
+              >
+                Terra Station
+                <Image
+                  src={`/assets/ui/forward-arrow-link.svg`}
+                  layout="intrinsic"
+                  width={10}
+                  height={10}
+                />
+              </label>
+            )}
           </div>
         ) : (
           <label

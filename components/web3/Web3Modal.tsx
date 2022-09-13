@@ -7,14 +7,16 @@ import { OfflineSigner } from "@cosmjs/proto-signing";
 import { useSwapStore, useWalletStore } from "../../store";
 import { getCosmosChains } from "../../config/web3";
 import { CosmosChain } from "../../config/web3/cosmos/interface";
+import { useWallet as useTerraWallet } from "@terra-money/wallet-provider"
 
 export const Web3Modal = () => {
   const { connect, connectors, error } = useConnect();
   const allAssets = useSwapStore((state) => state.allAssets);
   const modalRef = useRef<any>();
-  const { setKeplrConnected, keplrConnected, wagmiConnected } = useWalletStore(
+  const { setKeplrConnected, keplrConnected, wagmiConnected, setUserSelectionForCosmosWallet } = useWalletStore(
     (state) => state
   );
+  const terraWallet = useTerraWallet();
 
   // close modal upon successful metamask connection
   useEffect(() => {
@@ -38,6 +40,18 @@ export const Web3Modal = () => {
   function handleOnMetamaskSwitch() {
     const connector = connectors.find((c) => c.name === "MetaMask");
     connect({ connector });
+  }
+
+  handleOnTerraStationConnect
+
+  async function handleOnTerraStationConnect() {
+    try {
+      terraWallet.connect();
+      setUserSelectionForCosmosWallet("terraStation");
+
+    } catch (e) {
+
+    }
   }
 
   async function handleOnKeplrConnect() {
@@ -67,6 +81,7 @@ export const Web3Modal = () => {
     const [account] = await _signer.getAccounts();
     if (keplrConnected) toast.error("Wallet already connected");
     setKeplrConnected(true);
+    setUserSelectionForCosmosWallet("keplr");
   }
 
   function renderConnectors() {
@@ -122,14 +137,14 @@ export const Web3Modal = () => {
               />
             </div>
           </button>{" "}
-          {/* <button
+          <button
             className="relative flex btn btn-neutral"
-            onClick={handleOnWalletConnectSwitch}
+            onClick={handleOnTerraStationConnect}
           >
             <span>Terra Station</span>
             <div className="ml-auto">
               <Image
-                src="/assets/wallets/walletconnect.logo.svg"
+                src="/assets/wallets/terra-station.logo.svg"
                 alt="walletconnect"
                 layout="intrinsic"
                 objectFit="contain"
@@ -137,7 +152,7 @@ export const Web3Modal = () => {
                 width={30}
               />
             </div>
-          </button> */}
+          </button>
           {/* <button
             className="relative flex btn btn-neutral"
             disabled

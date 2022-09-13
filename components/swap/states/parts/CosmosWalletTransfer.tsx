@@ -21,7 +21,7 @@ import {
 } from "../../../../hooks";
 import { curateCosmosChainId } from "../../../../utils";
 import { getCosmosChains } from "../../../../config/web3";
-import { utils } from "ethers";
+import { ethers, utils } from "ethers";
 import toast from "react-hot-toast";
 import Long from "long";
 import { Height } from "cosmjs-types/ibc/core/client/v1/client";
@@ -29,6 +29,20 @@ import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { SwapStatus } from "../../../../utils/enums";
 import { SpinnerRoundFilled } from "spinners-react";
 import { renderGasFee } from "../../../../utils/renderGasFee";
+import {
+  useWallet as useTerraWallet,
+  WalletStatus,
+  useConnectedWallet,
+  useLCDClient,
+} from "@terra-money/wallet-provider";
+import {
+  Coin as TerraCoin,
+  Fee,
+  LCDClient,
+  MsgTransfer,
+} from "@terra-money/terra.js";
+import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/client/Height";
+import { TERRA_IBC_GAS_LIMIT } from ".";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -52,6 +66,13 @@ export const CosmosWalletTransfer = () => {
   );
   const keplerWallet = useGetKeplerWallet();
   const hasKeplerWallet = useHasKeplerWallet();
+  const { status: TerraWalletStatus, wallets: terraWallets } = useTerraWallet();
+  const connectedWallet = useConnectedWallet();
+  const lcdClient = useLCDClient();
+  //   (process.env.REACT_APP_STAGE === "mainnet"
+  //     ? terraConfigMainnet
+  //     : terraConfigTestnet) as WalletLCDClientConfig
+  // )
 
   useDetectDepositConfirmation();
 
@@ -241,6 +262,53 @@ export const CosmosWalletTransfer = () => {
     // }
   }
 
+  async function handleOnTerraStationIBCTransfer(): Promise<any> {
+    const sourcePort = "transfer";
+    const senderAddress =
+      terraWallets && terraWallets.length >= 1
+        ? terraWallets[0]?.terraAddress
+        : "";
+    if (!senderAddress) throw new Error("no sender specified");
+
+    const denom = asset?.chain_aliases["terra"].ibcDenom;
+    const [_action, _channel, _denom] = currentAsset?.fullDenomPath?.split(
+      "/"
+    ) as string[];
+    if (!denom) throw new Error("asset not found: " + _denom);
+    const fee = new Fee(parseInt(TERRA_IBC_GAS_LIMIT), "30000uluna");
+    const transferMsg: MsgTransfer = new MsgTransfer(
+      sourcePort,
+      _channel,
+      new TerraCoin(
+        denom,
+        utils.parseUnits(tokensToTransfer, currentAsset?.decimals).toString()
+      ),
+      senderAddress,
+      depositAddress,
+      new TerraHeight(100, 100),
+      undefined
+    );
+
+    const signTx = await connectedWallet?.sign({
+      msgs: [transferMsg],
+      timeoutHeight: 100,
+      fee,
+    });
+    if (!signTx) throw Error("sign tx failed");
+
+    try {
+      console.log("CosmosWalletTransfer: Terra Station IBC transfer");
+      const tx = await lcdClient.tx.broadcastSync(signTx.result);
+      console.log("TS tx",tx);
+      setTxInfo({
+        sourceTxHash: tx.txhash,
+      });
+      setIsTxOngoing(true);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+
   return (
     <div>
       <div className="flex justify-center my-2 gap-x-5">
@@ -272,6 +340,21 @@ export const CosmosWalletTransfer = () => {
                   />
                 </div>
               </button>
+              {TerraWalletStatus === WalletStatus.WALLET_CONNECTED && (
+                <button
+                  className="mb-5 ml-5 btn btn-primary"
+                  onClick={handleOnTerraStationIBCTransfer}
+                >
+                  <span className="mr-2">Send from TS</span>
+                  <div className="flex justify-center my-2 gap-x-5">
+                    <Image
+                      src="/assets/wallets/terra-station.logo.svg"
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                </button>
+              )}
             </div>
           </div>
         )}
