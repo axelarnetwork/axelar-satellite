@@ -1,5 +1,7 @@
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { useSwapStore } from "../store";
 
 /**
@@ -8,16 +10,24 @@ import { useSwapStore } from "../store";
 export const useNormalizeChains = () => {
   const { allChains, asset, srcChain, destChain, setDestChain, destAddress } =
     useSwapStore();
+  const router = useRouter();
 
   /**
    * UPDATE DEST CHAIN IF ASSET IS NULL
    */
   useEffect(() => {
     if (!srcChain?.chainName || !destChain?.chainName) return;
-    if (asset === null) {
-      findFirstCompabibleChain();
-    }
-  }, [srcChain, destChain, destAddress, asset]);
+    const timeout = setTimeout(() => {
+      if (asset === null) {
+        findFirstCompabibleChain();
+        toast.error(
+          `${router.query["asset_denom"]} not available between ${srcChain.chainName} and ${destChain.chainName}`
+        );
+      }
+    }, 100);
+
+    return () => clearTimeout(timeout);
+  }, [srcChain, destChain, asset]);
 
   /**
    * Use the source chain as base and find a destination chain that has an asset in common with the source chain
