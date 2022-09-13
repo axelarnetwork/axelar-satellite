@@ -103,10 +103,16 @@ export const useInitialChainList = () => {
       }
 
       let srcChainFound = chains.find(
-        (chain) => chain.chainName.toLowerCase() === source
+        (chain) =>
+          chain.chainName.toLowerCase() === source &&
+          !DISABLED_CHAIN_NAMES.toLowerCase().includes(source.toLowerCase())
       ) as ChainInfo;
       let destChainFound = chains.find(
-        (chain) => chain.chainName.toLowerCase() === destination
+        (chain) =>
+          chain.chainName.toLowerCase() === destination &&
+          !DISABLED_CHAIN_NAMES.toLowerCase().includes(
+            destination.toLowerCase()
+          )
       ) as ChainInfo;
 
       /**
