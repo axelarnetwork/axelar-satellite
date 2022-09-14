@@ -14,6 +14,8 @@ import stargaze from "./stargaze";
 import assetmantle from "./assetmantle";
 import ki from "./ki";
 import fetch from "./fetch";
+import comdex from "./comdex";
+import regen from "./regen";
 
 export const mainnetChains: CosmosChain[] = [
   terra,
@@ -30,5 +32,7 @@ export const mainnetChains: CosmosChain[] = [
   stargaze,
   assetmantle,
   ki,
-  fetch
+  fetch,
+  comdex,
+  regen
 ];
