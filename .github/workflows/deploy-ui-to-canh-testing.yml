@@ -23,4 +23,4 @@ jobs:
           vercel-project-id: ${{ secrets.CTT_PERSONAL_VERCEL_PROJECT_ID }}
           vercel-args: "--prod"
         env:
-          REACT_APP_UNDER_MAINTENANCE: ${{github.event.inputs.maintenance}}
+          NEXT_PUBLIC_UNDER_MAINTENANCE: ${{github.event.inputs.maintenance}}
