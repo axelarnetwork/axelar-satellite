@@ -5,6 +5,8 @@ import { useOnClickOutside } from "usehooks-ts";
 import { convertChainName } from "../../../utils/transformers";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useRouter } from "next/router";
+import { extractDenom } from "../../../utils/extractDenom";
+import { ENVIRONMENT } from "../../../config/constants";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -28,8 +30,8 @@ export const DestChainSelector = () => {
       )
       .filter((chain) =>
         chain.assets
-          ?.map((a) => a.assetSymbol?.toLowerCase())
-          .includes(selectedAssetSymbol?.toLowerCase())
+          ?.map((a) => extractDenom(a.fullDenomPath as string))
+          .includes(asset?.common_key[ENVIRONMENT] as string)
       );
     setFilteredChains(newChains);
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
