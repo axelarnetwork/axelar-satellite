@@ -4,7 +4,7 @@ export default {
   rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=comdex",
   rest: "https://rest.comdex.one",
   chainId: "comdex-1",
-  chainName: "Comdex Mainnet",
+  chainName: "Comdex",
   chainIdentifier: "comdex",
   stakeCurrency: {
     coinDenom: "CMDX",
