@@ -1,3 +1,4 @@
+import { Bech32Address } from "@keplr-wallet/cosmos";
 import { CosmosChain } from "../interface";
 
 export default {
@@ -12,14 +13,7 @@ export default {
     coinDecimals: 6,
     coinGeckoId: "cmdx",
   },
-  bech32Config: {
-    bech32PrefixAccAddr: "comdex",
-    bech32PrefixAccPub: "comdexpub",
-    bech32PrefixValAddr: "comdexvaloper",
-    bech32PrefixValPub: "comdexvaloperpub",
-    bech32PrefixConsAddr: "comdexvalcons",
-    bech32PrefixConsPub: "comdexvalconspub",
-  },
+  bech32Config: Bech32Address.defaultBech32Config("comdex"),
   bip44: {
     coinType: 118,
   },
