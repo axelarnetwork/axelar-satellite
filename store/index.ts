@@ -274,14 +274,17 @@ export const useSwapStore = create<SwapStore>()(
         false,
         "setDestAddress"
       ),
-    setAsset: (asset) =>
+    setAsset: (asset) => {
+      console.log("asset to set in store",asset);
       set(
         {
           asset,
         },
         false,
         "setAsset"
-      ),
+      )
+    },
+    
     setAssetList: (assets) =>
       set(
         {

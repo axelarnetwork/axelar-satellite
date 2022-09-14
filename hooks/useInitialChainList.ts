@@ -14,6 +14,7 @@ import {
   ENVIRONMENT,
   ENVIRONMENT as environment,
 } from "../config/constants";
+import { nativeAssets } from "../config/nativeAssetList";
 import { useSwapStore } from "../store";
 
 type RouteQuery = {
@@ -92,6 +93,7 @@ export const useInitialChainList = () => {
       const filteredChains = sortedChains.filter(
         (chain) => !DISABLED_CHAIN_NAMES.includes(chain.chainName.toLowerCase())
       );
+      console.log("filtered chains",filteredChains)
       setAllChains(filteredChains);
 
       let { source, destination } = router.query as RouteQuery;
@@ -168,7 +170,7 @@ export const useInitialChainList = () => {
 
   async function loadInitialAssets() {
     return loadAssets({ environment }).then((assets: AssetConfig[]) => {
-      setAllAssets(assets);
+      setAllAssets([...nativeAssets, ...assets]);
 
       const { asset_denom } = router.query as RouteQuery;
 
