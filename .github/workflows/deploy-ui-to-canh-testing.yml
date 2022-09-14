@@ -22,7 +22,5 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.CTT_PERSONAL_VERCEL_PROJECT_ID }}
           vercel-args: "--prod"
-          alias-domains: |
-            canh-testing.vercel.app
         env:
           REACT_APP_UNDER_MAINTENANCE: ${{github.event.inputs.maintenance}}
