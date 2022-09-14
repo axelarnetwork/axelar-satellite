@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { io } from "socket.io-client";
-import { useBlockNumber, useNetwork } from "wagmi";
+import { useBlockNumber } from "wagmi";
 
 import { SOCKET_API } from "../config/constants";
-import { useSwapStore } from "../store";
+import { getDestChainId, useSwapStore } from "../store";
 import { buildDepositConfirmationRoomId } from "../utils";
 import { SwapStatus } from "../utils/enums";
 
@@ -25,14 +25,11 @@ export const useDetectDepositConfirmation = () => {
     txInfo,
     setTxInfo,
   } = useSwapStore();
-  const { chains } = useNetwork();
 
-  const destChainId = chains.find(
-    (chain) => chain.network === destChain?.chainName?.toLowerCase()
-  )?.id;
+  const destChainId = useSwapStore(getDestChainId);
 
   const { data: blockNumber } = useBlockNumber({
-    chainId: destChainId,
+    chainId: destChainId as number,
     enabled: !!destChainId && destChain.module === "evm",
   });
 
