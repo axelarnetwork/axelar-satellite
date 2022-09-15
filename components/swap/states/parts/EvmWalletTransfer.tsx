@@ -7,6 +7,7 @@ import {
   useConnect,
   useContractRead,
   useContractWrite,
+  useSendTransaction,
   useWaitForTransaction,
 } from "wagmi";
 import { erc20ABI } from "wagmi";
@@ -96,6 +97,23 @@ export const EvmWalletTransfer = () => {
     enabled: !!destChainId,
   });
 
+  const { data: sendNativeDataResult, isLoading, isSuccess, sendTransaction } = useSendTransaction({
+    chainId: srcChainId as number,
+    request: {
+      to: depositAddress,
+      value: utils.parseUnits(tokensToTransfer, asset?.decimals),
+    }
+  });
+
+  useEffect(() => {
+    console.log("send native data result",sendNativeDataResult);
+    setTxInfo({
+      sourceTxHash: sendNativeDataResult?.hash,
+      destStartBlockNumber: undefined,
+    });
+    setIsTxOngoing(true);
+  }, [sendNativeDataResult]);
+
   useEffect(() => {
     const assetCommonKey = asset?.common_key[ENVIRONMENT];
     const assetData = srcChain.assets?.find(
@@ -156,6 +174,12 @@ export const EvmWalletTransfer = () => {
     //       .toString()} available`
     //   );
     // }
+
+    //@ts-ignore
+    if (asset.is_native_asset) {
+      sendTransaction()
+      return;
+    }
 
     // check that the user has enough tokens
     const tokenBalance = tokenAmount?.toString() as string;
