@@ -82,6 +82,7 @@ export const nativeAssets: AssetConfig[] = [
         ibcDenom: "eth-wei",
         fullDenomPath: "eth-wei",
         tokenAddress: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+                // @ts-ignore
         mintLimit: 0,
       },
       avalanche: {
@@ -91,6 +92,7 @@ export const nativeAssets: AssetConfig[] = [
         ibcDenom: "eth-wei",
         fullDenomPath: "eth-wei",
         tokenAddress: "0x3613C187b3eF813619A25322595bA5E297E4C08a",
+                // @ts-ignore
         mintLimit: 0,
       },
       polygon: {
@@ -100,6 +102,7 @@ export const nativeAssets: AssetConfig[] = [
         ibcDenom: "eth-wei",
         fullDenomPath: "eth-wei",
         tokenAddress: "0xfba15fFF35558fE2A469B96A90AeD7727FE38fAE",
+                // @ts-ignore
         mintLimit: 0,
       },
       binance: {
@@ -109,6 +112,7 @@ export const nativeAssets: AssetConfig[] = [
         ibcDenom: "eth-wei",
         fullDenomPath: "eth-wei",
         tokenAddress: "0x03Dc012b7851b7D65592Aebc40a6aF9A171E9315",
+                // @ts-ignore
         mintLimit: 0,
       },
       aurora: {
@@ -118,6 +122,7 @@ export const nativeAssets: AssetConfig[] = [
         ibcDenom: "eth-wei",
         fullDenomPath: "eth-wei",
         tokenAddress: "0xcfF68Bea15e24aec8ECfdb82862ff776C3e972d1",
+                // @ts-ignore
         mintLimit: 0,
       },
       sei: {
@@ -128,6 +133,7 @@ export const nativeAssets: AssetConfig[] = [
           "ibc/C2A89D98873BB55B62CE86700DFACA646EC80352E8D03CC6CF34DD44E46DC75D",
         fullDenomPath: "transfer/channel-29/eth-wei",
         tokenAddress: "eth-wei",
+        // @ts-ignore
         mintLimit: 0,
       },
       osmosis: {
@@ -138,6 +144,7 @@ export const nativeAssets: AssetConfig[] = [
           "ibc/5D52572B5E1278AC0F5EAAA5D595F7F583981CE403FB8D3850EAA771269575FB",
         fullDenomPath: "transfer/channel-312/eth-wei",
         tokenAddress: "eth-wei",
+        // @ts-ignore
         mintLimit: 0,
       },
       kujira: {
@@ -148,6 +155,7 @@ export const nativeAssets: AssetConfig[] = [
           "ibc/C567713C9D0904098C14BA0FBEB9192C5B68B590757EE6913DC292710C8926E6",
         fullDenomPath: "transfer/channel-8/eth-wei",
         tokenAddress: "eth-wei",
+                // @ts-ignore
         mintLimit: 0,
       },
       fetch: {
@@ -158,6 +166,7 @@ export const nativeAssets: AssetConfig[] = [
           "ibc/BC8A77AFBD872FDC32A348D3FB10CC09277C266CFE52081DE341C7EC6752E674",
         fullDenomPath: "transfer/channel-6/eth-wei",
         tokenAddress: "eth-wei",
+                // @ts-ignore
         mintLimit: 0,
       },
     },
