@@ -9,136 +9,136 @@
     "fully_supported": true,
     "decimals": 18,
     "chain_aliases": {
-      "assetmantle": {
-        "assetSymbol": "axlWETH",
+      "axelar": {
+        "assetSymbol": "WETH",
+        "assetName": "WETH",
+        "minDepositAmt": 0.00002,
+        "ibcDenom": "weth-wei",
+        "fullDenomPath": "weth-wei",
+        "tokenAddress": "weth-wei",
+        "mintLimit": 0
+      },
+      "moonbeam": {
+        "assetSymbol": "WETH",
         "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/3EFE89848528B4A5665D0102DB818C6B19E04E17455197E92BECC3C41A7F7D78",
-        "fullDenomPath": "transfer/channel-10/weth-wei",
+        "minDepositAmt": 0.00004,
+        "ibcDenom": "weth-wei",
+        "fullDenomPath": "weth-wei",
+        "tokenAddress": "0xc40Fdaa2cB43C85eAA6D43856df42E7A80669fca",
+        "mintLimit": 0
+      },
+      "fantom": {
+        "assetSymbol": "WETH",
+        "assetName": "axlWETH",
+        "minDepositAmt": 0.00004,
+        "ibcDenom": "weth-wei",
+        "fullDenomPath": "weth-wei",
+        "tokenAddress": "0x930640ef299Bf772f786Cf7E88DA951D76E33168",
+        "mintLimit": 0
+      },
+      "aura": {
+        "assetSymbol": "WETH",
+        "assetName": "axlWETH",
+        "minDepositAmt": 0.00002,
+        "ibcDenom": "ibc/E3AB0DFDE9E782262B770C32DF94AC2A92B93DC4825376D6F6C874D3C877864E",
+        "fullDenomPath": "transfer/channel-5/weth-wei",
         "tokenAddress": "weth-wei",
         "mintLimit": 0
       },
       "comdex": {
-        "assetSymbol": "axlWETH",
+        "assetSymbol": "WETH",
         "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/81C3A46287D7664A8FD19843AC8D0CFD6C284EF1F750C661C48B3544277B1B29",
-        "fullDenomPath": "transfer/channel-34/weth-wei",
+        "minDepositAmt": 0.00002,
+        "ibcDenom": "ibc/A99459944FD67B5711735B4B4D3FE30BA45328E94D437C78E47CA8DEFA781E49",
+        "fullDenomPath": "transfer/channel-18/weth-wei",
         "tokenAddress": "weth-wei",
         "mintLimit": 0
       },
-      "cosmoshub": {
-        "assetSymbol": "axlWETH",
+      "evmos": {
+        "assetSymbol": "WETH",
         "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/3C168643B15498A2F8BA843649D7CF207EA2F5A7C8AE77BC175EC2FBF21B1BAA",
-        "fullDenomPath": "transfer/channel-293/weth-wei",
-        "tokenAddress": "weth-wei",
-        "mintLimit": 0
-      },
-      "crescent": {
-        "assetSymbol": "axlWETH",
-        "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/F1806958CA98757B91C3FA1573ECECD24F6FA3804F074A6977658914A49E65A3",
-        "fullDenomPath": "transfer/channel-4/weth-wei",
+        "minDepositAmt": 0.00002,
+        "ibcDenom": "ibc/9F4A3ADB40D0CB9064EB46C9B57EB69826329478D7D159C4178576801F2B570E",
+        "fullDenomPath": "transfer/channel-22/weth-wei",
         "tokenAddress": "weth-wei",
         "mintLimit": 0
       },
       "ethereum": {
         "assetSymbol": "WETH",
         "assetName": "WETH",
-        "minDepositAmt": 0.006,
+        "minDepositAmt": 0.00004,
         "ibcDenom": "weth-wei",
         "fullDenomPath": "weth-wei",
-        "tokenAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-        "mintLimit": 2000000000000000000000
-      },
-      "evmos": {
-        "assetSymbol": "axlWETH",
-        "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/356EDE917394B2AEF7F915EB24FA683A0CCB8D16DD4ECCEDC2AD0CEC6B66AC81",
-        "fullDenomPath": "transfer/channel-21/weth-wei",
-        "tokenAddress": "weth-wei",
+        "tokenAddress": "0xc778417E063141139Fce010982780140Aa0cD5Ab",
         "mintLimit": 0
       },
-      "fetch": {
-        "assetSymbol": "axlWETH",
+      "avalanche": {
+        "assetSymbol": "WETH",
         "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/74712D58FE426053FE962D71BCA5BE80BF83F1BC3508E5E16EBE70241D4E73BE",
-        "fullDenomPath": "transfer/channel-14/weth-wei",
-        "tokenAddress": "weth-wei",
+        "minDepositAmt": 0.00004,
+        "ibcDenom": "weth-wei",
+        "fullDenomPath": "weth-wei",
+        "tokenAddress": "0x3613C187b3eF813619A25322595bA5E297E4C08a",
         "mintLimit": 0
       },
-      "juno": {
-        "assetSymbol": "axlWETH",
+      "polygon": {
+        "assetSymbol": "WETH",
         "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/95A45A81521EAFDBEDAEEB6DA975C02E55B414C95AD3CE50709272366A90CA17",
-        "fullDenomPath": "transfer/channel-71/weth-wei",
-        "tokenAddress": "weth-wei",
+        "minDepositAmt": 0.00004,
+        "ibcDenom": "weth-wei",
+        "fullDenomPath": "weth-wei",
+        "tokenAddress": "0xfba15fFF35558fE2A469B96A90AeD7727FE38fAE",
         "mintLimit": 0
       },
-      "ki": {
-        "assetSymbol": "axlWETH",
+      "binance": {
+        "assetSymbol": "WETH",
         "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/9B68CC79EFF12D25AF712EB805C5062B8F97B2CCE5F3FE55B107EE03095514A3",
-        "fullDenomPath": "transfer/channel-19/weth-wei",
-        "tokenAddress": "weth-wei",
+        "minDepositAmt": 0.00004,
+        "ibcDenom": "weth-wei",
+        "fullDenomPath": "weth-wei",
+        "tokenAddress": "0x03Dc012b7851b7D65592Aebc40a6aF9A171E9315",
         "mintLimit": 0
       },
-      "kujira": {
-        "assetSymbol": "axlWETH",
+      "aurora": {
+        "assetSymbol": "WETH",
         "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/1B38805B1C75352B28169284F96DF56BDEBD9E8FAC005BDCC8CF0378C82AA8E7",
-        "fullDenomPath": "transfer/channel-9/weth-wei",
+        "minDepositAmt": 0.00004,
+        "ibcDenom": "weth-wei",
+        "fullDenomPath": "weth-wei",
+        "tokenAddress": "0xcfF68Bea15e24aec8ECfdb82862ff776C3e972d1",
+        "mintLimit": 0
+      },
+      "sei": {
+        "assetSymbol": "WETH",
+        "assetName": "axlWETH",
+        "minDepositAmt": 0.00002,
+        "ibcDenom": "ibc/C2A89D98873BB55B62CE86700DFACA646EC80352E8D03CC6CF34DD44E46DC75D",
+        "fullDenomPath": "transfer/channel-29/weth-wei",
         "tokenAddress": "weth-wei",
         "mintLimit": 0
       },
       "osmosis": {
-        "assetSymbol": "axlWETH",
+        "assetSymbol": "WETH",
         "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/EA1D43981D5C9A1C4AAEA9C23BB1D4FA126BA9BC7020A25E0AE4AA841EA25DC5",
-        "fullDenomPath": "transfer/channel-208/weth-wei",
+        "minDepositAmt": 0.00002,
+        "ibcDenom": "ibc/5D52572B5E1278AC0F5EAAA5D595F7F583981CE403FB8D3850EAA771269575FB",
+        "fullDenomPath": "transfer/channel-312/weth-wei",
         "tokenAddress": "weth-wei",
         "mintLimit": 0
       },
-      "regen": {
-        "assetSymbol": "axlWETH",
+      "kujira": {
+        "assetSymbol": "WETH",
         "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/62B27C470C859CBCB57DC12FCBBD357DD44CAD673362B47503FAA77523ABA028",
-        "fullDenomPath": "transfer/channel-48/weth-wei",
+        "minDepositAmt": 0.00002,
+        "ibcDenom": "ibc/C567713C9D0904098C14BA0FBEB9192C5B68B590757EE6913DC292710C8926E6",
+        "fullDenomPath": "transfer/channel-8/weth-wei",
         "tokenAddress": "weth-wei",
         "mintLimit": 0
       },
-      "secret": {
-        "assetSymbol": "axlWETH",
+      "fetch": {
+        "assetSymbol": "WETH",
         "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/3665ACBA97B115133C35F060DB67E9671035E9ED48B2FC9140260C122D0C4E03",
-        "fullDenomPath": "transfer/channel-20/weth-wei",
-        "tokenAddress": "weth-wei",
-        "mintLimit": 0
-      },
-      "stargaze": {
-        "assetSymbol": "axlWETH",
-        "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
-        "ibcDenom": "ibc/08CF01F857C36D3C91C3427AA2EACFAFC07971E7AC40B6C433A9982B333F2567",
-        "fullDenomPath": "transfer/channel-50/weth-wei",
-        "tokenAddress": "weth-wei",
-        "mintLimit": 0
-      },
-      "terra": {
-        "assetSymbol": "axlWETH",
-        "assetName": "axlWETH",
-        "minDepositAmt": 0.0003,
+        "minDepositAmt": 0.00002,
         "ibcDenom": "ibc/BC8A77AFBD872FDC32A348D3FB10CC09277C266CFE52081DE341C7EC6752E674",
         "fullDenomPath": "transfer/channel-6/weth-wei",
         "tokenAddress": "weth-wei",

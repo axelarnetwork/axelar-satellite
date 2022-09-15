@@ -1,9 +1,11 @@
 import {
   AssetConfig,
+  AssetInfo,
   ChainInfo,
   loadAssets,
   loadChains,
 } from "@axelar-network/axelarjs-sdk";
+import { cloneDeep } from "lodash";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import {
@@ -14,7 +16,7 @@ import {
   ENVIRONMENT,
   ENVIRONMENT as environment,
 } from "../config/constants";
-import { nativeAssets } from "../config/nativeAssetList";
+import { nativeAssets } from "../config/nativeAssetList/testnet";
 import { useSwapStore } from "../store";
 
 type RouteQuery = {
@@ -87,12 +89,38 @@ export const useInitialChainList = () => {
   // TODO: load chains upon project installation
   async function loadInitialChains() {
     return loadChains({ environment }).then((chains) => {
+
+      function updateChainAssets(chainInfo: ChainInfo) {
+      
+        const filteredAssetList: AssetConfig[] = nativeAssets;
+
+        console.log("filterd asset list",filteredAssetList);
+    
+        const assetsList: AssetInfo[] = [];
+    
+        filteredAssetList.forEach((asset) => {
+          const assetToPush: AssetInfo = cloneDeep(
+            asset.chain_aliases[chainInfo.chainName.toLowerCase()]
+          );
+          if (!assetToPush) return;
+          assetToPush.common_key = asset.common_key[ENVIRONMENT];
+          assetToPush.native_chain = asset.native_chain;
+          assetToPush.decimals = asset.decimals;
+          assetToPush.fullySupported = asset.fully_supported;
+          assetsList.push(assetToPush);
+        });
+
+        // console.log("udpated assets list",assetsList);
+    
+        return assetsList;
+      }
       const sortedChains = chains.sort((a, b) =>
         a.chainName.localeCompare(b.chainName)
       );
       const filteredChains = sortedChains.filter(
         (chain) => !DISABLED_CHAIN_NAMES.includes(chain.chainName.toLowerCase())
       );
+      filteredChains.forEach(chain => {chain.assets = [...updateChainAssets(chain), ...chain.assets as AssetInfo[]]})
       console.log("filtered chains",filteredChains)
       setAllChains(filteredChains);
 
@@ -170,6 +198,7 @@ export const useInitialChainList = () => {
 
   async function loadInitialAssets() {
     return loadAssets({ environment }).then((assets: AssetConfig[]) => {
+      console.log("all assets",[...nativeAssets, ...assets]);
       setAllAssets([...nativeAssets, ...assets]);
 
       const { asset_denom } = router.query as RouteQuery;

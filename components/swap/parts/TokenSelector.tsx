@@ -23,7 +23,7 @@ import { addTokenToMetamask } from "../states";
 import { getWagmiChains } from "../../../config/web3";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
-import { nativeAssets } from "../../../config/nativeAssetList";
+import { nativeAssets } from "../../../config/nativeAssetList/testnet";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -111,14 +111,17 @@ export const TokenSelector = () => {
     console.log("srcChain", srcChain);
     let list;
     if (srcChain.module === "evm") {
-      const nativeAsset = nativeAssets.find(
-        (asset) => asset.native_chain === srcChain.chainName.toLowerCase()
-      );
-      console.log("nativeAsset", nativeAsset);
-      list = [nativeAsset, ...selectableAssetList];
-      console.log("list!", list);
+      list = selectableAssetList.filter((asset) => {
+        // console.log("asset!",asset);
+        // @ts-ignore
+        return (
+          !asset.is_native_asset ||
+          (asset.is_native_asset &&
+            srcChain.chainName.toLowerCase() === asset.native_chain)
+        );
+      });
     }
-    setFilteredAssets((list || selectableAssetList) as AssetConfig[]);
+    setFilteredAssets(list || selectableAssetList);
   }, [selectableAssetList, srcChain]);
 
   // update asset balance from useGetAssetBalance hook if srcChain or asset changes
@@ -205,6 +208,7 @@ export const TokenSelector = () => {
         </div>
         <ul tabIndex={0} onClick={handleOnDropdownToggle}>
           {filteredAssets.map((asset) => {
+            console.log("asset in dropdown", filteredAssets);
             return (
               <li key={asset.common_key[ENVIRONMENT]}>
                 <button onClick={() => handleOnAssetChange(asset)}>
