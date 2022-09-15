@@ -16,10 +16,10 @@ export const FAQ_MODAL = "faq_modal";
 export const TOS_MODAL = "tos_modal";
 
 export const DEFAULT_SRC_CHAIN =
-  process.env.NEXT_PUBLIC_DEFAULT_SRC_CHAIN || "avalanche";
+  process.env.NEXT_PUBLIC_DEFAULT_SRC_CHAIN || "ethereum";
 export const DEFAULT_DEST_CHAIN =
-  process.env.NEXT_PUBLIC_DEFAULT_DEST_CHAIN || "moonbeam";
-export const DEFAULT_ASSET = process.env.NEXT_PUBLIC_DEFAULT_ASSET || "uausdc";
+  process.env.NEXT_PUBLIC_DEFAULT_DEST_CHAIN || "osmosis";
+export const DEFAULT_ASSET = process.env.NEXT_PUBLIC_DEFAULT_ASSET || "uusdc";
 
 export const tokenContractDocs: Record<string, string> = {
   local: "https://docs.axelar.dev/dev/build/contract-addresses/testnet",
