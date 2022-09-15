@@ -7,7 +7,17 @@ const nextConfig = {
     return [
       {
         source: "/(.*)",
-        headers: createSecureHeaders(),
+        headers: createSecureHeaders({
+          contentSecurityPolicy: {
+            directives: {
+              "default-src": [
+                "self",
+                "axelar-testnet.s3.us-east-2.amazonaws.com",
+                "axelar-mainnet.s3.us-east-2.amazonaws.com",
+              ],
+            },
+          },
+        }),
       },
     ];
   },
