@@ -107,6 +107,7 @@ export const EvmWalletTransfer = () => {
 
   useEffect(() => {
     console.log("send native data result",sendNativeDataResult);
+    if (!(sendNativeDataResult?.hash)) return;
     setTxInfo({
       sourceTxHash: sendNativeDataResult?.hash,
       destStartBlockNumber: undefined,
