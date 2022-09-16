@@ -197,20 +197,19 @@ export const EvmWalletTransfer = () => {
       return (
         <div className="flex flex-col items-center my-2 gap-x-5">
           <div className="flex items-center w-9/12 gap-x-2">
-            <SpinnerRoundFilled
+            {/* <SpinnerRoundFilled
               className="text-blue-500"
               size={20}
               color="#00a6ff"
-            />
-            <div className="flex flex-row justify-between w-full space-x-2">
-              <div className="text-sm align-text-top">
-                <div>Waiting for 2 epochs</div>
-                <div>(~64-96 blocks)</div>
+            /> */}
+            <div className="w-full space-x-2">
+              <div className="text-sm text-center">
+                <div>Waiting for 2 epochs (~64-96 blocks)</div>
               </div>
-              <div className="text-sm text-right">
+              <div className="flex justify-center space-x-2 text-sm text-center">
                 <div className="text-slate-400">Current height:</div>
                 <div className="text-slate-400">
-                {numConfirmationsSoFar > 96 && ">"}
+                  {numConfirmationsSoFar > 96 && ">"}
                   {Math.min(numConfirmationsSoFar, 96)} block
                   {numConfirmationsSoFar > 1 && "s"}
                 </div>
