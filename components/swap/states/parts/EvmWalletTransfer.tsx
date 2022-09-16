@@ -76,7 +76,7 @@ export const EvmWalletTransfer = () => {
     },
     confirmations: Math.min(
       numConfirmationsSoFar,
-      srcChain.confirmLevel as number
+      (ENVIRONMENT === "mainnet" && srcChain.chainName.toLowerCase() === "ethereum" ? 96 : srcChain.confirmLevel as number)
     ),
     enabled: !!(txInfo && txInfo.sourceTxHash),
   });
@@ -186,9 +186,12 @@ export const EvmWalletTransfer = () => {
       .catch((error) => toast.error(error?.message as string));
   }
 
-  return (
-    <div>
-      {isTxOngoing ? (
+  const getStatus = () => {
+    if (
+      ENVIRONMENT === "mainnet" &&
+      srcChain.chainName.toLowerCase() === "ethereum"
+    ) {
+      return (
         <div className="flex flex-col items-center my-2 gap-x-5">
           <div className="flex items-center gap-x-2">
             <SpinnerRoundFilled
@@ -196,21 +199,52 @@ export const EvmWalletTransfer = () => {
               size={20}
               color="#00a6ff"
             />
-            <span className="text-sm">
-              Waiting for{" "}
-              {Math.min(numConfirmationsSoFar, srcChain.confirmLevel as number)}
-              /{srcChain.confirmLevel} confirmations before forwarding to
-              Axelar...
-            </span>
+            <div className="text-sm">
+              Waiting for 2 epochs (~64-96 blocks) to finalize before sending to Axelar...
+            </div>
+            <div className="text-sm">
+              Current height: {Math.min(numConfirmationsSoFar, 96)} blocks
+            </div>
           </div>
           <div className="flex items-center mt-2 gap-x-2">
             <progress
               className="w-56 progress progress-success"
               value={numConfirmationsSoFar}
-              max={srcChain.confirmLevel}
+              max={96}
             ></progress>
           </div>
         </div>
+      );
+    }
+    return (
+      <div className="flex flex-col items-center my-2 gap-x-5">
+        <div className="flex items-center gap-x-2">
+          <SpinnerRoundFilled
+            className="text-blue-500"
+            size={20}
+            color="#00a6ff"
+          />
+          <span className="text-sm">
+            Waiting for{" "}
+            {Math.min(numConfirmationsSoFar, srcChain.confirmLevel as number)}/
+            {srcChain.confirmLevel} confirmations before forwarding to Axelar...
+          </span>
+        </div>
+        <div className="flex items-center mt-2 gap-x-2">
+          <progress
+            className="w-56 progress progress-success"
+            value={numConfirmationsSoFar}
+            max={srcChain.confirmLevel}
+          ></progress>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      {isTxOngoing ? (
+        getStatus()
       ) : (
         <div>
           <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>

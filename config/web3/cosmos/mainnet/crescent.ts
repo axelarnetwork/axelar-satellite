@@ -4,7 +4,7 @@ export default {
   rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=crescent",
   rest: "https://mainnet.crescent.network:1317",
   chainId: "crescent-1",
-  chainName: "Crescent Network",
+  chainName: "Crescent",
   chainIdentifier: "crescent",
 
   bip44: {
