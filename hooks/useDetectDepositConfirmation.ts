@@ -78,9 +78,9 @@ export const useDetectDepositConfirmation = () => {
 
     socket.on("bridge-event", (data) => {
       console.log("data in bridge event", data);
-      let ok = checkPayloadForDepositConfirmation(data);
-      ok = checkPayloadForTokenSent(data);
-      if (!ok) return;
+      const depositConfirmationOk = checkPayloadForDepositConfirmation(data);
+      const tokenSentOk = checkPayloadForTokenSent(data);
+      if ([depositConfirmationOk, tokenSentOk].every((isOk) => !isOk)) return;
 
       if (destChain.module === "evm") {
         setTxInfo({
