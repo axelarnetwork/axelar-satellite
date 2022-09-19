@@ -65,7 +65,7 @@ export const useDetectDepositConfirmation = () => {
         srcChain.chainName.toLowerCase(),
         asset.chain_aliases[destChain.chainName.toLowerCase()]
           .common_key as string,
-        destAddress,
+        destAddress.toLowerCase(),
         destChain.chainName.toLowerCase(),
         depositAddress
       );
