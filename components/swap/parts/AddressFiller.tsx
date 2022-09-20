@@ -1,7 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import { useAccount, useConnect } from "wagmi";
-
+import {
+  useWallet as useTerraWallet,
+  WalletStatus,
+} from "@terra-money/wallet-provider";
 import { useSwapStore, useWalletStore } from "../../../store";
 import { useGetKeplerWallet } from "../../../hooks";
 import { getCosmosChains } from "../../../config/web3";
@@ -16,6 +19,8 @@ export const AddressFiller = () => {
   const { destChain } = useSwapStore((state) => state);
   const isEvm = destChain?.module === "evm";
   const keplerWallet = useGetKeplerWallet();
+  const terraWallet = useTerraWallet();
+  const { userSelectionForCosmosWallet } = useWalletStore();
 
   function fillEvmDestinationAddress() {
     if (address) {
@@ -33,6 +38,14 @@ export const AddressFiller = () => {
       (_chain) => _chain.chainIdentifier === destChain.chainName.toLowerCase()
     );
     if (!chain) return;
+
+    if (chain.chainIdentifier === "terra") {
+      if (terraWallet.status !== WalletStatus.WALLET_CONNECTED) await terraWallet.connect();
+      if (terraWallet?.wallets?.length < 1) return;
+      const address = terraWallet.wallets[0].terraAddress;
+      setDestAddress(address);
+      return;
+    }
     await keplerWallet?.experimentalSuggestChain(chain);
     await keplerWallet?.enable(chain.chainId as string);
     const address = await keplerWallet?.getKey(chain.chainId as string);
@@ -78,12 +91,21 @@ export const AddressFiller = () => {
         </div>
 
         <div className="relative flex items-center h-full">
-          <Image
-            layout="intrinsic"
-            height={20}
-            width={20}
-            src="/assets/wallets/kepler.logo.svg"
-          />
+          {userSelectionForCosmosWallet === "terraStation" && destChain.chainName.toLowerCase() === "terra" ? (
+            <Image
+              layout="intrinsic"
+              height={20}
+              width={20}
+              src="/assets/wallets/terra-station.logo.svg"
+            />
+          ) : (
+            <Image
+              layout="intrinsic"
+              height={20}
+              width={20}
+              src="/assets/wallets/kepler.logo.svg"
+            />
+          )}
         </div>
       </div>
     </div>
