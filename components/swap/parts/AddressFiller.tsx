@@ -39,7 +39,7 @@ export const AddressFiller = () => {
     );
     if (!chain) return;
 
-    if (chain.chainIdentifier === "terra") {
+    if (chain.chainIdentifier === "terra" && userSelectionForCosmosWallet === "terraStation") {
       if (terraWallet.status !== WalletStatus.WALLET_CONNECTED) await terraWallet.connect();
       if (terraWallet?.wallets?.length < 1) return;
       const address = terraWallet.wallets[0].terraAddress;
