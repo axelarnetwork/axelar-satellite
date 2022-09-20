@@ -21,6 +21,7 @@ import {
   WalletStatus,
 } from "@terra-money/wallet-provider";
 import { roundNumberTo } from "../../../utils/roundNumberTo";
+import { connectToKeplr } from "../../web3/utils/handleOnKeplrConnect";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -28,6 +29,7 @@ export const TokenSelector = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const {
     asset,
+    allAssets,
     selectableAssetList,
     setAsset,
     srcChain,
@@ -37,10 +39,10 @@ export const TokenSelector = () => {
     setTokensToTransfer,
   } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
-  const { wagmiConnected, keplrConnected, userSelectionForCosmosWallet } =
+  const { wagmiConnected, keplrConnected, userSelectionForCosmosWallet, setKeplrConnected, setUserSelectionForCosmosWallet } =
     useWalletStore();
   const max = useGetMaxTransferAmount();
-  const { status: TerraWalletStatus } = useTerraWallet();
+  const { status: TerraWalletStatus, connect: connectTerraWallet } = useTerraWallet();
   const [showBalance, setShowBalance] = useState(false);
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
@@ -101,7 +103,7 @@ export const TokenSelector = () => {
     TerraWalletStatus,
     keplrConnected,
     terraStationBalance,
-    userSelectionForCosmosWallet
+    userSelectionForCosmosWallet,
   ]);
 
   useEffect(() => {
@@ -169,60 +171,71 @@ export const TokenSelector = () => {
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
         {balance && showBalance ? (
-          <div className="flex flex-row justify-end space-x-1">
-            <span className="text-xs text-gray-500">
-              Available{" "}
-              {srcChain.chainName.toLowerCase() === "terra" && (
-                <span className="text-xs text-gray-500">
-                  {userSelectionForCosmosWallet === "terraStation"
-                    ? "(Terra Station)"
-                    : "(Keplr)"}
+          <>
+            {" "}
+            <div className="flex flex-row justify-end space-x-1">
+              <span className="text-xs text-gray-500">
+                Available{" "}
+                {srcChain.chainName.toLowerCase() === "terra" && (
+                  <span className="text-xs text-gray-500">
+                    {userSelectionForCosmosWallet === "terraStation"
+                      ? "(Terra Station)"
+                      : "(Keplr)"}
+                  </span>
+                )}
+              </span>
+              <span className="w-auto text-xs text-[#86d6ff]">
+                {loading ? (
+                  <SpinnerDotted
+                    className="text-blue-500"
+                    size={15}
+                    color="#00a6ff"
+                  />
+                ) : (
+                  roundNumberTo(balanceToShow, 1)
+                )}
+              </span>
+            </div>
+            {srcChain.module === "axelarnet" &&
+            srcChain.chainName.toLowerCase() === "terra" ? (
+              TerraWalletStatus === WalletStatus.WALLET_CONNECTED &&
+              userSelectionForCosmosWallet === "terraStation" &&
+              terraStationBalance ? (
+                <span
+                  className="h-6 text-xs text-gray-500 cursor-pointer hover:underline"
+                  onClick={async () => {
+                    await connectToKeplr(allAssets);
+                    setKeplrConnected(true);
+                    setUserSelectionForCosmosWallet("keplr");
+                  }}
+                >
+                  <span className="mr-1 text-xs text-gray-500">Switch to Keplr</span>
+                  <Image
+                    src={`/assets/ui/forward-arrow-link.svg`}
+                    layout="intrinsic"
+                    width={10}
+                    height={10}
+                  />
                 </span>
-              )}
-            </span>
-            <span className="w-auto text-xs text-[#86d6ff]">
-              {loading ? (
-                <SpinnerDotted
-                  className="text-blue-500"
-                  size={15}
-                  color="#00a6ff"
-                />
               ) : (
-                roundNumberTo(balanceToShow, 1)
-              )}
-            </span>
-            {TerraWalletStatus === WalletStatus.WALLET_CONNECTED &&
-            userSelectionForCosmosWallet === "terraStation" &&
-            srcChain.module === "axelarnet" &&
-            srcChain.chainName.toLowerCase() === "terra" &&
-            terraStationBalance ? (
-              <label
-                htmlFor="web3-modal"
-                className="h-6 text-xs text-gray-500 cursor-pointer hover:underline"
-              >
-                Keplr
-                <Image
-                  src={`/assets/ui/forward-arrow-link.svg`}
-                  layout="intrinsic"
-                  width={10}
-                  height={10}
-                />
-              </label>
-            ) : (
-              <label
-                htmlFor="web3-modal"
-                className="h-6 text-xs text-gray-500 cursor-pointer hover:underline"
-              >
-                Terra Station
-                <Image
-                  src={`/assets/ui/forward-arrow-link.svg`}
-                  layout="intrinsic"
-                  width={10}
-                  height={10}
-                />
-              </label>
-            )}
-          </div>
+                <span
+                  className="h-6 text-xs text-gray-500 cursor-pointer hover:underline"
+                  onClick={async () => {
+                    if (TerraWalletStatus !== WalletStatus.WALLET_CONNECTED) await connectTerraWallet();
+                    setUserSelectionForCosmosWallet("terraStation");
+                  }}
+                >
+                  <span className="mr-1 text-xs text-gray-500">Switch to Terra Station</span>
+                  <Image
+                    src={`/assets/ui/forward-arrow-link.svg`}
+                    layout="intrinsic"
+                    width={10}
+                    height={10}
+                  />
+                </span>
+              )
+            ) : null}
+          </>
         ) : (
           <label
             htmlFor="web3-modal"

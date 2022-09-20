@@ -7,15 +7,19 @@ import { OfflineSigner } from "@cosmjs/proto-signing";
 import { useSwapStore, useWalletStore } from "../../store";
 import { getCosmosChains } from "../../config/web3";
 import { CosmosChain } from "../../config/web3/cosmos/interface";
-import { useWallet as useTerraWallet } from "@terra-money/wallet-provider"
+import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
+import { connectToKeplr } from "./utils/handleOnKeplrConnect";
 
 export const Web3Modal = () => {
   const { connect, connectors, error } = useConnect();
   const allAssets = useSwapStore((state) => state.allAssets);
   const modalRef = useRef<any>();
-  const { setKeplrConnected, keplrConnected, wagmiConnected, setUserSelectionForCosmosWallet } = useWalletStore(
-    (state) => state
-  );
+  const {
+    setKeplrConnected,
+    keplrConnected,
+    wagmiConnected,
+    setUserSelectionForCosmosWallet,
+  } = useWalletStore((state) => state);
   const terraWallet = useTerraWallet();
 
   // close modal upon successful metamask connection
@@ -42,43 +46,19 @@ export const Web3Modal = () => {
     connect({ connector });
   }
 
-  handleOnTerraStationConnect
-
   async function handleOnTerraStationConnect() {
     try {
       terraWallet.connect();
       setUserSelectionForCosmosWallet("terraStation");
-
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   async function handleOnKeplrConnect() {
-    const { keplr } = window;
-    const axelar: CosmosChain = getCosmosChains(allAssets).find(
-      (chain) => chain.chainIdentifier === "axelar"
-    ) as CosmosChain;
-    console.log("axlear chain id", axelar);
-    try {
-      await keplr?.enable(axelar.chainId);
-    } catch (e) {
-      console.log(
-        "unable to connect to wallet natively, so trying experimental chain",
-        e,
-        axelar.chainId
-      );
-      try {
-        await keplr?.experimentalSuggestChain(axelar);
-        await keplr?.enable(axelar.chainId);
-      } catch (e2: any) {
-        console.log("and yet there is a problem in trying to do that too", e2);
-      }
-    }
-    const _signer = (await keplr?.getOfflineSignerAuto(
-      axelar.chainId
-    )) as OfflineSigner;
-    const [account] = await _signer.getAccounts();
+    await connectToKeplr(allAssets);
+    // const _signer = (await keplr?.getOfflineSignerAuto(
+    //   axelar.chainId
+    // )) as OfflineSigner;
+    // const [account] = await _signer.getAccounts();
     if (keplrConnected) toast.error("Wallet already connected");
     setKeplrConnected(true);
     setUserSelectionForCosmosWallet("keplr");
