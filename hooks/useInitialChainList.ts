@@ -5,12 +5,13 @@ import {
   loadChains,
 } from "@axelar-network/axelarjs-sdk";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   DEFAULT_ASSET,
   DEFAULT_DEST_CHAIN,
   DEFAULT_SRC_CHAIN,
   DISABLED_CHAIN_NAMES,
+  ENVIRONMENT,
   ENVIRONMENT as environment,
 } from "../config/constants";
 import { useSwapStore } from "../store";
@@ -22,36 +23,78 @@ type RouteQuery = {
 };
 
 export const useInitialChainList = () => {
-  const { setAllChains, setSrcChain, setDestChain, setAllAssets, setAsset } =
-    useSwapStore();
+  const {
+    setAllChains,
+    setSrcChain,
+    setDestChain,
+    setAllAssets,
+    asset,
+    setAsset,
+    srcChain,
+    destChain,
+    destAddress,
+  } = useSwapStore();
 
   const router = useRouter();
-  let { source, destination, asset_denom } = router.query as RouteQuery;
 
   useEffect(() => {
     if (!router.isReady) return;
     Promise.all([loadInitialChains(), loadInitialAssets()]).then(
       ([chains, asset]) => {
-        // updated query without reloading page
-        router.replace({
-          pathname: router.pathname,
-          query: {
-            ...router.query,
-            source: chains.srcChainName,
-            destination: chains.destChainName,
-            asset_denom: asset.assetDenom,
-          },
-        });
+        updateRoutes(
+          chains.srcChainName,
+          chains.destChainName,
+          asset.assetDenom,
+          (router.query.destination_address as string) || ""
+        );
       }
     );
   }, [router.isReady]);
 
+  // useEffect(() => {
+  //   if (
+  //     !srcChain?.chainName ||
+  //     !destChain?.chainName ||
+  //     !asset?.common_key[ENVIRONMENT]
+  //   )
+  //     return;
+  //   updateRoutes(
+  //     srcChain.chainName.toLowerCase(),
+  //     destChain.chainName.toLowerCase(),
+  //     asset?.common_key[ENVIRONMENT] as string,
+  //     destAddress
+  //   );
+  // }, [srcChain, destChain, destAddress, asset]);
+
+  function updateRoutes(
+    source: string,
+    destination: string,
+    asset_denom: string,
+    destination_address: string
+  ) {
+    router.push({
+      query: {
+        ...router.query,
+        source,
+        destination,
+        asset_denom,
+        destination_address,
+      },
+    });
+  }
+
   // TODO: load chains upon project installation
   async function loadInitialChains() {
     return loadChains({ environment }).then((chains) => {
-      const sortedChains = chains.sort((a,b) => (a.chainName.localeCompare(b.chainName)));
-      const filteredChains = sortedChains.filter(chain => !DISABLED_CHAIN_NAMES.includes(chain.chainName.toLowerCase()))
+      const sortedChains = chains.sort((a, b) =>
+        a.chainName.localeCompare(b.chainName)
+      );
+      const filteredChains = sortedChains.filter(
+        (chain) => !DISABLED_CHAIN_NAMES.includes(chain.chainName.toLowerCase())
+      );
       setAllChains(filteredChains);
+
+      let { source, destination } = router.query as RouteQuery;
 
       // handle same srcChain === destChain. eg: moonbeam - moonbeam
       if (source === destination) {
@@ -60,10 +103,16 @@ export const useInitialChainList = () => {
       }
 
       let srcChainFound = chains.find(
-        (chain) => chain.chainName.toLowerCase() === source
+        (chain) =>
+          chain.chainName.toLowerCase() === source &&
+          !DISABLED_CHAIN_NAMES.toLowerCase().includes(source.toLowerCase())
       ) as ChainInfo;
       let destChainFound = chains.find(
-        (chain) => chain.chainName.toLowerCase() === destination
+        (chain) =>
+          chain.chainName.toLowerCase() === destination &&
+          !DISABLED_CHAIN_NAMES.toLowerCase().includes(
+            destination.toLowerCase()
+          )
       ) as ChainInfo;
 
       /**
@@ -120,6 +169,20 @@ export const useInitialChainList = () => {
   async function loadInitialAssets() {
     return loadAssets({ environment }).then((assets: AssetConfig[]) => {
       setAllAssets(assets);
+
+      const { asset_denom } = router.query as RouteQuery;
+
+      // if asset not provided get default asset
+      if (!asset_denom) {
+        setAsset(
+          assets.find((asset) =>
+            asset?.common_key[environment].includes(DEFAULT_ASSET)
+          ) as AssetConfig
+        );
+        return {
+          assetDenom: DEFAULT_ASSET,
+        };
+      }
 
       const assetFound = assets.find((asset) =>
         asset?.common_key[environment].includes(asset_denom)

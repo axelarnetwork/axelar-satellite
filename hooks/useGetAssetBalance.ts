@@ -10,7 +10,11 @@ import {
   useSwapStore,
   useWalletStore,
 } from "../store";
-import { ENVIRONMENT } from "../config/constants";
+import {
+  DEFAULT_DEST_CHAIN,
+  DEFAULT_SRC_CHAIN,
+  ENVIRONMENT,
+} from "../config/constants";
 import { getAddress, queryBalance } from "../utils/wallet/keplr";
 import { getCosmosChains } from "../config/web3";
 import {
@@ -19,10 +23,12 @@ import {
   WalletStatus,
 } from "@terra-money/wallet-provider";
 import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
-  const { asset, allAssets } = useSwapStore((state) => state);
+  const { asset, allAssets, allChains, setSrcChain, setDestChain } =
+    useSwapStore((state) => state);
   const [loading, setLoading] = useState(false);
   const { keplrConnected } = useWalletStore();
   const { status, network, wallets } = useTerraWallet();
@@ -96,7 +102,18 @@ export const useGetAssetBalance = () => {
       (assetConfig) =>
         assetConfig.common_key[ENVIRONMENT] === common_key[ENVIRONMENT]
     )?.chain_aliases[chainName.toLowerCase()]?.ibcDenom;
-    if (!derivedDenom) throw new Error("asset not found: " + common_key);
+    if (!derivedDenom) {
+      console.log("asset not found: " + common_key);
+      const srcChain = allChains.find(
+        (chain) => chain.chainName.toLowerCase() === DEFAULT_SRC_CHAIN
+      );
+      const destChain = allChains.find(
+        (chain) => chain.chainName.toLowerCase() === DEFAULT_DEST_CHAIN
+      );
+      setSrcChain(srcChain as ChainInfo);
+      setDestChain(destChain as ChainInfo);
+      return;
+    }
 
     const cosmosChains = getCosmosChains(allAssets);
 

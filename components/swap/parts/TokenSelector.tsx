@@ -73,12 +73,12 @@ export const TokenSelector = () => {
       const fallbackAsset = selectableAssetList[0];
       if (fallbackAsset) {
         setAsset(fallbackAsset);
-        router.push({
-          query: {
-            ...router.query,
-            asset_denom: fallbackAsset.common_key[ENVIRONMENT],
-          },
-        });
+        // router.push({
+        //   query: {
+        //     ...router.query,
+        //     asset_denom: fallbackAsset.common_key[ENVIRONMENT],
+        //   },
+        // });
       }
     } else {
       setAsset(asset);
@@ -122,12 +122,12 @@ export const TokenSelector = () => {
 
   useEffect(() => {
     if (!asset) return;
-    router.push({
-      query: {
-        ...router.query,
-        asset_denom: asset.common_key[ENVIRONMENT],
-      },
-    });
+    // router.push({
+    //   query: {
+    //     ...router.query,
+    //     asset_denom: asset.common_key[ENVIRONMENT],
+    //   },
+    // });
   }, [asset]);
 
   // update filtered assets state on chain change
@@ -149,14 +149,14 @@ export const TokenSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }
 
-  function handleOnAssetChange(asset: AssetConfig) {
+  async function handleOnAssetChange(asset: AssetConfig) {
+    // await router.push({
+    //   query: {
+    //     ...router.query,
+    //     asset_denom: asset.common_key[ENVIRONMENT],
+    //   },
+    // });
     setAsset(asset);
-    router.push({
-      query: {
-        ...router.query,
-        asset_denom: asset.common_key[ENVIRONMENT],
-      },
-    });
   }
 
   function handleOnMaxButtonClick() {

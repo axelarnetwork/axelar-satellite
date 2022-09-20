@@ -1,10 +1,10 @@
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=kichain",
+  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=ki",
   rest: "https://api-mainnet.blockchain.ki",
   chainId: "kichain-2",
-  chainName: "Ki Chain",
+  chainName: "Ki",
   stakeCurrency: {
     coinDenom: "XKI",
     coinMinimalDenom: "uxki",
@@ -40,7 +40,7 @@ export default {
   ],
   gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
-  chainIdentifier: "kichain",
+  chainIdentifier: "ki",
   chainToAxelarChannelId: "channel-19"
 
 } as CosmosChain;
