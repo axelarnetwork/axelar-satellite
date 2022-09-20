@@ -238,7 +238,7 @@ export const CosmosWalletTransfer = () => {
         amount: utils
           .parseUnits(tokensToTransfer, currentAsset?.decimals)
           .toString(),
-        denom: _denom,
+        denom: asset?.common_key[ENVIRONMENT] as string,
         receiver: depositAddress,
         revisionNumber: timeoutHeight.revisionNumber.toNumber(),
         revisionHeight: timeoutHeight.revisionHeight.toNumber(),
