@@ -56,6 +56,11 @@ export const TokenSelector = () => {
   const router = useRouter();
 
   useEffect(() => {
+    setTokensToTransfer("0");
+  }, [userSelectionForCosmosWallet]);
+
+
+  useEffect(() => {
     if (!router.isReady || selectableAssetList.length === 0) return;
     if (asset) return;
     const assetDenom = router.query.asset_denom as string;
@@ -155,8 +160,9 @@ export const TokenSelector = () => {
   }
 
   function handleOnMaxButtonClick() {
-    if (max && +max !== 0 && +balance > +max) setTokensToTransfer(max);
-    else if (Number(balance)) setTokensToTransfer(balance);
+    const bal = balanceToShow;
+    if (max && +max !== 0 && +bal > +max) setTokensToTransfer(max);
+    else if (Number(bal)) setTokensToTransfer(bal);
   }
 
   function renderTokenInput() {

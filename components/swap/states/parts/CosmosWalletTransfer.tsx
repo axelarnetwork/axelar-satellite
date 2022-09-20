@@ -43,6 +43,7 @@ import {
 } from "@terra-money/terra.js";
 import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/client/Height";
 import { TERRA_IBC_GAS_LIMIT } from ".";
+import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -61,12 +62,19 @@ export const CosmosWalletTransfer = () => {
     setSwapStatus,
     setTxInfo,
   } = useSwapStore((state) => state);
-  const { setKeplrConnected, keplrConnected } = useWalletStore(
-    (state) => state
-  );
+  const {
+    setKeplrConnected,
+    keplrConnected,
+    userSelectionForCosmosWallet,
+    setUserSelectionForCosmosWallet,
+  } = useWalletStore((state) => state);
   const keplerWallet = useGetKeplerWallet();
   const hasKeplerWallet = useHasKeplerWallet();
-  const { status: TerraWalletStatus, wallets: terraWallets } = useTerraWallet();
+  const {
+    status: TerraWalletStatus,
+    wallets: terraWallets,
+    connect: connectTerraWallet,
+  } = useTerraWallet();
   const connectedWallet = useConnectedWallet();
   const lcdClient = useLCDClient();
   //   (process.env.REACT_APP_STAGE === "mainnet"
@@ -263,6 +271,7 @@ export const CosmosWalletTransfer = () => {
   }
 
   async function handleOnTerraStationIBCTransfer(): Promise<any> {
+    console.log("calling");
     const sourcePort = "transfer";
     const senderAddress =
       terraWallets && terraWallets.length >= 1
@@ -289,17 +298,20 @@ export const CosmosWalletTransfer = () => {
       undefined
     );
 
+    console.log("calling here", connectedWallet);
+
     const signTx = await connectedWallet?.sign({
       msgs: [transferMsg],
       timeoutHeight: 100,
       fee,
     });
+    console.log("calling dd");
     if (!signTx) throw Error("sign tx failed");
 
     try {
       console.log("CosmosWalletTransfer: Terra Station IBC transfer");
       const tx = await lcdClient.tx.broadcastSync(signTx.result);
-      console.log("TS tx",tx);
+      console.log("TS tx", tx);
       setTxInfo({
         sourceTxHash: tx.txhash,
       });
@@ -328,10 +340,26 @@ export const CosmosWalletTransfer = () => {
             <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
             <div className="flex justify-center">
               <button
-                className="mb-5 btn btn-primary"
-                onClick={handleOnTokensTransfer}
+                className={`mb-5 ml-5 btn btn-${
+                  userSelectionForCosmosWallet === "keplr"
+                    ? "primary"
+                    : "accent"
+                }`}
+                onClick={async () => {
+                  if (userSelectionForCosmosWallet === "keplr") {
+                    await handleOnTokensTransfer();
+                  } else {
+                    await connectToKeplr(allAssets);
+                    setKeplrConnected(true);
+                    setUserSelectionForCosmosWallet("keplr");
+                  }
+                }}
               >
-                <span className="mr-2">Send from Keplr</span>
+                  <span className="mr-2">
+                  {userSelectionForCosmosWallet === "keplr"
+                    ? "Send from Keplr "
+                    : "Switch to Keplr"}
+                </span>
                 <div className="flex justify-center my-2 gap-x-5">
                   <Image
                     src="/assets/wallets/kepler.logo.svg"
@@ -342,10 +370,26 @@ export const CosmosWalletTransfer = () => {
               </button>
               {TerraWalletStatus === WalletStatus.WALLET_CONNECTED && (
                 <button
-                  className="mb-5 ml-5 btn btn-primary"
-                  onClick={handleOnTerraStationIBCTransfer}
+                  className={`mb-5 ml-5 btn btn-${
+                    userSelectionForCosmosWallet === "terraStation"
+                      ? "primary"
+                      : "accent"
+                  }`}
+                  onClick={async () => {
+                    if (userSelectionForCosmosWallet === "terraStation") {
+                      await handleOnTerraStationIBCTransfer();
+                    } else {
+                      if (TerraWalletStatus !== WalletStatus.WALLET_CONNECTED)
+                        await connectTerraWallet();
+                      setUserSelectionForCosmosWallet("terraStation");
+                    }
+                  }}
                 >
-                  <span className="mr-2">Send from TS</span>
+                  <span className="mr-2">
+                    {userSelectionForCosmosWallet === "terraStation"
+                      ? "Send from TS"
+                      : "Switch to TS"}
+                  </span>
                   <div className="flex justify-center my-2 gap-x-5">
                     <Image
                       src="/assets/wallets/terra-station.logo.svg"
