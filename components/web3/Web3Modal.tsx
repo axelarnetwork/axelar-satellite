@@ -54,11 +54,15 @@ export const Web3Modal = () => {
   }
 
   async function handleOnKeplrConnect() {
+    const { keplr } = window;
+    const axelar: CosmosChain = getCosmosChains(allAssets).find(
+      (chain) => chain.chainIdentifier === "axelar"
+    ) as CosmosChain;
     await connectToKeplr(allAssets);
-    // const _signer = (await keplr?.getOfflineSignerAuto(
-    //   axelar.chainId
-    // )) as OfflineSigner;
-    // const [account] = await _signer.getAccounts();
+    const _signer = (await keplr?.getOfflineSignerAuto(
+      axelar.chainId
+    )) as OfflineSigner;
+    const [account] = await _signer.getAccounts();
     if (keplrConnected) toast.error("Wallet already connected");
     setKeplrConnected(true);
     setUserSelectionForCosmosWallet("keplr");

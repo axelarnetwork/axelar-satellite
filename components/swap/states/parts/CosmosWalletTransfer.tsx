@@ -77,10 +77,6 @@ export const CosmosWalletTransfer = () => {
   } = useTerraWallet();
   const connectedWallet = useConnectedWallet();
   const lcdClient = useLCDClient();
-  //   (process.env.REACT_APP_STAGE === "mainnet"
-  //     ? terraConfigMainnet
-  //     : terraConfigTestnet) as WalletLCDClientConfig
-  // )
 
   useDetectDepositConfirmation();
 
@@ -271,7 +267,6 @@ export const CosmosWalletTransfer = () => {
   }
 
   async function handleOnTerraStationIBCTransfer(): Promise<any> {
-    console.log("calling");
     const sourcePort = "transfer";
     const senderAddress =
       terraWallets && terraWallets.length >= 1
@@ -298,14 +293,12 @@ export const CosmosWalletTransfer = () => {
       undefined
     );
 
-    console.log("calling here", connectedWallet);
-
     const signTx = await connectedWallet?.sign({
       msgs: [transferMsg],
       timeoutHeight: 100,
       fee,
     });
-    console.log("calling dd");
+
     if (!signTx) throw Error("sign tx failed");
 
     try {

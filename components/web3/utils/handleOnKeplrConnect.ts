@@ -7,7 +7,6 @@ export const connectToKeplr = async (allAssets: AssetConfig[]) => {
     const axelar: CosmosChain = getCosmosChains(allAssets).find(
       (chain) => chain.chainIdentifier === "axelar"
     ) as CosmosChain;
-    console.log("axlear chain id", axelar);
     try {
       await keplr?.enable(axelar.chainId);
     } catch (e) {
