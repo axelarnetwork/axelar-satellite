@@ -5,7 +5,7 @@ export default {
   rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=axelar",
   rest: "https://axelar-testnet-lcd.axelar-dev.workers.dev",
   chainId: "axelar-testnet-lisbon-3",
-  chainName: "Axelar Lisbon 3",
+  chainName: "Axelar Testnet",
   chainIdentifier: "axelar",
   stakeCurrency: {
     coinDenom: "AXL",

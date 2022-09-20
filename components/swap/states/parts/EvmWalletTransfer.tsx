@@ -76,7 +76,10 @@ export const EvmWalletTransfer = () => {
     },
     confirmations: Math.min(
       numConfirmationsSoFar,
-      srcChain.confirmLevel as number
+      ENVIRONMENT === "mainnet" &&
+        srcChain.chainName.toLowerCase() === "ethereum"
+        ? 96
+        : (srcChain.confirmLevel as number)
     ),
     enabled: !!(txInfo && txInfo.sourceTxHash),
   });
@@ -136,23 +139,23 @@ export const EvmWalletTransfer = () => {
       );
 
     // check if user has enough gas
-    const nativeBalance = accountBalance?.value.toString() as string;
-    const minNativeBalance = new BigNumber("0.05")
-      .times(10 ** Number(accountBalance?.decimals))
-      .toString();
-    if (!nativeBalance) {
-      return toast.error(`Could not read native token balance`);
-    }
-    // show error if native token balance is smalled than an arbitrary 0.05
-    if (new BigNumber(nativeBalance).lt(new BigNumber(minNativeBalance))) {
-      return toast.error(
-        `Insufficient ${accountBalance?.symbol} amount: ${new BigNumber(
-          nativeBalance
-        )
-          .div(10 ** Number(accountBalance?.decimals))
-          .toString()} available`
-      );
-    }
+    // const nativeBalance = accountBalance?.value.toString() as string;
+    // const minNativeBalance = new BigNumber("0.05")
+    //   .times(10 ** Number(accountBalance?.decimals))
+    //   .toString();
+    // if (!nativeBalance) {
+    //   return toast.error(`Could not read native token balance`);
+    // }
+    // // show error if native token balance is smalled than an arbitrary 0.05
+    // if (new BigNumber(nativeBalance).lt(new BigNumber(minNativeBalance))) {
+    //   return toast.error(
+    //     `Insufficient ${accountBalance?.symbol} amount: ${new BigNumber(
+    //       nativeBalance
+    //     )
+    //       .div(10 ** Number(accountBalance?.decimals))
+    //       .toString()} available`
+    //   );
+    // }
 
     // check that the user has enough tokens
     const tokenBalance = tokenAmount?.toString() as string;
@@ -186,31 +189,72 @@ export const EvmWalletTransfer = () => {
       .catch((error) => toast.error(error?.message as string));
   }
 
-  return (
-    <div>
-      {isTxOngoing ? (
+  const getStatus = () => {
+    if (
+      ENVIRONMENT === "mainnet" &&
+      srcChain.chainName.toLowerCase() === "ethereum"
+    ) {
+      return (
         <div className="flex flex-col items-center my-2 gap-x-5">
-          <div className="flex items-center gap-x-2">
-            <SpinnerRoundFilled
+          <div className="flex items-center w-9/12 gap-x-2">
+            {/* <SpinnerRoundFilled
               className="text-blue-500"
               size={20}
               color="#00a6ff"
-            />
-            <span className="text-sm">
-              Waiting for{" "}
-              {Math.min(numConfirmationsSoFar, srcChain.confirmLevel as number)}
-              /{srcChain.confirmLevel} confirmations before forwarding to
-              Axelar...
-            </span>
+            /> */}
+            <div className="w-full space-x-2">
+              <div className="text-sm text-center">
+                <div>Waiting for 2 epochs (~64-96 blocks)</div>
+              </div>
+              <div className="flex justify-center space-x-2 text-sm text-center">
+                <div className="text-slate-400">Current height:</div>
+                <div className="text-slate-400">
+                  {numConfirmationsSoFar > 96 && ">"}
+                  {Math.min(numConfirmationsSoFar, 96)} block
+                  {numConfirmationsSoFar > 1 && "s"}
+                </div>
+              </div>
+            </div>
           </div>
           <div className="flex items-center mt-2 gap-x-2">
             <progress
               className="w-56 progress progress-success"
               value={numConfirmationsSoFar}
-              max={srcChain.confirmLevel}
+              max={96}
             ></progress>
           </div>
         </div>
+      );
+    }
+    return (
+      <div className="flex flex-col items-center my-2 gap-x-5">
+        <div className="flex items-center gap-x-2">
+          <SpinnerRoundFilled
+            className="text-blue-500"
+            size={20}
+            color="#00a6ff"
+          />
+          <span className="text-sm">
+            Waiting for{" "}
+            {Math.min(numConfirmationsSoFar, srcChain.confirmLevel as number)}/
+            {srcChain.confirmLevel} confirmations before forwarding to Axelar...
+          </span>
+        </div>
+        <div className="flex items-center mt-2 gap-x-2">
+          <progress
+            className="w-56 progress progress-success"
+            value={numConfirmationsSoFar}
+            max={srcChain.confirmLevel}
+          ></progress>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      {isTxOngoing ? (
+        getStatus()
       ) : (
         <div>
           <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>

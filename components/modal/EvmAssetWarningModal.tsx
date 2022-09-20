@@ -45,7 +45,7 @@ export const EvmAssetWarningModal = () => {
   }, [setShowAssetWarning, setUserAcknowledged]);
 
   const tokenAddress = asset?.chain_aliases[srcChain.chainName.toLowerCase()]
-    .tokenAddress as string;
+    ?.tokenAddress as string;
 
   return (
     <div

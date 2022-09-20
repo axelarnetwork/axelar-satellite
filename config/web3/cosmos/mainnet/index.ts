@@ -12,8 +12,10 @@ import injective from "./injective";
 import evmos from "./evmos";
 import stargaze from "./stargaze";
 import assetmantle from "./assetmantle";
-import kichain from "./kichain";
+import ki from "./ki";
 import fetch from "./fetch";
+import comdex from "./comdex";
+import regen from "./regen";
 
 export const mainnetChains: CosmosChain[] = [
   terra,
@@ -29,6 +31,8 @@ export const mainnetChains: CosmosChain[] = [
   evmos,
   stargaze,
   assetmantle,
-  kichain,
-  fetch
+  ki,
+  fetch,
+  comdex,
+  regen
 ];

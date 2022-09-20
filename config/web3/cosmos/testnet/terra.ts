@@ -5,7 +5,7 @@ export default {
     rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=terra",
     rest: "https://pisco-lcd.terra.dev",
     chainId: "pisco-1",
-    chainName: "Terra",
+    chainName: "Terra Testnet",
     chainIdentifier: "terra",
     stakeCurrency: {
       coinDenom: "LUNA",

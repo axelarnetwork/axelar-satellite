@@ -2,7 +2,7 @@ import { CosmosChain } from "../interface"
 
 export default {
   chainId: "kaiyo-1",
-  chainName: "Kujira Mainnet",
+  chainName: "Kujira",
   rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=kujira",
   rest: "https://lcd.kaiyo.kujira.setten.io",
   bip44: { coinType: 118 },

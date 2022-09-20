@@ -3,7 +3,7 @@ const { createSecureHeaders } = require("next-secure-headers");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  async headers() {
+  headers() {
     return [
       {
         source: "/(.*)",

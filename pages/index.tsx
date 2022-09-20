@@ -11,7 +11,11 @@ import { SwapBox } from "../components/swap";
 import { FirstTimeWarning } from "../components/swap/parts/FirstTimeWarning";
 import { ENVIRONMENT, UNDER_MAINTENANCE } from "../config/constants";
 import { siteMetadata } from "../data";
-import { useInitialChainList } from "../hooks";
+import {
+  useInitialChainList,
+  useNormalizeChains,
+  useNormalizeUrlPaths,
+} from "../hooks";
 import { drawBackground } from "../hooks/particle";
 import { useSwapStore } from "../store";
 
@@ -21,6 +25,8 @@ const Home: NextPage = () => {
 
   useEffect(() => drawBackground(), []);
   useInitialChainList();
+  useNormalizeUrlPaths();
+  useNormalizeChains();
 
   function renderContent() {
     if (UNDER_MAINTENANCE) return <UnderMaintenance />;

@@ -174,9 +174,12 @@ export const CosmosWalletTransfer = () => {
     //   [sendCoin],
     //   fee
     // );
-    const [_action, _channel, _denom] = currentAsset?.fullDenomPath?.split(
-      "/"
-    ) as string[];
+    // const [_action, _channel, _denom] = currentAsset?.fullDenomPath?.split(
+    //   "/"
+    // ) as string[];
+
+    const _action = "transfer";
+    const _channel = getCosmosChains(allAssets).find(chain => chain.chainIdentifier.toLowerCase() === srcChain.chainName.toLowerCase())?.chainToAxelarChannelId as string;
 
     const timeoutHeight: Height = {
         revisionHeight: Long.fromNumber(10),
