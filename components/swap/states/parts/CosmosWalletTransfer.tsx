@@ -16,6 +16,7 @@ import { ENVIRONMENT } from "../../../../config/constants";
 import { useSwapStore, useWalletStore } from "../../../../store";
 import {
   useDetectDepositConfirmation,
+  useGetAssetBalance,
   useGetKeplerWallet,
   useHasKeplerWallet,
 } from "../../../../hooks";
@@ -49,6 +50,7 @@ export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
+  const { setKeplrBalance } = useGetAssetBalance();
 
   // used to hide wallets when transaction has been triggered
   const [isTxOngoing, setIsTxOngoing] = useState(false);
@@ -362,6 +364,7 @@ export const CosmosWalletTransfer = () => {
               await connectToKeplr(allAssets);
               setKeplrConnected(true);
               setUserSelectionForCosmosWallet("keplr");
+              setKeplrBalance(true);
               // await handleOnTokensTransfer();
             }
           }}

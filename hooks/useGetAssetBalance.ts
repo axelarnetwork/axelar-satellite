@@ -30,7 +30,7 @@ export const useGetAssetBalance = () => {
   const { asset, allAssets, allChains, setSrcChain, setDestChain } =
     useSwapStore((state) => state);
   const [loading, setLoading] = useState(false);
-  const { keplrConnected } = useWalletStore();
+  const { keplrConnected, userSelectionForCosmosWallet } = useWalletStore();
   const { status, network, wallets } = useTerraWallet();
   const terraLcdClient = useTerraLCDClient();
 
@@ -88,10 +88,11 @@ export const useGetAssetBalance = () => {
       .catch(() => setTerraStationBalance(null));
   }, [srcChain, status, asset]);
 
-  const setKeplrBalance = useCallback(async (): Promise<void> => {
+  const setKeplrBalance = useCallback(async (allowOverride: boolean): Promise<void> => {
     if (!keplrConnected) return;
     if (!asset) return;
     if (!srcChain) return;
+    if (!allowOverride && (srcChain.chainName.toLowerCase() === "terra" && userSelectionForCosmosWallet === "terraStation")) return;
 
     setLoading(true);
 
@@ -139,12 +140,12 @@ export const useGetAssetBalance = () => {
       toast.error(msg);
     }
     setLoading(false);
-  }, [asset, srcChain, allAssets, keplrConnected]);
+  }, [asset, srcChain, allAssets, keplrConnected, userSelectionForCosmosWallet]);
 
   return {
     balance,
     terraStationBalance,
     setKeplrBalance,
-    loading,
+    loading
   };
 };

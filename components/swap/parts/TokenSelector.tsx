@@ -213,6 +213,7 @@ export const TokenSelector = () => {
                     await connectToKeplr(allAssets);
                     setKeplrConnected(true);
                     setUserSelectionForCosmosWallet("keplr");
+                    setKeplrBalance(true);
                   }}
                 >
                   <span className="mr-1 text-xs text-gray-500">Switch to Keplr</span>
