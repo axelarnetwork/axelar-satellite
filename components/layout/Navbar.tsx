@@ -71,6 +71,15 @@ export const Navbar = () => {
               >
                 FAQ
               </label>
+              <button className="btn btn-link modal-button">
+                <a
+                  href="https://axelar.network/blog/liquidity-pools-for-bridged-assets-via-axelar"
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                >
+                  Pools
+                </a>
+              </button>
               <label
                 htmlFor={TOS_MODAL}
                 className="btn btn-link modal-button"
