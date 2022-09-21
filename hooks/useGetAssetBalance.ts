@@ -88,7 +88,7 @@ export const useGetAssetBalance = () => {
       .catch(() => setTerraStationBalance(null));
   }, [srcChain, status, asset]);
 
-  const setKeplrBalance = useCallback(async (allowOverride: boolean): Promise<void> => {
+  const setKeplrBalance = useCallback(async (allowOverride?: boolean): Promise<void> => {
     if (!keplrConnected) return;
     if (!asset) return;
     if (!srcChain) return;
