@@ -9,8 +9,13 @@ import {
   getSelectedAssetSymbol,
   useSwapStore,
 } from "../../../store";
+import {
+  validateCosmosAddress,
+  validateEvmAddress,
+} from "../../../utils/address";
 import { SwapStatus } from "../../../utils/enums";
 import { renderGasFee } from "../../../utils/renderGasFee";
+import { truncateEthAddress } from "../../../utils/truncateEthAddress";
 
 type Props = {
   loading: boolean;
@@ -48,6 +53,8 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     if (!asset) return toast.error("Asset can't be empty");
     if (!Number(tokensToTransfer))
       return toast.error("Please enter the amount of tokens to transfer");
+
+    if (!checkDestAddressFormat()) return;
     const { minAmountOk, minDeposit } = checkMinAmount(tokensToTransfer);
 
     if (!minAmountOk)
@@ -68,6 +75,32 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
       asset: asset?.common_key[ENVIRONMENT],
       destAddress,
     });
+  }
+
+  function checkDestAddressFormat() {
+    const destModule = destChain.module;
+    if (destModule === "evm") {
+      const addressOk = validateEvmAddress(destAddress);
+      if (!addressOk) {
+        toast.error(`Address ${destAddress} is not a valid EVM address`);
+        return false;
+      }
+    } else if (destModule === "axelarnet") {
+      const addressOk = validateCosmosAddress(
+        destAddress,
+        destChain.addressPrefix
+      );
+      if (!addressOk) {
+        toast.error(
+          `Address ${destAddress.substring(0, 10)}... is not a valid ${
+            destChain.chainSymbol
+          } address`
+        );
+        return false;
+      }
+    }
+
+    return true;
   }
 
   function renderLoadingButton() {
