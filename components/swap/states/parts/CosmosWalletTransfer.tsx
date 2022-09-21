@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   AssetConfig,
@@ -203,7 +203,10 @@ export const CosmosWalletTransfer = () => {
     // ) as string[];
 
     const _action = "transfer";
-    const _channel = getCosmosChains(allAssets).find(chain => chain.chainIdentifier.toLowerCase() === srcChain.chainName.toLowerCase())?.chainToAxelarChannelId as string;
+    const _channel = getCosmosChains(allAssets).find(
+      (chain) =>
+        chain.chainIdentifier.toLowerCase() === srcChain.chainName.toLowerCase()
+    )?.chainToAxelarChannelId as string;
 
     const timeoutHeight: Height = {
         revisionHeight: Long.fromNumber(10),
@@ -300,13 +303,16 @@ export const CosmosWalletTransfer = () => {
       msgs: [transferMsg],
       timeoutHeight: 100,
       fee,
+    }).catch(e => {
+      toast.error(`Could not initiate transaction on Terra Station: ${e.message}. Please try again.`);
+      return null;
     });
 
-    if (!signTx) throw Error("sign tx failed");
-
+    if (!signTx) return;
     try {
       console.log("CosmosWalletTransfer: Terra Station IBC transfer");
-      const tx = await lcdClient.tx.broadcastSync(signTx.result);
+      debugger;
+      const tx = await lcdClient.tx.broadcastSync(signTx.result)
       console.log("TS tx", tx);
       setTxInfo({
         sourceTxHash: tx.txhash,
@@ -316,6 +322,93 @@ export const CosmosWalletTransfer = () => {
       console.log("error", e);
     }
   }
+
+  const getSendButtons = () => {
+    if (srcChain?.chainName.toLowerCase() !== "terra") {
+      return (
+        <div className="flex justify-center">
+          <button
+            className="mb-5 btn btn-primary"
+            onClick={handleOnTokensTransfer}
+          >
+            <span className="mr-2">Send from Keplr</span>
+            <div className="flex justify-center my-2 gap-x-5">
+              <Image
+                src="/assets/wallets/kepler.logo.svg"
+                height={25}
+                width={25}
+              />
+            </div>
+          </button>
+        </div>
+      );
+    }
+
+    const terraStationConnected =
+      TerraWalletStatus === WalletStatus.WALLET_CONNECTED;
+    const userSelectedTS = userSelectionForCosmosWallet === "terraStation";
+    const userSelectedKeplr = !userSelectedTS;
+
+    return (
+      <div className="flex justify-center">
+        <button
+          className={`mb-5 ml-5 btn btn-${
+            !userSelectedTS ? "primary" : "accent"
+          }`}
+          onClick={async () => {
+            if (userSelectedKeplr || !terraStationConnected) {
+              await handleOnTokensTransfer();
+            } else {
+              await connectToKeplr(allAssets);
+              setKeplrConnected(true);
+              setUserSelectionForCosmosWallet("keplr");
+              // await handleOnTokensTransfer();
+            }
+          }}
+        >
+          <span className="mr-2">
+            {userSelectedKeplr || !terraStationConnected
+              ? "Send from Keplr "
+              : "Switch to Keplr"}
+          </span>
+          <div className="flex justify-center my-2 gap-x-5">
+            <Image
+              src="/assets/wallets/kepler.logo.svg"
+              height={25}
+              width={25}
+            />
+          </div>
+        </button>
+        {terraStationConnected && (
+          <button
+            className={`mb-5 ml-5 btn btn-${
+              userSelectedTS ? "primary" : "accent"
+            }`}
+            onClick={async () => {
+              if (userSelectedTS) {
+                await handleOnTerraStationIBCTransfer();
+              } else {
+                if (!terraStationConnected) await connectTerraWallet();
+                setUserSelectionForCosmosWallet("terraStation");
+                // await handleOnTerraStationIBCTransfer();
+              }
+            }}
+          >
+            <span className="mr-2">
+              {userSelectedTS ? "Send from TS" : "Switch to TS"}
+            </span>
+            <div className="flex justify-center my-2 gap-x-5">
+              <Image
+                src="/assets/wallets/terra-station.logo.svg"
+                height={25}
+                width={25}
+              />
+            </div>
+          </button>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -334,68 +427,7 @@ export const CosmosWalletTransfer = () => {
         ) : (
           <div>
             <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
-            <div className="flex justify-center">
-              <button
-                className={`mb-5 ml-5 btn btn-${
-                  userSelectionForCosmosWallet === "keplr"
-                    ? "primary"
-                    : "accent"
-                }`}
-                onClick={async () => {
-                  if (userSelectionForCosmosWallet === "keplr") {
-                    await handleOnTokensTransfer();
-                  } else {
-                    await connectToKeplr(allAssets);
-                    setKeplrConnected(true);
-                    setUserSelectionForCosmosWallet("keplr");
-                  }
-                }}
-              >
-                  <span className="mr-2">
-                  {userSelectionForCosmosWallet === "keplr"
-                    ? "Send from Keplr "
-                    : "Switch to Keplr"}
-                </span>
-                <div className="flex justify-center my-2 gap-x-5">
-                  <Image
-                    src="/assets/wallets/kepler.logo.svg"
-                    height={25}
-                    width={25}
-                  />
-                </div>
-              </button>
-              {TerraWalletStatus === WalletStatus.WALLET_CONNECTED && (
-                <button
-                  className={`mb-5 ml-5 btn btn-${
-                    userSelectionForCosmosWallet === "terraStation"
-                      ? "primary"
-                      : "accent"
-                  }`}
-                  onClick={async () => {
-                    if (userSelectionForCosmosWallet === "terraStation") {
-                      await handleOnTerraStationIBCTransfer();
-                    } else {
-                      if (TerraWalletStatus !== WalletStatus.WALLET_CONNECTED)
-                        await connectTerraWallet();
-                      setUserSelectionForCosmosWallet("terraStation");
-                    }
-                  }}
-                >
-                  <span className="mr-2">
-                    {userSelectionForCosmosWallet === "terraStation"
-                      ? "Send from TS"
-                      : "Switch to TS"}
-                  </span>
-                  <div className="flex justify-center my-2 gap-x-5">
-                    <Image
-                      src="/assets/wallets/terra-station.logo.svg"
-                      height={25}
-                      width={25}
-                    />
-                  </div>
-                </button>
-              )}
-            </div>
+            {getSendButtons()}
           </div>
         )}
       </div>
