@@ -184,7 +184,7 @@ export const TokenSelector = () => {
                 Available{" "}
                 {srcChain.chainName.toLowerCase() === "terra" && (
                   <span className="text-xs text-gray-500">
-                    {userSelectionForCosmosWallet === "terraStation"
+                    {userSelectionForCosmosWallet === "terraStation" && TerraWalletStatus === WalletStatus.WALLET_CONNECTED
                       ? "(Terra Station)"
                       : "(Keplr)"}
                   </span>
