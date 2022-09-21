@@ -364,7 +364,7 @@ export const CosmosWalletTransfer = () => {
               await connectToKeplr(allAssets);
               setKeplrConnected(true);
               setUserSelectionForCosmosWallet("keplr");
-              setKeplrBalance(true);
+              // setKeplrBalance(true);
               // await handleOnTokensTransfer();
             }
           }}
