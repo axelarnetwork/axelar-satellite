@@ -21,19 +21,16 @@ export const EvmAssetWarningModal = () => {
   const { address } = useAccount();
 
   const [showAssetWarning, setShowAssetWarning] = useState(false);
-  const [userAcknowledged, setUserAcknowledged] = useState(false);
 
   useEffect(() => {
-    if (userAcknowledged) return;
     if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) {
-      userAcknowledged && setUserAcknowledged(false);
       return;
     }
     if (!srcChain || !destChain) return;
     if (![srcChain?.module, destChain?.module].includes("evm")) return;
 
     setShowAssetWarning(true);
-  }, [setShowAssetWarning, userAcknowledged, swapStatus]);
+  }, [setShowAssetWarning, swapStatus]);
 
   function handleOnResetState() {
     setShowAssetWarning(false);
@@ -41,9 +38,8 @@ export const EvmAssetWarningModal = () => {
   }
 
   const onConfirm = useCallback(() => {
-    setUserAcknowledged(true);
     setShowAssetWarning(false);
-  }, [setShowAssetWarning, setUserAcknowledged]);
+  }, [setShowAssetWarning]);
 
   const tokenAddress = asset?.chain_aliases[srcChain.chainName.toLowerCase()]
     ?.tokenAddress as string;
