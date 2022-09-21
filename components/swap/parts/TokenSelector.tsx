@@ -51,12 +51,12 @@ export const TokenSelector = () => {
 
   const { balance, setKeplrBalance, loading, terraStationBalance } =
     useGetAssetBalance();
-  const [balanceToShow, setBalanceToShow] = useState("0");
+  const [balanceToShow, setBalanceToShow] = useState("");
   const ref = useRef(null);
   const router = useRouter();
 
   useEffect(() => {
-    setTokensToTransfer("0");
+    setTokensToTransfer("");
   }, [userSelectionForCosmosWallet]);
 
 
