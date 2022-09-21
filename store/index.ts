@@ -79,6 +79,17 @@ export const getSelectedAssetSymbol = memoize(
   }
 );
 
+export const getSelectedAssetSymbolDestinationChain = memoize(
+  (state: { asset: AssetConfig | null; destChain: ChainInfo }) => {
+    const chainName = state?.destChain?.chainName?.toLowerCase();
+    if (!chainName) return "";
+    const assetInfo = state?.asset?.chain_aliases[chainName];
+    if (!assetInfo) return "";
+
+    return assetInfo?.assetSymbol || "";
+  }
+);
+
 interface TxInfo {
   sourceTxHash?: string;
   destTxHash?: string;
