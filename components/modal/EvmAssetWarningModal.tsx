@@ -5,7 +5,7 @@ import cn from "classnames";
 
 import { tokenContractDocs } from "../../config/constants";
 import { useGetAssetBalance } from "../../hooks";
-import { getSelectedAssetSymbol, useSwapStore } from "../../store";
+import { getSelectedAssetSymbol, getSelectedAssetSymbolDestinationChain, useSwapStore } from "../../store";
 import { copyToClipboard } from "../../utils";
 import { SwapStatus } from "../../utils/enums";
 import { AddressShortener } from "../common";
@@ -15,6 +15,7 @@ export const EvmAssetWarningModal = () => {
     (state) => state
   );
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+  const selectedAssetSymbolOnDestinationChain = useSwapStore(getSelectedAssetSymbolDestinationChain);
 
   const { balance } = useGetAssetBalance();
   const { address } = useAccount();
@@ -120,10 +121,10 @@ export const EvmAssetWarningModal = () => {
           <div className="mt-5">
             <span>
               The recipient will receive{" "}
-              <span className="font-bold">{selectedAssetSymbol}</span> on{" "}
+              <span className="font-bold">{selectedAssetSymbolOnDestinationChain}</span> on{" "}
               <span className="capitalize">{destChain.chainName}</span>. If your
               recipient doesn’t support{" "}
-              <span className="font-bold">{selectedAssetSymbol}</span>{" "}
+              <span className="font-bold">{selectedAssetSymbolOnDestinationChain}</span>{" "}
               <strong className="font-bold text-red-400">
                 the funds will be lost!
               </strong>
