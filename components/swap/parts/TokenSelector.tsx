@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
+import _ from "lodash";
 
 import {
   getSelectedAssetName,
@@ -17,6 +18,8 @@ import { useRouter } from "next/router";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import BigNumber from "bignumber.js";
 import { SpinnerDotted } from "spinners-react";
+import toast from "react-hot-toast";
+import classNames from "classnames";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -24,6 +27,7 @@ export const TokenSelector = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const {
     asset,
+    allAssets,
     selectableAssetList,
     setAsset,
     srcChain,
@@ -108,13 +112,35 @@ export const TokenSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }
 
-  async function handleOnAssetChange(asset: AssetConfig) {
-    // await router.push({
-    //   query: {
-    //     ...router.query,
-    //     asset_denom: asset.common_key[ENVIRONMENT],
-    //   },
-    // });
+  const assetIsSupported = useCallback(
+    (_asset: AssetConfig) => {
+      const assetSupportedOnSrcChain = srcChain.assets?.find(
+        (asset) => asset.common_key === _asset.common_key[ENVIRONMENT]
+      );
+      const assetSupportedOnDestChain = destChain.assets?.find(
+        (asset) => asset.common_key === _asset.common_key[ENVIRONMENT]
+      );
+
+      return !!assetSupportedOnSrcChain && !!assetSupportedOnDestChain;
+    },
+    [srcChain, destChain]
+  );
+
+  async function handleOnAssetChange(_asset: AssetConfig) {
+    const assetSupportedOnSrcChain = srcChain.assets?.find(
+      (asset) => asset.common_key === _asset.common_key[ENVIRONMENT]
+    );
+    const assetSupportedOnDestChain = destChain.assets?.find(
+      (asset) => asset.common_key === _asset.common_key[ENVIRONMENT]
+    );
+    if (!assetSupportedOnDestChain) {
+      toast.error(`Selected asset not supported on ${destChain.chainSymbol}`);
+      return;
+    }
+    if (!assetSupportedOnSrcChain) {
+      toast.error(`Selected asset not supported on ${srcChain.chainSymbol}`);
+      return;
+    }
     setAsset(asset);
   }
 
@@ -168,21 +194,31 @@ export const TokenSelector = () => {
     if (!dropdownOpen || !srcChain) return null;
 
     return (
-      <div className="p-2 rounded-lg shadow dropdown-content menu bg-[#02141b] left-0 w-full h-64 overflow-auto">
+      <div className="left-0 w-full h-64 p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
         <div className="px-2 py-2 ">
           <input
-            className="w-full bg-[#333c42] input input-sm"
+            className="w-full h-10 input input-sm"
             placeholder="Search token"
             onChange={(e) => setSearchAssetInput(e.target.value)}
           />
         </div>
-        <ul tabIndex={0} onClick={handleOnDropdownToggle}>
-          {filteredAssets.map((asset) => {
+        <ul className="pt-4" tabIndex={0} onClick={handleOnDropdownToggle}>
+          {_.uniqWith([...filteredAssets, ...allAssets], (a, b) => {
+            return a.common_key[ENVIRONMENT] === b.common_key[ENVIRONMENT];
+          }).map((_asset) => {
             return (
-              <li key={asset.common_key[ENVIRONMENT]}>
-                <button onClick={() => handleOnAssetChange(asset)}>
+              <li
+                className={classNames({
+                  "opacity-70": !assetIsSupported(_asset),
+                })}
+                key={_asset.common_key[ENVIRONMENT]}
+              >
+                <button
+                  className="py-4"
+                  onClick={() => handleOnAssetChange(_asset)}
+                >
                   <Image
-                    src={`/assets/tokens/${asset.common_key[
+                    src={`/assets/tokens/${_asset.common_key[
                       ENVIRONMENT
                     ].toLowerCase()}.logo.svg`}
                     layout="intrinsic"
@@ -193,12 +229,19 @@ export const TokenSelector = () => {
                       e.currentTarget.srcset = defaultAssetImg;
                     }}
                   />
-                  <span>
-                    {
-                      asset.chain_aliases[srcChain.chainName.toLowerCase()]
-                        ?.assetName
-                    }
-                  </span>
+                  <div className="flex items-center justify-between w-full h-full">
+                    <span>
+                      {_asset.chain_aliases[srcChain.chainName.toLowerCase()]
+                        ?.assetName ||
+                        _asset.chain_aliases[
+                          Object.keys(_asset.chain_aliases)[0]
+                        ]?.assetName}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      {!assetIsSupported(_asset) &&
+                        "asset not supported on this chain pair"}
+                    </span>
+                  </div>
                 </button>
               </li>
             );
