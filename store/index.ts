@@ -79,6 +79,45 @@ export const getSelectedAssetSymbol = memoize(
   }
 );
 
+export const getSelectedAssetName = memoize(
+  (state: { asset: AssetConfig | null; srcChain: ChainInfo }) => {
+    const chainName = state?.srcChain?.chainName?.toLowerCase();
+    if (!chainName) return "";
+    const assetInfo = state?.asset?.chain_aliases[chainName];
+    if (!assetInfo) return "";
+
+    return assetInfo?.assetName || "";
+  }
+);
+
+export const isAXLToken = memoize(
+  (state: { asset: AssetConfig | null; srcChain: ChainInfo }) => {
+    return state?.asset?.common_key[ENVIRONMENT] === "uaxl";
+  }
+);
+
+export const getSelectedAssetNameDestChain = memoize(
+  (state: { asset: AssetConfig | null; destChain: ChainInfo }) => {
+    const chainName = state?.destChain?.chainName?.toLowerCase();
+    if (!chainName) return "";
+    const assetInfo = state?.asset?.chain_aliases[chainName];
+    if (!assetInfo) return "";
+
+    return assetInfo?.assetName || "";
+  }
+);
+
+export const getSelectedAssetSymbolDestinationChain = memoize(
+  (state: { asset: AssetConfig | null; destChain: ChainInfo }) => {
+    const chainName = state?.destChain?.chainName?.toLowerCase();
+    if (!chainName) return "";
+    const assetInfo = state?.asset?.chain_aliases[chainName];
+    if (!assetInfo) return "";
+
+    return assetInfo?.assetSymbol || "";
+  }
+);
+
 interface TxInfo {
   sourceTxHash?: string;
   destTxHash?: string;

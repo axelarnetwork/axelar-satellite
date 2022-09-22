@@ -95,13 +95,13 @@ export const TopFlows = () => {
 
   function handleOnFlow3() {
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("polygon")
+      chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const osmo = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("osmosis")
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
-      asset.common_key[ENVIRONMENT].includes("wmatic")
+      asset.common_key[ENVIRONMENT].includes("uaxl")
     ) as AssetConfig;
 
     setAsset(asset);
@@ -185,14 +185,14 @@ export const TopFlows = () => {
         >
           <div className="flex">
             <Image
-              src={`/assets/chains/polygon.logo.svg`}
+              src={`/assets/chains/ethereum.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/wmatic-wei.logo.svg`}
+              src={`/assets/tokens/uaxl.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}

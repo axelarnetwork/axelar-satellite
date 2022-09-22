@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { ENVIRONMENT, SOCKET_API } from "../config/constants";
 import { useSwapStore } from "../store";
-import { buildEvmTransferCompletedRoomId } from "../utils";
+import {
+  buildAxelarTransferCompletedRoomId,
+  buildEvmTransferCompletedRoomId,
+} from "../utils";
 import { SwapStatus } from "../utils/enums";
 
 const socket = io(SOCKET_API, {
@@ -19,8 +22,15 @@ export const useDetectDestTransferConfirmation = () => {
     useSwapStore();
 
   function checkPayload(data: any) {
-    if (data.Type !== "fungible_token_packet") return;
-    if (data.Attributes.receiver !== destAddress) return;
+    if (destChain && destChain.chainName.toLowerCase() === "axelar") {
+      if (data.Type !== `axelar.axelarnet.v1beta1.AxelarTransferCompleted`)
+        return;
+      //TODO: receipient is intentionally misspelled because that is the property that is received from the emitted event
+      if (!(data.Attributes.receipient as string)?.includes(destAddress)) return;
+    } else {
+      if (data.Type !== "fungible_token_packet") return;
+      if (data.Attributes.receiver !== destAddress) return;
+    }
 
     return true;
   }
@@ -33,10 +43,18 @@ export const useDetectDestTransferConfirmation = () => {
       (asset) => asset.common_key === assetCommonKey
     );
 
-    const roomId = buildEvmTransferCompletedRoomId(
-      destAddress,
-      assetData?.common_key as string
-    );
+    const roomId =
+      destChain?.chainName.toLowerCase() === "axelar"
+        ? buildAxelarTransferCompletedRoomId(
+            destAddress,
+            assetData?.common_key as string
+          )
+        : buildEvmTransferCompletedRoomId(
+            destAddress,
+            assetData?.common_key as string
+          );
+
+    console.log("room ID", roomId);
 
     socket.emit("room:join", roomId);
 
@@ -48,5 +66,5 @@ export const useDetectDestTransferConfirmation = () => {
     return () => {
       socket.off("bridge-event");
     };
-  }, [swapStatus]);
+  }, [destChain, swapStatus]);
 };
