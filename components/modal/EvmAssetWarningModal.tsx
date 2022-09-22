@@ -63,7 +63,7 @@ export const EvmAssetWarningModal = () => {
           <div>
             <div>
               Only send{" "}
-              <span className="font-bold">{selectedAssetNameSrcChain} {hasSelectedAXLToken ? `(${selectedAssetSymbolOnSrcChain})` : null} </span>
+              <span className="font-bold">{selectedAssetNameSrcChain} {hasSelectedAXLToken ? `(${selectedAssetSymbolOnSrcChain} in Metamask)` : null} </span>
               to this deposit address on
               <strong className="capitalize"> {srcChain.chainName}</strong>
               <div>Any other tokens sent to this address will be lost.</div>
@@ -72,7 +72,7 @@ export const EvmAssetWarningModal = () => {
             <div className="py-2 text-center">
               <div className="mt-2">
                 <div className="font-light text-gray-300">
-                  {selectedAssetNameSrcChain} {hasSelectedAXLToken ? `(${selectedAssetSymbolOnSrcChain})` : null} token contract address |{" "}
+                  {selectedAssetNameSrcChain} token contract address |{" "}
                   <strong className="capitalize">{srcChain.chainName}</strong>
                   <div className="flex items-center justify-center font-bold gap-x-2">
                     <AddressShortener value={tokenAddress} />
