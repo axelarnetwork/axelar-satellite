@@ -126,6 +126,25 @@ export const TokenSelector = () => {
     [srcChain, destChain]
   );
 
+  function renderAssetSupportText(_asset: AssetConfig) {
+    const assetSupportedOnSrcChain = srcChain.assets?.find(
+      (asset) => asset.common_key === _asset.common_key[ENVIRONMENT]
+    );
+    const assetSupportedOnDestChain = destChain.assets?.find(
+      (asset) => asset.common_key === _asset.common_key[ENVIRONMENT]
+    );
+
+    if (!assetSupportedOnSrcChain && !assetSupportedOnDestChain) {
+      return `asset not supported with ${srcChain.chainName}/${destChain.chainName}`;
+    } else if (!assetSupportedOnSrcChain && assetSupportedOnDestChain) {
+      return `asset not supported on ${srcChain.chainName}`;
+    } else if (assetSupportedOnSrcChain && !assetSupportedOnDestChain) {
+      return `asset not supported on ${destChain.chainName}`;
+    } else {
+      return null;
+    }
+  }
+
   async function handleOnAssetChange(_asset: AssetConfig) {
     const assetSupportedOnSrcChain = srcChain.assets?.find(
       (asset) => asset.common_key === _asset.common_key[ENVIRONMENT]
@@ -238,8 +257,7 @@ export const TokenSelector = () => {
                         ]?.assetName}
                     </span>
                     <span className="text-xs text-gray-500">
-                      {!assetIsSupported(_asset) &&
-                        "asset not supported on this chain pair"}
+                      {renderAssetSupportText(_asset)}
                     </span>
                   </div>
                 </button>
