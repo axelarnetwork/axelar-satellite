@@ -3,7 +3,7 @@ import Image from "next/image";
 import { AssetConfig, AssetInfoForChain, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwapStore } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
-import { AXELARSCAN_URL } from "../../../config/constants";
+import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
 import { ProgressBar } from "./parts";
 import { copyToClipboard } from "../../../utils";
 import { useSwitchNetwork } from "wagmi";
@@ -12,16 +12,16 @@ import { TransferStats } from "../parts";
 
 export const addTokenToMetamask = async (asset: AssetConfig, chain: ChainInfo) => {
   try {
-    const { tokenAddress: address, assetSymbol: symbol, assetName, common_key }: AssetInfoForChain =
+    const { tokenAddress: address, assetSymbol: symbol, assetName }: AssetInfoForChain =
       asset.chain_aliases[chain.chainName.toLowerCase()];
-    const { decimals } = asset;
+    const { common_key, decimals } = asset;
     return await (window as any).ethereum.request({
       method: "wallet_watchAsset",
       params: {
         type: "ERC20",
         options: {
           address,
-          symbol: common_key === "uaxl" ? assetName : symbol,
+          symbol: common_key[ENVIRONMENT] === "uaxl" ? assetName : symbol,
           decimals,
           image: "",
         },
