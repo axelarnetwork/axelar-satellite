@@ -59,7 +59,7 @@ export const TopFlows = () => {
 
   if (![SwapStatus.IDLE].includes(swapStatus)) return null;
 
-  function handleOnFlow1() {
+  function handleOnFlow2() {
     const avax = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
@@ -76,7 +76,7 @@ export const TopFlows = () => {
     setMenuOpened(false);
   }
 
-  function handleOnFlow2() {
+  function handleOnFlow3() {
     const osmo = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
@@ -93,12 +93,12 @@ export const TopFlows = () => {
     setMenuOpened(false);
   }
 
-  function handleOnFlow3() {
+  function handleOnFlow1() {
     const moonbeam = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const osmo = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("osmosis")
+      chain.chainName.toLowerCase().includes("axelar")
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("uaxl")
@@ -138,14 +138,14 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/uausdc.logo.svg`}
+              src={`/assets/tokens/uaxl.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
             />
             <Arrow />
             <Image
-              src={`/assets/chains/osmosis.logo.svg`}
+              src={`/assets/chains/axelar.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -165,7 +165,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/weth-wei.logo.svg`}
+              src={`/assets/tokens/uausdc.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -192,7 +192,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/uaxl.logo.svg`}
+              src={`/assets/tokens/weth-wei.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -206,6 +206,7 @@ export const TopFlows = () => {
             />
           </div>
         </li>
+
       </ul>
     </div>
   );
