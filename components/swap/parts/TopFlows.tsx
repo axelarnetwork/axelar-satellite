@@ -5,7 +5,7 @@ import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapStatus } from "../../../utils/enums";
 
-const Arrow = () => (
+export const Arrow = () => (
   <svg
     width="16"
     height="17"

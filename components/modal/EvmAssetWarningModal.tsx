@@ -94,7 +94,7 @@ export const EvmAssetWarningModal = () => {
                   <div className="font-light text-gray-300">
                     Connected wallet balance |{" "}
                     <strong className="">
-                      {balance} {selectedAssetSymbolOnSrcChain}
+                      {balance} {hasSelectedAXLToken ? selectedAssetNameSrcChain : selectedAssetSymbolOnSrcChain}
                     </strong>
                     <div className="flex items-center justify-center font-bold gap-x-2">
                       <AddressShortener value={address} />

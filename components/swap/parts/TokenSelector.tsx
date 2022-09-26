@@ -17,6 +17,12 @@ import { useRouter } from "next/router";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import BigNumber from "bignumber.js";
 import { SpinnerDotted } from "spinners-react";
+import { Arrow } from "./TopFlows";
+import { useSwitchNetwork } from "wagmi";
+import { addTokenToMetamask } from "../states";
+import { getWagmiChains } from "../../../config/web3";
+
+const defaultChainImg = "/assets/chains/default.logo.svg";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -32,6 +38,16 @@ export const TokenSelector = () => {
     tokensToTransfer,
     setTokensToTransfer,
   } = useSwapStore((state) => state);
+  const { switchNetwork } = useSwitchNetwork({
+    onSuccess(data) {
+      console.log("Success", data);
+      //@ts-ignore
+      const newNetwork = data.networkNameOverride;
+      const chain =
+        srcChain.chainName.toLowerCase() === newNetwork ? srcChain : destChain;
+      setTimeout(() => addTokenToMetamask(asset as AssetConfig, chain), 2000);
+    },
+  });
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const selectedAssetName = useSwapStore(getSelectedAssetName);
   const { wagmiConnected, keplrConnected } = useWalletStore();
@@ -213,11 +229,110 @@ export const TokenSelector = () => {
     return asset.chain_aliases[srcChain.chainName.toLowerCase()]?.assetName;
   }
 
+  function addTokenToMetamaskButton() {
+    if (srcChain?.module !== "evm" && destChain?.module !== "evm") return null;
+    if (!wagmiConnected) return null;
+
+    const proprtions = 20;
+    const image = 20;
+
+    return (
+      <div
+        className="dropdown dropdown-end tooltip"
+        data-tip="Add token to Metamask"
+      >
+        <label tabIndex={0} className="mr-2 btn btn-info btn-xs">
+          <Image
+            src={"/assets/wallets/metamask.logo.svg"}
+            height={proprtions}
+            width={proprtions}
+          />
+        </label>
+        <ul
+          tabIndex={0}
+          className="w-32 p-1 shadow dropdown-content menu bg-base-100 rounded-box"
+        >
+          {srcChain?.module === "evm" && (
+            <li
+              onClick={() => {
+                switchNetwork?.(
+                  getWagmiChains().find(
+                    (chain) =>
+                      chain.networkNameOverride ===
+                      srcChain.chainName.toLowerCase()
+                  )?.id
+                );
+              }}
+            >
+              <span>
+                <Image
+                  src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
+                  width={image}
+                  height={image}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultAssetImg;
+                    e.currentTarget.srcset = defaultAssetImg;
+                  }}
+                />
+                <Arrow />
+                <Image
+                  src={`/assets/chains/${srcChain.chainName.toLowerCase()}.logo.svg`}
+                  width={image}
+                  height={image}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultChainImg;
+                    e.currentTarget.srcset = defaultChainImg;
+                  }}
+                />
+              </span>
+            </li>
+          )}
+          {destChain?.module === "evm" && (
+            <li
+              onClick={() => {
+                switchNetwork?.(
+                  getWagmiChains().find(
+                    (chain) =>
+                      chain.networkNameOverride ===
+                      destChain.chainName.toLowerCase()
+                  )?.id
+                );
+              }}
+            >
+              <span>
+                <Image
+                  src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
+                  width={image}
+                  height={image}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultAssetImg;
+                    e.currentTarget.srcset = defaultAssetImg;
+                  }}
+                />
+                <Arrow />
+                <Image
+                  src={`/assets/chains/${destChain.chainName.toLowerCase()}.logo.svg`}
+                  width={image}
+                  height={image}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultChainImg;
+                    e.currentTarget.srcset = defaultChainImg;
+                  }}
+                />
+              </span>
+            </li>
+          )}
+        </ul>
+      </div>
+    );
+  }
+
   return asset ? (
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
         <label className="block text-xs">I want to transfer</label>
-        <div>
+        <div className="flex items-start">
+          {addTokenToMetamaskButton()}
           {swapOrigin === SwapOrigin.APP && (
             <button
               className="btn btn-info btn-xs"

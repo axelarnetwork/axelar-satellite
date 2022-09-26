@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { AssetConfig, AssetInfoForChain, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwapStore } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
 import { AXELARSCAN_URL } from "../../../config/constants";
@@ -10,10 +10,10 @@ import { useSwitchNetwork } from "wagmi";
 import { getWagmiChains } from "../../../config/web3";
 import { TransferStats } from "../parts";
 
-const addTokenToMetamask = async (asset: AssetConfig, destChain: ChainInfo) => {
+export const addTokenToMetamask = async (asset: AssetConfig, chain: ChainInfo) => {
   try {
-    const { tokenAddress: address, assetSymbol: symbol } =
-      asset.chain_aliases[destChain.chainName.toLowerCase()];
+    const { tokenAddress: address, assetSymbol: symbol, assetName, common_key }: AssetInfoForChain =
+      asset.chain_aliases[chain.chainName.toLowerCase()];
     const { decimals } = asset;
     return await (window as any).ethereum.request({
       method: "wallet_watchAsset",
@@ -21,7 +21,7 @@ const addTokenToMetamask = async (asset: AssetConfig, destChain: ChainInfo) => {
         type: "ERC20",
         options: {
           address,
-          symbol,
+          symbol: common_key === "uaxl" ? assetName : symbol,
           decimals,
           image: "",
         },
