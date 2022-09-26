@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { AssetConfig, AssetInfoForChain, ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwapStore } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
 import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
@@ -12,9 +12,11 @@ import { TransferStats } from "../parts";
 
 export const addTokenToMetamask = async (asset: AssetConfig, chain: ChainInfo) => {
   try {
-    const { tokenAddress: address, assetSymbol: symbol, assetName }: AssetInfoForChain =
-      asset.chain_aliases[chain.chainName.toLowerCase()];
-    const { common_key, decimals } = asset;
+    const { common_key, decimals, native_chain, chain_aliases } = asset;
+    const { tokenAddress: address, assetSymbol: symbol, assetName } =
+      chain_aliases[chain.chainName.toLowerCase()];
+    const nativeAssetSymbol = chain_aliases[native_chain].assetSymbol;
+
     return await (window as any).ethereum.request({
       method: "wallet_watchAsset",
       params: {
@@ -23,7 +25,7 @@ export const addTokenToMetamask = async (asset: AssetConfig, chain: ChainInfo) =
           address,
           symbol: common_key[ENVIRONMENT] === "uaxl" ? assetName : symbol,
           decimals,
-          image: "",
+          image: nativeAssetSymbol ? `https://raw.githubusercontent.com/axelarnetwork/axelar-docs/main/public/images/assets/${nativeAssetSymbol.toLowerCase()}.png` : "",
         },
       },
     });

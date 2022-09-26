@@ -238,7 +238,7 @@ export const TokenSelector = () => {
 
     return (
       <div
-        className="dropdown dropdown-end tooltip"
+        className="dropdown dropdown-end dropdown-hover tooltip"
         data-tip="Add token to Metamask"
       >
         <label tabIndex={0} className="mr-2 btn btn-info btn-xs">
