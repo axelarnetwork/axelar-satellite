@@ -63,7 +63,7 @@ export const EvmAssetWarningModal = () => {
           <div>
             <div>
               Only send{" "}
-              <span className="font-bold">{selectedAssetNameSrcChain} {hasSelectedAXLToken ? `(${selectedAssetSymbolOnSrcChain} in Metamask)` : null} </span>
+              <span className="font-bold">{selectedAssetNameSrcChain} {hasSelectedAXLToken ? `(might be ${selectedAssetSymbolOnSrcChain} in Metamask)` : null} </span>
               to this deposit address on
               <strong className="capitalize"> {srcChain.chainName}</strong>
               <div>Any other tokens sent to this address will be lost.</div>
@@ -94,7 +94,7 @@ export const EvmAssetWarningModal = () => {
                   <div className="font-light text-gray-300">
                     Connected wallet balance |{" "}
                     <strong className="">
-                      {balance} {selectedAssetSymbolOnSrcChain}
+                      {balance} {hasSelectedAXLToken ? selectedAssetNameSrcChain : selectedAssetSymbolOnSrcChain}
                     </strong>
                     <div className="flex items-center justify-center font-bold gap-x-2">
                       <AddressShortener value={address} />
@@ -120,7 +120,7 @@ export const EvmAssetWarningModal = () => {
           <div className="mt-5">
             <span>
               The recipient will receive{" "}
-              <span className="font-bold">{selectedAssetNameOnDestinationChain} {hasSelectedAXLToken ? `(${selectedAssetSymbolOnDestinationChain})` : null}</span> on{" "}
+              <span className="font-bold">{selectedAssetNameOnDestinationChain}</span> on{" "}
               <span className="capitalize">{destChain.chainName}</span>. If your
               recipient doesn’t support{" "}
               <span className="font-bold">{selectedAssetNameOnDestinationChain}</span>{" "}

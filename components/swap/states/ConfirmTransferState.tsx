@@ -3,27 +3,29 @@ import Image from "next/image";
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwapStore } from "../../../store";
 import { AddressShortener, InputWrapper } from "../../common";
-import { AXELARSCAN_URL } from "../../../config/constants";
+import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
 import { ProgressBar } from "./parts";
 import { copyToClipboard } from "../../../utils";
 import { useSwitchNetwork } from "wagmi";
 import { getWagmiChains } from "../../../config/web3";
 import { TransferStats } from "../parts";
 
-const addTokenToMetamask = async (asset: AssetConfig, destChain: ChainInfo) => {
+export const addTokenToMetamask = async (asset: AssetConfig, chain: ChainInfo) => {
   try {
-    const { tokenAddress: address, assetSymbol: symbol } =
-      asset.chain_aliases[destChain.chainName.toLowerCase()];
-    const { decimals } = asset;
+    const { common_key, decimals, native_chain, chain_aliases } = asset;
+    const { tokenAddress: address, assetSymbol: symbol, assetName } =
+      chain_aliases[chain.chainName.toLowerCase()];
+    const nativeAssetSymbol = chain_aliases[native_chain].assetSymbol;
+
     return await (window as any).ethereum.request({
       method: "wallet_watchAsset",
       params: {
         type: "ERC20",
         options: {
           address,
-          symbol,
+          symbol: common_key[ENVIRONMENT] === "uaxl" ? assetName : symbol,
           decimals,
-          image: "",
+          image: nativeAssetSymbol ? `https://raw.githubusercontent.com/axelarnetwork/axelar-docs/main/public/images/assets/${nativeAssetSymbol.toLowerCase()}.png` : "",
         },
       },
     });
