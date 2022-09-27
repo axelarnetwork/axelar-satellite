@@ -26,6 +26,11 @@ export const TransferStats = () => {
   function renderWaitTime() {
     if (!srcChain) return "";
 
+    if (
+      srcChain.module === "axelarnet" &&
+      destChain?.chainName?.toLowerCase() === "ethereum"
+    )
+      return "~15 minutes";
     if (srcChain.module === "axelarnet") return "~2 minutes";
 
     if (["ethereum", "polygon"].includes(srcChain?.chainName?.toLowerCase()))
