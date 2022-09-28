@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useConnect } from "wagmi";
 import toast from "react-hot-toast";
@@ -7,8 +7,25 @@ import { OfflineSigner } from "@cosmjs/proto-signing";
 import { useSwapStore, useWalletStore } from "../../store";
 import { getCosmosChains } from "../../config/web3";
 import { CosmosChain } from "../../config/web3/cosmos/interface";
-import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
+import { useWallet as useTerraWallet, WalletStatus } from "@terra-money/wallet-provider";
 import { connectToKeplr } from "./utils/handleOnKeplrConnect";
+
+const DownloadButton = () => (
+  <span>
+      <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="w-6 h-6"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z"
+      clip-rule="evenodd"
+    />
+  </svg>
+  </span>
+);
 
 export const Web3Modal = () => {
   const { connect, connectors, error } = useConnect();
@@ -21,6 +38,12 @@ export const Web3Modal = () => {
     setUserSelectionForCosmosWallet,
   } = useWalletStore((state) => state);
   const terraWallet = useTerraWallet();
+  const [isTerraInstalled, setIsTerraInstalled] = useState(false);
+
+  useEffect(() => {
+    if (!window) return;
+    setIsTerraInstalled(window.isTerraExtensionAvailable);
+  }, []);
 
   // close modal upon successful metamask connection
   useEffect(() => {
@@ -31,6 +54,11 @@ export const Web3Modal = () => {
   useEffect(() => {
     if (keplrConnected) closeModal();
   }, [keplrConnected]);
+
+  // close modal upon successful terra station connection
+  useEffect(() => {
+    if (terraWallet.status === WalletStatus.WALLET_CONNECTED) closeModal();
+  }, [terraWallet.status]);
 
   // notify user that he already has a connected account but it's not the active one
   useEffect(() => {
@@ -47,6 +75,10 @@ export const Web3Modal = () => {
   }
 
   async function handleOnTerraStationConnect() {
+    if (!isTerraInstalled) {
+      window.open("https://chrome.google.com/webstore/detail/terra-station-wallet/aiifbnbfobpmeekipheeijimdpnlpgpp", "_blank")
+      return;
+    }
     try {
       terraWallet.connect();
       setUserSelectionForCosmosWallet("terraStation");
@@ -122,19 +154,22 @@ export const Web3Modal = () => {
             </div>
           </button>{" "}
           <button
-            className="relative flex btn btn-neutral"
+            className={`relative flex btn btn-neutral ${isTerraInstalled ? "" : "tooltip"}`}
+            data-tip={`Click to install the extension. Refresh Satellite once installed.`}
             onClick={handleOnTerraStationConnect}
           >
             <span>Terra Station</span>
             <div className="ml-auto">
-              <Image
-                src="/assets/wallets/terra-station.logo.svg"
-                alt="walletconnect"
-                layout="intrinsic"
-                objectFit="contain"
-                height={30}
-                width={30}
-              />
+              {isTerraInstalled ? (
+                <Image
+                  src="/assets/wallets/terra-station.logo.svg"
+                  alt="walletconnect"
+                  layout="intrinsic"
+                  objectFit="contain"
+                  height={30}
+                  width={30}
+                />
+              ) : <DownloadButton />}
             </div>
           </button>
           {/* <button
