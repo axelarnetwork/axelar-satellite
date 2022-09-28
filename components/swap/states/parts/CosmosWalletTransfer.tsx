@@ -45,12 +45,14 @@ import {
 import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/client/Height";
 import { TERRA_IBC_GAS_LIMIT } from ".";
 import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
+import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const { setKeplrBalance } = useGetAssetBalance();
+  const isTerraConnected = useIsTerraConnected();
 
   // used to hide wallets when transaction has been triggered
   const [isTxOngoing, setIsTxOngoing] = useState(false);
@@ -73,7 +75,6 @@ export const CosmosWalletTransfer = () => {
   const keplerWallet = useGetKeplerWallet();
   const hasKeplerWallet = useHasKeplerWallet();
   const {
-    status: TerraWalletStatus,
     wallets: terraWallets,
     connect: connectTerraWallet,
   } = useTerraWallet();
@@ -346,8 +347,6 @@ export const CosmosWalletTransfer = () => {
       );
     }
 
-    const terraStationConnected =
-      TerraWalletStatus === WalletStatus.WALLET_CONNECTED;
     const userSelectedTS = userSelectionForCosmosWallet === "terraStation";
     const userSelectedKeplr = !userSelectedTS;
 
@@ -358,7 +357,7 @@ export const CosmosWalletTransfer = () => {
             !userSelectedTS ? "primary" : "accent"
           }`}
           onClick={async () => {
-            if (userSelectedKeplr || !terraStationConnected) {
+            if (userSelectedKeplr || !isTerraConnected) {
               await handleOnTokensTransfer();
             } else {
               await connectToKeplr(allAssets);
@@ -370,7 +369,7 @@ export const CosmosWalletTransfer = () => {
           }}
         >
           <span className="mr-2">
-            {userSelectedKeplr || !terraStationConnected
+            {userSelectedKeplr || !isTerraConnected
               ? "Send from Keplr "
               : "Switch to Keplr"}
           </span>
@@ -382,7 +381,7 @@ export const CosmosWalletTransfer = () => {
             />
           </div>
         </button>
-        {terraStationConnected && (
+        {isTerraConnected && (
           <button
             className={`mb-5 ml-5 btn btn-${
               userSelectedTS ? "primary" : "accent"
@@ -391,7 +390,7 @@ export const CosmosWalletTransfer = () => {
               if (userSelectedTS) {
                 await handleOnTerraStationIBCTransfer();
               } else {
-                if (!terraStationConnected) await connectTerraWallet();
+                if (!isTerraConnected) await connectTerraWallet();
                 setUserSelectionForCosmosWallet("terraStation");
                 // await handleOnTerraStationIBCTransfer();
               }

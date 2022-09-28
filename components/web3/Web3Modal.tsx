@@ -7,8 +7,10 @@ import { OfflineSigner } from "@cosmjs/proto-signing";
 import { useSwapStore, useWalletStore } from "../../store";
 import { getCosmosChains } from "../../config/web3";
 import { CosmosChain } from "../../config/web3/cosmos/interface";
-import { useWallet as useTerraWallet, WalletStatus } from "@terra-money/wallet-provider";
+import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import { connectToKeplr } from "./utils/handleOnKeplrConnect";
+import { useIsTerraInstalled } from "../../hooks/terra/useIsTerraInstalled";
+import { useIsTerraConnected } from "../../hooks/terra/useIsTerraConnected";
 
 const DownloadButton = () => (
   <span>
@@ -38,12 +40,8 @@ export const Web3Modal = () => {
     setUserSelectionForCosmosWallet,
   } = useWalletStore((state) => state);
   const terraWallet = useTerraWallet();
-  const [isTerraInstalled, setIsTerraInstalled] = useState(false);
-
-  useEffect(() => {
-    if (!window) return;
-    setIsTerraInstalled(window.isTerraExtensionAvailable);
-  }, []);
+  const isTerraInstalled = useIsTerraInstalled();
+  const isTerraConnected = useIsTerraConnected();
 
   // close modal upon successful metamask connection
   useEffect(() => {
@@ -57,8 +55,8 @@ export const Web3Modal = () => {
 
   // close modal upon successful terra station connection
   useEffect(() => {
-    if (terraWallet.status === WalletStatus.WALLET_CONNECTED) closeModal();
-  }, [terraWallet.status]);
+    if (isTerraConnected) closeModal();
+  }, [isTerraConnected]);
 
   // notify user that he already has a connected account but it's not the active one
   useEffect(() => {

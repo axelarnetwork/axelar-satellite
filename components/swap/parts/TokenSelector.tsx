@@ -17,16 +17,14 @@ import { useRouter } from "next/router";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import BigNumber from "bignumber.js";
 import { SpinnerDotted } from "spinners-react";
-import {
-  useWallet as useTerraWallet,
-  WalletStatus,
-} from "@terra-money/wallet-provider";
+import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import { roundNumberTo } from "../../../utils/roundNumberTo";
 import { connectToKeplr } from "../../web3/utils/handleOnKeplrConnect";
 import { Arrow } from "./TopFlows";
 import { useSwitchNetwork } from "wagmi";
 import { addTokenToMetamask } from "../states";
 import { getWagmiChains } from "../../../config/web3";
+import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -65,8 +63,8 @@ export const TokenSelector = () => {
   } = useWalletStore();
   const selectedAssetName = useSwapStore(getSelectedAssetName);
   const max = useGetMaxTransferAmount();
-  const { status: TerraWalletStatus, connect: connectTerraWallet } =
-    useTerraWallet();
+  const { connect: connectTerraWallet } = useTerraWallet();
+  const isTerraConnected = useIsTerraConnected();
   const [showBalance, setShowBalance] = useState(false);
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
@@ -110,10 +108,14 @@ export const TokenSelector = () => {
 
   useEffect(() => {
     const isEVM = !!(srcChain?.module === "evm" && wagmiConnected);
-    const isAxelarnet = srcChain?.module === "axelarnet" && keplrConnected && (userSelectionForCosmosWallet === "keplr" || srcChain?.chainName.toLowerCase() === "terra");
+    const isAxelarnet =
+      srcChain?.module === "axelarnet" &&
+      keplrConnected &&
+      (userSelectionForCosmosWallet === "keplr" ||
+        srcChain?.chainName.toLowerCase() === "terra");
     const isTerra =
       srcChain?.chainName.toLowerCase() === "terra" &&
-      TerraWalletStatus === WalletStatus.WALLET_CONNECTED &&
+      isTerraConnected &&
       userSelectionForCosmosWallet === "terraStation";
 
     const shouldshowBalance = isEVM || isAxelarnet || isTerra;
@@ -128,7 +130,7 @@ export const TokenSelector = () => {
     srcChain,
     balance,
     wagmiConnected,
-    TerraWalletStatus,
+    isTerraConnected,
     keplrConnected,
     terraStationBalance,
     userSelectionForCosmosWallet,
@@ -163,13 +165,13 @@ export const TokenSelector = () => {
     if (
       srcChain?.chainName.toLowerCase() === "terra" &&
       userSelectionForCosmosWallet == "terraStation" &&
-      TerraWalletStatus === WalletStatus.WALLET_CONNECTED
+      isTerraConnected
     )
       return;
     if (
       srcChain?.chainName.toLowerCase() === "terra" &&
       userSelectionForCosmosWallet == "terraStation" &&
-      TerraWalletStatus !== WalletStatus.WALLET_CONNECTED
+      isTerraConnected
     ) {
       connectTerraWallet();
       return;
@@ -204,7 +206,7 @@ export const TokenSelector = () => {
 
   function renderBalanceInfo() {
     /**
-     * handle: 
+     * handle:
      * 1. user selects to connect Keplr and Keplr is connected
      * 2. user selects to connect Keplr and Keplr is not connected
      * 3. user selects to connect TS and TS is connected
@@ -234,7 +236,7 @@ export const TokenSelector = () => {
             {srcChain.chainName.toLowerCase() === "terra" && (
               <span className="text-xs text-gray-500">
                 {userSelectionForCosmosWallet === "terraStation" &&
-                TerraWalletStatus === WalletStatus.WALLET_CONNECTED
+                isTerraConnected
                   ? "(Terra Station)"
                   : "(Keplr)"}
               </span>
@@ -254,7 +256,7 @@ export const TokenSelector = () => {
         </div>
         {srcChain.module === "axelarnet" &&
         srcChain.chainName.toLowerCase() === "terra" ? (
-          TerraWalletStatus === WalletStatus.WALLET_CONNECTED &&
+          isTerraConnected &&
           userSelectionForCosmosWallet === "terraStation" &&
           terraStationBalance ? (
             <span
@@ -280,8 +282,7 @@ export const TokenSelector = () => {
             <span
               className="h-6 text-xs text-gray-500 cursor-pointer hover:underline"
               onClick={async () => {
-                if (TerraWalletStatus !== WalletStatus.WALLET_CONNECTED)
-                  await connectTerraWallet();
+                if (!isTerraConnected) await connectTerraWallet();
                 setUserSelectionForCosmosWallet("terraStation");
               }}
             >

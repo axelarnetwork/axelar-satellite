@@ -24,6 +24,7 @@ import {
 } from "@terra-money/wallet-provider";
 import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { useIsTerraConnected } from "./terra/useIsTerraConnected";
 
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
@@ -37,6 +38,7 @@ export const useGetAssetBalance = () => {
   const srcChainId = useSwapStore(getSrcChainId);
   const srcChain = useSwapStore((state) => state?.srcChain);
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
+  const isTerraConnected = useIsTerraConnected();
 
   const [balance, setBalance] = useState<string>("0");
   const [terraStationBalance, setTerraStationBalance] = useState<string | null>("0");
@@ -71,7 +73,7 @@ export const useGetAssetBalance = () => {
       setTerraStationBalance(null);
       return;
     };
-    if (status !== WalletStatus.WALLET_CONNECTED) return;
+    if (!isTerraConnected) return;
     const denom = asset?.chain_aliases["terra"].ibcDenom as string;
     if (!denom) return;
 
@@ -86,7 +88,7 @@ export const useGetAssetBalance = () => {
         );
       })
       .catch(() => setTerraStationBalance(null));
-  }, [srcChain, status, asset]);
+  }, [srcChain, status, asset, isTerraConnected]);
 
   const setKeplrBalance = useCallback(async (): Promise<void> => {
     if (!keplrConnected) return;

@@ -2,13 +2,13 @@ import React from "react";
 import Image from "next/image";
 import { useAccount, useConnect } from "wagmi";
 import {
-  useWallet as useTerraWallet,
-  WalletStatus,
+  useWallet as useTerraWallet
 } from "@terra-money/wallet-provider";
 import { useSwapStore, useWalletStore } from "../../../store";
 import { useGetKeplerWallet } from "../../../hooks";
 import { getCosmosChains } from "../../../config/web3";
 import toast from "react-hot-toast";
+import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 
 export const AddressFiller = () => {
   const { address } = useAccount();
@@ -21,6 +21,7 @@ export const AddressFiller = () => {
   const isEvm = destChain?.module === "evm";
   const keplerWallet = useGetKeplerWallet();
   const terraWallet = useTerraWallet();
+  const isTerraConnected = useIsTerraConnected();
   const { userSelectionForCosmosWallet } = useWalletStore();
 
   function fillEvmDestinationAddress() {
@@ -60,8 +61,7 @@ export const AddressFiller = () => {
     if (!chain) return;
 
     if (chain.chainIdentifier === "terra") {
-      if (terraWallet.status !== WalletStatus.WALLET_CONNECTED)
-        await terraWallet.connect();
+      if (!isTerraConnected) await terraWallet.connect();
       if (terraWallet?.wallets?.length < 1) {
         toast.error("Please install the Terra Station wallet extension first!");
         return;

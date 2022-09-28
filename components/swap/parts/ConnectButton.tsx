@@ -3,15 +3,15 @@ import cn from "classnames";
 import { useEffect, useState } from "react";
 import { useWalletStore } from "../../../store";
 import { ConnectIndicator } from "../../common";
-import { WalletStatus, useWallet as useTerraWallet } from "@terra-money/wallet-provider";
+import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 
 export const ConnectButton = () => {
   const { wagmiConnected, keplrConnected } = useWalletStore();
-  const { status: TerraWalletStatus } = useTerraWallet();
   const [anyWalletConnected, setAnyWalletConnected] = useState(false);
+  const isTerraConnected = useIsTerraConnected();
 
   useEffect(() => {
-    const isAnyActive = [wagmiConnected, keplrConnected, TerraWalletStatus === WalletStatus.WALLET_CONNECTED].some(
+    const isAnyActive = [wagmiConnected, keplrConnected, isTerraConnected].some(
       (isActive) => isActive
     );
     if (anyWalletConnected !== isAnyActive) setAnyWalletConnected(isAnyActive);
