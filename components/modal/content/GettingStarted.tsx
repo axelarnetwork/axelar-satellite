@@ -18,7 +18,7 @@ export const GettingStarted: FC<GettingStartedProps> = ({}) => {
     <div>
       <h1 className="mb-10 text-3xl">Getting Started</h1>
       {Link({
-        url: "https://www.youtube.com/watch?v=_bxEw9Otb20",
+        url: "https://www.youtube.com/watch?v=D7ooheNAvB0",
         linkTitle: "Instructional Video",
         linkDescription: `One of our devs records himself walking through a transaction from start to finish.`,
       })}

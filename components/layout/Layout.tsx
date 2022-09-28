@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import { Navbar } from "./Navbar";
+import { dependencies, version } from "../../package.json";
 
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -12,23 +13,14 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
           {children}
         </div>
       </main>
-      {/* <footer className="fixed bottom-0 left-0 w-full h-20">
-        <div className="container relative w-full h-full max-w-screen-xl px-4 mx-auto">
-          <div className="relative w-48 h-full">
-            <a
-              href="https://axelar.network"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <Image
-                layout="fill"
-                src="/assets/ui/powered.logo.svg"
-                objectFit="contain"
-              />
-            </a>
-          </div>
+      <footer className="fixed left-0 flex flex-row w-full bottom-1">
+        <div className="ml-2 text-xs text-slate-500">
+          App version: {version}
         </div>
-      </footer> */}
+        <div className="ml-2 text-xs text-slate-500">
+          SDK version: {dependencies?.["@axelar-network/axelarjs-sdk"]}
+        </div>
+      </footer>
     </>
   );
 };

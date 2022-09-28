@@ -38,12 +38,12 @@ export const Navbar = () => {
 
   return (
     <div className="fixed w-full pt-5">
-      <nav className="container flex items-center justify-between w-full px-4 mx-auto gap-x-10">
+      <nav className="container flex items-center justify-between w-full px-4 mx-auto gap-x-5">
         <div className="flex w-full">
           <SatelliteLogo />
 
           <div className="flex items-center w-full ml-10">
-            <div className="hidden space-x-5 lg:block">
+            <div className="hidden space-x-2 lg:block">
               <label
                 htmlFor={GETTING_STARTED_MODAL}
                 className="btn btn-link modal-button"
@@ -71,6 +71,15 @@ export const Navbar = () => {
               >
                 FAQ
               </label>
+              <button className="btn btn-link modal-button">
+                <a
+                  href="https://axelar.network/blog/liquidity-pools-for-bridged-assets-via-axelar"
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                >
+                  Pools
+                </a>
+              </button>
               <label
                 htmlFor={TOS_MODAL}
                 className="btn btn-link modal-button"
