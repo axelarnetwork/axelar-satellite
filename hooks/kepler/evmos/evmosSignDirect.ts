@@ -8,8 +8,8 @@ import {
   generatePostBodyBroadcast,
 } from "@evmos/provider";
 import Long from "long";
-import { getCosmosChains } from "../../config/web3";
-import { CosmosChain } from "../../config/web3/cosmos/interface";
+import { getCosmosChains } from "../../../config/web3";
+import { CosmosChain } from "../../../config/web3/cosmos/interface";
 
 export const evmosSignDirect = async (
   amount: string,
