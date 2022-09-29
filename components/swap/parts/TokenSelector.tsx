@@ -285,7 +285,7 @@ export const TokenSelector = () => {
           onClick={isOnTS ? switchKeplr : switchTS}
         >
           <span className="mr-1 text-xs text-gray-500">
-            Switch to {isOnTS ? "Keplr" : "Terra Stations"}
+            Switch to {isOnTS ? "Keplr" : "Terra Station"}
           </span>
           <Image
             src={`/assets/ui/forward-arrow-link.svg`}
