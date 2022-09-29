@@ -7,10 +7,10 @@ import { OfflineSigner } from "@cosmjs/proto-signing";
 import { useSwapStore, useWalletStore } from "../../store";
 import { getCosmosChains } from "../../config/web3";
 import { CosmosChain } from "../../config/web3/cosmos/interface";
-import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import { connectToKeplr } from "./utils/handleOnKeplrConnect";
 import { useIsTerraInstalled } from "../../hooks/terra/useIsTerraInstalled";
 import { useIsTerraConnected } from "../../hooks/terra/useIsTerraConnected";
+import { useConnectTerraStation } from "../../hooks/terra/useConnectTerraStation";
 
 const DownloadButton = () => (
   <span>
@@ -39,9 +39,9 @@ export const Web3Modal = () => {
     wagmiConnected,
     setUserSelectionForCosmosWallet,
   } = useWalletStore((state) => state);
-  const terraWallet = useTerraWallet();
   const isTerraInstalled = useIsTerraInstalled();
   const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
+  const connectTerraStation = useConnectTerraStation();
 
   // close modal upon successful metamask connection
   useEffect(() => {
@@ -73,14 +73,7 @@ export const Web3Modal = () => {
   }
 
   async function handleOnTerraStationConnect() {
-    if (!isTerraInstalled) {
-      window.open("https://chrome.google.com/webstore/detail/terra-station-wallet/aiifbnbfobpmeekipheeijimdpnlpgpp", "_blank")
-      return;
-    }
-    try {
-      terraWallet.connect();
-      setUserSelectionForCosmosWallet("terraStation");
-    } catch (e) {}
+    connectTerraStation();
   }
 
   async function handleOnKeplrConnect() {

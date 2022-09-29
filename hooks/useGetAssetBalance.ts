@@ -89,7 +89,7 @@ export const useGetAssetBalance = () => {
         );
       })
       .catch(() => setTerraStationBalance(null));
-  }, [srcChain, status, asset, isTerraConnected]);
+  }, [srcChain, status, asset, isTerraConnected, userSelectionForCosmosWallet]);
 
   const setKeplrBalance = useCallback(async (): Promise<void> => {
     if (!keplrConnected || !asset || !srcChain) {

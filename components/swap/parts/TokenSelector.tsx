@@ -25,6 +25,7 @@ import { useSwitchNetwork } from "wagmi";
 import { addTokenToMetamask } from "../states";
 import { getWagmiChains } from "../../../config/web3";
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
+import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -78,6 +79,7 @@ export const TokenSelector = () => {
     terraStationBalance,
     keplrBalance,
   } = useGetAssetBalance();
+  const connectTerraStation = useConnectTerraStation();
   const [showBalance, setShowBalance] = useState(false);
   const [balanceToShow, setBalanceToShow] = useState("");
   const ref = useRef(null);
@@ -150,10 +152,17 @@ export const TokenSelector = () => {
       setBalanceToShow("");
       return;
     }
+    console.log("is terra",isTerra,isAxelarnet);
 
     if (isEVM) setBalanceToShow(balance);
-    else if (isTerra) setBalanceToShow(terraStationBalance as string);
-    else if (isAxelarnet) setBalanceToShow(keplrBalance);
+    else if (isTerra) {
+      setUserSelectionForCosmosWallet("terraStation");
+      setBalanceToShow(terraStationBalance as string)
+    }
+    else if (isAxelarnet) {
+      setUserSelectionForCosmosWallet("keplr");
+      setBalanceToShow(keplrBalance);
+    }
   }, [
     srcChain,
     balance,
@@ -212,8 +221,10 @@ export const TokenSelector = () => {
     if (!balanceToShow || !showBalance) {
       let textToShow;
       if (srcChain.module === "evm") textToShow = "Metamask";
-      else if (srcChain?.chainName.toLowerCase() === "terra")
-        textToShow = "TS or Keplr";
+      else if (srcChain?.chainName.toLowerCase() === "terra") {
+        if (userSelectionForCosmosWallet === "keplr") textToShow = "Keplr";
+        else textToShow = "Terra Station";
+      }
       else textToShow = "Keplr";
       return (
         <label
@@ -277,6 +288,7 @@ export const TokenSelector = () => {
         setKeplrBalance();
       };
       const switchTS = async () => {
+        if (!isTerraConnected) connectTerraStation();
         setUserSelectionForCosmosWallet("terraStation");
       };
       return (
