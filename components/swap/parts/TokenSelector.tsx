@@ -160,7 +160,6 @@ export const TokenSelector = () => {
       setBalanceToShow(terraStationBalance as string)
     }
     else if (isAxelarnet) {
-      setUserSelectionForCosmosWallet("keplr");
       setBalanceToShow(keplrBalance);
     }
   }, [
