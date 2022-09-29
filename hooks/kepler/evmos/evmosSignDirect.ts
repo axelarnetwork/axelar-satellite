@@ -91,5 +91,6 @@ export const evmosSignDirect = async (
       postOptions
     );
     let response = await broadcastPost.json();
+    return response;
   }
 };

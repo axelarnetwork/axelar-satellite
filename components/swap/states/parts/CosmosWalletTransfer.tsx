@@ -29,8 +29,7 @@ import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { SwapStatus } from "../../../../utils/enums";
 import { SpinnerRoundFilled } from "spinners-react";
 import { renderGasFee } from "../../../../utils/renderGasFee";
-import evmosjs from "evmosjs";
-import { evmosSignDirect } from "../../../../hooks/evmos/evmosSignDirect";
+import { evmosSignDirect } from "../../../../hooks/kepler/evmos/evmosSignDirect";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
