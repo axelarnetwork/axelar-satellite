@@ -35,6 +35,19 @@ export function buildEvmTransferCompletedRoomId(
   return JSON.stringify(topic, Object.keys(topic).sort());
 }
 
+export function buildAxelarTransferCompletedRoomId(
+  recipient: string,
+  assetFullDenom: string
+): string {
+  const topic = {
+    type: "axelar-transfer-complete",
+    recipient: `\"${recipient}\"`,
+    denom: assetFullDenom,
+  };
+
+  return JSON.stringify(topic, Object.keys(topic).sort());
+}
+
 function mapCosmosTestnetChains(chainId: string) {
   switch (chainId) {
     case "terra-2":

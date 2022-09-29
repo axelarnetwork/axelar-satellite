@@ -41,6 +41,7 @@ export const CommonSEO: React.FC<CommonSEOProps> = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={twImage} />
+      <meta name="terra-wallet" />
       <link
         rel="canonical"
         href={

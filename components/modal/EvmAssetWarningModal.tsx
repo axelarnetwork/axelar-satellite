@@ -5,7 +5,7 @@ import cn from "classnames";
 
 import { tokenContractDocs } from "../../config/constants";
 import { useGetAssetBalance } from "../../hooks";
-import { getSelectedAssetSymbol, useSwapStore } from "../../store";
+import { getSelectedAssetName, getSelectedAssetNameDestChain, getSelectedAssetSymbol, getSelectedAssetSymbolDestinationChain, isAXLToken, useSwapStore } from "../../store";
 import { copyToClipboard } from "../../utils";
 import { SwapStatus } from "../../utils/enums";
 import { AddressShortener } from "../common";
@@ -14,25 +14,26 @@ export const EvmAssetWarningModal = () => {
   const { asset, destChain, resetState, srcChain, swapStatus } = useSwapStore(
     (state) => state
   );
-  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+  const selectedAssetSymbolOnSrcChain = useSwapStore(getSelectedAssetSymbol);
+  const selectedAssetSymbolOnDestinationChain = useSwapStore(getSelectedAssetSymbolDestinationChain);
+  const selectedAssetNameSrcChain = useSwapStore(getSelectedAssetName);
+  const selectedAssetNameOnDestinationChain = useSwapStore(getSelectedAssetNameDestChain);
+  const hasSelectedAXLToken = useSwapStore(isAXLToken);
 
   const { balance } = useGetAssetBalance();
   const { address } = useAccount();
 
   const [showAssetWarning, setShowAssetWarning] = useState(false);
-  const [userAcknowledged, setUserAcknowledged] = useState(false);
 
   useEffect(() => {
-    if (userAcknowledged) return;
     if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) {
-      userAcknowledged && setUserAcknowledged(false);
       return;
     }
     if (!srcChain || !destChain) return;
     if (![srcChain?.module, destChain?.module].includes("evm")) return;
 
     setShowAssetWarning(true);
-  }, [setShowAssetWarning, userAcknowledged, swapStatus]);
+  }, [setShowAssetWarning, swapStatus]);
 
   function handleOnResetState() {
     setShowAssetWarning(false);
@@ -40,9 +41,8 @@ export const EvmAssetWarningModal = () => {
   }
 
   const onConfirm = useCallback(() => {
-    setUserAcknowledged(true);
     setShowAssetWarning(false);
-  }, [setShowAssetWarning, setUserAcknowledged]);
+  }, [setShowAssetWarning]);
 
   const tokenAddress = asset?.chain_aliases[srcChain.chainName.toLowerCase()]
     ?.tokenAddress as string;
@@ -63,7 +63,7 @@ export const EvmAssetWarningModal = () => {
           <div>
             <div>
               Only send{" "}
-              <span className="font-bold">{selectedAssetSymbol} </span>
+              <span className="font-bold">{selectedAssetNameSrcChain} {hasSelectedAXLToken ? `(might be ${selectedAssetSymbolOnSrcChain} in Metamask)` : null} </span>
               to this deposit address on
               <strong className="capitalize"> {srcChain.chainName}</strong>
               <div>Any other tokens sent to this address will be lost.</div>
@@ -72,7 +72,7 @@ export const EvmAssetWarningModal = () => {
             <div className="py-2 text-center">
               <div className="mt-2">
                 <div className="font-light text-gray-300">
-                  {selectedAssetSymbol} token contract address |{" "}
+                  {selectedAssetNameSrcChain} token contract address |{" "}
                   <strong className="capitalize">{srcChain.chainName}</strong>
                   <div className="flex items-center justify-center font-bold gap-x-2">
                     <AddressShortener value={tokenAddress} />
@@ -94,7 +94,7 @@ export const EvmAssetWarningModal = () => {
                   <div className="font-light text-gray-300">
                     Connected wallet balance |{" "}
                     <strong className="">
-                      {balance} {selectedAssetSymbol}
+                      {balance} {hasSelectedAXLToken ? selectedAssetNameSrcChain : selectedAssetSymbolOnSrcChain}
                     </strong>
                     <div className="flex items-center justify-center font-bold gap-x-2">
                       <AddressShortener value={address} />
@@ -120,10 +120,10 @@ export const EvmAssetWarningModal = () => {
           <div className="mt-5">
             <span>
               The recipient will receive{" "}
-              <span className="font-bold">{selectedAssetSymbol}</span> on{" "}
+              <span className="font-bold">{selectedAssetNameOnDestinationChain}</span> on{" "}
               <span className="capitalize">{destChain.chainName}</span>. If your
               recipient doesn’t support{" "}
-              <span className="font-bold">{selectedAssetSymbol}</span>{" "}
+              <span className="font-bold">{selectedAssetNameOnDestinationChain}</span>{" "}
               <strong className="font-bold text-red-400">
                 the funds will be lost!
               </strong>

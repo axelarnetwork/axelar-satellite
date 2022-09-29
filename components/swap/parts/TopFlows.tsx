@@ -5,7 +5,7 @@ import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapStatus } from "../../../utils/enums";
 
-const Arrow = () => (
+export const Arrow = () => (
   <svg
     width="16"
     height="17"
@@ -59,7 +59,7 @@ export const TopFlows = () => {
 
   if (![SwapStatus.IDLE].includes(swapStatus)) return null;
 
-  function handleOnFlow1() {
+  function handleOnFlow2() {
     const avax = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
@@ -76,7 +76,7 @@ export const TopFlows = () => {
     setMenuOpened(false);
   }
 
-  function handleOnFlow2() {
+  function handleOnFlow3() {
     const osmo = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
@@ -93,15 +93,15 @@ export const TopFlows = () => {
     setMenuOpened(false);
   }
 
-  function handleOnFlow3() {
+  function handleOnFlow1() {
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("polygon")
+      chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const osmo = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("osmosis")
+      chain.chainName.toLowerCase().includes("axelar")
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
-      asset.common_key[ENVIRONMENT].includes("wmatic")
+      asset.common_key[ENVIRONMENT].includes("uaxl")
     ) as AssetConfig;
 
     setAsset(asset);
@@ -138,6 +138,33 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
+              src={`/assets/tokens/uaxl.logo.svg`}
+              layout="intrinsic"
+              width={35}
+              height={35}
+            />
+            <Arrow />
+            <Image
+              src={`/assets/chains/axelar.logo.svg`}
+              layout="intrinsic"
+              width={35}
+              height={35}
+            />
+          </div>
+        </li>
+        <li
+          onClick={handleOnFlow2}
+          className="border rounded-lg border-[#00b0f4]"
+        >
+          <div className="flex">
+            <Image
+              src={`/assets/chains/ethereum.logo.svg`}
+              layout="intrinsic"
+              width={35}
+              height={35}
+            />
+            <Arrow />
+            <Image
               src={`/assets/tokens/uausdc.logo.svg`}
               layout="intrinsic"
               width={35}
@@ -153,7 +180,7 @@ export const TopFlows = () => {
           </div>
         </li>
         <li
-          onClick={handleOnFlow2}
+          onClick={handleOnFlow3}
           className="border rounded-lg border-[#00b0f4]"
         >
           <div className="flex">
@@ -179,33 +206,7 @@ export const TopFlows = () => {
             />
           </div>
         </li>
-        <li
-          onClick={handleOnFlow3}
-          className="border rounded-lg border-[#00b0f4]"
-        >
-          <div className="flex">
-            <Image
-              src={`/assets/chains/polygon.logo.svg`}
-              layout="intrinsic"
-              width={35}
-              height={35}
-            />
-            <Arrow />
-            <Image
-              src={`/assets/tokens/wmatic-wei.logo.svg`}
-              layout="intrinsic"
-              width={35}
-              height={35}
-            />
-            <Arrow />
-            <Image
-              src={`/assets/chains/osmosis.logo.svg`}
-              layout="intrinsic"
-              width={35}
-              height={35}
-            />
-          </div>
-        </li>
+
       </ul>
     </div>
   );
