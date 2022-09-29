@@ -52,7 +52,7 @@ export const CosmosWalletTransfer = () => {
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const { setKeplrBalance } = useGetAssetBalance();
-  const isTerraConnected = useIsTerraConnected();
+  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
 
   // used to hide wallets when transaction has been triggered
   const [isTxOngoing, setIsTxOngoing] = useState(false);

@@ -7,10 +7,15 @@ import {
 export const useIsTerraConnected = () => {
   const { status } = useTerraWallet();
   const [isTerraConnected, setIsTerraConnected] = useState(false);
+  const [isTerraInitializingOrConnected, setIsTerraInitializingOrConnected] = useState(true);
 
   useEffect(() => {
     setIsTerraConnected(status === WalletStatus.WALLET_CONNECTED);
+    setIsTerraInitializingOrConnected([WalletStatus.WALLET_CONNECTED, WalletStatus.INITIALIZING].includes(status));
   }, [status]);
 
-  return isTerraConnected;
+  return {
+    isTerraConnected,
+    isTerraInitializingOrConnected
+  };
 };

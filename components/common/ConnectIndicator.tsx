@@ -5,7 +5,7 @@ import { useIsTerraConnected } from "../../hooks/terra/useIsTerraConnected";
 
 export const ConnectIndicator = () => {
   const { wagmiConnected, keplrConnected } = useWalletStore();
-  const isTerraConnected = useIsTerraConnected();
+  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
 
   return (
     <div className="flex items-center flex-column">

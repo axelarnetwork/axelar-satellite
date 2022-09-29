@@ -38,9 +38,10 @@ export const useGetAssetBalance = () => {
   const srcChainId = useSwapStore(getSrcChainId);
   const srcChain = useSwapStore((state) => state?.srcChain);
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
-  const isTerraConnected = useIsTerraConnected();
+  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
 
   const [balance, setBalance] = useState<string>("0");
+  const [keplrBalance, setKeplrStateBalance] = useState<string>("0");
   const [terraStationBalance, setTerraStationBalance] = useState<string | null>("0");
 
   const { data, isSuccess } = useContractRead({
@@ -91,10 +92,10 @@ export const useGetAssetBalance = () => {
   }, [srcChain, status, asset, isTerraConnected]);
 
   const setKeplrBalance = useCallback(async (): Promise<void> => {
-    if (!keplrConnected) return;
-    if (!asset) return;
-    if (!srcChain) return;
-    // if (!allowOverride && (srcChain.chainName.toLowerCase() === "terra" && userSelectionForCosmosWallet === "terraStation")) return;
+    if (!keplrConnected || !asset || !srcChain) {
+      setBalance("0");
+      return;
+    }
 
     setLoading(true);
 
@@ -135,17 +136,19 @@ export const useGetAssetBalance = () => {
         fullChainConfig.rpc
       );
       const balance = formatUnits(res?.amount as string, decimals) || "0";
-      setBalance(balance);
+      console.log("setting balance",balance);
+      setKeplrStateBalance(balance);
     } catch (e: any) {
-      setBalance("0");
+      setKeplrStateBalance("0");
       const msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
       toast.error(msg);
     }
     setLoading(false);
-  }, [asset, srcChain, allAssets, keplrConnected, userSelectionForCosmosWallet]);
+  }, [asset, srcChain, allAssets, keplrConnected]);
 
   return {
     balance,
+    keplrBalance,
     terraStationBalance,
     setKeplrBalance,
     loading

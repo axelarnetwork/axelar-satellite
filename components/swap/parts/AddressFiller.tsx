@@ -21,7 +21,7 @@ export const AddressFiller = () => {
   const isEvm = destChain?.module === "evm";
   const keplerWallet = useGetKeplerWallet();
   const terraWallet = useTerraWallet();
-  const isTerraConnected = useIsTerraConnected();
+  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
   const { userSelectionForCosmosWallet } = useWalletStore();
 
   function fillEvmDestinationAddress() {

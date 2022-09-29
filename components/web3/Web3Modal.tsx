@@ -41,7 +41,7 @@ export const Web3Modal = () => {
   } = useWalletStore((state) => state);
   const terraWallet = useTerraWallet();
   const isTerraInstalled = useIsTerraInstalled();
-  const isTerraConnected = useIsTerraConnected();
+  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
 
   // close modal upon successful metamask connection
   useEffect(() => {
