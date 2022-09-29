@@ -136,7 +136,6 @@ export const useGetAssetBalance = () => {
         fullChainConfig.rpc
       );
       const balance = formatUnits(res?.amount as string, decimals) || "0";
-      console.log("setting balance",balance);
       setKeplrStateBalance(balance);
     } catch (e: any) {
       setKeplrStateBalance("0");
