@@ -104,7 +104,12 @@ export const useGetAssetBalance = () => {
       setBalance(balance);
     } catch (e: any) {
       setBalance("0");
-      const msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
+      let msg;
+      if (e?.toString()?.includes("Ledger is not compatible")) {
+        msg = e?.toString();
+      } else {
+        msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
+      }
       toast.error(msg);
     }
     setLoading(false);

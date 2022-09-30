@@ -27,15 +27,13 @@ export const evmosSignDirect = async (
   };
 
   const fetchSenderResults = await fetch(
-    `${rest}/cosmos/auth/v1beta1/accounts/${senderAddress}`
+    `${rest}/cosmos/auth/v1beta1/accounts/${senderAddress}?chain=evmos`
   ).then((res) => res.json());
   const { account } = fetchSenderResults;
   const { base_account } = account;
   const { address, pub_key, account_number, sequence } = base_account;
   const pubKeyType = pub_key["@type"];
   const pubKeyKey = pub_key.key;
-  console.log("sender information", fetchSenderResults);
-  debugger;
   const sender = {
     accountAddress: address,
     sequence: sequence,
@@ -87,10 +85,9 @@ export const evmosSignDirect = async (
     };
 
     let broadcastPost = await fetch(
-      `${rest}${generateEndpointBroadcast()}`,
+      `${rest}${generateEndpointBroadcast()}?chain=evmos`,
       postOptions
     );
-    let response = await broadcastPost.json();
-    return response;
+    return await broadcastPost.json().then(res => ({ transactionHash: res?.tx_response?.txhash }));
   }
 };

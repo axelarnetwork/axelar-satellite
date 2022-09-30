@@ -214,14 +214,14 @@ export const CosmosWalletTransfer = () => {
           .toString(),
       };
       evmosSignDirect(sendCoin.amount, sendCoin.denom, sourceAddress, depositAddress)
-      .then((res) => {
-        console.log("CosmosWalletTransfer: IBC transfer for EvmosJS");
+      .then((res: any) => {
+        console.log("CosmosWalletTransfer: IBC transfer for EvmosJS",res);
+        
         setTxInfo({
           sourceTxHash: res.transactionHash,
         });
 
         setIsTxOngoing(true);
-        // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
       })
       .catch((error) => console.log(error));
     } else {

@@ -3,7 +3,7 @@ import { CosmosChain } from "../interface";
 
 export default   {
     rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=evmos",
-    rest: "https://rest-evmos.ecostake.com",
+    rest: "https://rest.bd.evmos.org:1317", //"https://mainnet-lcd-router.axelar-dev.workers.dev",
     chainId: "evmos_9001-2",
     chainName: "Evmos",
     stakeCurrency: {
