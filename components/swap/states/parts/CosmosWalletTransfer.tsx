@@ -29,6 +29,7 @@ import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { SwapStatus } from "../../../../utils/enums";
 import { SpinnerRoundFilled } from "spinners-react";
 import { renderGasFee } from "../../../../utils/renderGasFee";
+import { evmosSignDirect } from "../../../../hooks/kepler/evmos/evmosSignDirect";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -205,6 +206,24 @@ export const CosmosWalletTransfer = () => {
       } catch (error: any) {
         throw new Error(error);
       }
+    } else if (srcChain.chainName.toLowerCase() === "evmos") {
+      const sendCoin = {
+        denom: currentAsset?.ibcDenom as string,
+        amount: utils
+          .parseUnits(tokensToTransfer, currentAsset?.decimals)
+          .toString(),
+      };
+      evmosSignDirect(sendCoin.amount, sendCoin.denom, sourceAddress, depositAddress)
+      .then((res: any) => {
+        console.log("CosmosWalletTransfer: IBC transfer for EvmosJS",res);
+        
+        setTxInfo({
+          sourceTxHash: res.transactionHash,
+        });
+
+        setIsTxOngoing(true);
+      })
+      .catch((error) => console.log(error));
     } else {
       result = await cosmjs
         .sendIbcTokens(
