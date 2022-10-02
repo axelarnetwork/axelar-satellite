@@ -12,6 +12,9 @@
   "dependencies": {
     "@axelar-network/axelarjs-sdk": "0.9.1",
     "@cosmjs/stargate": "^0.28.11",
+    "@evmos/proto": "^0.1.22",
+    "@evmos/provider": "^0.2.6",
+    "@evmos/transactions": "^0.2.8",
     "@keplr-wallet/cosmos": "^0.10.13",
     "animate.css": "^4.1.1",
     "bech32": "^2.0.0",
