@@ -21,7 +21,7 @@ export default {
   feeCurrencies: [
     { coinDenom: "AXL", coinMinimalDenom: "uaxl", coinDecimals: 6 },
   ],
-  gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
+  gasPriceStep: { low: 0.007, average: 0.007, high: 0.01 },
   features: ["ibc-transfer"],
   chainToAxelarChannelId: "",
 } as CosmosChain;
