@@ -45,7 +45,9 @@ export const getCosmosChains = (allAssets: AssetConfig[]) => {
         ...allAssets
           .filter(
             (assetConfig) =>
-              assetConfig.chain_aliases[cosmosChain.chainIdentifier]
+              assetConfig.chain_aliases[cosmosChain.chainIdentifier] &&
+              assetConfig.common_key[ENVIRONMENT] !==
+                cosmosChain?.currencies[0]?.coinMinimalDenom
           )
           .map((assetConfig) => {
             const asset =
