@@ -17,7 +17,14 @@ export default {
   bip44: {
     coinType: 118,
   },
-  currencies: [{ coinDenom: "AXL", coinMinimalDenom: "uaxl", coinDecimals: 6 }],
+  currencies: [
+    {
+      coinDenom: "AXL",
+      coinMinimalDenom: "uaxl",
+      coinDecimals: 6,
+      coinGeckoId: "AXL",
+    },
+  ],
   feeCurrencies: [
     { coinDenom: "AXL", coinMinimalDenom: "uaxl", coinDecimals: 6 },
   ],
