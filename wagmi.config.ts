@@ -1,5 +1,5 @@
 import { createClient, configureChains, defaultChains } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
@@ -20,7 +20,7 @@ const { chains, provider } = configureChains(
 export const wagmiClient = createClient({
   autoConnect: true,
   connectors: [
-    new InjectedConnector({
+    new MetaMaskConnector({
       chains,
       options: {
         shimDisconnect: true,
