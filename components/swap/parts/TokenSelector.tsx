@@ -152,7 +152,6 @@ export const TokenSelector = () => {
       setBalanceToShow("");
       return;
     }
-    console.log("is terra",isTerra,isAxelarnet);
 
     if (isEVM) setBalanceToShow(balance);
     else if (isTerra) {
