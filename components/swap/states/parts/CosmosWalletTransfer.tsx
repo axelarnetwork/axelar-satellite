@@ -46,6 +46,7 @@ import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/
 import { TERRA_IBC_GAS_LIMIT } from ".";
 import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
 import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
+import { evmosSignDirect } from "../../../../hooks/kepler/evmos/evmosSignDirect";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -236,6 +237,24 @@ export const CosmosWalletTransfer = () => {
       } catch (error: any) {
         throw new Error(error);
       }
+    } else if (srcChain.chainName.toLowerCase() === "evmos") {
+      const sendCoin = {
+        denom: currentAsset?.ibcDenom as string,
+        amount: utils
+          .parseUnits(tokensToTransfer, currentAsset?.decimals)
+          .toString(),
+      };
+      evmosSignDirect(sendCoin.amount, sendCoin.denom, sourceAddress, depositAddress)
+      .then((res: any) => {
+        console.log("CosmosWalletTransfer: IBC transfer for EvmosJS",res);
+        
+        setTxInfo({
+          sourceTxHash: res.transactionHash,
+        });
+
+        setIsTxOngoing(true);
+      })
+      .catch((error) => console.log(error));
     } else {
       result = await cosmjs
         .sendIbcTokens(

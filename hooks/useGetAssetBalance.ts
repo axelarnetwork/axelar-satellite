@@ -138,8 +138,13 @@ export const useGetAssetBalance = () => {
       const balance = formatUnits(res?.amount as string, decimals) || "0";
       setKeplrStateBalance(balance);
     } catch (e: any) {
-      setKeplrStateBalance("0");
-      const msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
+      setBalance("0");
+      let msg;
+      if (e?.toString()?.includes("Ledger is not compatible")) {
+        msg = e?.toString();
+      } else {
+        msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
+      }
       toast.error(msg);
     }
     setLoading(false);
