@@ -12,6 +12,7 @@ const getWagmiChainOverride = (wagmiNetwork: string) => {
   const map: Record<string, string> = {
     ropsten: "ethereum",
     homestead: "ethereum",
+    goerli: "ethereum",
   };
   return map[wagmiNetwork] || wagmiNetwork;
 };
@@ -25,7 +26,7 @@ export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   const chain = chains.find(
     (_chain) =>
       getWagmiChainOverride(_chain.network) ===
-      state.srcChain?.chainIdentifier?.[ENVIRONMENT]
+      state.srcChain?.chainName.toLowerCase()
   );
   return chain?.id;
 });
@@ -36,7 +37,7 @@ export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
   const chain = chains.find(
     (_chain) =>
       getWagmiChainOverride(_chain.network) ===
-      state.destChain.chainIdentifier[ENVIRONMENT]
+      state.destChain?.chainName.toLowerCase()
   );
   return chain?.id;
 });
