@@ -4,6 +4,7 @@ import React from "react";
 import toast from "react-hot-toast";
 
 import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
+import { DepositAddressPayload } from "../../../hooks/api";
 import {
   getReservedAddresses,
   getSelectedAssetSymbol,
@@ -74,7 +75,9 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
       toChain: destChain.chainName,
       asset: asset?.common_key[ENVIRONMENT],
       destAddress,
-    });
+      // @ts-ignore
+      transferType: asset.is_native_asset ? "wrap" : "deposit-address"
+    } as DepositAddressPayload);
   }
 
   function checkDestAddressFormat() {
