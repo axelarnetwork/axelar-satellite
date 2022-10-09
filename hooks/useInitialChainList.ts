@@ -27,6 +27,7 @@ type RouteQuery = {
 
 export const useInitialChainList = () => {
   const {
+    allAssets,
     setAllChains,
     setSrcChain,
     setDestChain,
@@ -36,23 +37,29 @@ export const useInitialChainList = () => {
     srcChain,
     destChain,
     destAddress,
+    rehydrateAssets,
+    setRehydrateAssets,
   } = useSwapStore();
 
   const router = useRouter();
 
   useEffect(() => {
     if (!router.isReady) return;
-    Promise.all([loadInitialChains(), loadInitialAssets()]).then(
-      ([chains, asset]) => {
-        updateRoutes(
-          chains.srcChainName,
-          chains.destChainName,
-          asset.assetDenom,
-          (router.query.destination_address as string) || ""
-        );
-      }
-    );
-  }, [router.isReady]);
+    if (rehydrateAssets) {
+      Promise.all([loadInitialChains(), loadInitialAssets()])
+        .then(([chains, asset]) => {
+          updateRoutes(
+            chains.srcChainName,
+            chains.destChainName,
+            asset.assetDenom,
+            (router.query.destination_address as string) || ""
+          );
+        })
+        .then(() => {
+          setRehydrateAssets(false);
+        });
+    }
+  }, [router.isReady, rehydrateAssets]);
 
   // useEffect(() => {
   //   if (
@@ -89,15 +96,13 @@ export const useInitialChainList = () => {
   // TODO: load chains upon project installation
   async function loadInitialChains() {
     return loadChains({ environment }).then((chains) => {
-
       function updateChainAssets(chainInfo: ChainInfo) {
-      
         const filteredAssetList: AssetConfig[] = nativeAssets;
 
-        console.log("filterd asset list",filteredAssetList);
-    
+        console.log("filterd asset list", filteredAssetList);
+
         const assetsList: AssetInfo[] = [];
-    
+
         filteredAssetList.forEach((asset) => {
           const assetToPush: AssetInfo = cloneDeep(
             asset.chain_aliases[chainInfo.chainName.toLowerCase()]
@@ -111,7 +116,7 @@ export const useInitialChainList = () => {
         });
 
         // console.log("udpated assets list",assetsList);
-    
+
         return assetsList;
       }
       const sortedChains = chains.sort((a, b) =>
@@ -120,8 +125,13 @@ export const useInitialChainList = () => {
       const filteredChains = sortedChains.filter(
         (chain) => !DISABLED_CHAIN_NAMES.includes(chain.chainName.toLowerCase())
       );
-      filteredChains.forEach(chain => {chain.assets = [...updateChainAssets(chain), ...chain.assets as AssetInfo[]]})
-      console.log("filtered chains",filteredChains)
+      filteredChains.forEach((chain) => {
+        chain.assets = [
+          ...updateChainAssets(chain),
+          ...(chain.assets as AssetInfo[]),
+        ];
+      });
+      console.log("filtered chains", filteredChains);
       setAllChains(filteredChains);
 
       let { source, destination } = router.query as RouteQuery;
@@ -198,7 +208,7 @@ export const useInitialChainList = () => {
 
   async function loadInitialAssets() {
     return loadAssets({ environment }).then((assets: AssetConfig[]) => {
-      console.log("all assets",[...nativeAssets, ...assets]);
+      console.log("all assets", [...nativeAssets, ...assets]);
       setAllAssets([...nativeAssets, ...assets]);
 
       const { asset_denom } = router.query as RouteQuery;

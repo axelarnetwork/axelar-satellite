@@ -88,7 +88,7 @@ export const TokenSelector = () => {
     } else {
       setAsset(asset);
     }
-  }, [router.query, selectableAssetList]);
+  }, [router.query, selectableAssetList, router.isReady, asset]);
 
   useEffect(() => {
     if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
@@ -97,7 +97,7 @@ export const TokenSelector = () => {
       asset.common_key[ENVIRONMENT].toLowerCase().includes(searchAssetInput)
     );
     setFilteredAssets(chains);
-  }, [searchAssetInput]);
+  }, [searchAssetInput, selectableAssetList]);
 
   useEffect(() => {
     if (!asset) return;
@@ -140,6 +140,10 @@ export const TokenSelector = () => {
     if (dropdownOpen) setFilteredAssets(selectableAssetList);
     setDropdownOpen(!dropdownOpen);
   }
+
+  useEffect(() => {
+    setFilteredAssets(selectableAssetList);
+  }, [selectableAssetList]);
 
   async function handleOnAssetChange(asset: AssetConfig) {
     // await router.push({

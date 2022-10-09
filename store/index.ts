@@ -138,6 +138,7 @@ interface SwapState {
   swapOrigin: SwapOrigin;
   tokensToTransfer: string;
   txInfo: TxInfo;
+  rehydrateAssets: boolean;
 }
 
 interface SwapStore extends SwapState {
@@ -155,6 +156,7 @@ interface SwapStore extends SwapState {
   setTokensToTransfer: (tokens: string) => void;
   setTxInfo: (_txInfo: TxInfo) => void;
   resetState: () => void;
+  setRehydrateAssets: (value: boolean) => void;
 }
 
 /**
@@ -177,6 +179,7 @@ const initialState: SwapState = {
     destTxHash: "",
     destStartBlockNumber: 1,
   },
+  rehydrateAssets: true,
 };
 
 export const useSwapStore = create<SwapStore>()(
@@ -275,16 +278,16 @@ export const useSwapStore = create<SwapStore>()(
         "setDestAddress"
       ),
     setAsset: (asset) => {
-      console.log("asset to set in store",asset);
+      console.log("asset to set in store", asset);
       set(
         {
           asset,
         },
         false,
         "setAsset"
-      )
+      );
     },
-    
+
     setAssetList: (assets) =>
       set(
         {
@@ -357,10 +360,15 @@ export const useSwapStore = create<SwapStore>()(
           asset: get().allAssets.find((asset) =>
             asset?.common_key[ENVIRONMENT].includes("usdc")
           ),
+          rehydrateAssets: true,
         },
         false,
         "resetState"
       ),
+    setRehydrateAssets: (value: boolean) =>
+      set({
+        rehydrateAssets: value,
+      }),
   }))
 );
 
