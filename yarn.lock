@@ -15,11 +15,17 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@axelar-network/axelarjs-sdk@0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.9.1.tgz#bcd78f48eeba29a96ca9866339e426f7b75c2ff1"
-  integrity sha512-BqbAWvCNFM6E8DkVwFy5JYilXD767H0RilrIoA/rjx6pXShTfFYZITnzOePqRAszCsni54ZuW9UHT+i8step+w==
+"@axelar-network/axelar-cgp-solidity@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelar-cgp-solidity/-/axelar-cgp-solidity-4.3.0.tgz#90b42b261759fe6b229932152a0911cee071a6ee"
+  integrity sha512-0cCgCFtxnipyzSplPnj/HxDx4DqqHGEr+J7M7NWKM1fXvfS4t/70aCAw/h9GYW8dZ3BmKOqKAYQCNpmP+2Oa+w==
+
+"@axelar-network/axelarjs-sdk@0.11.2-alpha.5":
+  version "0.11.2-alpha.5"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.11.2-alpha.5.tgz#a6c928ad359d422cc3856e6f8255b9549920a11c"
+  integrity sha512-ylhj8t5sYOpx7mZspuX0HCh8DGmkX/dphABBikhH5m0Lwr/EORyZ16X0gQtYYLYCjoMODa/FqmjWOJO1MDX67A==
   dependencies:
+    "@axelar-network/axelar-cgp-solidity" "^4.3.0"
     "@axelar-network/axelarjs-types" "^0.24.0"
     "@cosmjs/stargate" "^0.28.4"
     "@types/uuid" "^8.3.1"

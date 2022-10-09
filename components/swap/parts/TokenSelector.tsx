@@ -23,6 +23,10 @@ import { addTokenToMetamask } from "../states";
 import { getWagmiChains } from "../../../config/web3";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
+import {
+  NativeAssetConfig,
+  nativeAssets,
+} from "../../../config/nativeAssetList/testnet";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -84,7 +88,7 @@ export const TokenSelector = () => {
     } else {
       setAsset(asset);
     }
-  }, [router.query, selectableAssetList]);
+  }, [router.query, selectableAssetList, router.isReady, asset]);
 
   useEffect(() => {
     if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
@@ -93,7 +97,7 @@ export const TokenSelector = () => {
       asset.common_key[ENVIRONMENT].toLowerCase().includes(searchAssetInput)
     );
     setFilteredAssets(chains);
-  }, [searchAssetInput]);
+  }, [searchAssetInput, selectableAssetList]);
 
   useEffect(() => {
     if (!asset) return;
@@ -107,8 +111,21 @@ export const TokenSelector = () => {
 
   // update filtered assets state on chain change
   useEffect(() => {
-    setFilteredAssets(selectableAssetList);
-  }, [selectableAssetList]);
+    console.log("srcChain", srcChain);
+    let list;
+    if (srcChain.module === "evm") {
+      list = selectableAssetList.filter((asset) => {
+        // console.log("asset!",asset);
+        // @ts-ignore
+        return (
+          !(asset as NativeAssetConfig).is_native_asset ||
+          ((asset as NativeAssetConfig).is_native_asset &&
+            srcChain.chainName.toLowerCase() === asset.native_chain)
+        );
+      });
+    }
+    setFilteredAssets(list || selectableAssetList);
+  }, [selectableAssetList, srcChain]);
 
   // update asset balance from useGetAssetBalance hook if srcChain or asset changes
   useEffect(() => {
@@ -123,6 +140,10 @@ export const TokenSelector = () => {
     if (dropdownOpen) setFilteredAssets(selectableAssetList);
     setDropdownOpen(!dropdownOpen);
   }
+
+  useEffect(() => {
+    setFilteredAssets(selectableAssetList);
+  }, [selectableAssetList]);
 
   async function handleOnAssetChange(asset: AssetConfig) {
     // await router.push({
@@ -194,6 +215,7 @@ export const TokenSelector = () => {
         </div>
         <ul tabIndex={0} onClick={handleOnDropdownToggle}>
           {filteredAssets.map((asset) => {
+            console.log("asset in dropdown", filteredAssets);
             return (
               <li key={asset.common_key[ENVIRONMENT]}>
                 <button onClick={() => handleOnAssetChange(asset)}>
