@@ -45,8 +45,16 @@ export const useDetectDepositConfirmation = () => {
     console.log("token sent data", data);
 
     if (data.Type !== "axelar.evm.v1beta1.TokenSent") return;
-    if (data.Attributes.sender !== depositAddress) return;
-    if (data.Attributes.destination_address !== destAddress) return;
+    if (
+      data.Attributes.sender?.toLowerCase() !==
+      depositAddress?.toLocaleLowerCase()
+    )
+      return;
+    if (
+      data.Attributes.destination_address?.toLocaleLowerCase() !==
+      destAddress?.toLocaleLowerCase()
+    )
+      return;
     return true;
   }
 
@@ -64,7 +72,7 @@ export const useDetectDepositConfirmation = () => {
       roomId = buildTokenSentRoomId(
         srcChain.chainName.toLowerCase(),
         asset.chain_aliases[destChain.chainName.toLowerCase()]
-          .common_key as string,
+          .fullDenomPath as string,
         destAddress.toLowerCase(),
         destChain.chainName.toLowerCase(),
         depositAddress
@@ -80,7 +88,7 @@ export const useDetectDepositConfirmation = () => {
       console.log("data in bridge event", data);
       const depositConfirmationOk = checkPayloadForDepositConfirmation(data);
       const tokenSentOk = checkPayloadForTokenSent(data);
-      if ([depositConfirmationOk, tokenSentOk].every((isOk) => !isOk)) return;
+      if (!depositConfirmationOk && !tokenSentOk) return;
 
       if (destChain.module === "evm") {
         setTxInfo({
