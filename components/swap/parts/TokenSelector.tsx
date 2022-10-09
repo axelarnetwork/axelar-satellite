@@ -23,7 +23,10 @@ import { addTokenToMetamask } from "../states";
 import { getWagmiChains } from "../../../config/web3";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
-import { nativeAssets } from "../../../config/nativeAssetList/testnet";
+import {
+  NativeAssetConfig,
+  nativeAssets,
+} from "../../../config/nativeAssetList/testnet";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -115,8 +118,8 @@ export const TokenSelector = () => {
         // console.log("asset!",asset);
         // @ts-ignore
         return (
-          !asset.is_native_asset ||
-          (asset.is_native_asset &&
+          !(asset as NativeAssetConfig).is_native_asset ||
+          ((asset as NativeAssetConfig).is_native_asset &&
             srcChain.chainName.toLowerCase() === asset.native_chain)
         );
       });

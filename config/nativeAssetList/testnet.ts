@@ -1,6 +1,10 @@
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 
-export const nativeAssets: AssetConfig[] = [
+export interface NativeAssetConfig extends AssetConfig {
+  is_native_asset?: boolean;
+}
+
+export const nativeAssets: NativeAssetConfig[] = [
   {
     common_key: {
       devnet: "eth-wei",
