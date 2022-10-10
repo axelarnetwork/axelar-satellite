@@ -27,7 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
-      - uses: hmanzur/actions-set-secret@v2.0.0
+      - name: "Update secret"
+        uses: hmanzur/actions-set-secret@v2.0.0
         with:
           name: "NEXT_PUBLIC_DISABLED_CHAIN_NAMES_TESTNET"
           value: ${{ inputs.disabled_chains }}
