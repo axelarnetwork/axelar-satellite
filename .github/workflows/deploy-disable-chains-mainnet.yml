@@ -1,35 +1,35 @@
-name: Set Disabled Chains Mainnet
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_MAINNET }}
+# name: Set Disabled Chains Mainnet
+# env:
+#   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_MAINNET }}
 
-on:
-  workflow_dispatch:
-    inputs:
-      disabled_chains:
-        description: "Disabled chains"
-        required: true
-        default: ${{ secrets.NEXT_PUBLIC_DISABLED_CHAIN_NAMES_MAINNET }}
-        type: string
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-      - name: Remove existing maintainance env
-        run: vercel env rm NEXT_PUBLIC_DISABLED_CHAIN_NAMES --token ${{ secrets.VERCEL_TOKEN }} --yes
-      - name: Re-add maintainance env with chosen value
-        run: echo -n ${{ inputs.disabled_chains }} | vercel env add NEXT_PUBLIC_DISABLED_CHAIN_NAMES production --token ${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy
-  update_disabled_chains:
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-      - uses: hmanzur/actions-set-secret@v2.0.0
-        with:
-          name: "NEXT_PUBLIC_DISABLED_CHAIN_NAMES_MAINNET"
-          value: ${{ inputs.disabled_chains }}
-          repository: ${{ github.repository }}
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       disabled_chains:
+#         description: "Disabled chains"
+#         required: true
+#         default: ${{ secrets.NEXT_PUBLIC_DISABLED_CHAIN_NAMES_MAINNET }}
+#         type: string
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Install Vercel CLI
+#         run: npm install --global vercel@latest
+#       - name: Remove existing maintainance env
+#         run: vercel env rm NEXT_PUBLIC_DISABLED_CHAIN_NAMES --token ${{ secrets.VERCEL_TOKEN }} --yes
+#       - name: Re-add maintainance env with chosen value
+#         run: echo -n ${{ inputs.disabled_chains }} | vercel env add NEXT_PUBLIC_DISABLED_CHAIN_NAMES production --token ${{ secrets.VERCEL_TOKEN }}
+#       - name: Deploy
+#   update_disabled_chains:
+#     runs-on: ubuntu-latest
+#     needs: deploy
+#     steps:
+#       - uses: hmanzur/actions-set-secret@v2.0.0
+#         with:
+#           name: "NEXT_PUBLIC_DISABLED_CHAIN_NAMES_MAINNET"
+#           value: ${{ inputs.disabled_chains }}
+#           repository: ${{ github.repository }}
+#           token: ${{ secrets.REPO_ACCESS_TOKEN }}
