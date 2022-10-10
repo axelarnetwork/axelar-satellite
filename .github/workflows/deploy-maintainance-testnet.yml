@@ -22,4 +22,4 @@ jobs:
       - name: Re-add maintainance env with chosen value
         run: echo ${{ inputs.is_maintainance }} | vercel env add NEXT_PUBLIC_UNDER_MAINTENANCE production --token ${{ secrets.VERCEL_TOKEN }}
       - name: Deploy
-        run: vercel
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }}
