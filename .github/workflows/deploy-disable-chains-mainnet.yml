@@ -1,7 +1,7 @@
-name: Set Disabled Chains Testnet
+name: Set Disabled Chains Mainnet
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_TESTNET }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_MAINNET }}
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
       disabled_chains:
         description: "Disabled chains"
         required: true
-        default: ${{ secrets.NEXT_PUBLIC_DISABLED_CHAIN_NAMES_TESTNET }}
+        default: ${{ secrets.NEXT_PUBLIC_DISABLED_CHAIN_NAMES_MAINNET }}
         type: string
 jobs:
   deploy:
@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: hmanzur/actions-set-secret@v2.0.0
         with:
-          name: "NEXT_PUBLIC_DISABLED_CHAIN_NAMES_TESTNET"
+          name: "NEXT_PUBLIC_DISABLED_CHAIN_NAMES_MAINNET"
           value: ${{ inputs.disabled_chains }}
           repository: ${{ github.repository }}
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
