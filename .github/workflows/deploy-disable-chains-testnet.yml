@@ -9,7 +9,7 @@ on:
       disabled_chains:
         description: "Disabled chains"
         required: true
-        default: ${{ secrets.NEXT_PUBLIC_DISABLED_CHAIN_NAMES_TESTNET }}
+        # default: ${{ secrets.NEXT_PUBLIC_DISABLED_CHAIN_NAMES_TESTNET }}
         type: string
 jobs:
   deploy:
