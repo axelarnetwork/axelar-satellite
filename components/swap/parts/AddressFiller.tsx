@@ -1,9 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { useAccount, useConnect } from "wagmi";
-import {
-  useWallet as useTerraWallet
-} from "@terra-money/wallet-provider";
+import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import { useSwapStore, useWalletStore } from "../../../store";
 import { useGetKeplerWallet } from "../../../hooks";
 import { getCosmosChains } from "../../../config/web3";
@@ -21,7 +19,8 @@ export const AddressFiller = () => {
   const isEvm = destChain?.module === "evm";
   const keplerWallet = useGetKeplerWallet();
   const terraWallet = useTerraWallet();
-  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
+  const { isTerraConnected, isTerraInitializingOrConnected } =
+    useIsTerraConnected();
   const { userSelectionForCosmosWallet } = useWalletStore();
 
   function fillEvmDestinationAddress() {
@@ -127,17 +126,20 @@ export const AddressFiller = () => {
           />
         </div>
         {destChain?.chainName.toLowerCase() === "terra" && (
-          <div
-            className="relative flex items-center h-full ml-1"
-            onClick={fillTerraStationDestinationAddress}
-          >
-            <Image
-              layout="intrinsic"
-              height={20}
-              width={20}
-              src="/assets/wallets/terra-station.logo.svg"
-            />
-          </div>
+          <>
+            <span className="text-xs">or</span>
+            <div
+              className="relative flex items-center h-full ml-1"
+              onClick={fillTerraStationDestinationAddress}
+            >
+              <Image
+                layout="intrinsic"
+                height={20}
+                width={20}
+                src="/assets/wallets/terra-station.logo.svg"
+              />
+            </div>
+          </>
         )}
       </div>
     </div>
