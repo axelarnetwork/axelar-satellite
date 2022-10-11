@@ -97,7 +97,8 @@ export const useInitialChainList = () => {
   async function loadInitialChains() {
     return loadChains({ environment }).then((chains) => {
       function updateChainAssets(chainInfo: ChainInfo) {
-        const filteredAssetList: AssetConfig[] = nativeAssets;
+        const filteredAssetList: AssetConfig[] =
+          ENVIRONMENT === "testnet" ? nativeAssets : [];
 
         console.log("filterd asset list", filteredAssetList);
 

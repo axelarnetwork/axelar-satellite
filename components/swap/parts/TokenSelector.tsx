@@ -21,12 +21,9 @@ import { Arrow } from "./TopFlows";
 import { useSwitchNetwork } from "wagmi";
 import { addTokenToMetamask } from "../states";
 import { getWagmiChains } from "../../../config/web3";
+import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
-import {
-  NativeAssetConfig,
-  nativeAssets,
-} from "../../../config/nativeAssetList/testnet";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
