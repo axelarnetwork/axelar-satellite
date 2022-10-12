@@ -18,15 +18,10 @@ export const useGenerateDepositAddress = () =>
       environment: ENVIRONMENT,
       auth: "local",
     });
-    const { fromChain, toChain, destAddress, transferType } = payload;
+    const { fromChain, toChain, destAddress, transferType, asset } = payload;
     const functionMap: Record<transferType, () => Promise<any>> = {
       "deposit-address": async () =>
-        await sdk.getDepositAddress(
-          payload.fromChain,
-          payload.toChain,
-          payload.destAddress,
-          payload.asset
-        ),
+        await sdk.getDepositAddress(fromChain, toChain, destAddress, asset),
       wrap: async () => {
         console.log("calling wrap method");
         return await sdk.getDepositAddressForNativeWrap(

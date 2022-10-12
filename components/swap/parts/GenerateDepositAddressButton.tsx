@@ -71,8 +71,8 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
 
     setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
     genDepositAddress({
-      fromChain: srcChain.chainIdentifier[ENVIRONMENT],
-      toChain: destChain.chainIdentifier[ENVIRONMENT],
+      fromChain: srcChain.chainName?.toLowerCase(),
+      toChain: destChain.chainName?.toLowerCase(),
       asset: asset?.common_key[ENVIRONMENT],
       destAddress,
       // @ts-ignore

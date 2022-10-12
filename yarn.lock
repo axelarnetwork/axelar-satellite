@@ -20,10 +20,10 @@
   resolved "https://registry.yarnpkg.com/@axelar-network/axelar-cgp-solidity/-/axelar-cgp-solidity-4.3.0.tgz#90b42b261759fe6b229932152a0911cee071a6ee"
   integrity sha512-0cCgCFtxnipyzSplPnj/HxDx4DqqHGEr+J7M7NWKM1fXvfS4t/70aCAw/h9GYW8dZ3BmKOqKAYQCNpmP+2Oa+w==
 
-"@axelar-network/axelarjs-sdk@0.11.2-alpha.5":
-  version "0.11.2-alpha.5"
-  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.11.2-alpha.5.tgz#a6c928ad359d422cc3856e6f8255b9549920a11c"
-  integrity sha512-ylhj8t5sYOpx7mZspuX0HCh8DGmkX/dphABBikhH5m0Lwr/EORyZ16X0gQtYYLYCjoMODa/FqmjWOJO1MDX67A==
+"@axelar-network/axelarjs-sdk@0.11.2-alpha.11":
+  version "0.11.2-alpha.11"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.11.2-alpha.11.tgz#d65f762068b8a9de2c4ddc2eee93653fc6c8019c"
+  integrity sha512-Q9MOYKPLsXjjESQSG0IqPG1bEqo882sWD1wQl4z8KQIt0iiKOzEGCVDKe+rMAnvPhKuzlziqRvkP5eHacx7Cag==
   dependencies:
     "@axelar-network/axelar-cgp-solidity" "^4.3.0"
     "@axelar-network/axelarjs-types" "^0.24.0"
@@ -34,6 +34,7 @@
     cross-fetch "^3.1.5"
     ethers "^5.4.7"
     socket.io-client "^4.2.0"
+    standard-http-error "^2.0.1"
     uuid "^8.3.2"
 
 "@axelar-network/axelarjs-types@^0.24.0":
@@ -6660,6 +6661,18 @@ stack-utils@^2.0.3:
   integrity sha512-xrQcmYhOsn/1kX+Vraq+7j4oE2j/6BFscZ0etmYg81xuM8Gq0022Pxb8+IqgOFUIaxHs0KaSb7T1+OegiNrNFA==
   dependencies:
     escape-string-regexp "^2.0.0"
+
+"standard-error@>= 1.1.0 < 2":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/standard-error/-/standard-error-1.1.0.tgz#23e5168fa1c0820189e5812701a79058510d0d34"
+  integrity sha512-4v7qzU7oLJfMI5EltUSHCaaOd65J6S4BqKRWgzMi4EYaE5fvNabPxmAPGdxpGXqrcWjhDGI/H09CIdEuUOUeXg==
+
+standard-http-error@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/standard-http-error/-/standard-http-error-2.0.1.tgz#f8ae9172e3cef9cb38d2e7084a1925f57a7c34bd"
+  integrity sha512-DX/xPIoyXQTuY6BMZK4Utyi4l3A4vFoafsfqrU6/dO4Oe/59c7PyqPd2IQj9m+ZieDg2K3RL9xOYJsabcD9IUA==
+  dependencies:
+    standard-error ">= 1.1.0 < 2"
 
 stream-browserify@^3.0.0:
   version "3.0.0"
