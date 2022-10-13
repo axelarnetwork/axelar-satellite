@@ -24,12 +24,10 @@ import { Arrow } from "./TopFlows";
 import { useSwitchNetwork } from "wagmi";
 import { addTokenToMetamask } from "../states";
 import { getWagmiChains } from "../../../config/web3";
-import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
 
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
 import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
-
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -173,9 +171,8 @@ export const TokenSelector = () => {
     if (isEVM) setBalanceToShow(balance);
     else if (isTerra) {
       setUserSelectionForCosmosWallet("terraStation");
-      setBalanceToShow(terraStationBalance as string)
-    }
-    else if (isAxelarnet) {
+      setBalanceToShow(terraStationBalance as string);
+    } else if (isAxelarnet) {
       setBalanceToShow(keplrBalance);
     }
   }, [
@@ -188,7 +185,6 @@ export const TokenSelector = () => {
     terraStationBalance,
     userSelectionForCosmosWallet,
   ]);
-
 
   // update asset balance from useGetAssetBalance hook if srcChain or asset changes
   useEffect(() => {
@@ -244,8 +240,7 @@ export const TokenSelector = () => {
       else if (srcChain?.chainName.toLowerCase() === "terra") {
         if (userSelectionForCosmosWallet === "keplr") textToShow = "Keplr";
         else textToShow = "Terra Station";
-      }
-      else textToShow = "Keplr";
+      } else textToShow = "Keplr";
       return (
         <label
           htmlFor="web3-modal"
