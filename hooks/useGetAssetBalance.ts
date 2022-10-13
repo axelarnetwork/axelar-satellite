@@ -38,11 +38,14 @@ export const useGetAssetBalance = () => {
   const srcChainId = useSwapStore(getSrcChainId);
   const srcChain = useSwapStore((state) => state?.srcChain);
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
-  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
+  const { isTerraConnected, isTerraInitializingOrConnected } =
+    useIsTerraConnected();
 
   const [balance, setBalance] = useState<string>("0");
   const [keplrBalance, setKeplrStateBalance] = useState<string>("0");
-  const [terraStationBalance, setTerraStationBalance] = useState<string | null>("0");
+  const [terraStationBalance, setTerraStationBalance] = useState<string | null>(
+    "0"
+  );
 
   const { data, isSuccess } = useContractRead({
     enabled: !!(srcTokenAddress && srcChainId),
@@ -73,8 +76,8 @@ export const useGetAssetBalance = () => {
     if (srcChain?.chainName?.toLowerCase() !== "terra") {
       setTerraStationBalance(null);
       return;
-    };
-    if (!isTerraConnected) return;
+    }
+    if (!isTerraConnected || !wallets[0]?.terraAddress) return;
     const denom = asset?.chain_aliases["terra"].ibcDenom as string;
     if (!denom) return;
 
@@ -89,7 +92,15 @@ export const useGetAssetBalance = () => {
         );
       })
       .catch(() => setTerraStationBalance(null));
-  }, [srcChain, status, asset, isTerraConnected, userSelectionForCosmosWallet]);
+  }, [
+    srcChain,
+    status,
+    asset,
+    isTerraConnected,
+    userSelectionForCosmosWallet,
+    wallets,
+    terraLcdClient,
+  ]);
 
   const setKeplrBalance = useCallback(async (): Promise<void> => {
     if (!keplrConnected || !asset || !srcChain) {
@@ -155,6 +166,6 @@ export const useGetAssetBalance = () => {
     keplrBalance,
     terraStationBalance,
     setKeplrBalance,
-    loading
+    loading,
   };
 };
