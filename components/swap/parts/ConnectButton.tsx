@@ -8,14 +8,13 @@ import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 export const ConnectButton = () => {
   const { wagmiConnected, keplrConnected } = useWalletStore();
   const [anyWalletConnected, setAnyWalletConnected] = useState(false);
-  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
+  const { isTerraConnected, isTerraInitializingOrConnected } =
+    useIsTerraConnected();
 
   useEffect(() => {
-    const isAnyActive = [wagmiConnected, keplrConnected, isTerraConnected].some(
-      (isActive) => isActive
-    );
-    if (anyWalletConnected !== isAnyActive) setAnyWalletConnected(isAnyActive);
-  }, [wagmiConnected, keplrConnected]);
+    const anyActive = wagmiConnected || keplrConnected || isTerraConnected;
+    setAnyWalletConnected(anyActive);
+  }, [wagmiConnected, keplrConnected, isTerraConnected]);
 
   function renderConnectIndicator() {
     if (anyWalletConnected) return <ConnectIndicator />;
