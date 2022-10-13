@@ -2,7 +2,7 @@ import { formatUnits, parseUnits } from "ethers/lib/utils";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
-import { useAccount, useContractRead, erc20ABI } from "wagmi";
+import { useAccount, useContractRead, erc20ABI, useBalance } from "wagmi";
 import { BigNumber } from "bignumber.js";
 import {
   getSrcChainId,
@@ -25,6 +25,7 @@ import {
 import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useIsTerraConnected } from "./terra/useIsTerraConnected";
+import { NativeAssetConfig } from "../config/nativeAssetList/testnet";
 
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
@@ -46,6 +47,7 @@ export const useGetAssetBalance = () => {
   const [terraStationBalance, setTerraStationBalance] = useState<string | null>(
     "0"
   );
+  const [showNativeBalance, setShowNativeBalance] = useState(false);
 
   const { data, isSuccess } = useContractRead({
     enabled: !!(srcTokenAddress && srcChainId),
@@ -56,10 +58,35 @@ export const useGetAssetBalance = () => {
     args: [address],
   });
 
+  const {
+    data: nativeBalanceData,
+    isError,
+    isLoading,
+  } = useBalance({
+    enabled: showNativeBalance,
+    addressOrName: address,
+    chainId: srcChainId,
+  });
+
   // convert fetched token balance to a readable format
   useEffect(() => {
     if (srcChain?.module !== "evm") return;
+
     setLoading(true);
+
+    const shouldShowNativeBalance = !!(
+      srcChainId &&
+      (asset as NativeAssetConfig)?.is_native_asset &&
+      asset?.native_chain === srcChain.chainName.toLowerCase()
+    );
+    setShowNativeBalance(shouldShowNativeBalance);
+
+    if (shouldShowNativeBalance && nativeBalanceData) {
+      setBalance(nativeBalanceData.formatted);
+      setLoading(false);
+      return;
+    }
+
     if (!isSuccess || !data) {
       setBalance("0");
       setLoading(false);
@@ -70,7 +97,16 @@ export const useGetAssetBalance = () => {
 
     setBalance(num.toFixed());
     setLoading(false);
-  }, [srcChainId, srcTokenAddress, data, isSuccess]);
+  }, [
+    srcChainId,
+    srcTokenAddress,
+    data,
+    isSuccess,
+    nativeBalanceData,
+    setShowNativeBalance,
+    asset,
+    srcChain,
+  ]);
 
   useEffect(() => {
     if (srcChain?.chainName?.toLowerCase() !== "terra") {
