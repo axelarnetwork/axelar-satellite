@@ -1,10 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import { useAccount, useConnect } from "wagmi";
-
+import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import { useSwapStore, useWalletStore } from "../../../store";
 import { useGetKeplerWallet } from "../../../hooks";
 import { getCosmosChains } from "../../../config/web3";
+import toast from "react-hot-toast";
+import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 
 export const AddressFiller = () => {
   const { address } = useAccount();
@@ -16,6 +18,10 @@ export const AddressFiller = () => {
   const { destChain } = useSwapStore((state) => state);
   const isEvm = destChain?.module === "evm";
   const keplerWallet = useGetKeplerWallet();
+  const terraWallet = useTerraWallet();
+  const { isTerraConnected, isTerraInitializingOrConnected } =
+    useIsTerraConnected();
+  const { userSelectionForCosmosWallet } = useWalletStore();
 
   function fillEvmDestinationAddress() {
     if (address) {
@@ -29,15 +35,40 @@ export const AddressFiller = () => {
   }
 
   async function fillCosmosDestinationAddress() {
+    const { keplr } = window;
+    if (!keplr) {
+      toast.error("Please install the Keplr wallet extension first!");
+      return;
+    }
     const chain = getCosmosChains(allAssets).find(
       (_chain) => _chain.chainIdentifier === destChain.chainName.toLowerCase()
     );
     if (!chain) return;
+
     await keplerWallet?.experimentalSuggestChain(chain);
     await keplerWallet?.enable(chain.chainId as string);
     const address = await keplerWallet?.getKey(chain.chainId as string);
     setDestAddress(address?.bech32Address as string);
     setKeplrConnected(true);
+  }
+
+  async function fillTerraStationDestinationAddress() {
+    const chain = getCosmosChains(allAssets).find(
+      (_chain) => _chain.chainIdentifier === destChain.chainName.toLowerCase()
+    );
+    console.log("calling this TS");
+    if (!chain) return;
+
+    if (chain.chainIdentifier === "terra") {
+      if (!isTerraConnected) await terraWallet.connect();
+      if (terraWallet?.wallets?.length < 1) {
+        toast.error("Please install the Terra Station wallet extension first!");
+        return;
+      }
+      const address = terraWallet.wallets[0].terraAddress;
+      setDestAddress(address);
+      return;
+    }
   }
 
   if (isEvm)
@@ -69,15 +100,24 @@ export const AddressFiller = () => {
   return (
     <div
       key={destChain?.module}
-      className="bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full w-28 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
-      onClick={fillCosmosDestinationAddress}
+      className={`bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full ${
+        destChain?.chainName.toLowerCase() === "terra" ? "w-36" : "w-28"
+      } p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse`}
+      onClick={
+        destChain?.chainName.toLowerCase() === "terra"
+          ? () => {}
+          : fillCosmosDestinationAddress
+      }
     >
       <div className="flex justify-around items-center h-full w-full bg-gradient-to-b from-[#21374b] to-[#292d4b] rounded-lg p-3">
         <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF]">
-          {keplrConnected ? "Autofill" : "Connect"}
+          Autofill
         </div>
 
-        <div className="relative flex items-center h-full">
+        <div
+          className="relative flex items-center h-full"
+          onClick={fillCosmosDestinationAddress}
+        >
           <Image
             layout="intrinsic"
             height={20}
@@ -85,6 +125,22 @@ export const AddressFiller = () => {
             src="/assets/wallets/kepler.logo.svg"
           />
         </div>
+        {destChain?.chainName.toLowerCase() === "terra" && (
+          <>
+            <span className="text-xs">or</span>
+            <div
+              className="relative flex items-center h-full ml-1"
+              onClick={fillTerraStationDestinationAddress}
+            >
+              <Image
+                layout="intrinsic"
+                height={20}
+                width={20}
+                src="/assets/wallets/terra-station.logo.svg"
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

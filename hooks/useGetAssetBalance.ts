@@ -1,4 +1,4 @@
-import { formatUnits } from "ethers/lib/utils";
+import { formatUnits, parseUnits } from "ethers/lib/utils";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
@@ -17,7 +17,14 @@ import {
 } from "../config/constants";
 import { getAddress, queryBalance } from "../utils/wallet/keplr";
 import { getCosmosChains } from "../config/web3";
+import {
+  useWallet as useTerraWallet,
+  useLCDClient as useTerraLCDClient,
+  WalletStatus,
+} from "@terra-money/wallet-provider";
+import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { useIsTerraConnected } from "./terra/useIsTerraConnected";
 import { NativeAssetConfig } from "../config/nativeAssetList/testnet";
 
 export const useGetAssetBalance = () => {
@@ -25,13 +32,21 @@ export const useGetAssetBalance = () => {
   const { asset, allAssets, allChains, setSrcChain, setDestChain } =
     useSwapStore((state) => state);
   const [loading, setLoading] = useState(false);
-  const { keplrConnected } = useWalletStore();
+  const { keplrConnected, userSelectionForCosmosWallet } = useWalletStore();
+  const { status, network, wallets } = useTerraWallet();
+  const terraLcdClient = useTerraLCDClient();
 
   const srcChainId = useSwapStore(getSrcChainId);
   const srcChain = useSwapStore((state) => state?.srcChain);
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
+  const { isTerraConnected, isTerraInitializingOrConnected } =
+    useIsTerraConnected();
 
   const [balance, setBalance] = useState<string>("0");
+  const [keplrBalance, setKeplrStateBalance] = useState<string>("0");
+  const [terraStationBalance, setTerraStationBalance] = useState<string | null>(
+    "0"
+  );
   const [showNativeBalance, setShowNativeBalance] = useState(false);
 
   const { data, isSuccess } = useContractRead({
@@ -93,10 +108,41 @@ export const useGetAssetBalance = () => {
     srcChain,
   ]);
 
+  useEffect(() => {
+    if (srcChain?.chainName?.toLowerCase() !== "terra") {
+      setTerraStationBalance(null);
+      return;
+    }
+    if (!isTerraConnected || !wallets[0]?.terraAddress) return;
+    const denom = asset?.chain_aliases["terra"].ibcDenom as string;
+    if (!denom) return;
+
+    terraLcdClient.bank
+      .balance(wallets[0].terraAddress)
+      .then(([coins]) => {
+        setTerraStationBalance(
+          formatUnits(
+            coins.get(denom)?.amount.toNumber() as number,
+            asset?.decimals
+          )
+        );
+      })
+      .catch(() => setTerraStationBalance(null));
+  }, [
+    srcChain,
+    status,
+    asset,
+    isTerraConnected,
+    userSelectionForCosmosWallet,
+    wallets,
+    terraLcdClient,
+  ]);
+
   const setKeplrBalance = useCallback(async (): Promise<void> => {
-    if (!keplrConnected) return;
-    if (!asset) return;
-    if (!srcChain) return;
+    if (!keplrConnected || !asset || !srcChain) {
+      setBalance("0");
+      return;
+    }
 
     setLoading(true);
 
@@ -137,7 +183,7 @@ export const useGetAssetBalance = () => {
         fullChainConfig.rpc
       );
       const balance = formatUnits(res?.amount as string, decimals) || "0";
-      setBalance(balance);
+      setKeplrStateBalance(balance);
     } catch (e: any) {
       setBalance("0");
       let msg;
@@ -153,6 +199,8 @@ export const useGetAssetBalance = () => {
 
   return {
     balance,
+    keplrBalance,
+    terraStationBalance,
     setKeplrBalance,
     loading,
   };

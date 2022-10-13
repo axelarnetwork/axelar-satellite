@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useConnect } from "wagmi";
 import toast from "react-hot-toast";
@@ -7,14 +7,41 @@ import { OfflineSigner } from "@cosmjs/proto-signing";
 import { useSwapStore, useWalletStore } from "../../store";
 import { getCosmosChains } from "../../config/web3";
 import { CosmosChain } from "../../config/web3/cosmos/interface";
+import { connectToKeplr } from "./utils/handleOnKeplrConnect";
+import { useIsTerraInstalled } from "../../hooks/terra/useIsTerraInstalled";
+import { useIsTerraConnected } from "../../hooks/terra/useIsTerraConnected";
+import { useConnectTerraStation } from "../../hooks/terra/useConnectTerraStation";
+
+const DownloadButton = () => (
+  <span>
+      <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="w-6 h-6"
+  >
+    <path
+      fillRule="evenodd"
+      d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z"
+      clipRule="evenodd"
+    />
+  </svg>
+  </span>
+);
 
 export const Web3Modal = () => {
   const { connect, connectors, error } = useConnect();
   const allAssets = useSwapStore((state) => state.allAssets);
   const modalRef = useRef<any>();
-  const { setKeplrConnected, keplrConnected, wagmiConnected } = useWalletStore(
-    (state) => state
-  );
+  const {
+    setKeplrConnected,
+    keplrConnected,
+    wagmiConnected,
+    setUserSelectionForCosmosWallet,
+  } = useWalletStore((state) => state);
+  const isTerraInstalled = useIsTerraInstalled();
+  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
+  const connectTerraStation = useConnectTerraStation();
 
   // close modal upon successful metamask connection
   useEffect(() => {
@@ -25,6 +52,11 @@ export const Web3Modal = () => {
   useEffect(() => {
     if (keplrConnected) closeModal();
   }, [keplrConnected]);
+
+  // close modal upon successful terra station connection
+  useEffect(() => {
+    if (isTerraConnected) closeModal();
+  }, [isTerraConnected]);
 
   // notify user that he already has a connected account but it's not the active one
   useEffect(() => {
@@ -40,33 +72,23 @@ export const Web3Modal = () => {
     connect({ connector });
   }
 
+  async function handleOnTerraStationConnect() {
+    connectTerraStation();
+  }
+
   async function handleOnKeplrConnect() {
     const { keplr } = window;
     const axelar: CosmosChain = getCosmosChains(allAssets).find(
       (chain) => chain.chainIdentifier === "axelar"
     ) as CosmosChain;
-    console.log("axlear chain id", axelar);
-    try {
-      await keplr?.enable(axelar.chainId);
-    } catch (e) {
-      console.log(
-        "unable to connect to wallet natively, so trying experimental chain",
-        e,
-        axelar.chainId
-      );
-      try {
-        await keplr?.experimentalSuggestChain(axelar);
-        await keplr?.enable(axelar.chainId);
-      } catch (e2: any) {
-        console.log("and yet there is a problem in trying to do that too", e2);
-      }
-    }
+    await connectToKeplr(allAssets);
     const _signer = (await keplr?.getOfflineSignerAuto(
       axelar.chainId
     )) as OfflineSigner;
     const [account] = await _signer.getAccounts();
     if (keplrConnected) toast.error("Wallet already connected");
     setKeplrConnected(true);
+    setUserSelectionForCosmosWallet("keplr");
   }
 
   function renderConnectors() {
@@ -122,22 +144,25 @@ export const Web3Modal = () => {
               />
             </div>
           </button>{" "}
-          {/* <button
-            className="relative flex btn btn-neutral"
-            onClick={handleOnWalletConnectSwitch}
+          <button
+            className={`relative flex btn btn-neutral ${isTerraInstalled ? "" : "tooltip"}`}
+            data-tip={`Click to install the extension. Refresh Satellite once installed.`}
+            onClick={handleOnTerraStationConnect}
           >
             <span>Terra Station</span>
             <div className="ml-auto">
-              <Image
-                src="/assets/wallets/walletconnect.logo.svg"
-                alt="walletconnect"
-                layout="intrinsic"
-                objectFit="contain"
-                height={30}
-                width={30}
-              />
+              {isTerraInstalled ? (
+                <Image
+                  src="/assets/wallets/terra-station.logo.svg"
+                  alt="walletconnect"
+                  layout="intrinsic"
+                  objectFit="contain"
+                  height={30}
+                  width={30}
+                />
+              ) : <DownloadButton />}
             </div>
-          </button> */}
+          </button>
           {/* <button
             className="relative flex btn btn-neutral"
             disabled
