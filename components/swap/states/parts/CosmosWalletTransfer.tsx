@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   AssetConfig,
@@ -16,12 +16,13 @@ import { ENVIRONMENT } from "../../../../config/constants";
 import { useSwapStore, useWalletStore } from "../../../../store";
 import {
   useDetectDepositConfirmation,
+  useGetAssetBalance,
   useGetKeplerWallet,
   useHasKeplerWallet,
 } from "../../../../hooks";
 import { curateCosmosChainId } from "../../../../utils";
 import { getCosmosChains } from "../../../../config/web3";
-import { utils } from "ethers";
+import { ethers, utils } from "ethers";
 import toast from "react-hot-toast";
 import Long from "long";
 import { Height } from "cosmjs-types/ibc/core/client/v1/client";
@@ -29,12 +30,31 @@ import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { SwapStatus } from "../../../../utils/enums";
 import { SpinnerRoundFilled } from "spinners-react";
 import { renderGasFee } from "../../../../utils/renderGasFee";
+import {
+  useWallet as useTerraWallet,
+  WalletStatus,
+  useConnectedWallet,
+  useLCDClient,
+} from "@terra-money/wallet-provider";
+import {
+  Coin as TerraCoin,
+  Fee,
+  LCDClient,
+  MsgTransfer,
+} from "@terra-money/terra.js";
+import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/client/Height";
+import { TERRA_IBC_GAS_LIMIT } from ".";
+import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
+import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
 import { evmosSignDirect } from "../../../../hooks/kepler/evmos/evmosSignDirect";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
+  const { setKeplrBalance } = useGetAssetBalance();
+  const { isTerraConnected, isTerraInitializingOrConnected } =
+    useIsTerraConnected();
 
   // used to hide wallets when transaction has been triggered
   const [isTxOngoing, setIsTxOngoing] = useState(false);
@@ -48,11 +68,18 @@ export const CosmosWalletTransfer = () => {
     setSwapStatus,
     setTxInfo,
   } = useSwapStore((state) => state);
-  const { setKeplrConnected, keplrConnected } = useWalletStore(
-    (state) => state
-  );
+  const {
+    setKeplrConnected,
+    keplrConnected,
+    userSelectionForCosmosWallet,
+    setUserSelectionForCosmosWallet,
+  } = useWalletStore((state) => state);
   const keplerWallet = useGetKeplerWallet();
   const hasKeplerWallet = useHasKeplerWallet();
+  const { wallets: terraWallets, connect: connectTerraWallet } =
+    useTerraWallet();
+  const connectedWallet = useConnectedWallet();
+  const lcdClient = useLCDClient();
 
   useDetectDepositConfirmation();
 
@@ -145,11 +172,6 @@ export const CosmosWalletTransfer = () => {
       currentAsset?.minDepositAmt
     );
 
-    console.log({
-      minAmountOk,
-      minDeposit,
-    });
-
     if (!minAmountOk)
       return toast.error(
         `Token amount to transfer should be bigger than ${minDeposit}`
@@ -179,7 +201,10 @@ export const CosmosWalletTransfer = () => {
     // ) as string[];
 
     const _action = "transfer";
-    const _channel = getCosmosChains(allAssets).find(chain => chain.chainIdentifier.toLowerCase() === srcChain.chainName.toLowerCase())?.chainToAxelarChannelId as string;
+    const _channel = getCosmosChains(allAssets).find(
+      (chain) =>
+        chain.chainIdentifier.toLowerCase() === srcChain.chainName.toLowerCase()
+    )?.chainToAxelarChannelId as string;
 
     const timeoutHeight: Height = {
         revisionHeight: Long.fromNumber(10),
@@ -213,17 +238,22 @@ export const CosmosWalletTransfer = () => {
           .parseUnits(tokensToTransfer, currentAsset?.decimals)
           .toString(),
       };
-      evmosSignDirect(sendCoin.amount, sendCoin.denom, sourceAddress, depositAddress)
-      .then((res: any) => {
-        console.log("CosmosWalletTransfer: IBC transfer for EvmosJS",res);
-        
-        setTxInfo({
-          sourceTxHash: res.transactionHash,
-        });
+      evmosSignDirect(
+        sendCoin.amount,
+        sendCoin.denom,
+        sourceAddress,
+        depositAddress
+      )
+        .then((res: any) => {
+          console.log("CosmosWalletTransfer: IBC transfer for EvmosJS", res);
 
-        setIsTxOngoing(true);
-      })
-      .catch((error) => console.log(error));
+          setTxInfo({
+            sourceTxHash: res.transactionHash,
+          });
+
+          setIsTxOngoing(true);
+        })
+        .catch((error) => console.log(error));
     } else {
       result = await cosmjs
         .sendIbcTokens(
@@ -263,6 +293,155 @@ export const CosmosWalletTransfer = () => {
     // }
   }
 
+  async function handleOnTerraStationIBCTransfer(): Promise<any> {
+    const { minAmountOk, minDeposit } = checkMinAmount(
+      tokensToTransfer,
+      currentAsset?.minDepositAmt
+    );
+
+    if (!minAmountOk)
+      return toast.error(
+        `Token amount to transfer should be bigger than ${minDeposit}`
+      );
+    const sourcePort = "transfer";
+    const senderAddress =
+      terraWallets && terraWallets.length >= 1
+        ? terraWallets[0]?.terraAddress
+        : "";
+    if (!senderAddress) throw new Error("no sender specified");
+
+    const denom = asset?.chain_aliases["terra"].ibcDenom;
+    const [_action, _channel, _denom] = currentAsset?.fullDenomPath?.split(
+      "/"
+    ) as string[];
+    if (!denom) throw new Error("asset not found: " + _denom);
+    const fee = new Fee(parseInt(TERRA_IBC_GAS_LIMIT), "30000uluna");
+    const transferMsg: MsgTransfer = new MsgTransfer(
+      sourcePort,
+      _channel,
+      new TerraCoin(
+        denom,
+        utils.parseUnits(tokensToTransfer, currentAsset?.decimals).toString()
+      ),
+      senderAddress,
+      depositAddress,
+      new TerraHeight(100, 100),
+      undefined
+    );
+
+    const signTx = await connectedWallet
+      ?.sign({
+        msgs: [transferMsg],
+        timeoutHeight: 100,
+        fee,
+      })
+      .catch((e) => {
+        toast.error(
+          `Could not initiate transaction on Terra Station: ${e.message}. Please try again.`
+        );
+        return null;
+      });
+
+    if (!signTx) return;
+    try {
+      console.log("CosmosWalletTransfer: Terra Station IBC transfer");
+      const tx = await lcdClient.tx.broadcastSync(signTx.result);
+      console.log("TS tx", tx);
+      setTxInfo({
+        sourceTxHash: tx.txhash,
+      });
+      setIsTxOngoing(true);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+
+  const getSendButtons = () => {
+    if (srcChain?.chainName.toLowerCase() !== "terra") {
+      return (
+        <div className="flex justify-center">
+          <button
+            className="mb-5 btn btn-primary"
+            onClick={handleOnTokensTransfer}
+          >
+            <span className="mr-2">Send from Keplr</span>
+            <div className="flex justify-center my-2 gap-x-5">
+              <Image
+                src="/assets/wallets/kepler.logo.svg"
+                height={25}
+                width={25}
+              />
+            </div>
+          </button>
+        </div>
+      );
+    }
+
+    const userSelectedTS = userSelectionForCosmosWallet === "terraStation";
+    const userSelectedKeplr = !userSelectedTS;
+
+    return (
+      <div className="flex justify-center">
+        <button
+          className={`mb-5 ml-5 btn btn-${
+            !userSelectedTS ? "primary" : "accent"
+          }`}
+          onClick={async () => {
+            if (userSelectedKeplr || !isTerraConnected) {
+              await handleOnTokensTransfer();
+            } else {
+              await connectToKeplr(allAssets);
+              setKeplrConnected(true);
+              setUserSelectionForCosmosWallet("keplr");
+              // setKeplrBalance(true);
+              // await handleOnTokensTransfer();
+            }
+          }}
+        >
+          <span className="mr-2">
+            {userSelectedKeplr || !isTerraConnected
+              ? "Send from Keplr "
+              : "Switch to Keplr"}
+          </span>
+          <div className="flex justify-center my-2 gap-x-5">
+            <Image
+              src="/assets/wallets/kepler.logo.svg"
+              height={25}
+              width={25}
+            />
+          </div>
+        </button>
+        {isTerraConnected && (
+          <button
+            className={`mb-5 ml-5 btn btn-${
+              userSelectedTS ? "primary" : "accent"
+            }`}
+            onClick={async () => {
+              if (userSelectedTS) {
+                await handleOnTerraStationIBCTransfer();
+              } else {
+                if (!isTerraConnected) await connectTerraWallet();
+                setUserSelectionForCosmosWallet("terraStation");
+                // await handleOnTerraStationIBCTransfer();
+              }
+            }}
+          >
+            <span className="mr-2">
+              {userSelectedTS ? "Send from TS" : "Switch to TS"}
+            </span>
+            <div className="flex justify-center my-2 gap-x-5">
+              <Image
+                src="/assets/wallets/terra-station.logo.svg"
+                height={25}
+                width={25}
+              />
+            </div>
+          </button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div>
       <div className="flex justify-center my-2 gap-x-5">
@@ -280,21 +459,7 @@ export const CosmosWalletTransfer = () => {
         ) : (
           <div>
             <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
-            <div className="flex justify-center">
-              <button
-                className="mb-5 btn btn-primary"
-                onClick={handleOnTokensTransfer}
-              >
-                <span className="mr-2">Send from Keplr</span>
-                <div className="flex justify-center my-2 gap-x-5">
-                  <Image
-                    src="/assets/wallets/kepler.logo.svg"
-                    height={25}
-                    width={25}
-                  />
-                </div>
-              </button>
-            </div>
+            {getSendButtons()}
           </div>
         )}
       </div>

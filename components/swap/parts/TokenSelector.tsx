@@ -17,11 +17,18 @@ import { useRouter } from "next/router";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import BigNumber from "bignumber.js";
 import { SpinnerDotted } from "spinners-react";
+import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
+import { roundNumberTo } from "../../../utils/roundNumberTo";
+import { connectToKeplr } from "../../web3/utils/handleOnKeplrConnect";
 import { Arrow } from "./TopFlows";
 import { useSwitchNetwork } from "wagmi";
 import { addTokenToMetamask } from "../states";
 import { getWagmiChains } from "../../../config/web3";
+
+import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
+import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
 import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
+
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -31,6 +38,7 @@ export const TokenSelector = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const {
     asset,
+    allAssets,
     selectableAssetList,
     setAsset,
     srcChain,
@@ -49,18 +57,39 @@ export const TokenSelector = () => {
       setTimeout(() => addTokenToMetamask(asset as AssetConfig, chain), 2000);
     },
   });
+  const router = useRouter();
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+  const {
+    wagmiConnected,
+    keplrConnected,
+    userSelectionForCosmosWallet,
+    setKeplrConnected,
+    setUserSelectionForCosmosWallet,
+  } = useWalletStore();
   const selectedAssetName = useSwapStore(getSelectedAssetName);
-  const { wagmiConnected, keplrConnected } = useWalletStore();
   const max = useGetMaxTransferAmount();
+  const { connect: connectTerraWallet } = useTerraWallet();
+  const { isTerraConnected, isTerraInitializingOrConnected } =
+    useIsTerraConnected();
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
   const [filteredAssets, setFilteredAssets] =
     useState<AssetConfig[]>(selectableAssetList);
-
-  const { balance, setKeplrBalance, loading } = useGetAssetBalance();
+  const {
+    balance,
+    setKeplrBalance,
+    loading,
+    terraStationBalance,
+    keplrBalance,
+  } = useGetAssetBalance();
+  const connectTerraStation = useConnectTerraStation();
+  const [showBalance, setShowBalance] = useState(false);
+  const [balanceToShow, setBalanceToShow] = useState("");
   const ref = useRef(null);
-  const router = useRouter();
+
+  useEffect(() => {
+    setTokensToTransfer("");
+  }, [userSelectionForCosmosWallet]);
 
   useEffect(() => {
     if (!router.isReady || selectableAssetList.length === 0) return;
@@ -124,10 +153,58 @@ export const TokenSelector = () => {
     setFilteredAssets(list || selectableAssetList);
   }, [selectableAssetList, srcChain]);
 
+  useEffect(() => {
+    const isEVM = !!(srcChain?.module === "evm" && wagmiConnected);
+    const isAxelarnet = srcChain?.module === "axelarnet" && keplrConnected;
+    const isTerra =
+      srcChain?.chainName.toLowerCase() === "terra" &&
+      isTerraConnected &&
+      userSelectionForCosmosWallet === "terraStation";
+
+    const shouldshowBalance = isEVM || isAxelarnet || isTerra;
+    setShowBalance(shouldshowBalance);
+
+    if (!shouldshowBalance) {
+      setBalanceToShow("");
+      return;
+    }
+
+    if (isEVM) setBalanceToShow(balance);
+    else if (isTerra) {
+      setUserSelectionForCosmosWallet("terraStation");
+      setBalanceToShow(terraStationBalance as string)
+    }
+    else if (isAxelarnet) {
+      setBalanceToShow(keplrBalance);
+    }
+  }, [
+    srcChain,
+    balance,
+    keplrBalance,
+    wagmiConnected,
+    isTerraConnected,
+    keplrConnected,
+    terraStationBalance,
+    userSelectionForCosmosWallet,
+  ]);
+
   // update asset balance from useGetAssetBalance hook if srcChain or asset changes
   useEffect(() => {
+    if (
+      srcChain?.chainName.toLowerCase() === "terra" &&
+      userSelectionForCosmosWallet == "terraStation"
+    ) {
+      if (!isTerraInitializingOrConnected) connectTerraWallet();
+      return;
+    }
     if (srcChain?.module === "axelarnet" && keplrConnected) setKeplrBalance();
-  }, [asset, srcChain, keplrConnected]);
+  }, [
+    asset,
+    srcChain,
+    keplrConnected,
+    userSelectionForCosmosWallet,
+    isTerraInitializingOrConnected,
+  ]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -153,8 +230,131 @@ export const TokenSelector = () => {
   }
 
   function handleOnMaxButtonClick() {
-    if (max && +max !== 0 && +balance > +max) setTokensToTransfer(max);
-    else if (Number(balance)) setTokensToTransfer(balance);
+    const bal = balanceToShow;
+    if (max && +max !== 0 && +bal > +max) setTokensToTransfer(max);
+    else if (Number(bal)) setTokensToTransfer(bal);
+  }
+
+  function renderBalanceInfo() {
+    if (!balanceToShow || !showBalance) {
+      let textToShow;
+      if (srcChain.module === "evm") textToShow = "Metamask";
+      else if (srcChain?.chainName.toLowerCase() === "terra") {
+        if (userSelectionForCosmosWallet === "keplr") textToShow = "Keplr";
+        else textToShow = "Terra Station";
+      }
+      else textToShow = "Keplr";
+      return (
+        <label
+          htmlFor="web3-modal"
+          className="h-6 space-x-2 text-xs text-gray-500 cursor-pointer hover:underline"
+        >
+          Connect {textToShow} to see balance
+        </label>
+      );
+    }
+
+    if (srcChain?.chainName.toLowerCase() !== "terra")
+      return (
+        <div className="flex flex-row justify-end space-x-1">
+          <span className="text-xs text-gray-500">Available</span>
+          <span className="w-auto text-xs text-[#86d6ff]">
+            {loading ? (
+              <SpinnerDotted
+                className="text-blue-500"
+                size={15}
+                color="#00a6ff"
+              />
+            ) : (
+              roundNumberTo(balanceToShow, 1)
+            )}
+          </span>
+        </div>
+      );
+
+    /**src chain is terra, user selected terra station but is not connected to it */
+    if (
+      userSelectionForCosmosWallet === "terraStation" &&
+      !isTerraInitializingOrConnected
+    )
+      return (
+        <label
+          htmlFor="web3-modal"
+          className="h-6 space-x-2 text-xs text-gray-500 cursor-pointer hover:underline"
+        >
+          Connect Terra Station to see balance
+        </label>
+      );
+
+    /**src chain is terra, user selected Keplr but is not connected to it */
+    if (userSelectionForCosmosWallet === "keplr" && !keplrConnected)
+      return (
+        <label
+          htmlFor="web3-modal"
+          className="h-6 space-x-2 text-xs text-gray-500 cursor-pointer hover:underline"
+        >
+          Connect Keplr to see balance
+        </label>
+      );
+
+    const switchTSAndKeplr = () => {
+      const isOnTS = userSelectionForCosmosWallet === "terraStation";
+      const switchKeplr = async () => {
+        await connectToKeplr(allAssets);
+        setKeplrConnected(true);
+        setUserSelectionForCosmosWallet("keplr");
+        setKeplrBalance();
+      };
+      const switchTS = async () => {
+        if (!isTerraConnected) connectTerraStation();
+        setUserSelectionForCosmosWallet("terraStation");
+      };
+      return (
+        <span
+          className="h-6 text-xs text-gray-500 cursor-pointer hover:underline"
+          onClick={isOnTS ? switchKeplr : switchTS}
+        >
+          <span className="mr-1 text-xs text-gray-500">
+            Switch to {isOnTS ? "Keplr" : "Terra Station"}
+          </span>
+          <Image
+            src={`/assets/ui/forward-arrow-link.svg`}
+            layout="intrinsic"
+            width={10}
+            height={10}
+          />
+        </span>
+      );
+    };
+
+    return (
+      <>
+        {" "}
+        <div className="flex flex-row justify-end space-x-1">
+          <span className="text-xs text-gray-500">
+            Available{" "}
+            <span className="text-xs text-gray-500">
+              {" "}
+              {userSelectionForCosmosWallet === "terraStation"
+                ? "(Terra Station)"
+                : "(Keplr)"}
+            </span>
+          </span>
+          <span className="w-auto text-xs text-[#86d6ff]">
+            {loading ? (
+              <SpinnerDotted
+                className="text-blue-500"
+                size={15}
+                color="#00a6ff"
+              />
+            ) : (
+              roundNumberTo(balanceToShow, 1)
+            )}
+          </span>
+        </div>
+        {switchTSAndKeplr()}
+      </>
+    );
   }
 
   function renderTokenInput() {
@@ -168,32 +368,7 @@ export const TokenSelector = () => {
           placeholder="0"
           onChange={(e) => setTokensToTransfer(e.target.value)}
         />
-        {balance &&
-        (!!(srcChain?.module === "evm" && wagmiConnected) ||
-          !!(srcChain?.module === "axelarnet" && keplrConnected)) ? (
-          <div className="flex flex-row justify-end space-x-2">
-            <span className="text-xs text-gray-500">Available</span>
-            <span className="w-auto text-xs text-[#86d6ff]">
-              {loading ? (
-                <SpinnerDotted
-                  className="text-blue-500"
-                  size={15}
-                  color="#00a6ff"
-                />
-              ) : (
-                Number(balance)?.toFixed(5)
-              )}
-            </span>
-          </div>
-        ) : (
-          <label
-            htmlFor="web3-modal"
-            className="h-6 space-x-2 text-xs text-gray-500 cursor-pointer hover:underline"
-          >
-            Connect {srcChain.module === "axelarnet" ? "Keplr" : "Metamask"} to
-            see balance
-          </label>
-        )}
+        {renderBalanceInfo()}
       </div>
     );
   }
