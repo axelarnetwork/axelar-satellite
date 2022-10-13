@@ -15,11 +15,17 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@axelar-network/axelarjs-sdk@0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.9.1.tgz#bcd78f48eeba29a96ca9866339e426f7b75c2ff1"
-  integrity sha512-BqbAWvCNFM6E8DkVwFy5JYilXD767H0RilrIoA/rjx6pXShTfFYZITnzOePqRAszCsni54ZuW9UHT+i8step+w==
+"@axelar-network/axelar-cgp-solidity@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelar-cgp-solidity/-/axelar-cgp-solidity-4.3.0.tgz#90b42b261759fe6b229932152a0911cee071a6ee"
+  integrity sha512-0cCgCFtxnipyzSplPnj/HxDx4DqqHGEr+J7M7NWKM1fXvfS4t/70aCAw/h9GYW8dZ3BmKOqKAYQCNpmP+2Oa+w==
+
+"@axelar-network/axelarjs-sdk@0.11.5":
+  version "0.11.5"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.11.5.tgz#1ae051ddcad6591552d64630631d25a4c6727cc7"
+  integrity sha512-j9h9RfK3eVn2ZxOlBcXyGBDSOcoYA10EZg4Kh8mS0P0FZ6Li8fnjiUbDaCauZuyBOAH8pN2YIWe4/E5k5YQdOA==
   dependencies:
+    "@axelar-network/axelar-cgp-solidity" "^4.3.0"
     "@axelar-network/axelarjs-types" "^0.24.0"
     "@cosmjs/stargate" "^0.28.4"
     "@types/uuid" "^8.3.1"
@@ -28,6 +34,7 @@
     cross-fetch "^3.1.5"
     ethers "^5.4.7"
     socket.io-client "^4.2.0"
+    standard-http-error "^2.0.1"
     uuid "^8.3.2"
 
 "@axelar-network/axelarjs-types@^0.24.0":
@@ -6885,6 +6892,18 @@ stack-utils@^2.0.3:
   integrity sha512-xrQcmYhOsn/1kX+Vraq+7j4oE2j/6BFscZ0etmYg81xuM8Gq0022Pxb8+IqgOFUIaxHs0KaSb7T1+OegiNrNFA==
   dependencies:
     escape-string-regexp "^2.0.0"
+
+"standard-error@>= 1.1.0 < 2":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/standard-error/-/standard-error-1.1.0.tgz#23e5168fa1c0820189e5812701a79058510d0d34"
+  integrity sha512-4v7qzU7oLJfMI5EltUSHCaaOd65J6S4BqKRWgzMi4EYaE5fvNabPxmAPGdxpGXqrcWjhDGI/H09CIdEuUOUeXg==
+
+standard-http-error@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/standard-http-error/-/standard-http-error-2.0.1.tgz#f8ae9172e3cef9cb38d2e7084a1925f57a7c34bd"
+  integrity sha512-DX/xPIoyXQTuY6BMZK4Utyi4l3A4vFoafsfqrU6/dO4Oe/59c7PyqPd2IQj9m+ZieDg2K3RL9xOYJsabcD9IUA==
+  dependencies:
+    standard-error ">= 1.1.0 < 2"
 
 stream-browserify@^3.0.0:
   version "3.0.0"
