@@ -12,6 +12,7 @@ const getWagmiChainOverride = (wagmiNetwork: string) => {
   const map: Record<string, string> = {
     ropsten: "ethereum",
     homestead: "ethereum",
+    goerli: "ethereum",
   };
   return map[wagmiNetwork] || wagmiNetwork;
 };
@@ -25,7 +26,7 @@ export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   const chain = chains.find(
     (_chain) =>
       getWagmiChainOverride(_chain.network) ===
-      state.srcChain?.chainIdentifier?.[ENVIRONMENT]
+      state.srcChain?.chainName.toLowerCase()
   );
   return chain?.id;
 });
@@ -36,7 +37,7 @@ export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
   const chain = chains.find(
     (_chain) =>
       getWagmiChainOverride(_chain.network) ===
-      state.destChain.chainIdentifier[ENVIRONMENT]
+      state.destChain?.chainName.toLowerCase()
   );
   return chain?.id;
 });
@@ -137,6 +138,7 @@ interface SwapState {
   swapOrigin: SwapOrigin;
   tokensToTransfer: string;
   txInfo: TxInfo;
+  rehydrateAssets: boolean;
 }
 
 interface SwapStore extends SwapState {
@@ -154,6 +156,7 @@ interface SwapStore extends SwapState {
   setTokensToTransfer: (tokens: string) => void;
   setTxInfo: (_txInfo: TxInfo) => void;
   resetState: () => void;
+  setRehydrateAssets: (value: boolean) => void;
 }
 
 /**
@@ -176,6 +179,7 @@ const initialState: SwapState = {
     destTxHash: "",
     destStartBlockNumber: 1,
   },
+  rehydrateAssets: true,
 };
 
 export const useSwapStore = create<SwapStore>()(
@@ -273,14 +277,17 @@ export const useSwapStore = create<SwapStore>()(
         false,
         "setDestAddress"
       ),
-    setAsset: (asset) =>
+    setAsset: (asset) => {
+      console.log("asset to set in store", asset);
       set(
         {
           asset,
         },
         false,
         "setAsset"
-      ),
+      );
+    },
+
     setAssetList: (assets) =>
       set(
         {
@@ -353,10 +360,15 @@ export const useSwapStore = create<SwapStore>()(
           asset: get().allAssets.find((asset) =>
             asset?.common_key[ENVIRONMENT].includes("usdc")
           ),
+          rehydrateAssets: true,
         },
         false,
         "resetState"
       ),
+    setRehydrateAssets: (value: boolean) =>
+      set({
+        rehydrateAssets: value,
+      }),
   }))
 );
 

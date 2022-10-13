@@ -8,6 +8,27 @@ export function copyToClipboard(value: string) {
   toast.success("Copied to Clipboard!");
 }
 
+export function buildTokenSentRoomId(
+  sourceChain: string,
+  denom: string,
+  destinationAddress: string,
+  destinationChain: string,
+  sender: string
+): string {
+  const topic = {
+    type: 'token-sent',
+    sourceChain,
+    denom,
+    destinationAddress,
+    destinationChain,
+    sender,
+  };
+
+  const roomId = JSON.stringify(topic, Object.keys(topic).sort());
+  console.log("constructed room ID for send native token", roomId);
+  return roomId;
+}
+
 export function buildDepositConfirmationRoomId(
   module: string,
   depositAddress: string
@@ -18,7 +39,9 @@ export function buildDepositConfirmationRoomId(
     depositAddress,
   };
 
-  return JSON.stringify(topic, Object.keys(topic).sort());
+  const roomId = JSON.stringify(topic, Object.keys(topic).sort());
+  console.log("constructed room ID for deposit confirmation", roomId);
+  return roomId;
 }
 
 export function buildEvmTransferCompletedRoomId(

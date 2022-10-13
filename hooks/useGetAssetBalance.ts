@@ -2,7 +2,7 @@ import { formatUnits } from "ethers/lib/utils";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
-import { useAccount, useContractRead, erc20ABI } from "wagmi";
+import { useAccount, useContractRead, erc20ABI, useBalance } from "wagmi";
 import { BigNumber } from "bignumber.js";
 import {
   getSrcChainId,
@@ -18,6 +18,7 @@ import {
 import { getAddress, queryBalance } from "../utils/wallet/keplr";
 import { getCosmosChains } from "../config/web3";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { NativeAssetConfig } from "../config/nativeAssetList/testnet";
 
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
@@ -31,6 +32,7 @@ export const useGetAssetBalance = () => {
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
 
   const [balance, setBalance] = useState<string>("0");
+  const [showNativeBalance, setShowNativeBalance] = useState(false);
 
   const { data, isSuccess } = useContractRead({
     enabled: !!(srcTokenAddress && srcChainId),
@@ -41,10 +43,35 @@ export const useGetAssetBalance = () => {
     args: [address],
   });
 
+  const {
+    data: nativeBalanceData,
+    isError,
+    isLoading,
+  } = useBalance({
+    enabled: showNativeBalance,
+    addressOrName: address,
+    chainId: srcChainId,
+  });
+
   // convert fetched token balance to a readable format
   useEffect(() => {
     if (srcChain?.module !== "evm") return;
+
     setLoading(true);
+
+    const shouldShowNativeBalance = !!(
+      srcChainId &&
+      (asset as NativeAssetConfig)?.is_native_asset &&
+      asset?.native_chain === srcChain.chainName.toLowerCase()
+    );
+    setShowNativeBalance(shouldShowNativeBalance);
+
+    if (shouldShowNativeBalance && nativeBalanceData) {
+      setBalance(nativeBalanceData.formatted);
+      setLoading(false);
+      return;
+    }
+
     if (!isSuccess || !data) {
       setBalance("0");
       setLoading(false);
@@ -55,7 +82,16 @@ export const useGetAssetBalance = () => {
 
     setBalance(num.toFixed());
     setLoading(false);
-  }, [srcChainId, srcTokenAddress, data, isSuccess]);
+  }, [
+    srcChainId,
+    srcTokenAddress,
+    data,
+    isSuccess,
+    nativeBalanceData,
+    setShowNativeBalance,
+    asset,
+    srcChain,
+  ]);
 
   const setKeplrBalance = useCallback(async (): Promise<void> => {
     if (!keplrConnected) return;
