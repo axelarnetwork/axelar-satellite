@@ -53,7 +53,8 @@ export const CosmosWalletTransfer = () => {
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const { setKeplrBalance } = useGetAssetBalance();
-  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
+  const { isTerraConnected, isTerraInitializingOrConnected } =
+    useIsTerraConnected();
 
   // used to hide wallets when transaction has been triggered
   const [isTxOngoing, setIsTxOngoing] = useState(false);
@@ -75,10 +76,8 @@ export const CosmosWalletTransfer = () => {
   } = useWalletStore((state) => state);
   const keplerWallet = useGetKeplerWallet();
   const hasKeplerWallet = useHasKeplerWallet();
-  const {
-    wallets: terraWallets,
-    connect: connectTerraWallet,
-  } = useTerraWallet();
+  const { wallets: terraWallets, connect: connectTerraWallet } =
+    useTerraWallet();
   const connectedWallet = useConnectedWallet();
   const lcdClient = useLCDClient();
 
@@ -173,11 +172,6 @@ export const CosmosWalletTransfer = () => {
       currentAsset?.minDepositAmt
     );
 
-    console.log({
-      minAmountOk,
-      minDeposit,
-    });
-
     if (!minAmountOk)
       return toast.error(
         `Token amount to transfer should be bigger than ${minDeposit}`
@@ -244,17 +238,22 @@ export const CosmosWalletTransfer = () => {
           .parseUnits(tokensToTransfer, currentAsset?.decimals)
           .toString(),
       };
-      evmosSignDirect(sendCoin.amount, sendCoin.denom, sourceAddress, depositAddress)
-      .then((res: any) => {
-        console.log("CosmosWalletTransfer: IBC transfer for EvmosJS",res);
-        
-        setTxInfo({
-          sourceTxHash: res.transactionHash,
-        });
+      evmosSignDirect(
+        sendCoin.amount,
+        sendCoin.denom,
+        sourceAddress,
+        depositAddress
+      )
+        .then((res: any) => {
+          console.log("CosmosWalletTransfer: IBC transfer for EvmosJS", res);
 
-        setIsTxOngoing(true);
-      })
-      .catch((error) => console.log(error));
+          setTxInfo({
+            sourceTxHash: res.transactionHash,
+          });
+
+          setIsTxOngoing(true);
+        })
+        .catch((error) => console.log(error));
     } else {
       result = await cosmjs
         .sendIbcTokens(
@@ -295,6 +294,15 @@ export const CosmosWalletTransfer = () => {
   }
 
   async function handleOnTerraStationIBCTransfer(): Promise<any> {
+    const { minAmountOk, minDeposit } = checkMinAmount(
+      tokensToTransfer,
+      currentAsset?.minDepositAmt
+    );
+
+    if (!minAmountOk)
+      return toast.error(
+        `Token amount to transfer should be bigger than ${minDeposit}`
+      );
     const sourcePort = "transfer";
     const senderAddress =
       terraWallets && terraWallets.length >= 1
@@ -321,20 +329,23 @@ export const CosmosWalletTransfer = () => {
       undefined
     );
 
-    const signTx = await connectedWallet?.sign({
-      msgs: [transferMsg],
-      timeoutHeight: 100,
-      fee,
-    }).catch(e => {
-      toast.error(`Could not initiate transaction on Terra Station: ${e.message}. Please try again.`);
-      return null;
-    });
+    const signTx = await connectedWallet
+      ?.sign({
+        msgs: [transferMsg],
+        timeoutHeight: 100,
+        fee,
+      })
+      .catch((e) => {
+        toast.error(
+          `Could not initiate transaction on Terra Station: ${e.message}. Please try again.`
+        );
+        return null;
+      });
 
     if (!signTx) return;
     try {
       console.log("CosmosWalletTransfer: Terra Station IBC transfer");
-      debugger;
-      const tx = await lcdClient.tx.broadcastSync(signTx.result)
+      const tx = await lcdClient.tx.broadcastSync(signTx.result);
       console.log("TS tx", tx);
       setTxInfo({
         sourceTxHash: tx.txhash,
