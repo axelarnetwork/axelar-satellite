@@ -24,6 +24,7 @@ import { Arrow } from "./TopFlows";
 import { useSwitchNetwork } from "wagmi";
 import { addTokenToMetamask } from "../states";
 import { getWagmiChains } from "../../../config/web3";
+import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
 
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
@@ -187,6 +188,7 @@ export const TokenSelector = () => {
     terraStationBalance,
     userSelectionForCosmosWallet,
   ]);
+
 
   // update asset balance from useGetAssetBalance hook if srcChain or asset changes
   useEffect(() => {

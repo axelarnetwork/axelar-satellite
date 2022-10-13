@@ -1,0 +1,36 @@
+name: Set Disabled Chains Mainnet
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_MAINNET }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      disabled_chains:
+        description: "Set disabled chains. e.g. injective,binance"
+        required: false
+        type: string
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Remove existing disabled chains env
+        run: vercel env rm NEXT_PUBLIC_DISABLED_CHAIN_NAMES --token ${{ secrets.VERCEL_TOKEN }} --yes || echo "env not existed"
+      - if: ${{ inputs.disabled_chains != '' }}
+        name: Re-add disabled chains env with chosen value
+        run: echo -n ${{ inputs.disabled_chains }} | vercel env add NEXT_PUBLIC_DISABLED_CHAIN_NAMES production --token ${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+  upload-artifact:
+    runs-on: ubuntu-latest
+    # needs: deploy
+    steps:
+      - name: "Update disabled_chains content"
+        run: echo -n ${{ inputs.disabled_chains }} > disabled-chains.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.disabled_chains || 'empty' }} # Display disabled chains as a filename so you don't have to download to see content.
+          path: disabled-chains.txt

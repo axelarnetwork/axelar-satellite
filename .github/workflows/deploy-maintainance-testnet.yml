@@ -1,0 +1,25 @@
+name: Set Maintainance Testnet
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_TESTNET }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      is_maintainance:
+        description: "Check to put satellite in maintainance mode"
+        required: true
+        type: boolean
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Remove existing maintainance env
+        run: vercel env rm NEXT_PUBLIC_UNDER_MAINTENANCE --token ${{ secrets.VERCEL_TOKEN }} --yes
+      - name: Re-add maintainance env with chosen value
+        run: echo -n ${{ inputs.is_maintainance }} | vercel env add NEXT_PUBLIC_UNDER_MAINTENANCE production --token ${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
