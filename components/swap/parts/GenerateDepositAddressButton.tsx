@@ -4,6 +4,7 @@ import React from "react";
 import toast from "react-hot-toast";
 
 import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
+import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
 import { DepositAddressPayload } from "../../../hooks/api";
 import {
   getReservedAddresses,
@@ -71,12 +72,16 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
 
     setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
     genDepositAddress({
-      fromChain: srcChain.chainName?.toLowerCase(),
-      toChain: destChain.chainName?.toLowerCase(),
+      fromChain: srcChain.chainIdentifier[ENVIRONMENT],
+      toChain: destChain.chainIdentifier[ENVIRONMENT],
       asset: asset?.common_key[ENVIRONMENT],
       destAddress,
       // @ts-ignore
-      transferType: asset.is_native_asset ? "wrap" : "deposit-address",
+      transferType:
+        (asset as NativeAssetConfig).is_native_asset &&
+        asset.native_chain === srcChain.chainIdentifier[ENVIRONMENT]
+          ? "wrap"
+          : "deposit-address",
     } as DepositAddressPayload);
   }
 

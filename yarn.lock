@@ -20,10 +20,10 @@
   resolved "https://registry.yarnpkg.com/@axelar-network/axelar-cgp-solidity/-/axelar-cgp-solidity-4.3.0.tgz#90b42b261759fe6b229932152a0911cee071a6ee"
   integrity sha512-0cCgCFtxnipyzSplPnj/HxDx4DqqHGEr+J7M7NWKM1fXvfS4t/70aCAw/h9GYW8dZ3BmKOqKAYQCNpmP+2Oa+w==
 
-"@axelar-network/axelarjs-sdk@0.11.5":
-  version "0.11.5"
-  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.11.5.tgz#1ae051ddcad6591552d64630631d25a4c6727cc7"
-  integrity sha512-j9h9RfK3eVn2ZxOlBcXyGBDSOcoYA10EZg4Kh8mS0P0FZ6Li8fnjiUbDaCauZuyBOAH8pN2YIWe4/E5k5YQdOA==
+"@axelar-network/axelarjs-sdk@0.11.6":
+  version "0.11.6"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.11.6.tgz#4a5e1bced80da817f2173875b625c9115ccbc161"
+  integrity sha512-JygP6kGUo5Iz6JMH0yLxt4pKPJt24/nuJzrBUOtepp4u95KgTNDIUjA399GjV0ZZtOD4ZfJQxPF261aOHSKRIA==
   dependencies:
     "@axelar-network/axelar-cgp-solidity" "^4.3.0"
     "@axelar-network/axelarjs-types" "^0.24.0"
@@ -35,6 +35,7 @@
     ethers "^5.4.7"
     socket.io-client "^4.2.0"
     standard-http-error "^2.0.1"
+    string-similarity-js "^2.1.4"
     uuid "^8.3.2"
 
 "@axelar-network/axelarjs-types@^0.24.0":
@@ -6925,6 +6926,11 @@ string-length@^4.0.1:
   dependencies:
     char-regex "^1.0.2"
     strip-ansi "^6.0.0"
+
+string-similarity-js@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/string-similarity-js/-/string-similarity-js-2.1.4.tgz#73716330691946f2ebc435859aba8327afd31307"
+  integrity sha512-uApODZNjCHGYROzDSAdCmAHf60L/pMDHnP/yk6TAbvGg7JSPZlSto/ceCI7hZEqzc53/juU2aOJFkM2yUVTMTA==
 
 string-width@^3.0.0, string-width@^3.1.0:
   version "3.1.0"
