@@ -177,9 +177,9 @@ export const nativeAssets: NativeAssetConfig[] = [
   // },
   {
     common_key: {
-      devnet: "avax-wei",
-      testnet: "avax-wei",
-      mainnet: "avax-wei",
+      devnet: "nwavax-wei",
+      testnet: "nwavax-wei",
+      mainnet: "nwavax-wei",
     },
     is_native_asset: true,
     native_chain: "avalanche",

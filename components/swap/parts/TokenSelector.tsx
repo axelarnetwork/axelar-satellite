@@ -204,6 +204,9 @@ export const TokenSelector = () => {
     isTerraInitializingOrConnected,
   ]);
 
+  /**
+   * DROPDOWN TOGGLE LOGIC
+   */
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
   });
@@ -213,9 +216,9 @@ export const TokenSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }
 
-  useEffect(() => {
-    setFilteredAssets(selectableAssetList);
-  }, [selectableAssetList]);
+  // useEffect(() => {
+  //   setFilteredAssets(selectableAssetList);
+  // }, [selectableAssetList]);
 
   async function handleOnAssetChange(asset: AssetConfig) {
     // await router.push({
