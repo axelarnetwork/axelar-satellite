@@ -227,9 +227,13 @@ export const CosmosWalletTransfer = () => {
             setIsTxOngoing(true);
             // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
-          .catch((error) => console.log(error));
-      } catch (error: any) {
-        throw new Error(error);
+          .catch((e) => {
+            toast.error(e?.message as any);
+            console.log(e);
+          });
+      } catch (e: any) {
+        toast.error(e?.message as any);
+        console.log(e);
       }
     } else if (srcChain.chainName.toLowerCase() === "evmos") {
       const sendCoin = {
@@ -277,7 +281,10 @@ export const CosmosWalletTransfer = () => {
           setIsTxOngoing(true);
           // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
         })
-        .catch((error) => console.log(error));
+        .catch((e: any) => {
+          toast.error(e?.message as any);
+          console.log(e);
+        });
     }
 
     // let result
@@ -351,7 +358,8 @@ export const CosmosWalletTransfer = () => {
         sourceTxHash: tx.txhash,
       });
       setIsTxOngoing(true);
-    } catch (e) {
+    } catch (e: any) {
+      toast.error(e?.message as any);
       console.log("error", e);
     }
   }
