@@ -17,8 +17,9 @@ export function useDetectUnwrapTransfer() {
 
   useContractEvent({
     chainId: destChainId as number,
-    addressOrName: asset?.chain_aliases[destChain.chainIdentifier[ENVIRONMENT]]
-      ?.tokenAddress as string,
+    addressOrName:
+      (asset?.chain_aliases[destChain.chainIdentifier[ENVIRONMENT]]
+        ?.tokenAddress as string) || "0x",
     contractInterface: erc20ABI,
     eventName: "Transfer",
     listener: (event) => {
