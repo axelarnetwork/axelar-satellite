@@ -1,38 +1,39 @@
 import { useMutation } from "react-query";
-import { AxelarAssetTransfer, EvmChain } from "@axelar-network/axelarjs-sdk";
-
+import { AxelarAssetTransfer } from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../config/constants";
 
-export type transferType = "deposit-address" | "wrap" | "unwrap";
 export type DepositAddressPayload = {
   fromChain: string;
   toChain: string;
   destAddress: string;
   asset: string;
-  transferType: transferType;
+  transferType: "deposit-address" | "wrap" | "unwrap";
 };
+
+const sdk = new AxelarAssetTransfer({
+  environment: ENVIRONMENT,
+  auth: "local",
+});
 
 export const useGenerateDepositAddress = () =>
   useMutation((payload: DepositAddressPayload) => {
-    const sdk = new AxelarAssetTransfer({
-      environment: ENVIRONMENT,
-      auth: "local",
-    });
     const { fromChain, toChain, destAddress, transferType, asset } = payload;
-    const functionMap: Record<transferType, () => Promise<any>> = {
-      "deposit-address": async () =>
-        await sdk.getDepositAddress(fromChain, toChain, destAddress, asset),
-      wrap: async () => {
-        console.log("calling wrap method");
-        return await sdk.getDepositAddressForNativeWrap(
-          fromChain.toLowerCase() as EvmChain,
-          toChain.toLowerCase() as EvmChain,
-          destAddress,
-          "",
-          undefined
-        );
-      },
-      unwrap: () => Promise.resolve(alert("TODO")),
-    };
-    return functionMap[transferType]();
+
+    if (transferType === "wrap") {
+      return sdk.getDepositAddressForNativeWrap(
+        fromChain,
+        toChain,
+        destAddress
+      );
+    }
+    if (transferType === "unwrap") {
+      return sdk.getDepositAddressForNativeUnwrap(
+        fromChain,
+        toChain,
+        destAddress,
+        ""
+      );
+    }
+
+    return sdk.getDepositAddress(fromChain, toChain, destAddress, asset);
   });

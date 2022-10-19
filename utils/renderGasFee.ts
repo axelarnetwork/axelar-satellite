@@ -1,10 +1,11 @@
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import Big from "big.js";
+import { NativeAssetConfig } from "../config/nativeAssetList/testnet";
 
 export function renderGasFee(
   srcChain: ChainInfo,
   destChain: ChainInfo,
-  asset: AssetConfig
+  asset: NativeAssetConfig
 ) {
   if (!srcChain || !destChain) return "";
 

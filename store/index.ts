@@ -4,6 +4,7 @@ import create, { createStore } from "zustand";
 import { persist } from "zustand/middleware";
 import { devtools } from "zustand/middleware";
 import { DEFAULT_ASSET, ENVIRONMENT } from "../config/constants";
+import { NativeAssetConfig } from "../config/nativeAssetList/testnet";
 import { getWagmiChains } from "../config/web3";
 
 import { SwapOrigin, SwapStatus } from "../utils/enums";
@@ -126,13 +127,13 @@ interface TxInfo {
 }
 
 interface SwapState {
-  allAssets: AssetConfig[];
+  allAssets: NativeAssetConfig[];
   allChains: ChainInfo[];
   srcChain: ChainInfo;
   destChain: ChainInfo;
   destAddress: string;
-  selectableAssetList: AssetConfig[];
-  asset: AssetConfig | null;
+  selectableAssetList: NativeAssetConfig[];
+  asset: NativeAssetConfig | null;
   swapStatus: SwapStatus;
   depositAddress: string;
   swapOrigin: SwapOrigin;
@@ -384,7 +385,7 @@ interface WalletState {
 const initialWalletState: WalletState = {
   wagmiConnected: false,
   keplrConnected: false,
-  userSelectionForCosmosWallet: "keplr"
+  userSelectionForCosmosWallet: "keplr",
 };
 
 interface WalletStore extends WalletState {
@@ -398,7 +399,9 @@ export const useWalletStore = create<WalletStore>()(
       ...initialWalletState,
       setWagmiConnected: (wagmiConnected) => set({ wagmiConnected }),
       setKeplrConnected: (keplrConnected) => set({ keplrConnected }),
-      setUserSelectionForCosmosWallet: (userSelectionForCosmosWallet: "terraStation" | "keplr") => set({ userSelectionForCosmosWallet })
+      setUserSelectionForCosmosWallet: (
+        userSelectionForCosmosWallet: "terraStation" | "keplr"
+      ) => set({ userSelectionForCosmosWallet }),
     }),
     { name: "walletStore" }
   )
