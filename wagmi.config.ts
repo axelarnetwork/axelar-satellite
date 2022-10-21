@@ -6,7 +6,7 @@ import { publicProvider } from "wagmi/providers/public";
 import { getWagmiChains } from "./config/web3";
 
 const { chains, provider } = configureChains(
-  [...getWagmiChains(), ...defaultChains],
+  [...getWagmiChains()],
   [
     jsonRpcProvider({
       rpc: (chain) => {
