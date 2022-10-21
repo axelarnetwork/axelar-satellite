@@ -70,19 +70,24 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     )
       return toast.error("Cannot send to this address");
 
-    setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
+    let transferType = "deposit-address";
+    // we transfer native asset belonging to the source chain
+    if (asset.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
+      transferType = "wrap";
+      // we transfer wrapped asset of native asset belonging to destination chain
+    } else if (asset.native_chain === destChain.chainIdentifier[ENVIRONMENT]) {
+      transferType = "unwrap";
+    }
+
     genDepositAddress({
       fromChain: srcChain.chainIdentifier[ENVIRONMENT],
       toChain: destChain.chainIdentifier[ENVIRONMENT],
       asset: asset?.common_key[ENVIRONMENT],
       destAddress,
-      // @ts-ignore
-      transferType:
-        (asset as NativeAssetConfig).is_native_asset &&
-        asset.native_chain === srcChain.chainIdentifier[ENVIRONMENT]
-          ? "wrap"
-          : "deposit-address",
-    } as DepositAddressPayload);
+      transferType,
+    });
+
+    setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
   }
 
   function checkDestAddressFormat() {

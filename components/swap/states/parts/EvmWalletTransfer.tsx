@@ -97,17 +97,22 @@ export const EvmWalletTransfer = () => {
     enabled: !!destChainId,
   });
 
-  const { data: sendNativeDataResult, isLoading, isSuccess, sendTransaction } = useSendTransaction({
+  const {
+    data: sendNativeDataResult,
+    isLoading,
+    isSuccess,
+    sendTransaction,
+  } = useSendTransaction({
     chainId: srcChainId as number,
     request: {
       to: depositAddress,
       value: utils.parseUnits(tokensToTransfer, asset?.decimals),
-    }
+    },
   });
 
   useEffect(() => {
-    console.log("send native data result",sendNativeDataResult);
-    if (!(sendNativeDataResult?.hash)) return;
+    console.log("send native data result", sendNativeDataResult);
+    if (!sendNativeDataResult?.hash) return;
     setTxInfo({
       sourceTxHash: sendNativeDataResult?.hash,
       destStartBlockNumber: undefined,
@@ -176,10 +181,9 @@ export const EvmWalletTransfer = () => {
     //   );
     // }
 
-    //@ts-ignore
-    if (asset.is_native_asset) {
-      sendTransaction()
-      return;
+    // WRAP
+    if (asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
+      return sendTransaction();
     }
 
     // check that the user has enough tokens

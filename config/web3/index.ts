@@ -43,6 +43,7 @@ export const getCosmosChains = (allAssets: AssetConfig[]) => {
       currencies: [
         cosmosChain.currencies[0],
         ...allAssets
+          .filter((asset) => asset.common_key[ENVIRONMENT] !== "nwavax-wei")
           .filter(
             (assetConfig) =>
               assetConfig.chain_aliases[cosmosChain.chainIdentifier] &&

@@ -27,7 +27,14 @@ export function useFilterSelectableAssetList() {
       return sourceHasAsset && destHasAsset;
     });
 
-    setAssetList(selectableAssets);
+    const selectableAssetsWithNative = selectableAssets.filter((_asset) => {
+      if (!_asset.is_native_asset) return true;
+      if (_asset.native_chain !== srcChain.chainIdentifier[ENVIRONMENT])
+        return false;
+      return true;
+    });
+
+    setAssetList(selectableAssetsWithNative);
     const currentAssetValid = selectableAssets.find(
       (_asset) =>
         _asset.common_key[ENVIRONMENT] === asset?.common_key[ENVIRONMENT]

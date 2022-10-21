@@ -2,7 +2,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://tendermint.bd.evmos.org:26657",
+  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=evmos",
   rest: "https://rest.bd.evmos.org:1317", //"https://mainnet-lcd-router.axelar-dev.workers.dev", TODO - get LCD router to work so that we can retry
   chainId: "evmos_9001-2",
   chainName: "Evmos",
