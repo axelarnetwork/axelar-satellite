@@ -17,6 +17,7 @@ import fetch from "./fetch";
 import comdex from "./comdex";
 import regen from "./regen";
 import { agoric } from "./agoric";
+import { umee } from "./umee";
 
 export const mainnetChains: CosmosChain[] = [
   terra,
@@ -37,4 +38,5 @@ export const mainnetChains: CosmosChain[] = [
   comdex,
   regen,
   agoric,
+  umee,
 ];
