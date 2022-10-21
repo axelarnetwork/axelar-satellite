@@ -19,20 +19,22 @@ export const useGenerateDepositAddress = () =>
   useMutation((payload: DepositAddressPayload) => {
     const { fromChain, toChain, destAddress, transferType, asset } = payload;
 
-    if (transferType === "wrap") {
-      return sdk.getDepositAddressForNativeWrap(
-        fromChain,
-        toChain,
-        destAddress
-      );
-    }
-    if (transferType === "unwrap") {
-      return sdk.getDepositAddressForNativeUnwrap(
-        fromChain,
-        toChain,
-        destAddress,
-        ""
-      );
+    if (ENVIRONMENT === "testnet") {
+      if (transferType === "wrap") {
+        return sdk.getDepositAddressForNativeWrap(
+          fromChain,
+          toChain,
+          destAddress
+        );
+      }
+      if (transferType === "unwrap") {
+        return sdk.getDepositAddressForNativeUnwrap(
+          fromChain,
+          toChain,
+          destAddress,
+          ""
+        );
+      }
     }
 
     return sdk.getDepositAddress(fromChain, toChain, destAddress, asset);

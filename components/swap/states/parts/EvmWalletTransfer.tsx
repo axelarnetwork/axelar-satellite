@@ -181,9 +181,11 @@ export const EvmWalletTransfer = () => {
     //   );
     // }
 
-    // WRAP
-    if (asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
-      return sendTransaction();
+    if (ENVIRONMENT === "testnet") {
+      // WRAP
+      if (asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
+        return sendTransaction();
+      }
     }
 
     // check that the user has enough tokens
