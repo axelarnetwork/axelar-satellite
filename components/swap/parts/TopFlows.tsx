@@ -59,7 +59,7 @@ export const TopFlows = () => {
 
   if (![SwapStatus.IDLE].includes(swapStatus)) return null;
 
-  function handleOnFlow2() {
+  function handleOnFlow1() {
     const avax = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
@@ -93,7 +93,7 @@ export const TopFlows = () => {
     setMenuOpened(false);
   }
 
-  function handleOnFlow1() {
+  function handleOnFlow2() {
     const moonbeam = allChains.find((chain) =>
       chain.chainName.toLowerCase().includes("ethereum")
     ) as ChainInfo;
@@ -138,14 +138,14 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/uaxl.logo.svg`}
+              src={`/assets/tokens/uausdc.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
             />
             <Arrow />
             <Image
-              src={`/assets/chains/axelar.logo.svg`}
+              src={`/assets/chains/osmosis.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
@@ -165,20 +165,21 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/uausdc.logo.svg`}
+              src={`/assets/tokens/uaxl.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
             />
             <Arrow />
             <Image
-              src={`/assets/chains/osmosis.logo.svg`}
+              src={`/assets/chains/axelar.logo.svg`}
               layout="intrinsic"
               width={35}
               height={35}
             />
           </div>
         </li>
+
         <li
           onClick={handleOnFlow3}
           className="border rounded-lg border-[#00b0f4]"
@@ -206,7 +207,6 @@ export const TopFlows = () => {
             />
           </div>
         </li>
-
       </ul>
     </div>
   );
