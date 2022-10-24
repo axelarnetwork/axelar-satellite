@@ -136,11 +136,9 @@ export const TokenSelector = () => {
 
   // update filtered assets state on chain change
   useEffect(() => {
-    console.log("srcChain", srcChain);
     let list;
     if (srcChain.module === "evm") {
       list = selectableAssetList.filter((asset) => {
-        // console.log("asset!",asset);
         // @ts-ignore
         return (
           !(asset as NativeAssetConfig).is_native_asset ||
@@ -387,7 +385,6 @@ export const TokenSelector = () => {
         </div>
         <ul tabIndex={0} onClick={handleOnDropdownToggle}>
           {filteredAssets.map((asset) => {
-            console.log("asset in dropdown", filteredAssets);
             return (
               <li key={asset.common_key[ENVIRONMENT]}>
                 <button onClick={() => handleOnAssetChange(asset)}>

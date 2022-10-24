@@ -100,8 +100,6 @@ export const useInitialChainList = () => {
         const filteredAssetList: AssetConfig[] =
           ENVIRONMENT === "testnet" ? nativeAssets : [];
 
-        console.log("filterd asset list", filteredAssetList);
-
         const assetsList: AssetInfo[] = [];
 
         filteredAssetList.forEach((asset) => {
@@ -132,7 +130,7 @@ export const useInitialChainList = () => {
           ...(chain.assets as AssetInfo[]),
         ];
       });
-      console.log("filtered chains", filteredChains);
+
       setAllChains(filteredChains);
 
       let { source, destination } = router.query as RouteQuery;
@@ -209,7 +207,6 @@ export const useInitialChainList = () => {
 
   async function loadInitialAssets() {
     return loadAssets({ environment }).then((assets: AssetConfig[]) => {
-      console.log("all assets", [...nativeAssets, ...assets]);
       setAllAssets([...nativeAssets, ...assets]);
 
       const { asset_denom } = router.query as RouteQuery;
