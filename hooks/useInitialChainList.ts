@@ -207,14 +207,15 @@ export const useInitialChainList = () => {
 
   async function loadInitialAssets() {
     return loadAssets({ environment }).then((assets: AssetConfig[]) => {
-      setAllAssets([...nativeAssets, ...assets]);
+      const assetsWithNative = [...nativeAssets, ...assets];
+      setAllAssets(assetsWithNative);
 
       const { asset_denom } = router.query as RouteQuery;
 
       // if asset not provided get default asset
       if (!asset_denom) {
         setAsset(
-          assets.find((asset) =>
+          assetsWithNative.find((asset) =>
             asset?.common_key[environment].includes(DEFAULT_ASSET)
           ) as AssetConfig
         );
@@ -223,7 +224,7 @@ export const useInitialChainList = () => {
         };
       }
 
-      const assetFound = assets.find((asset) =>
+      const assetFound = assetsWithNative.find((asset) =>
         asset?.common_key[environment].includes(asset_denom)
       );
       if (assetFound) {
