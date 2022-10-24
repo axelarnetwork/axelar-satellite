@@ -29,9 +29,9 @@ export const DestChainSelector = () => {
           chain.chainName !== destChain.chainName
       )
       .filter((chain) =>
-        chain.assets
-          ?.map((a) => extractDenom(a.fullDenomPath as string))
-          .includes(asset?.common_key[ENVIRONMENT] as string)
+        chain.assets?.map((a) =>
+          a.common_key!?.includes(asset?.common_key[ENVIRONMENT] as string)
+        )
       );
     setFilteredChains(newChains);
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
