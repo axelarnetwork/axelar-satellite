@@ -375,7 +375,7 @@ export const TokenSelector = () => {
     if (!dropdownOpen || !srcChain) return null;
 
     return (
-      <div className="p-2 rounded-lg shadow dropdown-content menu bg-[#02141b] left-0 w-full h-64 overflow-auto">
+      <div className="p-2 rounded-lg shadow dropdown-content menu bg-neutral left-0 w-full h-64 overflow-auto">
         <div className="px-2 py-2 ">
           <input
             className="w-full bg-[#333c42] input input-sm"
