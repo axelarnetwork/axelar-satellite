@@ -98,6 +98,7 @@ export const DestChainSelector = () => {
               <li key={chain.chainSymbol}>
                 <button onClick={() => handleOnDestChainChainChange(chain)}>
                   <Image
+                    loading="eager"
                     src={`/assets/chains/${chain?.chainName?.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
                     width={35}
@@ -124,6 +125,7 @@ export const DestChainSelector = () => {
         <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
           <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
             <Image
+              loading="eager"
               src={`/assets/chains/${destChain?.chainName?.toLowerCase()}.logo.svg`}
               layout="intrinsic"
               width={35}
@@ -138,6 +140,7 @@ export const DestChainSelector = () => {
             </span>
             <div className="flex items-center">
               <Image
+                loading="eager"
                 src="/assets/ui/arrow-down.svg"
                 layout="intrinsic"
                 width={25}

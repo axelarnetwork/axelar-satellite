@@ -96,6 +96,7 @@ export const SourceChainSelector = () => {
               <li key={chain.chainSymbol}>
                 <button onClick={() => handleOnSourceChainChange(chain)}>
                   <Image
+                    loading="eager"
                     src={`/assets/chains/${chain.chainName.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
                     width={35}
@@ -123,6 +124,7 @@ export const SourceChainSelector = () => {
           <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
             <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
               <Image
+                loading="eager"
                 src={`/assets/chains/${srcChain?.chainName?.toLowerCase()}.logo.svg`}
                 layout="intrinsic"
                 width={35}
@@ -137,6 +139,7 @@ export const SourceChainSelector = () => {
               </span>
               <div className="flex items-center">
                 <Image
+                  loading="eager"
                   src="/assets/ui/arrow-down.svg"
                   layout="intrinsic"
                   width={25}
