@@ -1,3 +1,4 @@
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import toast from "react-hot-toast";
 import { ENVIRONMENT } from "../config/constants";
 import { Environment } from "./enums";
@@ -9,18 +10,19 @@ export function copyToClipboard(value: string) {
 }
 
 export function buildTokenSentRoomId(
-  sourceChain: string,
+  srcChainInfo: ChainInfo,
   denom: string,
   destinationAddress: string,
-  destinationChain: string,
+  destChainInfo: ChainInfo,
   sender: string
 ): string {
+
   const topic = {
     type: 'token-sent',
-    sourceChain,
+    sourceChain: srcChainInfo.chainIdentifier[ENVIRONMENT],
     denom,
     destinationAddress,
-    destinationChain,
+    destinationChain: destChainInfo.chainIdentifier[ENVIRONMENT],
     sender,
   };
 

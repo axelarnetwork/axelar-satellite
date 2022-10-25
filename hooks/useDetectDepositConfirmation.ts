@@ -70,11 +70,11 @@ export const useDetectDepositConfirmation = () => {
 
     if (sentNative)
       roomId = buildTokenSentRoomId(
-        srcChain.chainName.toLowerCase(),
+        srcChain,
         asset.chain_aliases[destChain.chainName.toLowerCase()]
           .fullDenomPath as string,
         destAddress.toLowerCase(),
-        destChain.chainName.toLowerCase(),
+        destChain,
         depositAddress
       );
     else
