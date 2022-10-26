@@ -12,6 +12,7 @@ export const ActionButton = () => {
     swapStatus,
     resetState,
     setDepositAddress,
+    setIntermediaryDepositAddress,
     setSwapStatus,
   } = useSwapStore((state) => state);
   const { mutate, isLoading, isSuccess, data } = useGenerateDepositAddress();
@@ -21,7 +22,12 @@ export const ActionButton = () => {
     if (swapStatus !== SwapStatus.GEN_DEPOSIT_ADDRESS) return;
 
     Promise.resolve(data)
-      .then((depositAddress: string) => setDepositAddress(depositAddress))
+      .then(({ intermediaryDepositAddress, finalDepositAddress }) => {
+        setDepositAddress(finalDepositAddress);
+        if (intermediaryDepositAddress) {
+          setIntermediaryDepositAddress(intermediaryDepositAddress);
+        }
+      })
       .then(() => setSwapStatus(SwapStatus.WAIT_FOR_DEPOSIT))
       .then(() => console.log("transfer ok"))
       .catch((error) => {
