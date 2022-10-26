@@ -136,6 +136,7 @@ interface SwapState {
   asset: NativeAssetConfig | null;
   swapStatus: SwapStatus;
   depositAddress: string;
+  intermediaryDepositAddress: string;
   swapOrigin: SwapOrigin;
   tokensToTransfer: string;
   txInfo: TxInfo;
@@ -153,6 +154,7 @@ interface SwapStore extends SwapState {
   switchChains: () => void;
   setSwapStatus: (newStatus: SwapStatus) => void;
   setDepositAddress: (address: string) => void;
+  setIntermediaryDepositAddress: (address: string) => void;
   setSwapOrigin: (origin: SwapOrigin) => void;
   setTokensToTransfer: (tokens: string) => void;
   setTxInfo: (_txInfo: TxInfo) => void;
@@ -173,6 +175,7 @@ const initialState: SwapState = {
   tokensToTransfer: "", // asset amount to transfer
   destAddress: "", // user owned account to transfer assets to
   depositAddress: "", // axelar generated account where user should deposit his assets
+  intermediaryDepositAddress: "",
   swapStatus: SwapStatus.IDLE,
   swapOrigin: SwapOrigin.APP,
   txInfo: {
@@ -312,6 +315,14 @@ export const useSwapStore = create<SwapStore>()(
         }),
         false,
         "setDepositAddress"
+      ),
+    setIntermediaryDepositAddress: (address) =>
+      set(
+        () => ({
+          intermediaryDepositAddress: address,
+        }),
+        false,
+        "setIntermediaryDepositAddress"
       ),
     setSwapStatus: (newStatus) =>
       set(

@@ -1,6 +1,9 @@
 import { useMutation } from "react-query";
 import { AxelarAssetTransfer } from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../config/constants";
+import { constants } from "ethers";
+
+const { HashZero } = constants;
 
 export type DepositAddressPayload = {
   fromChain: string;
@@ -16,26 +19,56 @@ const sdk = new AxelarAssetTransfer({
 });
 
 export const useGenerateDepositAddress = () =>
-  useMutation((payload: DepositAddressPayload) => {
+  useMutation(async (payload: DepositAddressPayload) => {
     const { fromChain, toChain, destAddress, transferType, asset } = payload;
 
     if (ENVIRONMENT === "testnet") {
       if (transferType === "wrap") {
-        return sdk.getDepositAddressForNativeWrap(
+        const depositAddress = await sdk.getDepositAddressForNativeWrap(
           fromChain,
           toChain,
           destAddress
         );
+
+        return {
+          intermediaryDepositAddress: null,
+          finalDepositAddress: depositAddress,
+        };
       }
+
       if (transferType === "unwrap") {
-        return sdk.getDepositAddressForNativeUnwrap(
+        const refundAddress = await sdk.getGasReceiverContractAddress(
+          fromChain
+        );
+        const intermediaryDepositAddress =
+          await sdk.validateOfflineDepositAddress(
+            "unwrap",
+            fromChain,
+            toChain,
+            destAddress,
+            refundAddress,
+            HashZero
+          );
+        const result = await sdk.getDepositAddressForNativeUnwrap(
           fromChain,
           toChain,
-          destAddress,
-          ""
+          destAddress
         );
+        return {
+          intermediaryDepositAddress,
+          finalDepositAddress: result,
+        };
       }
     }
 
-    return sdk.getDepositAddress(fromChain, toChain, destAddress, asset);
+    const depositAddress = await sdk.getDepositAddress(
+      fromChain,
+      toChain,
+      destAddress,
+      asset
+    );
+    return {
+      intermediaryDepositAddress: null,
+      finalDepositAddress: depositAddress,
+    };
   });

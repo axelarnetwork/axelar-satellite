@@ -784,13 +784,12 @@ export const nativeAssets: NativeAssetConfig[] = [
     chain_aliases: {
       aura: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.0007,
         ibcDenom:
           "ibc/2991B858634D22E4637F772FA5A5F5BFCE3F30EA3ED208E36DD8DC07330490A9",
         fullDenomPath: "transfer/channel-5/wavax-wei",
         tokenAddress: "wavax-wei",
-        // @ts-ignore
       },
       axelar: {
         assetSymbol: "WAVAX",
@@ -799,76 +798,77 @@ export const nativeAssets: NativeAssetConfig[] = [
         ibcDenom: "wavax-wei",
         fullDenomPath: "wavax-wei",
         tokenAddress: "wavax-wei",
-        // @ts-ignore
       },
       comdex: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.0007,
         ibcDenom:
           "ibc/2A468AFEDF2B694B46BBE10E9C3631815DF57B3D936462CA031345922A76CD36",
         fullDenomPath: "transfer/channel-18/wavax-wei",
         tokenAddress: "wavax-wei",
-        // @ts-ignore
       },
       evmos: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.0007,
         ibcDenom:
           "ibc/2B84B3D7B8AA4B04607ACD2E5096D20B34D6D355D33F4F5DD4659449EB757597",
         fullDenomPath: "transfer/channel-22/wavax-wei",
         tokenAddress: "wavax-wei",
-        // @ts-ignore
       },
       fetch: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.0007,
         ibcDenom:
           "ibc/F992067A054C819B42D2DAB57F5CCE347D38352EB90453E59D566BFE64F1614B",
         fullDenomPath: "transfer/channel-6/wavax-wei",
         tokenAddress: "wavax-wei",
-        // @ts-ignore
       },
       kujira: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.0007,
         ibcDenom:
           "ibc/C74D5A562B2D54AF03198E5BC6693D16EF978EBA0BD3BA22A7098511B43249CA",
         fullDenomPath: "transfer/channel-8/wavax-wei",
         tokenAddress: "wavax-wei",
-        // @ts-ignore
       },
       osmosis: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.0007,
         ibcDenom:
           "ibc/AC114FA5B91B5696ACD80CE7D740E3DEF2C6E76817A9F57754E9423325321220",
         fullDenomPath: "transfer/channel-312/wavax-wei",
         tokenAddress: "wavax-wei",
-        // @ts-ignore
       },
       sei: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.0007,
         ibcDenom:
           "ibc/2B1862B1CBE5ABC2E9457A21F2289024853AF12AEF8BC5EF8E4C3FB8B754BE2A",
         fullDenomPath: "transfer/channel-29/wavax-wei",
         tokenAddress: "wavax-wei",
-        // @ts-ignore
+      },
+      terra: {
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.0007,
+        ibcDenom:
+          "ibc/2B84B3D7B8AA4B04607ACD2E5096D20B34D6D355D33F4F5DD4659449EB757597",
+        fullDenomPath: "transfer/channel-22/wavax-wei",
+        tokenAddress: "wavax-wei",
       },
       aurora: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.001,
         ibcDenom: "wavax-wei",
         fullDenomPath: "wavax-wei",
         tokenAddress: "0xb47BAb33cAE8FCa71FA28516ADCE3AF0B3e040e3",
-        // @ts-ignore
       },
       avalanche: {
         assetSymbol: "AVAX",
@@ -877,52 +877,46 @@ export const nativeAssets: NativeAssetConfig[] = [
         ibcDenom: "wavax-wei",
         fullDenomPath: "wavax-wei",
         tokenAddress: "0xd00ae08403B9bbb9124bB305C09058E32C39A48c",
-        // @ts-ignore
       },
       binance: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.001,
         ibcDenom: "wavax-wei",
         fullDenomPath: "wavax-wei",
         tokenAddress: "0x1B29EC62efC689c462b4E0512457175793cEc9e6",
-        // @ts-ignore
       },
       ethereum: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.001,
         ibcDenom: "wavax-wei",
         fullDenomPath: "wavax-wei",
-        tokenAddress: "0x72af7e1e7E0D38bCF033C541598F5a0301D051A5",
-        // @ts-ignore
+        tokenAddress: "0x2a87806561C550ba2dA9677c5323413E6e539740",
       },
       fantom: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.001,
         ibcDenom: "wavax-wei",
         fullDenomPath: "wavax-wei",
         tokenAddress: "0x8776aDD48553518641a589C39792cc409d4C8B84",
-        // @ts-ignore
       },
       moonbeam: {
-        assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetSymbol: "AVAX",
+        assetName: "AVAX",
         minDepositAmt: 0.001,
         ibcDenom: "wavax-wei",
         fullDenomPath: "wavax-wei",
         tokenAddress: "0x64aae6319934995Bf30e67EBBBA9750256E07283",
-        // @ts-ignore
       },
       polygon: {
         assetSymbol: "WAVAX",
-        assetName: "axlWAVAX",
+        assetName: "WAVAX",
         minDepositAmt: 0.001,
         ibcDenom: "wavax-wei",
         fullDenomPath: "wavax-wei",
         tokenAddress: "0x6DD60c05FdA1255A44Ffaa9A8200b5b179A578D6",
-        // @ts-ignore
       },
     },
   },
