@@ -101,12 +101,14 @@ export const EvmWalletTransfer = () => {
     data: sendNativeDataResult,
     isLoading,
     isSuccess,
-    sendTransaction,
+    sendTransactionAsync,
   } = useSendTransaction({
     chainId: srcChainId as number,
     request: {
       to: depositAddress,
-      value: utils.parseUnits(tokensToTransfer, asset?.decimals),
+      value: !!tokensToTransfer
+        ? utils?.parseUnits(tokensToTransfer, asset?.decimals)
+        : 0,
     },
   });
 
@@ -115,7 +117,7 @@ export const EvmWalletTransfer = () => {
     if (!sendNativeDataResult?.hash) return;
     setTxInfo({
       sourceTxHash: sendNativeDataResult?.hash,
-      destStartBlockNumber: undefined,
+      destStartBlockNumber: blockNumber,
     });
     setIsTxOngoing(true);
   }, [sendNativeDataResult]);
@@ -180,13 +182,22 @@ export const EvmWalletTransfer = () => {
     //       .toString()} available`
     //   );
     // }
+    console.log(1);
 
     if (ENVIRONMENT === "testnet") {
+      console.log(2);
       // WRAP
       if (asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
-        return sendTransaction();
+        const tx = await sendTransactionAsync();
+        setTxInfo({
+          sourceTxHash: tx?.hash,
+          destStartBlockNumber: blockNumber,
+        });
+        return;
       }
     }
+
+    console.log(3);
 
     // check that the user has enough tokens
     const tokenBalance = tokenAmount?.toString() as string;
