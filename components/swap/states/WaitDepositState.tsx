@@ -13,6 +13,7 @@ import { convertChainName } from "../../../utils/transformers";
 import { TransferStats } from "../parts";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 
 export const WaitDepositState = () => {
   const { depositAddress, destAddress, srcChain, destChain, asset } =
@@ -24,7 +25,7 @@ export const WaitDepositState = () => {
     const relayerGasFee = renderGasFee(
       srcChain,
       destChain,
-      asset as AssetConfig
+      asset as NativeAssetConfig
     );
     return (
       <div>

@@ -25,7 +25,7 @@ import {
 import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useIsTerraConnected } from "./terra/useIsTerraConnected";
-import { NativeAssetConfig } from "../config/nativeAssetList/testnet";
+import { NativeAssetConfig } from "../config/web3/evm/native-assets";
 
 export const useGetAssetBalance = () => {
   const { address } = useAccount();

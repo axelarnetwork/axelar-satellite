@@ -14,8 +14,6 @@ import { useGetAssetBalance, useGetMaxTransferAmount } from "../../../hooks";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { Blockable } from "../../common";
 import { useRouter } from "next/router";
-import { renderGasFee } from "../../../utils/renderGasFee";
-import BigNumber from "bignumber.js";
 import { SpinnerDotted } from "spinners-react";
 import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import { roundNumberTo } from "../../../utils/roundNumberTo";
@@ -27,7 +25,7 @@ import { getWagmiChains } from "../../../config/web3";
 
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
-import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
+import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -53,7 +51,10 @@ export const TokenSelector = () => {
       const newNetwork = data.networkNameOverride;
       const chain =
         srcChain.chainName?.toLowerCase() === newNetwork ? srcChain : destChain;
-      setTimeout(() => addTokenToMetamask(asset as AssetConfig, chain), 2000);
+      setTimeout(
+        () => addTokenToMetamask(asset as NativeAssetConfig, chain),
+        2000
+      );
     },
   });
   const router = useRouter();
@@ -73,7 +74,7 @@ export const TokenSelector = () => {
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
   const [filteredAssets, setFilteredAssets] =
-    useState<AssetConfig[]>(selectableAssetList);
+    useState<NativeAssetConfig[]>(selectableAssetList);
   const {
     balance,
     setKeplrBalance,
@@ -141,8 +142,8 @@ export const TokenSelector = () => {
       list = selectableAssetList.filter((asset) => {
         // @ts-ignore
         return (
-          !(asset as NativeAssetConfig).is_native_asset ||
-          ((asset as NativeAssetConfig).is_native_asset &&
+          !asset.is_native_asset ||
+          (asset.is_native_asset &&
             srcChain.chainName?.toLowerCase() === asset.native_chain)
         );
       });
@@ -218,7 +219,7 @@ export const TokenSelector = () => {
   //   setFilteredAssets(selectableAssetList);
   // }, [selectableAssetList]);
 
-  async function handleOnAssetChange(asset: AssetConfig) {
+  async function handleOnAssetChange(asset: NativeAssetConfig) {
     // await router.push({
     //   query: {
     //     ...router.query,

@@ -14,7 +14,10 @@ import {
   DISABLED_CHAIN_NAMES,
   ENVIRONMENT,
 } from "../../config/constants";
-import { nativeAssets } from "../../config/web3/evm/native-assets";
+import {
+  NativeAssetConfig,
+  nativeAssets,
+} from "../../config/web3/evm/native-assets";
 import { useSwapStore } from "../../store";
 import { RouteQuery } from "../../types";
 import { addNativeAssets } from "../../utils/api";
@@ -155,7 +158,7 @@ export const useInitialChainList = () => {
     return loadAssets({ environment: ENVIRONMENT }).then(
       (assets: AssetConfig[]) => {
         const assetsWithNative = [...nativeAssets, ...assets];
-        setAllAssets(assetsWithNative as AssetConfig[]);
+        setAllAssets(assetsWithNative as NativeAssetConfig[]);
 
         const { asset_denom } = router.query as RouteQuery;
 
@@ -164,7 +167,7 @@ export const useInitialChainList = () => {
           setAsset(
             assetsWithNative.find((asset) =>
               asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
-            ) as AssetConfig
+            ) as NativeAssetConfig
           );
           return {
             assetDenom: DEFAULT_ASSET,
@@ -175,12 +178,12 @@ export const useInitialChainList = () => {
           asset?.common_key[ENVIRONMENT].includes(asset_denom)
         );
         if (assetFound) {
-          setAsset(assetFound);
+          setAsset(assetFound as NativeAssetConfig);
         } else {
           setAsset(
             assets.find((asset) =>
               asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
-            ) as AssetConfig
+            ) as NativeAssetConfig
           );
         }
 

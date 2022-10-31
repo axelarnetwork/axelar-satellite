@@ -47,6 +47,7 @@ import { TERRA_IBC_GAS_LIMIT } from ".";
 import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
 import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
 import { evmosSignDirect } from "../../../../hooks/kepler/evmos/evmosSignDirect";
+import { NativeAssetConfig } from "../../../../config/web3/evm/native-assets";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -95,7 +96,7 @@ export const CosmosWalletTransfer = () => {
 
   function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit =
-      renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+      renderGasFee(srcChain, destChain, asset as NativeAssetConfig) || 0;
     console.log("min Deposit", minDeposit);
     if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };

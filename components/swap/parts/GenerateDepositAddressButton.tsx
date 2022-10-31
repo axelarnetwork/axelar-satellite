@@ -4,8 +4,6 @@ import React from "react";
 import toast from "react-hot-toast";
 
 import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
-import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
-import { DepositAddressPayload } from "../../../hooks/api";
 import {
   getReservedAddresses,
   getSelectedAssetSymbol,
@@ -17,7 +15,6 @@ import {
 } from "../../../utils/address";
 import { SwapStatus } from "../../../utils/enums";
 import { renderGasFee } from "../../../utils/renderGasFee";
-import { truncateEthAddress } from "../../../utils/truncateEthAddress";
 
 type Props = {
   loading: boolean;
@@ -41,8 +38,13 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit =
-      renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+    if (!asset) {
+      return {
+        minDeposit: 0,
+        minAmountOk: false,
+      };
+    }
+    const minDeposit = renderGasFee(srcChain, destChain, asset) || 0;
     if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
     return {

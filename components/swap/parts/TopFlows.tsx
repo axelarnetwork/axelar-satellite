@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useSwapStore } from "../../../store";
-import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapStatus } from "../../../utils/enums";
+import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 
 export const Arrow = () => (
   <svg
@@ -68,7 +69,7 @@ export const TopFlows = () => {
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("usdc")
-    ) as AssetConfig;
+    ) as NativeAssetConfig;
 
     setAsset(asset);
     setSrcChain(avax);
@@ -85,7 +86,7 @@ export const TopFlows = () => {
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("weth")
-    ) as AssetConfig;
+    ) as NativeAssetConfig;
 
     setAsset(asset);
     setSrcChain(osmo);
@@ -102,7 +103,7 @@ export const TopFlows = () => {
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("uaxl")
-    ) as AssetConfig;
+    ) as NativeAssetConfig;
 
     setAsset(asset);
     setSrcChain(moonbeam);

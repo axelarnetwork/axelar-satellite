@@ -1,6 +1,6 @@
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import Big from "big.js";
-import { NativeAssetConfig } from "../config/nativeAssetList/testnet";
+import { NativeAssetConfig } from "../config/web3/evm/native-assets";
 
 export function renderGasFee(
   srcChain: ChainInfo,

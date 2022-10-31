@@ -9,6 +9,7 @@ import { SwapStatus } from "../../../utils/enums";
 import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
+import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 
 export const TransferStats = () => {
   const {
@@ -156,7 +157,7 @@ export const TransferStats = () => {
         <li className="flex justify-between">
           <span>Relayer Gas Fees:</span>
           <span className="font-semibold">
-            {renderGasFee(srcChain, destChain, asset as AssetConfig)}{" "}
+            {renderGasFee(srcChain, destChain, asset as NativeAssetConfig)}{" "}
             {selectedAssetSymbol}
           </span>
         </li>
