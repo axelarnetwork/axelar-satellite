@@ -154,7 +154,6 @@ export const useGetAssetBalance = () => {
         assetConfig.common_key[ENVIRONMENT] === common_key[ENVIRONMENT]
     )?.chain_aliases[chainName.toLowerCase()]?.ibcDenom;
     if (!derivedDenom) {
-      console.log("asset not found: " + common_key);
       const srcChain = allChains.find(
         (chain) => chain.chainName.toLowerCase() === DEFAULT_SRC_CHAIN
       );

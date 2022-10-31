@@ -1,21 +1,17 @@
 import React from "react";
-import Image from "next/image";
 
 import { SpinnerRoundFilled } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
-import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
+
 import {
   getDestChainId,
   getSelectedAssetSymbol,
   useSwapStore,
 } from "../../../store";
-import { copyToClipboard } from "../../../utils";
 import { SwapStatus } from "../../../utils/enums";
-import { AddressShortener, InputWrapper, truncate } from "../../common";
+import { InputWrapper, truncate } from "../../common";
 import { ProgressBar } from "./parts";
-import { getWagmiChains } from "../../../config/web3";
 import { TransferStats } from "../parts";
-import { truncateEthAddress } from "../../../utils/truncateEthAddress";
 
 export const WaitEvmConfirmationState = () => {
   const {

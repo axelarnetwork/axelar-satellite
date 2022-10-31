@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 
 import { GlobalHooksContainer, Web3Modal } from "../components/web3";
 import { wagmiClient } from "../wagmi.config";
+import { GoogleAnalytics } from "../components/scripts";
 
 import "animate.css";
 import "../styles/globals.css";
@@ -30,6 +31,7 @@ function MyApp({
         <Component {...pageProps} />
         <Web3Modal />
         <GlobalHooksContainer />
+        {process.env.NODE_ENV !== "development" && <GoogleAnalytics />}
       </WagmiConfig>
       <Toaster position="top-right" reverseOrder={false} />
     </QueryClientProvider>

@@ -71,8 +71,12 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
       return toast.error("Cannot send to this address");
 
     let transferType = "deposit-address";
+    // const shouldWrap = asset.native_chain === srcChain.chainIdentifier[ENVIRONMENT] &&
     // we transfer native asset belonging to the source chain
-    if (asset.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
+    if (
+      asset.native_chain === srcChain.chainIdentifier[ENVIRONMENT] &&
+      asset.is_native_asset
+    ) {
       transferType = "wrap";
       // we transfer wrapped asset of native asset belonging to destination chain
     } else if (asset.native_chain === destChain.chainIdentifier[ENVIRONMENT]) {

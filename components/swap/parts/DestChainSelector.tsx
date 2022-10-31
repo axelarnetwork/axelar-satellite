@@ -29,9 +29,9 @@ export const DestChainSelector = () => {
           chain.chainName !== destChain.chainName
       )
       .filter((chain) =>
-        chain.assets
-          ?.map((a) => extractDenom(a.fullDenomPath as string))
-          .includes(asset?.common_key[ENVIRONMENT] as string)
+        chain.assets?.map((a) =>
+          a.common_key!?.includes(asset?.common_key[ENVIRONMENT] as string)
+        )
       );
     setFilteredChains(newChains);
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
@@ -84,7 +84,7 @@ export const DestChainSelector = () => {
     if (!dropdownOpen) return null;
 
     return (
-      <div className="p-2 rounded-lg shadow dropdown-content menu bg-[#02141b] left-0 w-full h-64 overflow-auto">
+      <div className="left-0 w-full h-64 p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
         <div className="px-2 py-2 ">
           <input
             className="w-full bg-[#333c42] input input-sm"
@@ -98,6 +98,7 @@ export const DestChainSelector = () => {
               <li key={chain.chainSymbol}>
                 <button onClick={() => handleOnDestChainChainChange(chain)}>
                   <Image
+                    loading="eager"
                     src={`/assets/chains/${chain?.chainName?.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
                     width={35}
@@ -124,6 +125,7 @@ export const DestChainSelector = () => {
         <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
           <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
             <Image
+              loading="eager"
               src={`/assets/chains/${destChain?.chainName?.toLowerCase()}.logo.svg`}
               layout="intrinsic"
               width={35}
@@ -138,6 +140,7 @@ export const DestChainSelector = () => {
             </span>
             <div className="flex items-center">
               <Image
+                loading="eager"
                 src="/assets/ui/arrow-down.svg"
                 layout="intrinsic"
                 width={25}

@@ -136,11 +136,9 @@ export const TokenSelector = () => {
 
   // update filtered assets state on chain change
   useEffect(() => {
-    console.log("srcChain", srcChain);
     let list;
     if (srcChain.module === "evm") {
       list = selectableAssetList.filter((asset) => {
-        // console.log("asset!",asset);
         // @ts-ignore
         return (
           !(asset as NativeAssetConfig).is_native_asset ||
@@ -318,6 +316,7 @@ export const TokenSelector = () => {
             Switch to {isOnTS ? "Keplr" : "Terra Station"}
           </span>
           <Image
+            loading="eager"
             src={`/assets/ui/forward-arrow-link.svg`}
             layout="intrinsic"
             width={10}
@@ -377,7 +376,7 @@ export const TokenSelector = () => {
     if (!dropdownOpen || !srcChain) return null;
 
     return (
-      <div className="p-2 rounded-lg shadow dropdown-content menu bg-[#02141b] left-0 w-full h-64 overflow-auto">
+      <div className="left-0 w-full h-64 p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
         <div className="px-2 py-2 ">
           <input
             className="w-full bg-[#333c42] input input-sm"
@@ -387,11 +386,11 @@ export const TokenSelector = () => {
         </div>
         <ul tabIndex={0} onClick={handleOnDropdownToggle}>
           {filteredAssets.map((asset) => {
-            console.log("asset in dropdown", filteredAssets);
             return (
               <li key={asset.common_key[ENVIRONMENT]}>
                 <button onClick={() => handleOnAssetChange(asset)}>
                   <Image
+                    loading="eager"
                     src={`/assets/tokens/${asset.common_key[
                       ENVIRONMENT
                     ].toLowerCase()}.logo.svg`}
@@ -437,6 +436,7 @@ export const TokenSelector = () => {
       >
         <label tabIndex={0} className="mr-2 btn btn-info btn-xs">
           <Image
+            loading="eager"
             src={"/assets/wallets/metamask.logo.svg"}
             height={proprtions}
             width={proprtions}
@@ -460,6 +460,7 @@ export const TokenSelector = () => {
             >
               <span>
                 <Image
+                  loading="eager"
                   src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
                   width={image}
                   height={image}
@@ -470,6 +471,7 @@ export const TokenSelector = () => {
                 />
                 <Arrow />
                 <Image
+                  loading="eager"
                   src={`/assets/chains/${srcChain.chainName.toLowerCase()}.logo.svg`}
                   width={image}
                   height={image}
@@ -495,6 +497,7 @@ export const TokenSelector = () => {
             >
               <span>
                 <Image
+                  loading="eager"
                   src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
                   width={image}
                   height={image}
@@ -505,6 +508,7 @@ export const TokenSelector = () => {
                 />
                 <Arrow />
                 <Image
+                  loading="eager"
                   src={`/assets/chains/${destChain.chainName.toLowerCase()}.logo.svg`}
                   width={image}
                   height={image}
@@ -543,6 +547,7 @@ export const TokenSelector = () => {
             <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
               <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
                 <Image
+                  loading="eager"
                   src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
                   layout="intrinsic"
                   width={35}
@@ -555,6 +560,7 @@ export const TokenSelector = () => {
                 <span>{selectedAssetName}</span>
                 <div className="flex items-center">
                   <Image
+                    loading="eager"
                     src="/assets/ui/arrow-down.svg"
                     layout="intrinsic"
                     width={25}
