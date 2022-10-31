@@ -142,7 +142,7 @@ export const CosmosWalletTransfer = () => {
     // }
 
     const cosmosChains = getCosmosChains(allAssets);
-    const chainIdentifier = srcChain.chainName.toLowerCase();
+    const chainIdentifier = srcChain.chainName?.toLowerCase();
     const cosmosChain = cosmosChains.find(
       (chain) => chain.chainIdentifier === chainIdentifier
     );
@@ -203,7 +203,8 @@ export const CosmosWalletTransfer = () => {
     const _action = "transfer";
     const _channel = getCosmosChains(allAssets).find(
       (chain) =>
-        chain.chainIdentifier.toLowerCase() === srcChain.chainName.toLowerCase()
+        chain.chainIdentifier?.toLowerCase() ===
+        srcChain.chainName?.toLowerCase()
     )?.chainToAxelarChannelId as string;
 
     const timeoutHeight: Height = {
@@ -214,7 +215,7 @@ export const CosmosWalletTransfer = () => {
 
     let result;
 
-    if (srcChain.chainName.toLowerCase() === "axelar") {
+    if (srcChain.chainName?.toLowerCase() === "axelar") {
       try {
         result = cosmjs
           .sendTokens(sourceAddress, depositAddress, [sendCoin], fee)
@@ -235,7 +236,7 @@ export const CosmosWalletTransfer = () => {
         toast.error(e?.message as any);
         console.log(e);
       }
-    } else if (srcChain.chainName.toLowerCase() === "evmos") {
+    } else if (srcChain.chainName?.toLowerCase() === "evmos") {
       const sendCoin = {
         denom: currentAsset?.ibcDenom as string,
         amount: utils
@@ -365,7 +366,7 @@ export const CosmosWalletTransfer = () => {
   }
 
   const getSendButtons = () => {
-    if (srcChain?.chainName.toLowerCase() !== "terra") {
+    if (srcChain?.chainName?.toLowerCase() !== "terra") {
       return (
         <div className="flex justify-center">
           <button

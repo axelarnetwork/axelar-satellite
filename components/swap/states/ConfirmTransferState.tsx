@@ -10,11 +10,17 @@ import { useSwitchNetwork } from "wagmi";
 import { getWagmiChains } from "../../../config/web3";
 import { TransferStats } from "../parts";
 
-export const addTokenToMetamask = async (asset: AssetConfig, chain: ChainInfo) => {
+export const addTokenToMetamask = async (
+  asset: AssetConfig,
+  chain: ChainInfo
+) => {
   try {
     const { common_key, decimals, native_chain, chain_aliases } = asset;
-    const { tokenAddress: address, assetSymbol: symbol, assetName } =
-      chain_aliases[chain.chainName.toLowerCase()];
+    const {
+      tokenAddress: address,
+      assetSymbol: symbol,
+      assetName,
+    } = chain_aliases[chain.chainName?.toLowerCase()];
     const nativeAssetSymbol = chain_aliases[native_chain].assetSymbol;
 
     return await (window as any).ethereum.request({
@@ -25,7 +31,9 @@ export const addTokenToMetamask = async (asset: AssetConfig, chain: ChainInfo) =
           address,
           symbol: common_key[ENVIRONMENT] === "uaxl" ? assetName : symbol,
           decimals,
-          image: nativeAssetSymbol ? `https://raw.githubusercontent.com/axelarnetwork/axelar-docs/main/public/images/assets/${nativeAssetSymbol.toLowerCase()}.png` : "",
+          image: nativeAssetSymbol
+            ? `https://raw.githubusercontent.com/axelarnetwork/axelar-docs/main/public/images/assets/${nativeAssetSymbol?.toLowerCase()}.png`
+            : "",
         },
       },
     });
@@ -72,7 +80,7 @@ export const ConfirmTransferState = () => {
                 getWagmiChains().find(
                   (chain) =>
                     chain.networkNameOverride ===
-                    destChain.chainName.toLowerCase()
+                    destChain.chainName?.toLowerCase()
                 )?.id
               );
             }}

@@ -22,11 +22,12 @@ export const useDetectDestTransferConfirmation = () => {
     useSwapStore();
 
   function checkPayload(data: any) {
-    if (destChain && destChain.chainName.toLowerCase() === "axelar") {
+    if (destChain && destChain.chainName?.toLowerCase() === "axelar") {
       if (data.Type !== `axelar.axelarnet.v1beta1.AxelarTransferCompleted`)
         return;
       //TODO: receipient is intentionally misspelled because that is the property that is received from the emitted event
-      if (!(data.Attributes.receipient as string)?.includes(destAddress)) return;
+      if (!(data.Attributes.receipient as string)?.includes(destAddress))
+        return;
     } else {
       if (data.Type !== "fungible_token_packet") return;
       if (data.Attributes.receiver !== destAddress) return;
@@ -44,7 +45,7 @@ export const useDetectDestTransferConfirmation = () => {
     );
 
     const roomId =
-      destChain?.chainName.toLowerCase() === "axelar"
+      destChain?.chainName?.toLowerCase() === "axelar"
         ? buildAxelarTransferCompletedRoomId(
             destAddress,
             assetData?.common_key as string

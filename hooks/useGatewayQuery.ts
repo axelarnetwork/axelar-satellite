@@ -15,7 +15,8 @@ export const useGatewayQuery = () => {
   const { data: maxTransferAmount, error } = useContractRead({
     addressOrName: gatewayAddr,
     chainId: getWagmiChains().find(
-      (chain) => chain.networkNameOverride === destChain.chainName.toLowerCase()
+      (chain) =>
+        chain.networkNameOverride === destChain.chainName?.toLowerCase()
     )?.id,
     contractInterface: gatewayABI,
     functionName: "tokenMintLimit",
@@ -26,14 +27,14 @@ export const useGatewayQuery = () => {
       api &&
       destChain.module === "evm"
     ),
-    args: asset?.chain_aliases[destChain?.chainName.toLowerCase()].assetSymbol,
+    args: asset?.chain_aliases[destChain?.chainName?.toLowerCase()].assetSymbol,
   });
 
   useEffect(() => {
     (async () => {
       if (!api) return;
       if (destChain.module !== "evm") return;
-      const chain = destChain?.chainName.toLowerCase();
+      const chain = destChain?.chainName?.toLowerCase();
       const gatewayAddress = await (
         await api?.evm?.GatewayAddress({ chain })
       ).address;

@@ -61,10 +61,10 @@ export const TopFlows = () => {
 
   function handleOnFlow1() {
     const avax = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("ethereum")
+      chain.chainName?.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("osmosis")
+      chain.chainName?.toLowerCase().includes("osmosis")
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("usdc")
@@ -78,10 +78,10 @@ export const TopFlows = () => {
 
   function handleOnFlow3() {
     const osmo = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("ethereum")
+      chain.chainName?.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("osmosis")
+      chain.chainName?.toLowerCase().includes("osmosis")
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("weth")
@@ -95,10 +95,10 @@ export const TopFlows = () => {
 
   function handleOnFlow2() {
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("ethereum")
+      chain.chainName?.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const osmo = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("axelar")
+      chain.chainName?.toLowerCase().includes("axelar")
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("uaxl")

@@ -12,7 +12,7 @@ export function useDetectUnwrapTransfer() {
   useContractEvent({
     chainId: destChainId as number,
     addressOrName:
-      (asset?.chain_aliases[destChain.chainIdentifier[ENVIRONMENT]]
+      (asset?.chain_aliases?.[destChain?.chainIdentifier?.[ENVIRONMENT]]
         ?.tokenAddress as string) || "0x",
     contractInterface: `[
       {
@@ -40,7 +40,9 @@ export function useDetectUnwrapTransfer() {
       if (asset?.native_chain !== destChain.chainIdentifier[ENVIRONMENT])
         return;
       const address = event[0];
-      if (address.toLowerCase() === intermediaryDepositAddress.toLowerCase()) {
+      if (
+        address?.toLowerCase() === intermediaryDepositAddress?.toLowerCase()
+      ) {
         setSwapStatus(SwapStatus.FINISHED);
       }
     },

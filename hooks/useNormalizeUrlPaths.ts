@@ -17,8 +17,8 @@ export const useNormalizeUrlPaths = () => {
     )
       return;
     updateRoutes(
-      srcChain.chainName.toLowerCase(),
-      destChain.chainName.toLowerCase(),
+      srcChain.chainName?.toLowerCase(),
+      destChain.chainName?.toLowerCase(),
       asset?.common_key[ENVIRONMENT] as string,
       destAddress
     );

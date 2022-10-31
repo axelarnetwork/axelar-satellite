@@ -52,7 +52,7 @@ export const TokenSelector = () => {
       //@ts-ignore
       const newNetwork = data.networkNameOverride;
       const chain =
-        srcChain.chainName.toLowerCase() === newNetwork ? srcChain : destChain;
+        srcChain.chainName?.toLowerCase() === newNetwork ? srcChain : destChain;
       setTimeout(() => addTokenToMetamask(asset as AssetConfig, chain), 2000);
     },
   });
@@ -119,7 +119,7 @@ export const TokenSelector = () => {
     if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
 
     const chains = selectableAssetList.filter((asset) =>
-      asset.common_key[ENVIRONMENT].toLowerCase().includes(searchAssetInput)
+      asset.common_key[ENVIRONMENT]?.toLowerCase().includes(searchAssetInput)
     );
     setFilteredAssets(chains);
   }, [searchAssetInput, selectableAssetList]);
@@ -143,7 +143,7 @@ export const TokenSelector = () => {
         return (
           !(asset as NativeAssetConfig).is_native_asset ||
           ((asset as NativeAssetConfig).is_native_asset &&
-            srcChain.chainName.toLowerCase() === asset.native_chain)
+            srcChain.chainName?.toLowerCase() === asset.native_chain)
         );
       });
     }
@@ -154,7 +154,7 @@ export const TokenSelector = () => {
     const isEVM = !!(srcChain?.module === "evm" && wagmiConnected);
     const isAxelarnet = srcChain?.module === "axelarnet" && keplrConnected;
     const isTerra =
-      srcChain?.chainName.toLowerCase() === "terra" &&
+      srcChain?.chainName?.toLowerCase() === "terra" &&
       isTerraConnected &&
       userSelectionForCosmosWallet === "terraStation";
 
@@ -187,7 +187,7 @@ export const TokenSelector = () => {
   // update asset balance from useGetAssetBalance hook if srcChain or asset changes
   useEffect(() => {
     if (
-      srcChain?.chainName.toLowerCase() === "terra" &&
+      srcChain?.chainName?.toLowerCase() === "terra" &&
       userSelectionForCosmosWallet == "terraStation"
     ) {
       if (!isTerraInitializingOrConnected) connectTerraWallet();
@@ -238,7 +238,7 @@ export const TokenSelector = () => {
     if (!balanceToShow || !showBalance) {
       let textToShow;
       if (srcChain.module === "evm") textToShow = "Metamask";
-      else if (srcChain?.chainName.toLowerCase() === "terra") {
+      else if (srcChain?.chainName?.toLowerCase() === "terra") {
         if (userSelectionForCosmosWallet === "keplr") textToShow = "Keplr";
         else textToShow = "Terra Station";
       } else textToShow = "Keplr";
@@ -252,7 +252,7 @@ export const TokenSelector = () => {
       );
     }
 
-    if (srcChain?.chainName.toLowerCase() !== "terra")
+    if (srcChain?.chainName?.toLowerCase() !== "terra")
       return (
         <div className="flex flex-row justify-end space-x-1">
           <span className="text-xs text-gray-500">Available</span>
@@ -393,7 +393,7 @@ export const TokenSelector = () => {
                     loading="eager"
                     src={`/assets/tokens/${asset.common_key[
                       ENVIRONMENT
-                    ].toLowerCase()}.logo.svg`}
+                    ]?.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
                     width={35}
                     height={35}
@@ -404,7 +404,7 @@ export const TokenSelector = () => {
                   />
                   <span>
                     {
-                      asset.chain_aliases[srcChain.chainName.toLowerCase()]
+                      asset.chain_aliases[srcChain.chainName?.toLowerCase()]
                         ?.assetName
                     }
                   </span>
@@ -419,7 +419,7 @@ export const TokenSelector = () => {
 
   function renderAssetName() {
     if (!asset || !srcChain) return "Select an asset";
-    return asset.chain_aliases[srcChain.chainName.toLowerCase()]?.assetName;
+    return asset.chain_aliases[srcChain.chainName?.toLowerCase()]?.assetName;
   }
 
   function addTokenToMetamaskButton() {
@@ -453,7 +453,7 @@ export const TokenSelector = () => {
                   getWagmiChains().find(
                     (chain) =>
                       chain.networkNameOverride ===
-                      srcChain.chainName.toLowerCase()
+                      srcChain.chainName?.toLowerCase()
                   )?.id
                 );
               }}
@@ -472,7 +472,7 @@ export const TokenSelector = () => {
                 <Arrow />
                 <Image
                   loading="eager"
-                  src={`/assets/chains/${srcChain.chainName.toLowerCase()}.logo.svg`}
+                  src={`/assets/chains/${srcChain.chainName?.toLowerCase()}.logo.svg`}
                   width={image}
                   height={image}
                   onError={(e) => {
@@ -490,7 +490,7 @@ export const TokenSelector = () => {
                   getWagmiChains().find(
                     (chain) =>
                       chain.networkNameOverride ===
-                      destChain.chainName.toLowerCase()
+                      destChain.chainName?.toLowerCase()
                   )?.id
                 );
               }}
@@ -509,7 +509,7 @@ export const TokenSelector = () => {
                 <Arrow />
                 <Image
                   loading="eager"
-                  src={`/assets/chains/${destChain.chainName.toLowerCase()}.logo.svg`}
+                  src={`/assets/chains/${destChain.chainName?.toLowerCase()}.logo.svg`}
                   width={image}
                   height={image}
                   onError={(e) => {

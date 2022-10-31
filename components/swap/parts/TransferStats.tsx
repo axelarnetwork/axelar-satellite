@@ -118,7 +118,7 @@ export const TransferStats = () => {
     if (!txInfo.sourceTxHash) return null;
     const evmRpc = getWagmiChains().find(
       (network) =>
-        network.networkNameOverride === srcChain.chainName.toLowerCase()
+        network.networkNameOverride === srcChain.chainName?.toLowerCase()
     );
     const rootUrl =
       srcChain.module === "evm"

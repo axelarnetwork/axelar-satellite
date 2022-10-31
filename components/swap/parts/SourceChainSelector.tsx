@@ -53,7 +53,7 @@ export const SourceChainSelector = () => {
 
     const chains = allChains.filter(
       (chain) =>
-        chain.chainName.toLowerCase().includes(searchChainInput) &&
+        chain.chainName?.toLowerCase().includes(searchChainInput) &&
         chain.chainName !== destChain.chainName &&
         chain.chainName !== srcChain.chainName
     );
@@ -72,7 +72,7 @@ export const SourceChainSelector = () => {
     // await router.push({
     //   query: {
     //     ...router.query,
-    //     source: chain.chainName.toLowerCase(),
+    //     source: chain.chainName?.toLowerCase(),
     //   },
     // });
     setSrcChain(chain);
@@ -97,7 +97,7 @@ export const SourceChainSelector = () => {
                 <button onClick={() => handleOnSourceChainChange(chain)}>
                   <Image
                     loading="eager"
-                    src={`/assets/chains/${chain.chainName.toLowerCase()}.logo.svg`}
+                    src={`/assets/chains/${chain.chainName?.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
                     width={35}
                     height={35}
