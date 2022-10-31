@@ -9,7 +9,7 @@ import { mainnetChains as evmMainnetChains } from "./evm/mainnet";
 import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
 import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";
 import { CosmosChain } from "./cosmos/interface";
-import { nativeAssets } from "../nativeAssetList/testnet";
+import { nativeAssets } from "./evm/native-assets";
 
 // sdk chains (generic)
 // export const allAssets = loadAssets({
