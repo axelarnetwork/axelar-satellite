@@ -29,6 +29,7 @@ interface SwapState {
   tokensToTransfer: string;
   txInfo: TxInfo;
   rehydrateAssets: boolean;
+  shouldUnwrapAsset: boolean;
 }
 
 interface SwapStore extends SwapState {
@@ -48,6 +49,7 @@ interface SwapStore extends SwapState {
   setTxInfo: (_txInfo: TxInfo) => void;
   resetState: () => void;
   setRehydrateAssets: (value: boolean) => void;
+  setShouldUnwrapAsset: (value: boolean) => void;
 }
 
 /**
@@ -72,6 +74,7 @@ const initialState: SwapState = {
     destStartBlockNumber: 1,
   },
   rehydrateAssets: true,
+  shouldUnwrapAsset: true,
 };
 
 export const useSwapStore = create<SwapStore>()(
@@ -218,8 +221,21 @@ export const useSwapStore = create<SwapStore>()(
         "resetState"
       ),
     setRehydrateAssets: (value: boolean) =>
-      set({
-        rehydrateAssets: value,
-      }),
+      set(
+        {
+          rehydrateAssets: value,
+        },
+        false,
+        "setRehydrateAssets"
+      ),
+
+    setShouldUnwrapAsset: (value: boolean) =>
+      set(
+        {
+          shouldUnwrapAsset: value,
+        },
+        false,
+        "setShouldUnwrapAsset"
+      ),
   }))
 );

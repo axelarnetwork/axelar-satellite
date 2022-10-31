@@ -4,7 +4,6 @@ import { useOnClickOutside } from "usehooks-ts";
 
 import {
   getSelectedAssetName,
-  getSelectedAssetSymbol,
   useSwapStore,
   useWalletStore,
 } from "../../../store";
@@ -26,6 +25,7 @@ import { getWagmiChains } from "../../../config/web3";
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
 import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+import { UnwrapToNativeChainCheckbox } from "./UnwrapToNativeChainCheckbox";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -58,7 +58,6 @@ export const TokenSelector = () => {
     },
   });
   const router = useRouter();
-  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const {
     wagmiConnected,
     keplrConnected,
@@ -255,19 +254,22 @@ export const TokenSelector = () => {
 
     if (srcChain?.chainName?.toLowerCase() !== "terra")
       return (
-        <div className="flex flex-row justify-end space-x-1">
-          <span className="text-xs text-gray-500">Available</span>
-          <span className="w-auto text-xs text-[#86d6ff]">
-            {loading ? (
-              <SpinnerDotted
-                className="text-blue-500"
-                size={15}
-                color="#00a6ff"
-              />
-            ) : (
-              roundNumberTo(balanceToShow, 1)
-            )}
-          </span>
+        <div className="space-y-1">
+          <div className="space-x-2">
+            <span className="text-xs text-gray-500">Available</span>
+            <span className="w-auto text-xs text-[#86d6ff]">
+              {loading ? (
+                <SpinnerDotted
+                  className="text-blue-500"
+                  size={15}
+                  color="#00a6ff"
+                />
+              ) : (
+                roundNumberTo(balanceToShow, 1)
+              )}
+            </span>
+          </div>
+          <UnwrapToNativeChainCheckbox />
         </div>
       );
 
@@ -360,7 +362,7 @@ export const TokenSelector = () => {
   function renderTokenInput() {
     if (!srcChain) return null;
     return (
-      <div className="w-2/4 text-end">
+      <div className="text-end">
         <input
           className="w-full text-lg font-bold text-right bg-transparent outline-none"
           type="number"
@@ -530,7 +532,11 @@ export const TokenSelector = () => {
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
         <label className="block text-xs">I want to transfer</label>
-        <div className="flex items-start">
+        <div className="flex items-center">
+          {/* <input
+            type="checkbox"
+            className="checkbox checkbox-sm checkbox-primary"
+          /> */}
           {addTokenToMetamaskButton()}
           {swapOrigin === SwapOrigin.APP && (
             <button

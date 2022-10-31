@@ -46,6 +46,7 @@ export const EvmWalletTransfer = () => {
     tokensToTransfer,
     setTxInfo,
     txInfo,
+    shouldUnwrapAsset,
   } = useSwapStore((state) => state);
   const srcChainId = useSwapStore(getSrcChainId);
   const destChainId = useSwapStore(getDestChainId);
@@ -183,12 +184,10 @@ export const EvmWalletTransfer = () => {
     //       .toString()} available`
     //   );
     // }
-    console.log(1);
 
     if (ENVIRONMENT === "testnet") {
-      console.log(2);
       // WRAP
-      if (asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
+      if (shouldUnwrapAsset) {
         const tx = await sendTransactionAsync();
         setTxInfo({
           sourceTxHash: tx?.hash,
@@ -197,8 +196,6 @@ export const EvmWalletTransfer = () => {
         return;
       }
     }
-
-    console.log(3);
 
     // check that the user has enough tokens
     const tokenBalance = tokenAmount?.toString() as string;

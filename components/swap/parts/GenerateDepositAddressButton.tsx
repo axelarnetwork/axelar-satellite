@@ -32,6 +32,7 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     asset,
     setSwapStatus,
     tokensToTransfer,
+    shouldUnwrapAsset,
   } = useSwapStore((state) => state);
 
   const reservedAddresses = useSwapStore(getReservedAddresses);
@@ -81,7 +82,7 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     ) {
       transferType = "wrap";
       // we transfer wrapped asset of native asset belonging to destination chain
-    } else if (asset.native_chain === destChain.chainIdentifier[ENVIRONMENT]) {
+    } else if (shouldUnwrapAsset) {
       transferType = "unwrap";
     }
 
