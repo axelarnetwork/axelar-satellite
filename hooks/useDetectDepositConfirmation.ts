@@ -64,16 +64,16 @@ export const useDetectDepositConfirmation = () => {
     const sentNative =
       // @ts-ignore
       asset.is_native_asset &&
-      asset?.native_chain === srcChain.chainName.toLowerCase();
+      asset?.native_chain === srcChain.chainName?.toLowerCase();
 
     let roomId;
 
     if (sentNative)
       roomId = buildTokenSentRoomId(
         srcChain,
-        asset.chain_aliases[destChain.chainName.toLowerCase()]
+        asset.chain_aliases[destChain.chainName?.toLowerCase()]
           .fullDenomPath as string,
-        destAddress.toLowerCase(),
+        destAddress?.toLowerCase(),
         destChain,
         depositAddress
       );

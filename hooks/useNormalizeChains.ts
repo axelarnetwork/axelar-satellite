@@ -38,7 +38,7 @@ export const useNormalizeChains = () => {
       const symbols = chain.assets?.map((asset) =>
         asset?.assetSymbol?.toLowerCase()
       );
-      return symbols?.includes(assetSymbol.toLowerCase());
+      return symbols?.includes(assetSymbol?.toLowerCase());
     });
     setDestChain(compatibleDestChain as ChainInfo);
   }

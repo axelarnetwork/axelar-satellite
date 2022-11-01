@@ -1,330 +1,163 @@
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+import { AssetConfig, AssetInfo } from "@axelar-network/axelarjs-sdk";
 
 export interface NativeAssetConfig extends AssetConfig {
+  id: string;
   is_native_asset?: boolean;
 }
 
 export const nativeAssets: NativeAssetConfig[] = [
-  // {
-  //   common_key: {
-  //     devnet: "eth-wei",
-  //     testnet: "eth-wei",
-  //     mainnet: "eth-wei",
-  //   },
-  //   native_chain: "ethereum",
-  //   fully_supported: true,
-  //   is_native_asset: true,
-  //   decimals: 18,
-  //   chain_aliases: {
-  //     axelar: {
-  //       assetSymbol: "WETH",
-  //       assetName: "WETH",
-  //       minDepositAmt: 0.00002,
-  //       ibcDenom: "eth-wei",
-  //       fullDenomPath: "eth-wei",
-  //       tokenAddress: "eth-wei",
-  //       // @ts-ignore
-  //
-  //     },
-  //     moonbeam: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00004,
-  //       ibcDenom: "eth-wei",
-  //       fullDenomPath: "eth-wei",
-  //       tokenAddress: "0xc40Fdaa2cB43C85eAA6D43856df42E7A80669fca",
-  //       // @ts-ignore
-  //
-  //     },
-  //     fantom: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00004,
-  //       ibcDenom: "eth-wei",
-  //       fullDenomPath: "eth-wei",
-  //       tokenAddress: "0x930640ef299Bf772f786Cf7E88DA951D76E33168",
-  //       // @ts-ignore
-  //
-  //     },
-  //     aura: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00002,
-  //       ibcDenom:
-  //         "ibc/E3AB0DFDE9E782262B770C32DF94AC2A92B93DC4825376D6F6C874D3C877864E",
-  //       fullDenomPath: "transfer/channel-5/eth-wei",
-  //       tokenAddress: "eth-wei",
-  //       // @ts-ignore
-  //
-  //     },
-  //     comdex: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00002,
-  //       ibcDenom:
-  //         "ibc/A99459944FD67B5711735B4B4D3FE30BA45328E94D437C78E47CA8DEFA781E49",
-  //       fullDenomPath: "transfer/channel-18/eth-wei",
-  //       tokenAddress: "eth-wei",
-  //       // @ts-ignore
-  //
-  //     },
-  //     evmos: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00002,
-  //       ibcDenom:
-  //         "ibc/9F4A3ADB40D0CB9064EB46C9B57EB69826329478D7D159C4178576801F2B570E",
-  //       fullDenomPath: "transfer/channel-22/eth-wei",
-  //       tokenAddress: "eth-wei",
-  //       // @ts-ignore
-  //
-  //     },
-  //     ethereum: {
-  //       assetSymbol: "ETH",
-  //       assetName: "ETH",
-  //       minDepositAmt: 0.00004,
-  //       ibcDenom: "eth-wei",
-  //       fullDenomPath: "eth-wei",
-  //       tokenAddress: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-  //       // @ts-ignore
-  //
-  //     },
-  //     avalanche: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00004,
-  //       ibcDenom: "eth-wei",
-  //       fullDenomPath: "eth-wei",
-  //       tokenAddress: "0x3613C187b3eF813619A25322595bA5E297E4C08a",
-  //       // @ts-ignore
-  //
-  //     },
-  //     polygon: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00004,
-  //       ibcDenom: "eth-wei",
-  //       fullDenomPath: "eth-wei",
-  //       tokenAddress: "0xfba15fFF35558fE2A469B96A90AeD7727FE38fAE",
-  //       // @ts-ignore
-  //
-  //     },
-  //     binance: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00004,
-  //       ibcDenom: "eth-wei",
-  //       fullDenomPath: "eth-wei",
-  //       tokenAddress: "0x03Dc012b7851b7D65592Aebc40a6aF9A171E9315",
-  //       // @ts-ignore
-  //
-  //     },
-  //     aurora: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00004,
-  //       ibcDenom: "eth-wei",
-  //       fullDenomPath: "eth-wei",
-  //       tokenAddress: "0xcfF68Bea15e24aec8ECfdb82862ff776C3e972d1",
-  //       // @ts-ignore
-  //
-  //     },
-  //     sei: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00002,
-  //       ibcDenom:
-  //         "ibc/C2A89D98873BB55B62CE86700DFACA646EC80352E8D03CC6CF34DD44E46DC75D",
-  //       fullDenomPath: "transfer/channel-29/eth-wei",
-  //       tokenAddress: "eth-wei",
-  //       // @ts-ignore
-  //
-  //     },
-  //     osmosis: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00002,
-  //       ibcDenom:
-  //         "ibc/5D52572B5E1278AC0F5EAAA5D595F7F583981CE403FB8D3850EAA771269575FB",
-  //       fullDenomPath: "transfer/channel-312/eth-wei",
-  //       tokenAddress: "eth-wei",
-  //       // @ts-ignore
-  //
-  //     },
-  //     kujira: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00002,
-  //       ibcDenom:
-  //         "ibc/C567713C9D0904098C14BA0FBEB9192C5B68B590757EE6913DC292710C8926E6",
-  //       fullDenomPath: "transfer/channel-8/eth-wei",
-  //       tokenAddress: "eth-wei",
-  //       // @ts-ignore
-  //
-  //     },
-  //     fetch: {
-  //       assetSymbol: "WETH",
-  //       assetName: "axlWETH",
-  //       minDepositAmt: 0.00002,
-  //       ibcDenom:
-  //         "ibc/BC8A77AFBD872FDC32A348D3FB10CC09277C266CFE52081DE341C7EC6752E674",
-  //       fullDenomPath: "transfer/channel-6/eth-wei",
-  //       tokenAddress: "eth-wei",
-  //       // @ts-ignore
-  //
-  //     },
-  //   },
-  // },
   {
+    id: "avax-wei",
     common_key: {
-      devnet: "dev-wei",
-      testnet: "dev-wei",
-      mainnet: "glmr-wei",
+      devnet: "avax-wei",
+      testnet: "avax-wei",
+      mainnet: "avax-wei",
     },
     is_native_asset: true,
-    native_chain: "moonbeam",
+    native_chain: "avalanche",
     fully_supported: true,
     decimals: 18,
     chain_aliases: {
       aura: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.02,
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.0007,
         ibcDenom:
-          "ibc/CF03353110E55C2E4D952D0DF4542AE8443CF5FA7023EB572B4A863DFB61EBA2",
-        fullDenomPath: "transfer/channel-5/wdev-wei",
-        tokenAddress: "wdev-wei",
+          "ibc/2991B858634D22E4637F772FA5A5F5BFCE3F30EA3ED208E36DD8DC07330490A9",
+        fullDenomPath: "transfer/channel-5/wavax-wei",
+        tokenAddress: "wavax-wei",
       },
       axelar: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.02,
-        ibcDenom: "wdev-wei",
-        fullDenomPath: "wdev-wei",
-        tokenAddress: "wdev-wei",
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.0007,
+        ibcDenom: "wavax-wei",
+        fullDenomPath: "wavax-wei",
+        tokenAddress: "wavax-wei",
       },
       comdex: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.02,
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.0007,
         ibcDenom:
-          "ibc/D61CC4FC3429D6DA8B48667938DA1C94C29B01BA6873F97E6B07D6574321E181",
-        fullDenomPath: "transfer/channel-18/wdev-wei",
-        tokenAddress: "wdev-wei",
+          "ibc/2A468AFEDF2B694B46BBE10E9C3631815DF57B3D936462CA031345922A76CD36",
+        fullDenomPath: "transfer/channel-18/wavax-wei",
+        tokenAddress: "wavax-wei",
       },
       evmos: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.02,
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.0007,
         ibcDenom:
-          "ibc/4F89D2416F2E2CF9CFE68CE8B77A11A07B4F590B13E410DA86B1A5E6BCBDA24B",
-        fullDenomPath: "transfer/channel-22/wdev-wei",
-        tokenAddress: "wdev-wei",
+          "ibc/2B84B3D7B8AA4B04607ACD2E5096D20B34D6D355D33F4F5DD4659449EB757597",
+        fullDenomPath: "transfer/channel-22/wavax-wei",
+        tokenAddress: "wavax-wei",
       },
       fetch: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.02,
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.0007,
         ibcDenom:
-          "ibc/42ABF9E931A230BB249FE1F51F67C5E8C3D69FD756DB8D91D5DBED16170C2DF8",
-        fullDenomPath: "transfer/channel-6/wdev-wei",
-        tokenAddress: "wdev-wei",
+          "ibc/F992067A054C819B42D2DAB57F5CCE347D38352EB90453E59D566BFE64F1614B",
+        fullDenomPath: "transfer/channel-6/wavax-wei",
+        tokenAddress: "wavax-wei",
       },
       kujira: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.02,
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.0007,
         ibcDenom:
-          "ibc/25C4852211900E04B162241362DB1F1D9B7939875A038913E56C9FEF66EA9AD6",
-        fullDenomPath: "transfer/channel-8/wdev-wei",
-        tokenAddress: "wdev-wei",
+          "ibc/C74D5A562B2D54AF03198E5BC6693D16EF978EBA0BD3BA22A7098511B43249CA",
+        fullDenomPath: "transfer/channel-8/wavax-wei",
+        tokenAddress: "wavax-wei",
       },
       osmosis: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.02,
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.0007,
         ibcDenom:
-          "ibc/400AF92417EE60F72C56B8E128A19AAC991DC46FF3A00F198FB47FB93D93AF2D",
-        fullDenomPath: "transfer/channel-312/wdev-wei",
-        tokenAddress: "wdev-wei",
+          "ibc/AC114FA5B91B5696ACD80CE7D740E3DEF2C6E76817A9F57754E9423325321220",
+        fullDenomPath: "transfer/channel-312/wavax-wei",
+        tokenAddress: "wavax-wei",
       },
       sei: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.02,
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.0007,
         ibcDenom:
-          "ibc/DF0CB572FFA519B1AA2DEE4A396FBAADE373B5ABB76CF5BD33E0619612B60B38",
-        fullDenomPath: "transfer/channel-29/wdev-wei",
-        tokenAddress: "wdev-wei",
+          "ibc/2B1862B1CBE5ABC2E9457A21F2289024853AF12AEF8BC5EF8E4C3FB8B754BE2A",
+        fullDenomPath: "transfer/channel-29/wavax-wei",
+        tokenAddress: "wavax-wei",
       },
       terra: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.02,
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.0007,
         ibcDenom:
-          "ibc/4F89D2416F2E2CF9CFE68CE8B77A11A07B4F590B13E410DA86B1A5E6BCBDA24B",
-        fullDenomPath: "transfer/channel-22/wdev-wei",
-        tokenAddress: "wdev-wei",
+          "ibc/2B84B3D7B8AA4B04607ACD2E5096D20B34D6D355D33F4F5DD4659449EB757597",
+        fullDenomPath: "transfer/channel-22/wavax-wei",
+        tokenAddress: "wavax-wei",
       },
       aurora: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.04,
-        ibcDenom: "wdev-wei",
-        fullDenomPath: "wdev-wei",
-        tokenAddress: "0xC43178D657171A831d826f01ECa657c9439457c6",
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.001,
+        ibcDenom: "wavax-wei",
+        fullDenomPath: "wavax-wei",
+        tokenAddress: "0xb47BAb33cAE8FCa71FA28516ADCE3AF0B3e040e3",
       },
       avalanche: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.04,
-        ibcDenom: "wdev-wei",
-        fullDenomPath: "wdev-wei",
-        tokenAddress: "0xF58537d9061f7257e44442Fb7870A094AAE92B43",
+        assetSymbol: "AVAX",
+        assetName: "AVAX",
+        minDepositAmt: 0.001,
+        ibcDenom: "avax-wei",
+        fullDenomPath: "avax-wei",
+        tokenAddress: "0xd00ae08403B9bbb9124bB305C09058E32C39A48c",
       },
       binance: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.04,
-        ibcDenom: "wdev-wei",
-        fullDenomPath: "wdev-wei",
-        tokenAddress: "0xa893Fd868c3159B294f6416F512203be53315fd8",
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.001,
+        ibcDenom: "wavax-wei",
+        fullDenomPath: "wavax-wei",
+        tokenAddress: "0x1B29EC62efC689c462b4E0512457175793cEc9e6",
       },
       ethereum: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.04,
-        ibcDenom: "wdev-wei",
-        fullDenomPath: "wdev-wei",
-        tokenAddress: "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.001,
+        ibcDenom: "wavax-wei",
+        fullDenomPath: "wavax-wei",
+        tokenAddress: "0x2a87806561C550ba2dA9677c5323413E6e539740",
       },
       fantom: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.04,
-        ibcDenom: "wdev-wei",
-        fullDenomPath: "wdev-wei",
-        tokenAddress: "0xD6f858A1E75e9a06c42dcd86BB876C5E9FccA572",
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.001,
+        ibcDenom: "wavax-wei",
+        fullDenomPath: "wavax-wei",
+        tokenAddress: "0x8776aDD48553518641a589C39792cc409d4C8B84",
       },
       moonbeam: {
-        assetSymbol: "DEV",
-        assetName: "DEV",
-        minDepositAmt: 0.04,
-        ibcDenom: "wdev-wei",
-        fullDenomPath: "wdev-wei",
-        tokenAddress: "0x1436aE0dF0A8663F18c0Ec51d7e2E46591730715",
+        assetSymbol: "AVAX",
+        assetName: "AVAX",
+        minDepositAmt: 0.001,
+        ibcDenom: "wavax-wei",
+        fullDenomPath: "wavax-wei",
+        tokenAddress: "0x64aae6319934995Bf30e67EBBBA9750256E07283",
       },
       polygon: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
-        minDepositAmt: 0.04,
-        ibcDenom: "wdev-wei",
-        fullDenomPath: "wdev-wei",
-        tokenAddress: "0xb6a2f51C219A66866263Cb18DD41EE6C51B464cB",
+        assetSymbol: "WAVAX",
+        assetName: "WAVAX",
+        minDepositAmt: 0.001,
+        ibcDenom: "wavax-wei",
+        fullDenomPath: "wavax-wei",
+        tokenAddress: "0x6DD60c05FdA1255A44Ffaa9A8200b5b179A578D6",
       },
     },
   },
   {
+    id: "ftm-wei",
     common_key: {
       devnet: "ftm-wei",
       testnet: "ftm-wei",
@@ -474,6 +307,7 @@ export const nativeAssets: NativeAssetConfig[] = [
     },
   },
   {
+    id: "matic-wei",
     common_key: {
       devnet: "matic-wei",
       testnet: "matic-wei",
@@ -623,6 +457,7 @@ export const nativeAssets: NativeAssetConfig[] = [
     },
   },
   {
+    id: "bnb-wei",
     common_key: {
       devnet: "bnb-wei",
       testnet: "bnb-wei",
@@ -768,155 +603,6 @@ export const nativeAssets: NativeAssetConfig[] = [
         ibcDenom: "wbnb-wei",
         fullDenomPath: "wbnb-wei",
         tokenAddress: "0x55fDE07dEF3261a41fC59B783D27A6357e8A86Df",
-      },
-    },
-  },
-  {
-    common_key: {
-      devnet: "avax-wei",
-      testnet: "avax-wei",
-      mainnet: "avax-wei",
-    },
-    is_native_asset: true,
-    native_chain: "avalanche",
-    fully_supported: true,
-    decimals: 18,
-    chain_aliases: {
-      aura: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.0007,
-        ibcDenom:
-          "ibc/2991B858634D22E4637F772FA5A5F5BFCE3F30EA3ED208E36DD8DC07330490A9",
-        fullDenomPath: "transfer/channel-5/wavax-wei",
-        tokenAddress: "wavax-wei",
-      },
-      axelar: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.0007,
-        ibcDenom: "wavax-wei",
-        fullDenomPath: "wavax-wei",
-        tokenAddress: "wavax-wei",
-      },
-      comdex: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.0007,
-        ibcDenom:
-          "ibc/2A468AFEDF2B694B46BBE10E9C3631815DF57B3D936462CA031345922A76CD36",
-        fullDenomPath: "transfer/channel-18/wavax-wei",
-        tokenAddress: "wavax-wei",
-      },
-      evmos: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.0007,
-        ibcDenom:
-          "ibc/2B84B3D7B8AA4B04607ACD2E5096D20B34D6D355D33F4F5DD4659449EB757597",
-        fullDenomPath: "transfer/channel-22/wavax-wei",
-        tokenAddress: "wavax-wei",
-      },
-      fetch: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.0007,
-        ibcDenom:
-          "ibc/F992067A054C819B42D2DAB57F5CCE347D38352EB90453E59D566BFE64F1614B",
-        fullDenomPath: "transfer/channel-6/wavax-wei",
-        tokenAddress: "wavax-wei",
-      },
-      kujira: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.0007,
-        ibcDenom:
-          "ibc/C74D5A562B2D54AF03198E5BC6693D16EF978EBA0BD3BA22A7098511B43249CA",
-        fullDenomPath: "transfer/channel-8/wavax-wei",
-        tokenAddress: "wavax-wei",
-      },
-      osmosis: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.0007,
-        ibcDenom:
-          "ibc/AC114FA5B91B5696ACD80CE7D740E3DEF2C6E76817A9F57754E9423325321220",
-        fullDenomPath: "transfer/channel-312/wavax-wei",
-        tokenAddress: "wavax-wei",
-      },
-      sei: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.0007,
-        ibcDenom:
-          "ibc/2B1862B1CBE5ABC2E9457A21F2289024853AF12AEF8BC5EF8E4C3FB8B754BE2A",
-        fullDenomPath: "transfer/channel-29/wavax-wei",
-        tokenAddress: "wavax-wei",
-      },
-      terra: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.0007,
-        ibcDenom:
-          "ibc/2B84B3D7B8AA4B04607ACD2E5096D20B34D6D355D33F4F5DD4659449EB757597",
-        fullDenomPath: "transfer/channel-22/wavax-wei",
-        tokenAddress: "wavax-wei",
-      },
-      aurora: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.001,
-        ibcDenom: "wavax-wei",
-        fullDenomPath: "wavax-wei",
-        tokenAddress: "0xb47BAb33cAE8FCa71FA28516ADCE3AF0B3e040e3",
-      },
-      avalanche: {
-        assetSymbol: "AVAX",
-        assetName: "AVAX",
-        minDepositAmt: 0.001,
-        ibcDenom: "wavax-wei",
-        fullDenomPath: "wavax-wei",
-        tokenAddress: "0xd00ae08403B9bbb9124bB305C09058E32C39A48c",
-      },
-      binance: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.001,
-        ibcDenom: "wavax-wei",
-        fullDenomPath: "wavax-wei",
-        tokenAddress: "0x1B29EC62efC689c462b4E0512457175793cEc9e6",
-      },
-      ethereum: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.001,
-        ibcDenom: "wavax-wei",
-        fullDenomPath: "wavax-wei",
-        tokenAddress: "0x2a87806561C550ba2dA9677c5323413E6e539740",
-      },
-      fantom: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.001,
-        ibcDenom: "wavax-wei",
-        fullDenomPath: "wavax-wei",
-        tokenAddress: "0x8776aDD48553518641a589C39792cc409d4C8B84",
-      },
-      moonbeam: {
-        assetSymbol: "AVAX",
-        assetName: "AVAX",
-        minDepositAmt: 0.001,
-        ibcDenom: "wavax-wei",
-        fullDenomPath: "wavax-wei",
-        tokenAddress: "0x64aae6319934995Bf30e67EBBBA9750256E07283",
-      },
-      polygon: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
-        minDepositAmt: 0.001,
-        ibcDenom: "wavax-wei",
-        fullDenomPath: "wavax-wei",
-        tokenAddress: "0x6DD60c05FdA1255A44Ffaa9A8200b5b179A578D6",
       },
     },
   },

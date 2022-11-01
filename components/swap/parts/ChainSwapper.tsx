@@ -11,8 +11,8 @@ export const ChainSwapper = () => {
     // await router.push({
     //   query: {
     //     ...router.query,
-    //     source: destChain.chainName.toLowerCase(),
-    //     destination: srcChain.chainName.toLowerCase(),
+    //     source: destChain.chainName?.toLowerCase(),
+    //     destination: srcChain.chainName?.toLowerCase(),
     //     destination_address: "",
     //   },
     // });

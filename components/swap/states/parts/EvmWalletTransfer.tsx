@@ -14,7 +14,7 @@ import { erc20ABI } from "wagmi";
 import { BigNumber } from "bignumber.js";
 import { utils } from "ethers";
 import toast from "react-hot-toast";
-import { AssetConfig, AssetInfo } from "@axelar-network/axelarjs-sdk";
+import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { SpinnerRoundFilled } from "spinners-react";
 
 import {
@@ -27,6 +27,7 @@ import {
 } from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
 import { renderGasFee } from "../../../../utils/renderGasFee";
+import { NativeAssetConfig } from "../../../../config/web3/evm/native-assets";
 
 export const EvmWalletTransfer = () => {
   const { connectAsync, connectors, error } = useConnect();
@@ -45,6 +46,7 @@ export const EvmWalletTransfer = () => {
     tokensToTransfer,
     setTxInfo,
     txInfo,
+    shouldUnwrapAsset,
   } = useSwapStore((state) => state);
   const srcChainId = useSwapStore(getSrcChainId);
   const destChainId = useSwapStore(getDestChainId);
@@ -78,7 +80,7 @@ export const EvmWalletTransfer = () => {
     confirmations: Math.min(
       numConfirmationsSoFar,
       ENVIRONMENT === "mainnet" &&
-        srcChain.chainName.toLowerCase() === "ethereum"
+        srcChain.chainName?.toLowerCase() === "ethereum"
         ? 96
         : (srcChain.confirmLevel as number)
     ),
@@ -134,7 +136,7 @@ export const EvmWalletTransfer = () => {
 
   function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit =
-      renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+      renderGasFee(srcChain, destChain, asset as NativeAssetConfig) || 0;
     console.log("min Deposit", minDeposit);
     if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
@@ -160,7 +162,7 @@ export const EvmWalletTransfer = () => {
     if (!minAmountOk)
       return toast.error(
         `Token amount to transfer should be bigger than ${minDeposit} ${
-          asset?.chain_aliases[srcChain.chainName.toLowerCase()].assetSymbol
+          asset?.chain_aliases[srcChain.chainName?.toLowerCase()].assetSymbol
         }`
       );
 
@@ -182,10 +184,8 @@ export const EvmWalletTransfer = () => {
     //       .toString()} available`
     //   );
     // }
-    console.log(1);
 
     if (ENVIRONMENT === "testnet") {
-      console.log(2);
       // WRAP
       if (asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
         const tx = await sendTransactionAsync();
@@ -196,8 +196,6 @@ export const EvmWalletTransfer = () => {
         return;
       }
     }
-
-    console.log(3);
 
     // check that the user has enough tokens
     const tokenBalance = tokenAmount?.toString() as string;
@@ -234,7 +232,7 @@ export const EvmWalletTransfer = () => {
   const getStatus = () => {
     if (
       ENVIRONMENT === "mainnet" &&
-      srcChain.chainName.toLowerCase() === "ethereum"
+      srcChain.chainName?.toLowerCase() === "ethereum"
     ) {
       return (
         <div className="flex flex-col items-center my-2 gap-x-5">

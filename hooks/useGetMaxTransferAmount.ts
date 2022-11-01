@@ -11,17 +11,20 @@ export const useGetMaxTransferAmount = () => {
     if (!asset || !destChain) return;
     if (destChain.module === "axelarnet") {
       setMaxTransferAmount(0);
-    } else if (destChain?.chainName.toLowerCase() == "ethereum" && asset.common_key[ENVIRONMENT].includes("usdc")) {
+    } else if (
+      destChain?.chainName?.toLowerCase() == "ethereum" &&
+      asset.common_key[ENVIRONMENT].includes("usdc")
+    ) {
       setMaxTransferAmount(10_000_000 * 1_000_000); //TODO: this is temporary with the merge
     } else {
       setMaxTransferAmount(
-        (asset.chain_aliases[destChain.chainName.toLowerCase()] as any)
+        (asset.chain_aliases[destChain.chainName?.toLowerCase()] as any)
           ?.mintLimit || 0
       );
     }
   }, [srcChain, destChain, asset]);
 
-  if (!maxTransferAmount) return null; 
+  if (!maxTransferAmount) return null;
 
   const bigAmount = new BigNumber(maxTransferAmount)
     ?.div(5)

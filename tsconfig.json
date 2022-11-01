@@ -17,6 +17,6 @@
     "strictNullChecks": true
     // "typeRoots": ["types"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types/global.d.ts"],
   "exclude": ["node_modules"]
 }

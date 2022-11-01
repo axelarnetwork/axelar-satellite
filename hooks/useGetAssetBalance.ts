@@ -25,7 +25,7 @@ import {
 import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useIsTerraConnected } from "./terra/useIsTerraConnected";
-import { NativeAssetConfig } from "../config/nativeAssetList/testnet";
+import { NativeAssetConfig } from "../config/web3/evm/native-assets";
 
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
@@ -77,7 +77,7 @@ export const useGetAssetBalance = () => {
     const shouldShowNativeBalance = !!(
       srcChainId &&
       (asset as NativeAssetConfig)?.is_native_asset &&
-      asset?.native_chain === srcChain.chainName.toLowerCase()
+      asset?.native_chain === srcChain.chainName?.toLowerCase()
     );
     setShowNativeBalance(shouldShowNativeBalance);
 
@@ -152,13 +152,13 @@ export const useGetAssetBalance = () => {
     const derivedDenom = allAssets.find(
       (assetConfig) =>
         assetConfig.common_key[ENVIRONMENT] === common_key[ENVIRONMENT]
-    )?.chain_aliases[chainName.toLowerCase()]?.ibcDenom;
+    )?.chain_aliases[chainName?.toLowerCase()]?.ibcDenom;
     if (!derivedDenom) {
       const srcChain = allChains.find(
-        (chain) => chain.chainName.toLowerCase() === DEFAULT_SRC_CHAIN
+        (chain) => chain.chainName?.toLowerCase() === DEFAULT_SRC_CHAIN
       );
       const destChain = allChains.find(
-        (chain) => chain.chainName.toLowerCase() === DEFAULT_DEST_CHAIN
+        (chain) => chain.chainName?.toLowerCase() === DEFAULT_DEST_CHAIN
       );
       setSrcChain(srcChain as ChainInfo);
       setDestChain(destChain as ChainInfo);
@@ -169,8 +169,8 @@ export const useGetAssetBalance = () => {
 
     const fullChainConfig = cosmosChains.find(
       (chainConfig) =>
-        chainConfig.chainIdentifier.toLowerCase() ===
-        srcChain.chainName.toLowerCase()
+        chainConfig.chainIdentifier?.toLowerCase() ===
+        srcChain.chainName?.toLowerCase()
     );
     if (!fullChainConfig)
       throw new Error("chain config not found: " + srcChain.chainName);

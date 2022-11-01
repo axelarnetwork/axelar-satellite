@@ -25,7 +25,7 @@ export const WaitEvmConfirmationState = () => {
     depositAddress,
   } = useSwapStore((state) => state);
 
-  const chainAlias = destChain.chainName.toLowerCase();
+  const chainAlias = destChain.chainName?.toLowerCase();
   const tokenAddress = asset?.chain_aliases[chainAlias]?.tokenAddress;
 
   const destChainId = useSwapStore(getDestChainId);

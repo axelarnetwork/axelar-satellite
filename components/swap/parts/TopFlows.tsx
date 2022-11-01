@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useSwapStore } from "../../../store";
-import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapStatus } from "../../../utils/enums";
+import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 
 export const Arrow = () => (
   <svg
@@ -61,14 +62,14 @@ export const TopFlows = () => {
 
   function handleOnFlow1() {
     const avax = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("ethereum")
+      chain.chainName?.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("osmosis")
+      chain.chainName?.toLowerCase().includes("osmosis")
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("usdc")
-    ) as AssetConfig;
+    ) as NativeAssetConfig;
 
     setAsset(asset);
     setSrcChain(avax);
@@ -78,14 +79,14 @@ export const TopFlows = () => {
 
   function handleOnFlow3() {
     const osmo = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("ethereum")
+      chain.chainName?.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("osmosis")
+      chain.chainName?.toLowerCase().includes("osmosis")
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("weth")
-    ) as AssetConfig;
+    ) as NativeAssetConfig;
 
     setAsset(asset);
     setSrcChain(osmo);
@@ -95,14 +96,14 @@ export const TopFlows = () => {
 
   function handleOnFlow2() {
     const moonbeam = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("ethereum")
+      chain.chainName?.toLowerCase().includes("ethereum")
     ) as ChainInfo;
     const osmo = allChains.find((chain) =>
-      chain.chainName.toLowerCase().includes("axelar")
+      chain.chainName?.toLowerCase().includes("axelar")
     ) as ChainInfo;
     const asset = allAssets.find((asset) =>
       asset.common_key[ENVIRONMENT].includes("uaxl")
-    ) as AssetConfig;
+    ) as NativeAssetConfig;
 
     setAsset(asset);
     setSrcChain(moonbeam);

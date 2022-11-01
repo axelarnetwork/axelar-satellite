@@ -41,7 +41,7 @@ export const AddressFiller = () => {
       return;
     }
     const chain = getCosmosChains(allAssets).find(
-      (_chain) => _chain.chainIdentifier === destChain.chainName.toLowerCase()
+      (_chain) => _chain.chainIdentifier === destChain.chainName?.toLowerCase()
     );
     if (!chain) return;
 
@@ -54,7 +54,7 @@ export const AddressFiller = () => {
 
   async function fillTerraStationDestinationAddress() {
     const chain = getCosmosChains(allAssets).find(
-      (_chain) => _chain.chainIdentifier === destChain.chainName.toLowerCase()
+      (_chain) => _chain.chainIdentifier === destChain.chainName?.toLowerCase()
     );
     console.log("calling this TS");
     if (!chain) return;
@@ -101,10 +101,10 @@ export const AddressFiller = () => {
     <div
       key={destChain?.module}
       className={`bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full ${
-        destChain?.chainName.toLowerCase() === "terra" ? "w-36" : "w-28"
+        destChain?.chainName?.toLowerCase() === "terra" ? "w-36" : "w-28"
       } p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse`}
       onClick={
-        destChain?.chainName.toLowerCase() === "terra"
+        destChain?.chainName?.toLowerCase() === "terra"
           ? () => {}
           : fillCosmosDestinationAddress
       }
@@ -125,7 +125,7 @@ export const AddressFiller = () => {
             src="/assets/wallets/kepler.logo.svg"
           />
         </div>
-        {destChain?.chainName.toLowerCase() === "terra" && (
+        {destChain?.chainName?.toLowerCase() === "terra" && (
           <>
             <span className="text-xs">or</span>
             <div

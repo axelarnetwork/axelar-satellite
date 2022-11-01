@@ -54,7 +54,7 @@ export const DestChainSelector = () => {
 
     const chains = allChains.filter(
       (chain) =>
-        chain.chainName.toLowerCase().includes(searchChainInput) &&
+        chain.chainName?.toLowerCase().includes(searchChainInput) &&
         chain.chainName !== srcChain.chainName &&
         chain.chainName !== destChain.chainName
     );
@@ -73,7 +73,7 @@ export const DestChainSelector = () => {
     // await router.push({
     //   query: {
     //     ...router.query,
-    //     destination: chain.chainName.toLowerCase(),
+    //     destination: chain.chainName?.toLowerCase(),
     //     destination_address: "",
     //   },
     // });
