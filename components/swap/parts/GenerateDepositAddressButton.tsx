@@ -82,7 +82,10 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     ) {
       transferType = "wrap";
       // we transfer wrapped asset of native asset belonging to destination chain
-    } else if (shouldUnwrapAsset) {
+    } else if (
+      shouldUnwrapAsset &&
+      asset.native_chain === destChain.chainIdentifier[ENVIRONMENT]
+    ) {
       transferType = "unwrap";
     }
 

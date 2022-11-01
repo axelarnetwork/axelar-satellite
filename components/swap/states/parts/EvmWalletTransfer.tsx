@@ -187,7 +187,7 @@ export const EvmWalletTransfer = () => {
 
     if (ENVIRONMENT === "testnet") {
       // WRAP
-      if (shouldUnwrapAsset) {
+      if (asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
         const tx = await sendTransactionAsync();
         setTxInfo({
           sourceTxHash: tx?.hash,
