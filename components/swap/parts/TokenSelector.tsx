@@ -324,6 +324,7 @@ export const TokenSelector = () => {
             layout="intrinsic"
             width={10}
             height={10}
+            alt="arrow"
           />
         </span>
       );
@@ -364,7 +365,7 @@ export const TokenSelector = () => {
     return (
       <div className="text-end">
         <input
-          className="w-full text-lg font-bold text-right bg-transparent outline-none"
+          className="block text-lg font-bold text-right bg-transparent outline-none"
           type="number"
           value={tokensToTransfer}
           placeholder="0"
@@ -382,7 +383,7 @@ export const TokenSelector = () => {
       <div className="left-0 w-full h-64 p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
         <div className="px-2 py-2 ">
           <input
-            className="w-full bg-[#333c42] input input-sm"
+            className="bg-[#333c42] input input-sm w-full"
             placeholder="Search token"
             onChange={(e) => setSearchAssetInput(e.target.value)}
           />
@@ -404,6 +405,7 @@ export const TokenSelector = () => {
                       e.currentTarget.src = defaultAssetImg;
                       e.currentTarget.srcset = defaultAssetImg;
                     }}
+                    alt="asset"
                   />
                   <span>
                     {
@@ -471,6 +473,7 @@ export const TokenSelector = () => {
                     e.currentTarget.src = defaultAssetImg;
                     e.currentTarget.srcset = defaultAssetImg;
                   }}
+                  alt="asset"
                 />
                 <Arrow />
                 <Image
@@ -482,6 +485,7 @@ export const TokenSelector = () => {
                     e.currentTarget.src = defaultChainImg;
                     e.currentTarget.srcset = defaultChainImg;
                   }}
+                  alt="chain"
                 />
               </span>
             </li>
@@ -508,6 +512,7 @@ export const TokenSelector = () => {
                     e.currentTarget.src = defaultAssetImg;
                     e.currentTarget.srcset = defaultAssetImg;
                   }}
+                  alt="asset"
                 />
                 <Arrow />
                 <Image
@@ -519,6 +524,7 @@ export const TokenSelector = () => {
                     e.currentTarget.src = defaultChainImg;
                     e.currentTarget.srcset = defaultChainImg;
                   }}
+                  alt="chain"
                 />
               </span>
             </li>
@@ -552,13 +558,14 @@ export const TokenSelector = () => {
         <Blockable>
           <div className="static flex mt-1 dropdown dropdown-open">
             <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
-              <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
+              <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
                 <Image
                   loading="eager"
                   src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
                   layout="intrinsic"
-                  width={35}
-                  height={35}
+                  width={30}
+                  height={30}
+                  alt="asset"
                   onError={(e) => {
                     e.currentTarget.src = defaultAssetImg;
                     e.currentTarget.srcset = defaultAssetImg;
@@ -570,8 +577,8 @@ export const TokenSelector = () => {
                     loading="eager"
                     src="/assets/ui/arrow-down.svg"
                     layout="intrinsic"
-                    width={25}
-                    height={25}
+                    width={35}
+                    height={35}
                   />
                 </div>
               </div>
