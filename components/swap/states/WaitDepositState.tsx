@@ -35,7 +35,11 @@ export const WaitDepositState = () => {
             {">"}
             {relayerGasFee} {selectedAssetSymbol}
           </strong>{" "}
-          on {convertChainName(srcChain.chainName)} to
+          on{" "}
+          <span className="capitalize">
+            {convertChainName(srcChain.chainName)}
+          </span>{" "}
+          to
         </div>
       </div>
     );
