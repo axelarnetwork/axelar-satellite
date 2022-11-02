@@ -1,4 +1,4 @@
-import { createClient, configureChains, defaultChains } from "wagmi";
+import { createClient, configureChains } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
@@ -14,7 +14,10 @@ const { chains, provider } = configureChains(
       },
     }),
     publicProvider(),
-  ]
+  ],
+  {
+    pollingInterval: 10_000,
+  }
 );
 
 export const wagmiClient = createClient({
