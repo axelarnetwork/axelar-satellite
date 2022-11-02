@@ -33,10 +33,10 @@ export const WaitEvmConfirmationState = () => {
 
   useContractEvent({
     chainId: destChainId as number,
-    addressOrName: tokenAddress as string,
-    contractInterface: erc20ABI,
+    address: tokenAddress as string,
+    abi: erc20ABI,
     eventName: "Transfer",
-    listener: (event) => {
+    listener(...event: any) {
       if (event[3].blockNumber < Number(txInfo.destStartBlockNumber)) return;
       if (event[1] === destAddress) {
         setTxInfo({

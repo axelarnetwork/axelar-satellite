@@ -28,6 +28,7 @@ import {
 import { ENVIRONMENT } from "../../../../config/constants";
 import { renderGasFee } from "../../../../utils/renderGasFee";
 import { NativeAssetConfig } from "../../../../config/web3/evm/native-assets";
+import { Hash } from "../../../../types";
 
 export const EvmWalletTransfer = () => {
   const { connectAsync, connectors, error } = useConnect();
@@ -64,16 +65,16 @@ export const EvmWalletTransfer = () => {
 
   const { data: tokenAmount } = useContractRead({
     enabled: !!(srcTokenAddress && srcChainId),
-    addressOrName: srcTokenAddress as string,
-    contractInterface: erc20ABI,
+    address: srcTokenAddress as string,
+    abi: erc20ABI,
     chainId: srcChainId,
     functionName: "balanceOf",
-    args: [address],
+    args: [address as Hash],
   });
 
   useWaitForTransaction({
     chainId: srcChainId,
-    hash: txInfo?.sourceTxHash,
+    hash: txInfo?.sourceTxHash as Hash,
     onSettled(data, error) {
       setNumConfirmationsSoFar(numConfirmationsSoFar + 1);
     },
@@ -88,9 +89,10 @@ export const EvmWalletTransfer = () => {
   });
 
   const { writeAsync } = useContractWrite({
+    mode: "recklesslyUnprepared",
     chainId: srcChainId, // call transfer on source chain
-    addressOrName: tokenAddress,
-    contractInterface: erc20ABI,
+    address: tokenAddress,
+    abi: erc20ABI,
     functionName: "transfer",
   });
 
@@ -105,6 +107,7 @@ export const EvmWalletTransfer = () => {
     isSuccess,
     sendTransactionAsync,
   } = useSendTransaction({
+    mode: "recklesslyUnprepared",
     chainId: srcChainId as number,
     request: {
       to: depositAddress,
@@ -185,6 +188,8 @@ export const EvmWalletTransfer = () => {
     //   );
     // }
 
+    // TODO: add switch network in case if user changes at this point
+
     if (ENVIRONMENT === "testnet") {
       // WRAP
       if (asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
@@ -212,21 +217,22 @@ export const EvmWalletTransfer = () => {
       );
     }
 
-    await writeAsync({
-      args: [
-        depositAddress,
-        utils.parseUnits(tokensToTransfer, asset?.decimals),
-      ],
-    })
-      .then((data) => {
-        setTxInfo({
-          sourceTxHash: data.hash,
-          destStartBlockNumber: blockNumber,
-        });
-        setIsTxOngoing(true);
-        // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+    writeAsync &&
+      (await writeAsync({
+        recklesslySetUnpreparedArgs: [
+          depositAddress as Hash,
+          utils.parseUnits(tokensToTransfer, asset?.decimals),
+        ],
       })
-      .catch((error) => toast.error(error?.message as string));
+        .then((data) => {
+          setTxInfo({
+            sourceTxHash: data.hash,
+            destStartBlockNumber: blockNumber,
+          });
+          setIsTxOngoing(true);
+          // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+        })
+        .catch((error) => toast.error(error?.message as string)));
   }
 
   const getStatus = () => {

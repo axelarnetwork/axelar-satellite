@@ -26,6 +26,7 @@ import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useIsTerraConnected } from "./terra/useIsTerraConnected";
 import { NativeAssetConfig } from "../config/web3/evm/native-assets";
+import { Hash } from "../types";
 
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
@@ -55,7 +56,7 @@ export const useGetAssetBalance = () => {
     abi: erc20ABI,
     chainId: srcChainId,
     functionName: "balanceOf",
-    args: [address as `0x${string}`],
+    args: [address as Hash],
   });
 
   const {
