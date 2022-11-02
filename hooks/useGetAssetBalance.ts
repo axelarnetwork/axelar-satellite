@@ -51,11 +51,11 @@ export const useGetAssetBalance = () => {
 
   const { data, isSuccess } = useContractRead({
     enabled: !!(srcTokenAddress && srcChainId),
-    addressOrName: srcTokenAddress as string,
-    contractInterface: erc20ABI,
+    address: srcTokenAddress as string,
+    abi: erc20ABI,
     chainId: srcChainId,
     functionName: "balanceOf",
-    args: [address],
+    args: [address as `0x${string}`],
   });
 
   const {
