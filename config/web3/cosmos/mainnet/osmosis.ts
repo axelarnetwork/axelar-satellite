@@ -1,8 +1,8 @@
 import { CosmosChain } from "../interface";
 
 export default {
-  rest: "https://osmosis-api.polkachu.com",
-  rpc: "https://osmosis-rpc.polkachu.com",
+  rest: "https://lcd-osmosis.imperator.co",
+  rpc: "https://rpc-osmosis.imperator.co",
   chainId: "osmosis-1",
   chainToAxelarChannelId: "channel-208",
   currencies: [
