@@ -2,7 +2,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=terra",
+  rpc: "http://18.194.243.144:26657",
   rest: "https://pisco-lcd.terra.dev",
   chainId: "pisco-1",
   chainName: "Terra Testnet",
