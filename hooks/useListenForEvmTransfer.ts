@@ -11,8 +11,8 @@ export const useListenForEvmTransfer = () => {
 
   const { data, isError, isLoading, error } = useContractRead({
     enabled: contractAddress ? true : false,
-    addressOrName: contractAddress as string,
-    contractInterface: erc20ABI,
+    address: contractAddress as string,
+    abi: erc20ABI,
     functionName: "balanceOf",
     args: ["0xA57ADCE1d2fE72949E4308867D894CD7E7DE0ef2"],
     chainId: 43113,
