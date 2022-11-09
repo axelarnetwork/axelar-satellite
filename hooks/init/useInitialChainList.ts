@@ -2,7 +2,6 @@ import {
   AssetConfig,
   ChainInfo,
   loadAssets,
-  loadChains,
 } from "@axelar-network/axelarjs-sdk";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -20,7 +19,7 @@ import {
 } from "../../config/web3/evm/native-assets";
 import { useSwapStore } from "../../store";
 import { RouteQuery } from "../../types";
-import { addNativeAssets } from "../../utils/api";
+import { addNativeAssets, loadAllChains } from "../../utils/api";
 
 export const useInitialChainList = () => {
   const {
@@ -73,7 +72,7 @@ export const useInitialChainList = () => {
 
   async function loadInitialChains() {
     // load chains with native assets
-    const chains = await loadChains({ environment: ENVIRONMENT })
+    const chains = await loadAllChains(ENVIRONMENT)
       .then((_chains) => addNativeAssets(_chains, nativeAssets, ENVIRONMENT))
       .then((_chains) => setAllChains(_chains))
       .catch((error) => {
