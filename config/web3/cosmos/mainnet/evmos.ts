@@ -3,7 +3,7 @@ import { CosmosChain } from "../interface";
 
 export default {
   rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=evmos",
-  rest: "https://evmos-rest.publicnode.com", //"https://mainnet-lcd-router.axelar-dev.workers.dev", TODO - get LCD router to work so that we can retry
+  rest: "https://lcd-evmos.imperator.co", //"https://mainnet-lcd-router.axelar-dev.workers.dev", TODO - get LCD router to work so that we can retry
   chainId: "evmos_9001-2",
   chainName: "Evmos",
   stakeCurrency: {
