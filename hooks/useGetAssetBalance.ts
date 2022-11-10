@@ -65,7 +65,7 @@ export const useGetAssetBalance = () => {
     isLoading,
   } = useBalance({
     enabled: showNativeBalance,
-    addressOrName: address,
+    address: address,
     chainId: srcChainId,
   });
 
