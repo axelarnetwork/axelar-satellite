@@ -7,7 +7,11 @@ import {
   useConnect,
   useContractRead,
   useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+  usePrepareSendTransaction,
   useSendTransaction,
+  useSwitchNetwork,
   useWaitForTransaction,
 } from "wagmi";
 import { erc20ABI } from "wagmi";
@@ -54,11 +58,9 @@ export const EvmWalletTransfer = () => {
   const { wagmiConnected } = useWalletStore();
 
   const { address } = useAccount();
-
-  const { data: accountBalance } = useBalance({
-    enabled: !!srcChainId,
+  const { chain } = useNetwork();
+  const { switchNetworkAsync } = useSwitchNetwork({
     chainId: srcChainId,
-    addressOrName: address,
   });
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
@@ -88,26 +90,32 @@ export const EvmWalletTransfer = () => {
     enabled: !!(txInfo && txInfo.sourceTxHash),
   });
 
-  const { writeAsync } = useContractWrite({
-    mode: "recklesslyUnprepared",
+  /**
+   * SEND TX FOR TOKENS
+   */
+  const { config: contractWriteConfig } = usePrepareContractWrite({
+    enabled: chain?.id === srcChainId,
     chainId: srcChainId, // call transfer on source chain
     address: tokenAddress,
     abi: erc20ABI,
     functionName: "transfer",
+    args: [
+      depositAddress as Hash,
+      utils.parseUnits(tokensToTransfer, asset?.decimals),
+    ],
   });
+  const { writeAsync } = useContractWrite(contractWriteConfig);
 
   const { data: blockNumber } = useBlockNumber({
     chainId: destChainId as number,
     enabled: !!destChainId,
   });
 
-  const {
-    data: sendNativeDataResult,
-    isLoading,
-    isSuccess,
-    sendTransactionAsync,
-  } = useSendTransaction({
-    mode: "recklesslyUnprepared",
+  /**
+   * SEND TX FOR NATIVE ASSET
+   */
+  const { config: sendTxConfig } = usePrepareSendTransaction({
+    enabled: chain?.id === srcChainId,
     chainId: srcChainId as number,
     request: {
       to: depositAddress,
@@ -116,6 +124,8 @@ export const EvmWalletTransfer = () => {
         : 0,
     },
   });
+  const { data: sendNativeDataResult, sendTransactionAsync } =
+    useSendTransaction(sendTxConfig);
 
   useEffect(() => {
     console.log("send native data result", sendNativeDataResult);
@@ -156,6 +166,7 @@ export const EvmWalletTransfer = () => {
 
   async function handleOnTokensTransfer() {
     if (!wagmiConnected) await handleOnMetamaskSwitch();
+    await switchNetworkAsync?.();
     // token amount should not be null
     const { minAmountOk, minDeposit } = checkMinAmount(
       tokensToTransfer,
@@ -192,8 +203,11 @@ export const EvmWalletTransfer = () => {
 
     if (ENVIRONMENT === "testnet") {
       // WRAP
-      if (asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
-        const tx = await sendTransactionAsync();
+      if (
+        asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT] &&
+        asset.is_native_asset
+      ) {
+        const tx = await sendTransactionAsync?.();
         setTxInfo({
           sourceTxHash: tx?.hash,
           destStartBlockNumber: blockNumber,
@@ -201,6 +215,7 @@ export const EvmWalletTransfer = () => {
         return;
       }
     }
+    console.log(2);
 
     // check that the user has enough tokens
     const tokenBalance = tokenAmount?.toString() as string;
@@ -217,22 +232,16 @@ export const EvmWalletTransfer = () => {
       );
     }
 
-    writeAsync &&
-      (await writeAsync({
-        recklesslySetUnpreparedArgs: [
-          depositAddress as Hash,
-          utils.parseUnits(tokensToTransfer, asset?.decimals),
-        ],
+    writeAsync?.()
+      .then((data) => {
+        setTxInfo({
+          sourceTxHash: data.hash,
+          destStartBlockNumber: blockNumber,
+        });
+        setIsTxOngoing(true);
+        // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
       })
-        .then((data) => {
-          setTxInfo({
-            sourceTxHash: data.hash,
-            destStartBlockNumber: blockNumber,
-          });
-          setIsTxOngoing(true);
-          // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
-        })
-        .catch((error) => toast.error(error?.message as string)));
+      .catch((error) => toast.error(error?.message as string));
   }
 
   const getStatus = () => {
@@ -309,7 +318,11 @@ export const EvmWalletTransfer = () => {
               className="mb-5 btn btn-primary"
               onClick={handleOnTokensTransfer}
             >
-              <span className="mr-2">Send From Metamask</span>
+              <span className="mr-2">
+                {chain?.id !== srcChainId
+                  ? `Switch to ${srcChain.chainName}`
+                  : "Send From Metamask"}
+              </span>
               <div className="flex justify-center my-2 gap-x-5">
                 <Image
                   src="/assets/wallets/metamask.logo.svg"
