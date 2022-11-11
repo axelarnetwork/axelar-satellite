@@ -33,6 +33,6 @@ export default {
     coinDecimals: 6,
     coinGeckoId: "persistence",
   },
-  coinType: 118,
+  coinType: 750,
   chainToAxelarChannelId: "channel-108",
 } as CosmosChain;
