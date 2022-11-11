@@ -9,6 +9,7 @@ import fetch from "./fetch";
 import evmos from "./evmos";
 import aura from "./aura";
 import comdex from "./comdex";
+import persistence from "./persistence";
 import { CosmosChain } from "../interface";
 
 export const testnetChains: CosmosChain[] = [
@@ -23,4 +24,5 @@ export const testnetChains: CosmosChain[] = [
   cosmoshub,
   crescent,
   fetch,
+  persistence,
 ];
