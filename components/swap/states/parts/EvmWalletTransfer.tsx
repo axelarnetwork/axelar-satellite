@@ -15,12 +15,10 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { erc20ABI } from "wagmi";
-import { BigNumber } from "bignumber.js";
-import { utils } from "ethers";
+import { utils, BigNumber } from "ethers";
 import toast from "react-hot-toast";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { SpinnerRoundFilled } from "spinners-react";
-
 import {
   getDestChainId,
   getSrcChainId,
@@ -66,7 +64,7 @@ export const EvmWalletTransfer = () => {
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   const { data: tokenAmount } = useContractRead({
-    enabled: !!(srcTokenAddress && srcChainId),
+    enabled: !!(srcTokenAddress && srcChainId) && !!srcTokenAddress,
     address: srcTokenAddress as string,
     abi: erc20ABI,
     chainId: srcChainId,
@@ -94,14 +92,16 @@ export const EvmWalletTransfer = () => {
    * SEND TX FOR TOKENS
    */
   const { config: contractWriteConfig } = usePrepareContractWrite({
-    enabled: chain?.id === srcChainId,
+    enabled: chain?.id === srcChainId && !!tokenAddress && !!tokensToTransfer,
     chainId: srcChainId, // call transfer on source chain
     address: tokenAddress,
     abi: erc20ABI,
     functionName: "transfer",
     args: [
       depositAddress as Hash,
-      utils.parseUnits(tokensToTransfer, asset?.decimals),
+      BigNumber.from(tokensToTransfer || 0).mul(
+        BigNumber.from(10).pow(asset?.decimals || 0)
+      ),
     ],
   });
   const { writeAsync } = useContractWrite(contractWriteConfig);
@@ -115,13 +115,13 @@ export const EvmWalletTransfer = () => {
    * SEND TX FOR NATIVE ASSET
    */
   const { config: sendTxConfig } = usePrepareSendTransaction({
-    enabled: chain?.id === srcChainId,
+    enabled: chain?.id === srcChainId && !!tokensToTransfer,
     chainId: srcChainId as number,
     request: {
       to: depositAddress,
-      value: !!tokensToTransfer
-        ? utils?.parseUnits(tokensToTransfer, asset?.decimals)
-        : 0,
+      value: BigNumber.from(tokensToTransfer || 0).mul(
+        BigNumber.from(10).pow(asset?.decimals || 0)
+      ),
     },
   });
   const { data: sendNativeDataResult, sendTransactionAsync } =
@@ -151,7 +151,7 @@ export const EvmWalletTransfer = () => {
     const minDeposit =
       renderGasFee(srcChain, destChain, asset as NativeAssetConfig) || 0;
     console.log("min Deposit", minDeposit);
-    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
+    if (BigNumber.from(amount || 0).lte(BigNumber.from(minDeposit)))
       return { minDeposit, minAmountOk: false };
     return {
       minDeposit,
@@ -199,32 +199,31 @@ export const EvmWalletTransfer = () => {
     //   );
     // }
 
-    // TODO: add switch network in case if user changes at this point
-
     if (ENVIRONMENT === "testnet") {
       // WRAP
       if (
         asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT] &&
         asset.is_native_asset
       ) {
-        const tx = await sendTransactionAsync?.();
-        setTxInfo({
-          sourceTxHash: tx?.hash,
-          destStartBlockNumber: blockNumber,
-        });
-        return;
+        return sendTransactionAsync?.()
+          .then((tx) => {
+            setTxInfo({
+              sourceTxHash: tx?.hash,
+              destStartBlockNumber: blockNumber,
+            });
+          })
+          .catch((error) => toast.error(error.reason));
       }
     }
-    console.log(2);
 
     // check that the user has enough tokens
     const tokenBalance = tokenAmount?.toString() as string;
-    const minTokenBalance = new BigNumber(minDeposit)
-      .times(10 ** Number(asset?.decimals))
+    const minTokenBalance = BigNumber.from(minDeposit)
+      .mul(10 ** (asset?.decimals || 0))
       .toString();
-    if (new BigNumber(tokenBalance).lt(new BigNumber(minTokenBalance))) {
+    if (BigNumber.from(tokenBalance).lt(BigNumber.from(minTokenBalance))) {
       return toast.error(
-        `Insufficient ${selectedAssetSymbol} amount: ${new BigNumber(
+        `Insufficient ${selectedAssetSymbol} amount: ${BigNumber.from(
           tokenBalance
         )
           .div(10 ** Number(asset?.decimals))
