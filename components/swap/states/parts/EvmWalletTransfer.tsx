@@ -15,7 +15,8 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { erc20ABI } from "wagmi";
-import { utils, BigNumber } from "ethers";
+import { utils } from "ethers";
+import { BigNumber } from "bignumber.js";
 import toast from "react-hot-toast";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { SpinnerRoundFilled } from "spinners-react";
@@ -92,17 +93,27 @@ export const EvmWalletTransfer = () => {
    * SEND TX FOR TOKENS
    */
   const { config: contractWriteConfig } = usePrepareContractWrite({
-    enabled: chain?.id === srcChainId && !!tokenAddress && !!tokensToTransfer,
+    enabled:
+      chain?.id === srcChainId &&
+      !!tokenAddress &&
+      !!tokensToTransfer &&
+      !asset?.is_native_asset,
     chainId: srcChainId, // call transfer on source chain
     address: tokenAddress,
     abi: erc20ABI,
     functionName: "transfer",
     args: [
       depositAddress as Hash,
-      BigNumber.from(tokensToTransfer || 0).mul(
-        BigNumber.from(10).pow(asset?.decimals || 0)
+      utils.parseUnits(
+        !!tokensToTransfer ? tokensToTransfer : "0",
+        asset?.decimals
       ),
     ],
+    onError(err: any) {
+      toast.error(
+        `Can't estimate gas limit for transaction. Please verify that you are not trying to transfer more assets than what you have. Transaction might fail if you proceed.`
+      );
+    },
   });
   const { writeAsync } = useContractWrite(contractWriteConfig);
 
@@ -115,13 +126,20 @@ export const EvmWalletTransfer = () => {
    * SEND TX FOR NATIVE ASSET
    */
   const { config: sendTxConfig } = usePrepareSendTransaction({
-    enabled: chain?.id === srcChainId && !!tokensToTransfer,
+    enabled:
+      chain?.id === srcChainId && !!tokensToTransfer && asset?.is_native_asset,
     chainId: srcChainId as number,
     request: {
       to: depositAddress,
-      value: BigNumber.from(tokensToTransfer || 0).mul(
-        BigNumber.from(10).pow(asset?.decimals || 0)
+      value: utils.parseUnits(
+        !!tokensToTransfer ? tokensToTransfer : "0",
+        asset?.decimals
       ),
+    },
+    onError(err: any) {
+      toast.error(
+        `Can't estimate gas limit for transaction. Please verify that you are not trying to transfer more native assets than what you have. Transaction might fail if you proceed.`
+      );
     },
   });
   const { data: sendNativeDataResult, sendTransactionAsync } =
@@ -151,7 +169,7 @@ export const EvmWalletTransfer = () => {
     const minDeposit =
       renderGasFee(srcChain, destChain, asset as NativeAssetConfig) || 0;
     console.log("min Deposit", minDeposit);
-    if (BigNumber.from(amount || 0).lte(BigNumber.from(minDeposit)))
+    if (new BigNumber(amount || 0).lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
     return {
       minDeposit,
@@ -218,12 +236,12 @@ export const EvmWalletTransfer = () => {
 
     // check that the user has enough tokens
     const tokenBalance = tokenAmount?.toString() as string;
-    const minTokenBalance = BigNumber.from(minDeposit)
-      .mul(10 ** (asset?.decimals || 0))
+    const minTokenBalance = new BigNumber(minDeposit)
+      .times(10 ** (asset?.decimals || 0))
       .toString();
-    if (BigNumber.from(tokenBalance).lt(BigNumber.from(minTokenBalance))) {
+    if (new BigNumber(tokenBalance).lt(new BigNumber(minTokenBalance))) {
       return toast.error(
-        `Insufficient ${selectedAssetSymbol} amount: ${BigNumber.from(
+        `Insufficient ${selectedAssetSymbol} amount: ${new BigNumber(
           tokenBalance
         )
           .div(10 ** Number(asset?.decimals))
