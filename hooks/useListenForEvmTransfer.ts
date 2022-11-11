@@ -10,7 +10,7 @@ export const useListenForEvmTransfer = () => {
   const [contractAddress, setContractAddress] = useState<string>();
 
   const { data, isError, isLoading, error } = useContractRead({
-    enabled: contractAddress ? true : false,
+    enabled: !!contractAddress,
     address: contractAddress as string,
     abi: erc20ABI,
     functionName: "balanceOf",

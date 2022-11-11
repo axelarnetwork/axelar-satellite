@@ -51,7 +51,7 @@ export const useGetAssetBalance = () => {
   const [showNativeBalance, setShowNativeBalance] = useState(false);
 
   const { data, isSuccess } = useContractRead({
-    enabled: !!(srcTokenAddress && srcChainId),
+    enabled: !!(srcTokenAddress && srcChainId) && !!srcTokenAddress,
     address: srcTokenAddress as string,
     abi: erc20ABI,
     chainId: srcChainId,
