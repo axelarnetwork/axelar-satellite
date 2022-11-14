@@ -8,7 +8,7 @@ export default {
   rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=persistence",
   rest: "https://rest.testnet.persistence.one",
   bip44: {
-    coinType: 750,
+    coinType: 118,
   },
   bech32Config: Bech32Address.defaultBech32Config("persistence"),
   currencies: [
@@ -33,6 +33,6 @@ export default {
     coinDecimals: 6,
     coinGeckoId: "persistence",
   },
-  coinType: 750,
+  coinType: 118,
   chainToAxelarChannelId: "channel-108",
 } as CosmosChain;
