@@ -9,6 +9,7 @@ import { SwapStatus } from "../../../utils/enums";
 import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
+import { USDC_POOLS } from "../../../data/pools";
 
 export const TransferStats = () => {
   const {
@@ -150,6 +151,32 @@ export const TransferStats = () => {
     );
   }
 
+  function renderPoolInfo() {
+    console.log({
+      asset,
+    });
+    if ((asset as any)?.id === "uusdc") {
+      const chainName = destChain.chainName.toLowerCase();
+      const uri = USDC_POOLS[chainName];
+
+      return (
+        <li className="flex justify-between font-normal">
+          <span>Pool</span>
+          <a
+            className="text-[#00a6ff]"
+            target="_blank"
+            rel="noreferrer"
+            href={uri}
+          >
+            axlUSDC pool
+          </a>
+        </li>
+      );
+    }
+
+    return null;
+  }
+
   return (
     <StatsWrapper>
       <ul className="space-y-2 text-sm">
@@ -168,6 +195,7 @@ export const TransferStats = () => {
         {renderDestinationAddress()}
         {renderDepositAddress()}
         {renderDepositConfirmationLink()}
+        {renderPoolInfo()}
       </ul>
     </StatsWrapper>
   );
