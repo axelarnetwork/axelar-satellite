@@ -5,8 +5,8 @@ import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { AddressShortener, StatsWrapper } from "../../common";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import { copyToClipboard } from "../../../utils";
-import { SwapStatus } from "../../../utils/enums";
-import { AXELARSCAN_URL } from "../../../config/constants";
+import { Environment, SwapStatus } from "../../../utils/enums";
+import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
 import { USDC_POOLS } from "../../../data/pools";
@@ -152,7 +152,7 @@ export const TransferStats = () => {
   }
 
   function renderPoolInfo() {
-    if ((asset as any)?.id === "uusdc" || (asset as any) === "uausdc") {
+    if ((asset as any)?.id === "uusdc") {
       const chainName = destChain.chainName.toLowerCase();
       const pool = USDC_POOLS[chainName];
 
