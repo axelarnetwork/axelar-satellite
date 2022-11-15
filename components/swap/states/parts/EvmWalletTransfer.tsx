@@ -7,16 +7,19 @@ import {
   useConnect,
   useContractRead,
   useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+  usePrepareSendTransaction,
   useSendTransaction,
+  useSwitchNetwork,
   useWaitForTransaction,
 } from "wagmi";
 import { erc20ABI } from "wagmi";
-import { BigNumber } from "bignumber.js";
 import { utils } from "ethers";
+import { BigNumber } from "bignumber.js";
 import toast from "react-hot-toast";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { SpinnerRoundFilled } from "spinners-react";
-
 import {
   getDestChainId,
   getSrcChainId,
@@ -28,6 +31,7 @@ import {
 import { ENVIRONMENT } from "../../../../config/constants";
 import { renderGasFee } from "../../../../utils/renderGasFee";
 import { NativeAssetConfig } from "../../../../config/web3/evm/native-assets";
+import { Hash } from "../../../../types";
 
 export const EvmWalletTransfer = () => {
   const { connectAsync, connectors, error } = useConnect();
@@ -53,27 +57,25 @@ export const EvmWalletTransfer = () => {
   const { wagmiConnected } = useWalletStore();
 
   const { address } = useAccount();
-
-  const { data: accountBalance } = useBalance({
-    enabled: !!srcChainId,
+  const { chain } = useNetwork();
+  const { switchNetworkAsync } = useSwitchNetwork({
     chainId: srcChainId,
-    addressOrName: address,
   });
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   const { data: tokenAmount } = useContractRead({
-    enabled: !!(srcTokenAddress && srcChainId),
-    addressOrName: srcTokenAddress as string,
-    contractInterface: erc20ABI,
+    enabled: !!(srcTokenAddress && srcChainId) && !!srcTokenAddress,
+    address: srcTokenAddress as string,
+    abi: erc20ABI,
     chainId: srcChainId,
     functionName: "balanceOf",
-    args: [address],
+    args: [address as Hash],
   });
 
   useWaitForTransaction({
     chainId: srcChainId,
-    hash: txInfo?.sourceTxHash,
+    hash: txInfo?.sourceTxHash as Hash,
     onSettled(data, error) {
       setNumConfirmationsSoFar(numConfirmationsSoFar + 1);
     },
@@ -87,32 +89,61 @@ export const EvmWalletTransfer = () => {
     enabled: !!(txInfo && txInfo.sourceTxHash),
   });
 
-  const { writeAsync } = useContractWrite({
+  /**
+   * SEND TX FOR TOKENS
+   */
+  const { config: contractWriteConfig } = usePrepareContractWrite({
+    enabled:
+      chain?.id === srcChainId &&
+      !!tokenAddress &&
+      !!tokensToTransfer &&
+      !asset?.is_native_asset,
     chainId: srcChainId, // call transfer on source chain
-    addressOrName: tokenAddress,
-    contractInterface: erc20ABI,
+    address: tokenAddress,
+    abi: erc20ABI,
     functionName: "transfer",
+    args: [
+      depositAddress as Hash,
+      utils.parseUnits(
+        !!tokensToTransfer ? tokensToTransfer : "0",
+        asset?.decimals
+      ),
+    ],
+    onError(err: any) {
+      toast.error(
+        `Can't estimate gas limit for transaction. Please verify that you are not trying to transfer more assets than what you have. Transaction might fail if you proceed.`
+      );
+    },
   });
+  const { writeAsync } = useContractWrite(contractWriteConfig);
 
   const { data: blockNumber } = useBlockNumber({
     chainId: destChainId as number,
     enabled: !!destChainId,
   });
 
-  const {
-    data: sendNativeDataResult,
-    isLoading,
-    isSuccess,
-    sendTransactionAsync,
-  } = useSendTransaction({
+  /**
+   * SEND TX FOR NATIVE ASSET
+   */
+  const { config: sendTxConfig } = usePrepareSendTransaction({
+    enabled:
+      chain?.id === srcChainId && !!tokensToTransfer && asset?.is_native_asset,
     chainId: srcChainId as number,
     request: {
       to: depositAddress,
-      value: !!tokensToTransfer
-        ? utils?.parseUnits(tokensToTransfer, asset?.decimals)
-        : 0,
+      value: utils.parseUnits(
+        !!tokensToTransfer ? tokensToTransfer : "0",
+        asset?.decimals
+      ),
+    },
+    onError(err: any) {
+      toast.error(
+        `Can't estimate gas limit for transaction. Please verify that you are not trying to transfer more native assets than what you have. Transaction might fail if you proceed.`
+      );
     },
   });
+  const { data: sendNativeDataResult, sendTransactionAsync } =
+    useSendTransaction(sendTxConfig);
 
   useEffect(() => {
     console.log("send native data result", sendNativeDataResult);
@@ -138,7 +169,7 @@ export const EvmWalletTransfer = () => {
     const minDeposit =
       renderGasFee(srcChain, destChain, asset as NativeAssetConfig) || 0;
     console.log("min Deposit", minDeposit);
-    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
+    if (new BigNumber(amount || 0).lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
     return {
       minDeposit,
@@ -153,6 +184,7 @@ export const EvmWalletTransfer = () => {
 
   async function handleOnTokensTransfer() {
     if (!wagmiConnected) await handleOnMetamaskSwitch();
+    await switchNetworkAsync?.();
     // token amount should not be null
     const { minAmountOk, minDeposit } = checkMinAmount(
       tokensToTransfer,
@@ -187,20 +219,25 @@ export const EvmWalletTransfer = () => {
 
     if (ENVIRONMENT === "testnet") {
       // WRAP
-      if (asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT]) {
-        const tx = await sendTransactionAsync();
-        setTxInfo({
-          sourceTxHash: tx?.hash,
-          destStartBlockNumber: blockNumber,
-        });
-        return;
+      if (
+        asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT] &&
+        asset.is_native_asset
+      ) {
+        return sendTransactionAsync?.()
+          .then((tx) => {
+            setTxInfo({
+              sourceTxHash: tx?.hash,
+              destStartBlockNumber: blockNumber,
+            });
+          })
+          .catch((error) => toast.error(error.reason));
       }
     }
 
     // check that the user has enough tokens
     const tokenBalance = tokenAmount?.toString() as string;
     const minTokenBalance = new BigNumber(minDeposit)
-      .times(10 ** Number(asset?.decimals))
+      .times(10 ** (asset?.decimals || 0))
       .toString();
     if (new BigNumber(tokenBalance).lt(new BigNumber(minTokenBalance))) {
       return toast.error(
@@ -212,12 +249,7 @@ export const EvmWalletTransfer = () => {
       );
     }
 
-    await writeAsync({
-      args: [
-        depositAddress,
-        utils.parseUnits(tokensToTransfer, asset?.decimals),
-      ],
-    })
+    writeAsync?.()
       .then((data) => {
         setTxInfo({
           sourceTxHash: data.hash,
@@ -303,7 +335,11 @@ export const EvmWalletTransfer = () => {
               className="mb-5 btn btn-primary"
               onClick={handleOnTokensTransfer}
             >
-              <span className="mr-2">Send From Metamask</span>
+              <span className="mr-2">
+                {chain?.id !== srcChainId
+                  ? `Switch to ${srcChain.chainName}`
+                  : "Send From Metamask"}
+              </span>
               <div className="flex justify-center my-2 gap-x-5">
                 <Image
                   src="/assets/wallets/metamask.logo.svg"

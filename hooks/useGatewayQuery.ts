@@ -13,12 +13,12 @@ export const useGatewayQuery = () => {
   const { api } = useAxelarRPCQuery();
 
   const { data: maxTransferAmount, error } = useContractRead({
-    addressOrName: gatewayAddr,
+    address: gatewayAddr,
     chainId: getWagmiChains().find(
       (chain) =>
         chain.networkNameOverride === destChain.chainName?.toLowerCase()
     )?.id,
-    contractInterface: gatewayABI,
+    abi: gatewayABI,
     functionName: "tokenMintLimit",
     enabled: !!(
       gatewayAddr &&
@@ -27,7 +27,9 @@ export const useGatewayQuery = () => {
       api &&
       destChain.module === "evm"
     ),
-    args: asset?.chain_aliases[destChain?.chainName?.toLowerCase()].assetSymbol,
+    args: [
+      asset?.chain_aliases[destChain?.chainName?.toLowerCase()].assetSymbol,
+    ],
   });
 
   useEffect(() => {

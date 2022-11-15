@@ -26,6 +26,7 @@ import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useIsTerraConnected } from "./terra/useIsTerraConnected";
 import { NativeAssetConfig } from "../config/web3/evm/native-assets";
+import { Hash } from "../types";
 
 export const useGetAssetBalance = () => {
   const { address } = useAccount();
@@ -50,12 +51,12 @@ export const useGetAssetBalance = () => {
   const [showNativeBalance, setShowNativeBalance] = useState(false);
 
   const { data, isSuccess } = useContractRead({
-    enabled: !!(srcTokenAddress && srcChainId),
-    addressOrName: srcTokenAddress as string,
-    contractInterface: erc20ABI,
+    enabled: !!(srcTokenAddress && srcChainId) && !!srcTokenAddress,
+    address: srcTokenAddress as string,
+    abi: erc20ABI,
     chainId: srcChainId,
     functionName: "balanceOf",
-    args: [address],
+    args: [address as Hash],
   });
 
   const {
@@ -64,7 +65,7 @@ export const useGetAssetBalance = () => {
     isLoading,
   } = useBalance({
     enabled: showNativeBalance,
-    addressOrName: address,
+    address: address,
     chainId: srcChainId,
   });
 

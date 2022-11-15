@@ -3,3 +3,5 @@ export type RouteQuery = {
   destination: string;
   asset_denom: string;
 };
+
+export type Hash = `0x${string}`;
