@@ -13,7 +13,6 @@ import {
 
 import {
   useDetectDepositConfirmation,
-  useDetectUnwrapTransfer,
   usePreventDuplicateChains,
 } from "../../hooks";
 import { TopFlows } from "./parts/TopFlows";
@@ -23,7 +22,6 @@ import { ENVIRONMENT as env } from "../../config/constants";
 export const SwapBox = () => {
   usePreventDuplicateChains();
   useDetectDepositConfirmation();
-  useDetectUnwrapTransfer();
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">

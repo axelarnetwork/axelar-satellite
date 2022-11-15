@@ -12,6 +12,7 @@ import { SwapStatus } from "../../../utils/enums";
 import { InputWrapper, truncate } from "../../common";
 import { ProgressBar } from "./parts";
 import { TransferStats } from "../parts";
+import { useDetectUnwrapTransfer } from "../../../hooks";
 
 export const WaitEvmConfirmationState = () => {
   const {
@@ -31,6 +32,7 @@ export const WaitEvmConfirmationState = () => {
   const destChainId = useSwapStore(getDestChainId);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
+  useDetectUnwrapTransfer();
   useContractEvent({
     chainId: destChainId as number,
     address: tokenAddress as string,
