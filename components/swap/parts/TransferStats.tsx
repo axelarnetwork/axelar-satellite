@@ -155,10 +155,13 @@ export const TransferStats = () => {
     if ((asset as any)?.id === "uusdc") {
       const chainName = destChain.chainName.toLowerCase();
       const pool = USDC_POOLS[chainName];
+      const pair = pool?.pairs[0];
+
+      if (!pair) return null;
 
       return (
         <li className="flex justify-between font-normal">
-          <span>{pool.pairs[0]} pool</span>
+          <span>{pair} pool</span>
           <a
             className="text-[#00a6ff] flex items-center gap-x-2"
             target="_blank"
