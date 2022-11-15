@@ -153,20 +153,26 @@ export const TransferStats = () => {
   }
 
   function renderPoolInfo() {
-    if (asset?.id === "uusdc") {
+    if (asset?.id === "uusdc" || asset?.id === "uausdc") {
       const chainName = destChain.chainName.toLowerCase();
-      const uri = USDC_POOLS[chainName];
+      const pool = USDC_POOLS[chainName];
 
       return (
         <li className="flex justify-between font-normal">
-          <span>Pool</span>
+          <span>{pool.pairs[0]} pool</span>
           <a
-            className="text-[#00a6ff]"
+            className="text-[#00a6ff] flex items-center gap-x-2"
             target="_blank"
             rel="noreferrer"
-            href={uri}
+            href={pool.url}
           >
-            axlUSDC pool
+            {pool.dex}
+            <Image
+              src={"/assets/ui/link.svg"}
+              height={16}
+              width={16}
+              layout="intrinsic"
+            />
           </a>
         </li>
       );
@@ -189,11 +195,11 @@ export const TransferStats = () => {
           <span>Estimated wait time:</span>
           <span className="font-semibold">{renderWaitTime()}</span>
         </li>
+        {renderPoolInfo()}
         {renderMaxTransferAmount()}
         {renderDestinationAddress()}
         {renderDepositAddress()}
         {renderDepositConfirmationLink()}
-        {renderPoolInfo()}
       </ul>
     </StatsWrapper>
   );
