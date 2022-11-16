@@ -5,11 +5,12 @@ import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { AddressShortener, StatsWrapper } from "../../common";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import { copyToClipboard } from "../../../utils";
-import { SwapStatus } from "../../../utils/enums";
-import { AXELARSCAN_URL } from "../../../config/constants";
+import { Environment, SwapStatus } from "../../../utils/enums";
+import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
 import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+import { USDC_POOLS } from "../../../data/pools";
 
 export const TransferStats = () => {
   const {
@@ -151,6 +152,38 @@ export const TransferStats = () => {
     );
   }
 
+  function renderPoolInfo() {
+    if ((asset as any)?.id === "uusdc") {
+      const chainName = destChain.chainName.toLowerCase();
+      const pool = USDC_POOLS[chainName];
+      const pair = pool?.pairs[0];
+
+      if (!pair) return null;
+
+      return (
+        <li className="flex justify-between font-normal">
+          <span>{pair} pool</span>
+          <a
+            className="text-[#00a6ff] flex items-center gap-x-2"
+            target="_blank"
+            rel="noreferrer"
+            href={pool.url}
+          >
+            {pool.dex}
+            <Image
+              src={"/assets/ui/link.svg"}
+              height={16}
+              width={16}
+              layout="intrinsic"
+            />
+          </a>
+        </li>
+      );
+    }
+
+    return null;
+  }
+
   return (
     <StatsWrapper>
       <ul className="space-y-2 text-sm">
@@ -165,6 +198,7 @@ export const TransferStats = () => {
           <span>Estimated wait time:</span>
           <span className="font-semibold">{renderWaitTime()}</span>
         </li>
+        {renderPoolInfo()}
         {renderMaxTransferAmount()}
         {renderDestinationAddress()}
         {renderDepositAddress()}
