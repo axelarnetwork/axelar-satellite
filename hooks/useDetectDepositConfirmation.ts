@@ -72,7 +72,7 @@ export const useDetectDepositConfirmation = () => {
       roomId = buildTokenSentRoomId(
         srcChain,
         asset.chain_aliases[destChain.chainName?.toLowerCase()]
-          .fullDenomPath as string,
+          ?.fullDenomPath as string,
         destAddress?.toLowerCase(),
         destChain,
         depositAddress
