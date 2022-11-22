@@ -20,9 +20,7 @@ import { getCosmosChains } from "../config/web3";
 import {
   useWallet as useTerraWallet,
   useLCDClient as useTerraLCDClient,
-  WalletStatus,
 } from "@terra-money/wallet-provider";
-import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useIsTerraConnected } from "./terra/useIsTerraConnected";
 import { NativeAssetConfig } from "../config/web3/evm/native-assets";
@@ -34,14 +32,13 @@ export const useGetAssetBalance = () => {
     useSwapStore((state) => state);
   const [loading, setLoading] = useState(false);
   const { keplrConnected, userSelectionForCosmosWallet } = useWalletStore();
-  const { status, network, wallets } = useTerraWallet();
+  const { status, wallets } = useTerraWallet();
   const terraLcdClient = useTerraLCDClient();
 
   const srcChainId = useSwapStore(getSrcChainId);
   const srcChain = useSwapStore((state) => state?.srcChain);
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
-  const { isTerraConnected, isTerraInitializingOrConnected } =
-    useIsTerraConnected();
+  const { isTerraConnected } = useIsTerraConnected();
 
   const [balance, setBalance] = useState<string>("0");
   const [keplrBalance, setKeplrStateBalance] = useState<string>("0");
