@@ -36,17 +36,31 @@ export const useGetAssetBalance = () => {
 
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState<string>("0");
-  const [keplrBalance, setKeplrStateBalance] = useState<string>("0");
+  // const [keplrBalance, setKeplrStateBalance] = useState<string>("0");
   const [terraStationBalance, setTerraStationBalance] = useState<string | null>(
     "0"
   );
 
+  /**
+   * EVM BALANCE LOGIC
+   */
   const { balance: evmBalance, isLoading: evmIsLoading } = useGetEvmBalance();
   useEffect(() => {
     if (srcChain.module !== "evm") return;
     if (evmBalance) setBalance(evmBalance);
     setLoading(evmIsLoading);
   }, [evmBalance, srcChain.module, evmIsLoading]);
+
+  /**
+   * KEPLR BALANCE LOGIC
+   */
+  const { balance: keplrBalance, isLoading: keplrBalanceIsLoading } =
+    useGetKeplerBalance();
+  useEffect(() => {
+    if (srcChain.module !== "axelarnet") return;
+    if (keplrBalance) setBalance(keplrBalance);
+    setLoading(keplrBalanceIsLoading);
+  }, [keplrBalance, srcChain.module, keplrBalanceIsLoading]);
 
   useEffect(() => {
     if (srcChain?.chainName?.toLowerCase() !== "terra") {
@@ -78,69 +92,69 @@ export const useGetAssetBalance = () => {
     terraLcdClient,
   ]);
 
-  const setKeplrBalance = useCallback(async (): Promise<void> => {
-    if (!keplrConnected || !asset || !srcChain) {
-      setBalance("0");
-      return;
-    }
+  // const setKeplrBalance = useCallback(async (): Promise<void> => {
+  //   if (!keplrConnected || !asset || !srcChain) {
+  //     setBalance("0");
+  //     return;
+  //   }
 
-    setLoading(true);
+  //   setLoading(true);
 
-    const { decimals, common_key } = asset;
-    const { chainName } = srcChain;
+  //   const { decimals, common_key } = asset;
+  //   const { chainName } = srcChain;
 
-    const derivedDenom = allAssets.find(
-      (assetConfig) =>
-        assetConfig.common_key[ENVIRONMENT] === common_key[ENVIRONMENT]
-    )?.chain_aliases[chainName?.toLowerCase()]?.ibcDenom;
-    if (!derivedDenom) {
-      const srcChain = allChains.find(
-        (chain) => chain.chainName?.toLowerCase() === DEFAULT_SRC_CHAIN
-      );
-      const destChain = allChains.find(
-        (chain) => chain.chainName?.toLowerCase() === DEFAULT_DEST_CHAIN
-      );
-      setSrcChain(srcChain as ChainInfo);
-      setDestChain(destChain as ChainInfo);
-      return;
-    }
+  //   const derivedDenom = allAssets.find(
+  //     (assetConfig) =>
+  //       assetConfig.common_key[ENVIRONMENT] === common_key[ENVIRONMENT]
+  //   )?.chain_aliases[chainName?.toLowerCase()]?.ibcDenom;
+  //   if (!derivedDenom) {
+  //     const srcChain = allChains.find(
+  //       (chain) => chain.chainName?.toLowerCase() === DEFAULT_SRC_CHAIN
+  //     );
+  //     const destChain = allChains.find(
+  //       (chain) => chain.chainName?.toLowerCase() === DEFAULT_DEST_CHAIN
+  //     );
+  //     setSrcChain(srcChain as ChainInfo);
+  //     setDestChain(destChain as ChainInfo);
+  //     return;
+  //   }
 
-    const cosmosChains = getCosmosChains(allAssets);
+  //   const cosmosChains = getCosmosChains(allAssets);
 
-    const fullChainConfig = cosmosChains.find(
-      (chainConfig) =>
-        chainConfig.chainIdentifier?.toLowerCase() ===
-        srcChain.chainName?.toLowerCase()
-    );
-    if (!fullChainConfig)
-      throw new Error("chain config not found: " + srcChain.chainName);
+  //   const fullChainConfig = cosmosChains.find(
+  //     (chainConfig) =>
+  //       chainConfig.chainIdentifier?.toLowerCase() ===
+  //       srcChain.chainName?.toLowerCase()
+  //   );
+  //   if (!fullChainConfig)
+  //     throw new Error("chain config not found: " + srcChain.chainName);
 
-    try {
-      const res = await queryBalance(
-        await getAddress(fullChainConfig),
-        derivedDenom,
-        fullChainConfig.rpc
-      );
-      const balance = formatUnits(res?.amount as string, decimals) || "0";
-      setKeplrStateBalance(balance);
-    } catch (e: any) {
-      setBalance("0");
-      let msg;
-      if (e?.toString()?.includes("Ledger is not compatible")) {
-        msg = e?.toString();
-      } else {
-        msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
-      }
-      toast.error(msg);
-    }
-    setLoading(false);
-  }, [asset, srcChain, allAssets, keplrConnected]);
+  //   try {
+  //     const res = await queryBalance(
+  //       await getAddress(fullChainConfig),
+  //       derivedDenom,
+  //       fullChainConfig.rpc
+  //     );
+  //     const balance = formatUnits(res?.amount as string, decimals) || "0";
+  //     setKeplrStateBalance(balance);
+  //   } catch (e: any) {
+  //     setBalance("0");
+  //     let msg;
+  //     if (e?.toString()?.includes("Ledger is not compatible")) {
+  //       msg = e?.toString();
+  //     } else {
+  //       msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
+  //     }
+  //     toast.error(msg);
+  //   }
+  //   setLoading(false);
+  // }, [asset, srcChain, allAssets, keplrConnected]);
 
   return {
     balance,
     keplrBalance,
     terraStationBalance,
-    setKeplrBalance,
+    // setKeplrBalance,
     loading,
   };
 };
@@ -162,6 +176,7 @@ const useGetEvmBalance = () => {
     isFetching: nativeBalanceIsLoading,
     refetch: refetchNativeBalance,
   } = useBalance({
+    enabled: srcChain.module === "evm",
     address: address,
     chainId: srcChainId,
     onError: (error) => {
@@ -175,6 +190,7 @@ const useGetEvmBalance = () => {
     isFetching: erc20BalanceIsLoading,
     refetch: refetchErc20Balance,
   } = useContractRead({
+    enabled: srcChain.module === "evm",
     address: srcTokenAddress as string,
     abi: erc20ABI,
     chainId: srcChainId,
@@ -226,6 +242,64 @@ const useGetEvmBalance = () => {
   return {
     isNativeBalance,
     isLoading: nativeBalanceIsLoading || erc20BalanceIsLoading,
+    balance,
+  };
+};
+
+/**
+ * TODO: should abstract cosmos hooks into a single lib that can switch between several wallets. eg: what wagmi does for evm
+ */
+const useGetKeplerBalance = () => {
+  const asset = useSwapStore((state) => state.asset);
+  const allAssets = useSwapStore((state) => state.allAssets);
+  const srcChain = useSwapStore((state) => state.srcChain);
+  const swapStatus = useSwapStore((state) => state.swapStatus);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [balance, setBalance] = useState("0");
+
+  useEffect(() => {
+    if (srcChain.module !== "axelarnet") return;
+    setIsLoading(true);
+    updateBalance().finally(() => setIsLoading(false));
+  }, [srcChain.module, swapStatus, asset]);
+
+  async function updateBalance() {
+    const cosmosChains = getCosmosChains(allAssets);
+
+    const derivedDenom =
+      asset?.chain_aliases[srcChain.chainName.toLowerCase()].ibcDenom;
+
+    const fullChainConfig = cosmosChains.find(
+      (chainConfig) =>
+        chainConfig.chainIdentifier?.toLowerCase() ===
+        srcChain.chainName?.toLowerCase()
+    );
+
+    if (!fullChainConfig || !derivedDenom) return;
+
+    try {
+      const res = await queryBalance(
+        await getAddress(fullChainConfig),
+        derivedDenom,
+        fullChainConfig.rpc
+      );
+      const balance = formatUnits(res?.amount as string, asset.decimals) || "0";
+      setBalance(balance);
+    } catch (e: any) {
+      setBalance("0");
+      let msg;
+      if (e?.toString()?.includes("Ledger is not compatible")) {
+        msg = e?.toString();
+      } else {
+        msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
+      }
+      toast.error(msg);
+    }
+  }
+
+  return {
+    isLoading,
     balance,
   };
 };
