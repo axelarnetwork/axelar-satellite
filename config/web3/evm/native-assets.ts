@@ -757,11 +757,11 @@ export const nativeAssets: NativeAssetConfig[] = [
     },
   },
   {
-    id: "eth-wei",
+    id: "neth-wei",
     common_key: {
-      devnet: "eth-wei",
-      testnet: "eth-wei",
-      mainnet: "eth-wei",
+      devnet: "neth-wei",
+      testnet: "neth-wei",
+      mainnet: "neth-wei",
     },
     is_native_asset: true,
     native_chain: "ethereum",
