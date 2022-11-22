@@ -9,7 +9,7 @@ export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   const chains = getWagmiChains();
   const chain = chains.find(
     (_chain) =>
-      getWagmiChainOverride(_chain.network) ===
+      getWagmiChainOverride(_chain.networkNameOverride) ===
       state.srcChain?.chainName?.toLowerCase()
   );
   return chain?.id;
@@ -20,7 +20,7 @@ export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
   const chains = getWagmiChains();
   const chain = chains.find(
     (_chain) =>
-      getWagmiChainOverride(_chain.network) ===
+      getWagmiChainOverride(_chain.networkNameOverride) ===
       state.destChain?.chainName?.toLowerCase()
   );
   return chain?.id;
