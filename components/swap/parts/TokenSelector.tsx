@@ -255,9 +255,9 @@ export const TokenSelector = () => {
     if (srcChain?.chainName?.toLowerCase() !== "terra")
       return (
         <div className="space-y-1">
-          <div className="space-x-2">
+          <div className="flex justify-end space-x-2">
             <span className="text-xs text-gray-500">Available</span>
-            <span className="w-auto text-xs text-[#86d6ff]">
+            <span className="w-auto text-xs min-w-[20px] flex justify-end text-[#86d6ff]">
               {loading ? (
                 <SpinnerDotted
                   className="text-blue-500"
@@ -332,7 +332,6 @@ export const TokenSelector = () => {
 
     return (
       <>
-        {" "}
         <div className="flex flex-row justify-end space-x-1">
           <span className="text-xs text-gray-500">
             Available{" "}
