@@ -124,11 +124,11 @@ export const nativeAssets: NativeAssetConfig[] = [
         tokenAddress: "0xb47BAb33cAE8FCa71FA28516ADCE3AF0B3e040e3",
       },
       avalanche: {
-        assetSymbol: "WAVAX",
-        assetName: "WAVAX",
+        assetSymbol: "AVAX",
+        assetName: "AVAX",
         minDepositAmt: 0.001,
-        ibcDenom: "wavax-wei",
-        fullDenomPath: "wavax-wei",
+        ibcDenom: "avax-wei",
+        fullDenomPath: "avax-wei",
         tokenAddress: "0xd00ae08403B9bbb9124bB305C09058E32C39A48c",
       },
       binance: {
@@ -559,11 +559,11 @@ export const nativeAssets: NativeAssetConfig[] = [
         
       },
       polygon: {
-        assetSymbol: "WMATIC",
-        assetName: "WMATIC",
+        assetSymbol: "MATIC",
+        assetName: "MATIC",
         minDepositAmt: 0.07,
-        ibcDenom: "wmatic-wei",
-        fullDenomPath: "wmatic-wei",
+        ibcDenom: "matic-wei",
+        fullDenomPath: "matic-wei",
         tokenAddress: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
         
       },
@@ -708,11 +708,11 @@ export const nativeAssets: NativeAssetConfig[] = [
         
       },
       binance: {
-        assetSymbol: "WBNB",
-        assetName: "WBNB",
+        assetSymbol: "BNB",
+        assetName: "BNB",
         minDepositAmt: 0.0003,
-        ibcDenom: "wbnb-wei",
-        fullDenomPath: "wbnb-wei",
+        ibcDenom: "bnb-wei",
+        fullDenomPath: "bnb-wei",
         tokenAddress: "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
         
       },
@@ -938,11 +938,11 @@ export const nativeAssets: NativeAssetConfig[] = [
         
       },
       moonbeam: {
-        assetSymbol: "WDEV",
-        assetName: "WDEV",
+        assetSymbol: "DEV",
+        assetName: "DEV",
         minDepositAmt: 0.04,
-        ibcDenom: "wdev-wei",
-        fullDenomPath: "wdev-wei",
+        ibcDenom: "dev-wei",
+        fullDenomPath: "dev-wei",
         tokenAddress: "0x1436aE0dF0A8663F18c0Ec51d7e2E46591730715",
         
       },
