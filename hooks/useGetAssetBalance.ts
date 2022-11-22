@@ -23,7 +23,6 @@ import {
 } from "@terra-money/wallet-provider";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useIsTerraConnected } from "./terra/useIsTerraConnected";
-import { NativeAssetConfig } from "../config/web3/evm/native-assets";
 import { Hash } from "../types";
 
 export const useGetAssetBalance = () => {
@@ -31,10 +30,6 @@ export const useGetAssetBalance = () => {
     useSwapStore((state) => state);
   const { keplrConnected, userSelectionForCosmosWallet } = useWalletStore();
 
-  const srcChainId = useSwapStore(getSrcChainId);
-  const srcTokenAddress = useSwapStore(getSrcTokenAddress);
-
-  const { address } = useAccount();
   const { status, wallets } = useTerraWallet();
   const terraLcdClient = useTerraLCDClient();
   const { isTerraConnected } = useIsTerraConnected();
@@ -45,66 +40,13 @@ export const useGetAssetBalance = () => {
   const [terraStationBalance, setTerraStationBalance] = useState<string | null>(
     "0"
   );
-  const [showNativeBalance, setShowNativeBalance] = useState(false);
 
-  const { data, isSuccess } = useContractRead({
-    enabled: !!(srcTokenAddress && srcChainId) && !!srcTokenAddress,
-    address: srcTokenAddress as string,
-    abi: erc20ABI,
-    chainId: srcChainId,
-    functionName: "balanceOf",
-    args: [address as Hash],
-  });
-
-  const {
-    data: nativeBalanceData,
-    isError,
-    isLoading,
-  } = useBalance({
-    enabled: showNativeBalance,
-    address: address,
-    chainId: srcChainId,
-  });
-
-  // convert fetched token balance to a readable format
+  const { balance: evmBalance, isLoading: evmIsLoading } = useGetEvmBalance();
   useEffect(() => {
-    if (srcChain?.module !== "evm") return;
-
-    setLoading(true);
-
-    const shouldShowNativeBalance = !!(
-      srcChainId &&
-      (asset as NativeAssetConfig)?.is_native_asset &&
-      asset?.native_chain === srcChain.chainName?.toLowerCase()
-    );
-    setShowNativeBalance(shouldShowNativeBalance);
-
-    if (shouldShowNativeBalance && nativeBalanceData) {
-      setBalance(nativeBalanceData.formatted);
-      setLoading(false);
-      return;
-    }
-
-    if (!isSuccess || !data) {
-      setBalance("0");
-      setLoading(false);
-      return;
-    }
-    const bigNum = new BigNumber(ethers.BigNumber.from(data).toString());
-    const num = bigNum.div(10 ** Number(asset?.decimals));
-
-    setBalance(num.toFixed());
-    setLoading(false);
-  }, [
-    srcChainId,
-    srcTokenAddress,
-    data,
-    isSuccess,
-    nativeBalanceData,
-    setShowNativeBalance,
-    asset,
-    srcChain,
-  ]);
+    if (srcChain.module !== "evm") return;
+    if (evmBalance) setBalance(evmBalance);
+    setLoading(evmIsLoading);
+  }, [evmBalance, srcChain.module, evmIsLoading]);
 
   useEffect(() => {
     if (srcChain?.chainName?.toLowerCase() !== "terra") {
@@ -200,5 +142,91 @@ export const useGetAssetBalance = () => {
     terraStationBalance,
     setKeplrBalance,
     loading,
+  };
+};
+
+const useGetEvmBalance = () => {
+  const { address } = useAccount();
+  const asset = useSwapStore((state) => state.asset);
+  const srcChain = useSwapStore((state) => state.srcChain);
+  const swapStatus = useSwapStore((state) => state.swapStatus);
+  const srcChainId = useSwapStore(getSrcChainId);
+  const srcTokenAddress = useSwapStore(getSrcTokenAddress);
+
+  const [isNativeBalance, setIsNativeBalance] = useState(false);
+  const [balance, setBalance] = useState<string>();
+
+  // read native balance
+  const {
+    data: nativeBalance,
+    isFetching: nativeBalanceIsLoading,
+    refetch: refetchNativeBalance,
+  } = useBalance({
+    address: address,
+    chainId: srcChainId,
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  // read erc20 balance
+  const {
+    data: erc20Balance,
+    isFetching: erc20BalanceIsLoading,
+    refetch: refetchErc20Balance,
+  } = useContractRead({
+    address: srcTokenAddress as string,
+    abi: erc20ABI,
+    chainId: srcChainId,
+    functionName: "balanceOf",
+    args: [address as Hash],
+  });
+
+  /**
+   * DETECT IF A NATIVE ASSET IS SELECTED ON THE SOURCE CHAIN
+   */
+  useEffect(() => {
+    const isNativeAsset =
+      asset?.is_native_asset &&
+      asset.native_chain === srcChain.chainName?.toLowerCase();
+    setIsNativeBalance(!!isNativeAsset);
+  }, [srcChain, asset]);
+
+  const updateBalance = useCallback(() => {
+    if (isNativeBalance) {
+      const value = new BigNumber(nativeBalance?.formatted || "0").toFixed(4);
+      return setBalance(value);
+    }
+
+    const bigNum = new BigNumber(
+      ethers.BigNumber.from(erc20Balance || "0").toString()
+    );
+    const num = bigNum.div(10 ** Number(asset?.decimals));
+    setBalance(num.toFixed(4));
+  }, [nativeBalance, erc20Balance, isNativeBalance, asset?.decimals]);
+
+  /**
+   * UPDATE BALANCE ON EVERY SWAP STATE CHANGE + AT FIXED INTERVALS
+   * This should avoid most use cases of outdated balance
+   */
+  useEffect(() => {
+    if (srcChain.module !== "evm") return;
+    if (isNativeBalance) refetchNativeBalance().then(() => updateBalance());
+    if (!isNativeBalance) refetchErc20Balance().then(() => updateBalance());
+  }, [
+    swapStatus,
+    srcChainId,
+    isNativeBalance,
+    erc20Balance,
+    updateBalance,
+    refetchNativeBalance,
+    refetchErc20Balance,
+    srcChain.module,
+  ]);
+
+  return {
+    isNativeBalance,
+    isLoading: nativeBalanceIsLoading || erc20BalanceIsLoading,
+    balance,
   };
 };
