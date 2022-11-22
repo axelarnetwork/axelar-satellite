@@ -76,7 +76,7 @@ export const TokenSelector = () => {
     useState<NativeAssetConfig[]>(selectableAssetList);
   const {
     balance,
-    setKeplrBalance,
+    // setKeplrBalance,
     loading,
     terraStationBalance,
     keplrBalance,
@@ -193,7 +193,7 @@ export const TokenSelector = () => {
       if (!isTerraInitializingOrConnected) connectTerraWallet();
       return;
     }
-    if (srcChain?.module === "axelarnet" && keplrConnected) setKeplrBalance();
+    // if (srcChain?.module === "axelarnet" && keplrConnected) setKeplrBalance();
   }, [
     asset,
     srcChain,
@@ -304,7 +304,7 @@ export const TokenSelector = () => {
         await connectToKeplr(allAssets);
         setKeplrConnected(true);
         setUserSelectionForCosmosWallet("keplr");
-        setKeplrBalance();
+        // setKeplrBalance();
       };
       const switchTS = async () => {
         if (!isTerraConnected) connectTerraStation();
