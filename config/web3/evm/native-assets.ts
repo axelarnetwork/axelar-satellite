@@ -347,11 +347,11 @@ export const nativeAssets: NativeAssetConfig[] = [
         
       },
       fantom: {
-        assetSymbol: "WFTM",
-        assetName: "WFTM",
+        assetSymbol: "FTM",
+        assetName: "FTM",
         minDepositAmt: 0.08,
-        ibcDenom: "wftm-wei",
-        fullDenomPath: "wftm-wei",
+        ibcDenom: "ftm-wei",
+        fullDenomPath: "ftm-wei",
         tokenAddress: "0x812666209b90344Ec8e528375298ab9045c2Bd08",
         
       },
