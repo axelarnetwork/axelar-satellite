@@ -20,6 +20,7 @@ import { BigNumber } from "bignumber.js";
 import toast from "react-hot-toast";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { SpinnerRoundFilled } from "spinners-react";
+import cn from "classnames";
 import {
   getDestChainId,
   getSrcChainId,
@@ -115,7 +116,8 @@ export const EvmWalletTransfer = () => {
       );
     },
   });
-  const { writeAsync } = useContractWrite(contractWriteConfig);
+  const { writeAsync, isLoading: contractWriteIsLoading } =
+    useContractWrite(contractWriteConfig);
 
   const { data: blockNumber } = useBlockNumber({
     chainId: destChainId as number,
@@ -142,8 +144,11 @@ export const EvmWalletTransfer = () => {
       );
     },
   });
-  const { data: sendNativeDataResult, sendTransactionAsync } =
-    useSendTransaction(sendTxConfig);
+  const {
+    data: sendNativeDataResult,
+    sendTransactionAsync,
+    isLoading: sendTxIsLoading,
+  } = useSendTransaction(sendTxConfig);
 
   useEffect(() => {
     console.log("send native data result", sendNativeDataResult);
@@ -332,7 +337,9 @@ export const EvmWalletTransfer = () => {
           <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
           <div className="flex justify-center">
             <button
-              className="mb-5 btn btn-primary"
+              className={cn("mb-5 btn btn-primary", {
+                loading: sendTxIsLoading || contractWriteIsLoading,
+              })}
               onClick={handleOnTokensTransfer}
             >
               <span className="mr-2">
