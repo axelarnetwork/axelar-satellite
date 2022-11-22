@@ -206,8 +206,7 @@ const useGetEvmBalance = () => {
   }, [nativeBalance, erc20Balance, isNativeBalance, asset?.decimals]);
 
   /**
-   * UPDATE BALANCE ON EVERY SWAP STATE CHANGE + AT FIXED INTERVALS
-   * This should avoid most use cases of outdated balance
+   * UPDATE BALANCE ON EVERY SWAP STATE CHANGE
    */
   useEffect(() => {
     if (srcChain.module !== "evm") return;
