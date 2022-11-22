@@ -53,7 +53,7 @@ export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
-  const { setKeplrBalance } = useGetAssetBalance();
+
   const { isTerraConnected, isTerraInitializingOrConnected } =
     useIsTerraConnected();
 
