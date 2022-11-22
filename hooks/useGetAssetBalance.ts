@@ -27,19 +27,19 @@ import { NativeAssetConfig } from "../config/web3/evm/native-assets";
 import { Hash } from "../types";
 
 export const useGetAssetBalance = () => {
-  const { address } = useAccount();
-  const { asset, allAssets, allChains, setSrcChain, setDestChain } =
+  const { asset, allAssets, allChains, setSrcChain, srcChain, setDestChain } =
     useSwapStore((state) => state);
-  const [loading, setLoading] = useState(false);
   const { keplrConnected, userSelectionForCosmosWallet } = useWalletStore();
-  const { status, wallets } = useTerraWallet();
-  const terraLcdClient = useTerraLCDClient();
 
   const srcChainId = useSwapStore(getSrcChainId);
-  const srcChain = useSwapStore((state) => state?.srcChain);
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
+
+  const { address } = useAccount();
+  const { status, wallets } = useTerraWallet();
+  const terraLcdClient = useTerraLCDClient();
   const { isTerraConnected } = useIsTerraConnected();
 
+  const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState<string>("0");
   const [keplrBalance, setKeplrStateBalance] = useState<string>("0");
   const [terraStationBalance, setTerraStationBalance] = useState<string | null>(
