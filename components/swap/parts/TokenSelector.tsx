@@ -74,13 +74,7 @@ export const TokenSelector = () => {
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
   const [filteredAssets, setFilteredAssets] =
     useState<NativeAssetConfig[]>(selectableAssetList);
-  const {
-    balance,
-    // setKeplrBalance,
-    loading,
-    terraStationBalance,
-    keplrBalance,
-  } = useGetAssetBalance();
+  const { balance, loading, terraStationBalance } = useGetAssetBalance();
   const connectTerraStation = useConnectTerraStation();
   const [showBalance, setShowBalance] = useState(false);
   const [balanceToShow, setBalanceToShow] = useState("");
@@ -171,12 +165,12 @@ export const TokenSelector = () => {
       setUserSelectionForCosmosWallet("terraStation");
       setBalanceToShow(terraStationBalance as string);
     } else if (isAxelarnet) {
-      setBalanceToShow(keplrBalance);
+      setBalanceToShow(balance);
     }
   }, [
     srcChain,
     balance,
-    keplrBalance,
+    balance,
     wagmiConnected,
     isTerraConnected,
     keplrConnected,
@@ -193,7 +187,6 @@ export const TokenSelector = () => {
       if (!isTerraInitializingOrConnected) connectTerraWallet();
       return;
     }
-    // if (srcChain?.module === "axelarnet" && keplrConnected) setKeplrBalance();
   }, [
     asset,
     srcChain,
@@ -304,7 +297,6 @@ export const TokenSelector = () => {
         await connectToKeplr(allAssets);
         setKeplrConnected(true);
         setUserSelectionForCosmosWallet("keplr");
-        // setKeplrBalance();
       };
       const switchTS = async () => {
         if (!isTerraConnected) connectTerraStation();

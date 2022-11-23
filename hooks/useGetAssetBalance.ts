@@ -1,4 +1,4 @@
-import { formatUnits, parseUnits } from "ethers/lib/utils";
+import { formatUnits } from "ethers/lib/utils";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
@@ -10,24 +10,17 @@ import {
   useSwapStore,
   useWalletStore,
 } from "../store";
-import {
-  DEFAULT_DEST_CHAIN,
-  DEFAULT_SRC_CHAIN,
-  ENVIRONMENT,
-} from "../config/constants";
 import { getAddress, queryBalance } from "../utils/wallet/keplr";
 import { getCosmosChains } from "../config/web3";
 import {
   useWallet as useTerraWallet,
   useLCDClient as useTerraLCDClient,
 } from "@terra-money/wallet-provider";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useIsTerraConnected } from "./terra/useIsTerraConnected";
 import { Hash } from "../types";
 
 export const useGetAssetBalance = () => {
-  const { asset, allAssets, allChains, setSrcChain, srcChain, setDestChain } =
-    useSwapStore((state) => state);
+  const { asset, srcChain } = useSwapStore((state) => state);
   const { keplrConnected, userSelectionForCosmosWallet } = useWalletStore();
 
   const { status, wallets } = useTerraWallet();
@@ -57,11 +50,12 @@ export const useGetAssetBalance = () => {
   const { balance: keplrBalance, isLoading: keplrBalanceIsLoading } =
     useGetKeplerBalance();
   useEffect(() => {
-    if (srcChain.module !== "axelarnet") return;
+    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
     if (keplrBalance) setBalance(keplrBalance);
     setLoading(keplrBalanceIsLoading);
   }, [keplrBalance, srcChain.module, keplrBalanceIsLoading]);
 
+  // TODO: put in its own hook & provide tests
   useEffect(() => {
     if (srcChain?.chainName?.toLowerCase() !== "terra") {
       setTerraStationBalance(null);
@@ -92,69 +86,10 @@ export const useGetAssetBalance = () => {
     terraLcdClient,
   ]);
 
-  // const setKeplrBalance = useCallback(async (): Promise<void> => {
-  //   if (!keplrConnected || !asset || !srcChain) {
-  //     setBalance("0");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-
-  //   const { decimals, common_key } = asset;
-  //   const { chainName } = srcChain;
-
-  //   const derivedDenom = allAssets.find(
-  //     (assetConfig) =>
-  //       assetConfig.common_key[ENVIRONMENT] === common_key[ENVIRONMENT]
-  //   )?.chain_aliases[chainName?.toLowerCase()]?.ibcDenom;
-  //   if (!derivedDenom) {
-  //     const srcChain = allChains.find(
-  //       (chain) => chain.chainName?.toLowerCase() === DEFAULT_SRC_CHAIN
-  //     );
-  //     const destChain = allChains.find(
-  //       (chain) => chain.chainName?.toLowerCase() === DEFAULT_DEST_CHAIN
-  //     );
-  //     setSrcChain(srcChain as ChainInfo);
-  //     setDestChain(destChain as ChainInfo);
-  //     return;
-  //   }
-
-  //   const cosmosChains = getCosmosChains(allAssets);
-
-  //   const fullChainConfig = cosmosChains.find(
-  //     (chainConfig) =>
-  //       chainConfig.chainIdentifier?.toLowerCase() ===
-  //       srcChain.chainName?.toLowerCase()
-  //   );
-  //   if (!fullChainConfig)
-  //     throw new Error("chain config not found: " + srcChain.chainName);
-
-  //   try {
-  //     const res = await queryBalance(
-  //       await getAddress(fullChainConfig),
-  //       derivedDenom,
-  //       fullChainConfig.rpc
-  //     );
-  //     const balance = formatUnits(res?.amount as string, decimals) || "0";
-  //     setKeplrStateBalance(balance);
-  //   } catch (e: any) {
-  //     setBalance("0");
-  //     let msg;
-  //     if (e?.toString()?.includes("Ledger is not compatible")) {
-  //       msg = e?.toString();
-  //     } else {
-  //       msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
-  //     }
-  //     toast.error(msg);
-  //   }
-  //   setLoading(false);
-  // }, [asset, srcChain, allAssets, keplrConnected]);
-
   return {
     balance,
     keplrBalance,
     terraStationBalance,
-    // setKeplrBalance,
     loading,
   };
 };
@@ -254,15 +189,16 @@ const useGetKeplerBalance = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
   const srcChain = useSwapStore((state) => state.srcChain);
   const swapStatus = useSwapStore((state) => state.swapStatus);
+  const { keplrConnected } = useWalletStore();
 
   const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState("0");
 
   useEffect(() => {
-    if (srcChain.module !== "axelarnet") return;
+    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
     setIsLoading(true);
     updateBalance().finally(() => setIsLoading(false));
-  }, [srcChain.module, swapStatus, asset]);
+  }, [srcChain.module, swapStatus, asset, keplrConnected]);
 
   async function updateBalance() {
     const cosmosChains = getCosmosChains(allAssets);
