@@ -1,4 +1,4 @@
-import { formatUnits, parseUnits } from "ethers/lib/utils";
+import { formatUnits } from "ethers/lib/utils";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
@@ -10,105 +10,52 @@ import {
   useSwapStore,
   useWalletStore,
 } from "../store";
-import {
-  DEFAULT_DEST_CHAIN,
-  DEFAULT_SRC_CHAIN,
-  ENVIRONMENT,
-} from "../config/constants";
 import { getAddress, queryBalance } from "../utils/wallet/keplr";
 import { getCosmosChains } from "../config/web3";
 import {
   useWallet as useTerraWallet,
   useLCDClient as useTerraLCDClient,
-  WalletStatus,
 } from "@terra-money/wallet-provider";
-import { Coin, Fee, LCDClient, MsgTransfer } from "@terra-money/terra.js";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useIsTerraConnected } from "./terra/useIsTerraConnected";
-import { NativeAssetConfig } from "../config/web3/evm/native-assets";
 import { Hash } from "../types";
 
 export const useGetAssetBalance = () => {
-  const { address } = useAccount();
-  const { asset, allAssets, allChains, setSrcChain, setDestChain } =
-    useSwapStore((state) => state);
-  const [loading, setLoading] = useState(false);
+  const { asset, srcChain } = useSwapStore((state) => state);
   const { keplrConnected, userSelectionForCosmosWallet } = useWalletStore();
-  const { status, network, wallets } = useTerraWallet();
+
+  const { status, wallets } = useTerraWallet();
   const terraLcdClient = useTerraLCDClient();
+  const { isTerraConnected } = useIsTerraConnected();
 
-  const srcChainId = useSwapStore(getSrcChainId);
-  const srcChain = useSwapStore((state) => state?.srcChain);
-  const srcTokenAddress = useSwapStore(getSrcTokenAddress);
-  const { isTerraConnected, isTerraInitializingOrConnected } =
-    useIsTerraConnected();
-
+  const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState<string>("0");
-  const [keplrBalance, setKeplrStateBalance] = useState<string>("0");
+  // const [keplrBalance, setKeplrStateBalance] = useState<string>("0");
   const [terraStationBalance, setTerraStationBalance] = useState<string | null>(
     "0"
   );
-  const [showNativeBalance, setShowNativeBalance] = useState(false);
 
-  const { data, isSuccess } = useContractRead({
-    enabled: !!(srcTokenAddress && srcChainId) && !!srcTokenAddress,
-    address: srcTokenAddress as string,
-    abi: erc20ABI,
-    chainId: srcChainId,
-    functionName: "balanceOf",
-    args: [address as Hash],
-  });
-
-  const {
-    data: nativeBalanceData,
-    isError,
-    isLoading,
-  } = useBalance({
-    enabled: showNativeBalance,
-    address: address,
-    chainId: srcChainId,
-  });
-
-  // convert fetched token balance to a readable format
+  /**
+   * EVM BALANCE LOGIC
+   */
+  const { balance: evmBalance, isLoading: evmIsLoading } = useGetEvmBalance();
   useEffect(() => {
-    if (srcChain?.module !== "evm") return;
+    if (srcChain.module !== "evm") return;
+    if (evmBalance) setBalance(evmBalance);
+    setLoading(evmIsLoading);
+  }, [evmBalance, srcChain.module, evmIsLoading]);
 
-    setLoading(true);
+  /**
+   * KEPLR BALANCE LOGIC
+   */
+  const { balance: keplrBalance, isLoading: keplrBalanceIsLoading } =
+    useGetKeplerBalance();
+  useEffect(() => {
+    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
+    if (keplrBalance) setBalance(keplrBalance);
+    setLoading(keplrBalanceIsLoading);
+  }, [keplrBalance, srcChain.module, keplrBalanceIsLoading]);
 
-    const shouldShowNativeBalance = !!(
-      srcChainId &&
-      (asset as NativeAssetConfig)?.is_native_asset &&
-      asset?.native_chain === srcChain.chainName?.toLowerCase()
-    );
-    setShowNativeBalance(shouldShowNativeBalance);
-
-    if (shouldShowNativeBalance && nativeBalanceData) {
-      setBalance(nativeBalanceData.formatted);
-      setLoading(false);
-      return;
-    }
-
-    if (!isSuccess || !data) {
-      setBalance("0");
-      setLoading(false);
-      return;
-    }
-    const bigNum = new BigNumber(ethers.BigNumber.from(data).toString());
-    const num = bigNum.div(10 ** Number(asset?.decimals));
-
-    setBalance(num.toFixed());
-    setLoading(false);
-  }, [
-    srcChainId,
-    srcTokenAddress,
-    data,
-    isSuccess,
-    nativeBalanceData,
-    setShowNativeBalance,
-    asset,
-    srcChain,
-  ]);
-
+  // TODO: put in its own hook & provide tests
   useEffect(() => {
     if (srcChain?.chainName?.toLowerCase() !== "terra") {
       setTerraStationBalance(null);
@@ -139,42 +86,136 @@ export const useGetAssetBalance = () => {
     terraLcdClient,
   ]);
 
-  const setKeplrBalance = useCallback(async (): Promise<void> => {
-    if (!keplrConnected || !asset || !srcChain) {
-      setBalance("0");
-      return;
+  return {
+    balance,
+    keplrBalance,
+    terraStationBalance,
+    loading,
+  };
+};
+
+const useGetEvmBalance = () => {
+  const { address } = useAccount();
+  const asset = useSwapStore((state) => state.asset);
+  const srcChain = useSwapStore((state) => state.srcChain);
+  const swapStatus = useSwapStore((state) => state.swapStatus);
+  const srcChainId = useSwapStore(getSrcChainId);
+  const srcTokenAddress = useSwapStore(getSrcTokenAddress);
+
+  const [isNativeBalance, setIsNativeBalance] = useState(false);
+  const [balance, setBalance] = useState<string>();
+
+  // read native balance
+  const {
+    data: nativeBalance,
+    isFetching: nativeBalanceIsLoading,
+    refetch: refetchNativeBalance,
+  } = useBalance({
+    enabled: srcChain.module === "evm",
+    address: address,
+    chainId: srcChainId,
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  // read erc20 balance
+  const {
+    data: erc20Balance,
+    isFetching: erc20BalanceIsLoading,
+    refetch: refetchErc20Balance,
+  } = useContractRead({
+    enabled: srcChain.module === "evm",
+    address: srcTokenAddress as string,
+    abi: erc20ABI,
+    chainId: srcChainId,
+    functionName: "balanceOf",
+    args: [address as Hash],
+  });
+
+  /**
+   * DETECT IF A NATIVE ASSET IS SELECTED ON THE SOURCE CHAIN
+   */
+  useEffect(() => {
+    const isNativeAsset =
+      asset?.is_native_asset &&
+      asset.native_chain === srcChain.chainName?.toLowerCase();
+    setIsNativeBalance(!!isNativeAsset);
+  }, [srcChain, asset]);
+
+  const updateBalance = useCallback(() => {
+    if (isNativeBalance) {
+      const value = new BigNumber(nativeBalance?.formatted || "0").toFixed(4);
+      return setBalance(value);
     }
 
-    setLoading(true);
+    const bigNum = new BigNumber(erc20Balance?._hex || "0");
+    const num = bigNum.div(10 ** Number(asset?.decimals));
+    setBalance(num.toFixed(4));
+  }, [
+    isNativeBalance,
+    asset?.decimals,
+    nativeBalance?.formatted,
+    erc20Balance?._hex,
+  ]);
 
-    const { decimals, common_key } = asset;
-    const { chainName } = srcChain;
+  /**
+   * UPDATE BALANCE ON EVERY SWAP STATE CHANGE
+   */
+  useEffect(() => {
+    if (srcChain.module !== "evm") return;
+    if (isNativeBalance) refetchNativeBalance().then(() => updateBalance());
+    if (!isNativeBalance) refetchErc20Balance().then(() => updateBalance());
+  }, [
+    swapStatus,
+    srcChainId,
+    isNativeBalance,
+    erc20Balance,
+    updateBalance,
+    refetchNativeBalance,
+    refetchErc20Balance,
+    srcChain.module,
+  ]);
 
-    const derivedDenom = allAssets.find(
-      (assetConfig) =>
-        assetConfig.common_key[ENVIRONMENT] === common_key[ENVIRONMENT]
-    )?.chain_aliases[chainName?.toLowerCase()]?.ibcDenom;
-    if (!derivedDenom) {
-      const srcChain = allChains.find(
-        (chain) => chain.chainName?.toLowerCase() === DEFAULT_SRC_CHAIN
-      );
-      const destChain = allChains.find(
-        (chain) => chain.chainName?.toLowerCase() === DEFAULT_DEST_CHAIN
-      );
-      setSrcChain(srcChain as ChainInfo);
-      setDestChain(destChain as ChainInfo);
-      return;
-    }
+  return {
+    isNativeBalance,
+    isLoading: nativeBalanceIsLoading || erc20BalanceIsLoading,
+    balance,
+  };
+};
 
+/**
+ * TODO: should abstract cosmos hooks into a single lib that can switch between several wallets. eg: what wagmi does for evm
+ */
+const useGetKeplerBalance = () => {
+  const asset = useSwapStore((state) => state.asset);
+  const allAssets = useSwapStore((state) => state.allAssets);
+  const srcChain = useSwapStore((state) => state.srcChain);
+  const swapStatus = useSwapStore((state) => state.swapStatus);
+  const { keplrConnected } = useWalletStore();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [balance, setBalance] = useState("0");
+
+  useEffect(() => {
+    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
+    setIsLoading(true);
+    updateBalance().finally(() => setIsLoading(false));
+  }, [srcChain.module, swapStatus, asset, keplrConnected]);
+
+  async function updateBalance() {
     const cosmosChains = getCosmosChains(allAssets);
+
+    const derivedDenom =
+      asset?.chain_aliases[srcChain.chainName.toLowerCase()].ibcDenom;
 
     const fullChainConfig = cosmosChains.find(
       (chainConfig) =>
         chainConfig.chainIdentifier?.toLowerCase() ===
         srcChain.chainName?.toLowerCase()
     );
-    if (!fullChainConfig)
-      throw new Error("chain config not found: " + srcChain.chainName);
+
+    if (!fullChainConfig || !derivedDenom) return;
 
     try {
       const res = await queryBalance(
@@ -182,8 +223,8 @@ export const useGetAssetBalance = () => {
         derivedDenom,
         fullChainConfig.rpc
       );
-      const balance = formatUnits(res?.amount as string, decimals) || "0";
-      setKeplrStateBalance(balance);
+      const balance = formatUnits(res?.amount as string, asset.decimals) || "0";
+      setBalance(balance);
     } catch (e: any) {
       setBalance("0");
       let msg;
@@ -194,14 +235,10 @@ export const useGetAssetBalance = () => {
       }
       toast.error(msg);
     }
-    setLoading(false);
-  }, [asset, srcChain, allAssets, keplrConnected]);
+  }
 
   return {
+    isLoading,
     balance,
-    keplrBalance,
-    terraStationBalance,
-    setKeplrBalance,
-    loading,
   };
 };
