@@ -111,15 +111,14 @@ export const getUnwrappedAssetName = memoize(
   }) => {
     // return null if not a wrapped asset
     const isWrappedAsset =
-      state?.asset?.native_chain ===
-      state.destChain?.chainIdentifier?.[ENVIRONMENT];
+      state?.asset?.native_chain === state.destChain?.chainName?.toLowerCase();
     if (!isWrappedAsset) return null;
 
     // return asset symbol if wrapped asset
     const nativeAsset = state.destChain.assets?.find(
       (asset) =>
         (asset as any).is_native_asset &&
-        asset.native_chain === state.destChain.chainIdentifier[ENVIRONMENT]
+        asset.native_chain === state.destChain?.chainName?.toLowerCase()
     );
 
     return nativeAsset?.assetSymbol;
