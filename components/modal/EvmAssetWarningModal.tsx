@@ -90,23 +90,25 @@ export const EvmAssetWarningModal = () => {
 
             <div className="py-2 text-center">
               <div className="mt-2">
-                <div className="font-light text-gray-300">
-                  {selectedAssetNameSrcChain} token contract address |{" "}
-                  <strong className="capitalize">{srcChain.chainName}</strong>
-                  <div className="flex items-center justify-center font-bold gap-x-2">
-                    <AddressShortener value={tokenAddress} />
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => copyToClipboard(tokenAddress)}
-                    >
-                      <Image
-                        src={"/assets/ui/copy.svg"}
-                        height={16}
-                        width={16}
-                      />
+                {!asset?.is_native_asset && (
+                  <div className="font-light text-gray-300">
+                    {selectedAssetNameSrcChain} token contract address |{" "}
+                    <strong className="capitalize">{srcChain.chainName}</strong>
+                    <div className="flex items-center justify-center font-bold gap-x-2">
+                      <AddressShortener value={tokenAddress} />
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => copyToClipboard(tokenAddress)}
+                      >
+                        <Image
+                          src={"/assets/ui/copy.svg"}
+                          height={16}
+                          width={16}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
               {address && (
                 <div className="mt-2">
