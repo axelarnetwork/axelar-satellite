@@ -337,8 +337,10 @@ export const EvmWalletTransfer = () => {
           <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
           <div className="flex justify-center">
             <button
-              className={cn("mb-5 btn btn-primary", {
+              className={cn("mb-5 btn", {
                 loading: sendTxIsLoading || contractWriteIsLoading,
+                "btn-primary": chain?.id === srcChainId,
+                "btn-outline": chain?.id !== srcChainId,
               })}
               onClick={handleOnTokensTransfer}
             >
