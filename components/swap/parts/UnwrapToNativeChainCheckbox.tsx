@@ -4,10 +4,11 @@ import { SwapStatus } from "../../../utils/enums";
 
 export const UnwrapToNativeChainCheckbox = () => {
   const unwrappedAssetName = useSwapStore(getUnwrappedAssetName);
-  const { shouldUnwrapAsset, setShouldUnwrapAsset, swapStatus, destChain } =
+  const { shouldUnwrapAsset, setShouldUnwrapAsset, swapStatus, destChain, srcChain } =
     useSwapStore((state) => state);
 
   if (!unwrappedAssetName) return null;
+  if (srcChain.module !== 'evm') return null;
   return (
     <label className="flex items-center justify-end space-x-2 cursor-pointer text-accent">
       <span className="text-xs label-text">
