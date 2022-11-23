@@ -42,6 +42,7 @@ import {
   LCDClient,
   MsgTransfer,
 } from "@terra-money/terra.js";
+import cn from "classnames";
 import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/client/Height";
 import { TERRA_IBC_GAS_LIMIT } from ".";
 import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
@@ -59,6 +60,7 @@ export const CosmosWalletTransfer = () => {
 
   // used to hide wallets when transaction has been triggered
   const [isTxOngoing, setIsTxOngoing] = useState(false);
+  const [txIsLoading, setTxIsLoading] = useState(false);
 
   const {
     srcChain,
@@ -137,6 +139,7 @@ export const CosmosWalletTransfer = () => {
   }
 
   async function handleOnTokensTransfer() {
+    setTxIsLoading(true);
     // if (!hasKeplerWallet) {
     //   const connectionResult = await handleOnKeplrConnect();
     //   if (!connectionResult) return;
@@ -226,7 +229,6 @@ export const CosmosWalletTransfer = () => {
               sourceTxHash: e.transactionHash,
             });
 
-            setIsTxOngoing(true);
             // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
           .catch((e) => {
@@ -300,6 +302,7 @@ export const CosmosWalletTransfer = () => {
     // } catch (error: any) {
     //   throw new Error(error)
     // }
+    setTxIsLoading(false);
   }
 
   async function handleOnTerraStationIBCTransfer(): Promise<any> {
@@ -371,7 +374,9 @@ export const CosmosWalletTransfer = () => {
       return (
         <div className="flex justify-center">
           <button
-            className="mb-5 btn btn-primary"
+            className={cn("mb-5 ml-5 btn btn-primary", {
+              loading: txIsLoading,
+            })}
             onClick={handleOnTokensTransfer}
           >
             <span className="mr-2">Send from Keplr</span>
@@ -393,9 +398,10 @@ export const CosmosWalletTransfer = () => {
     return (
       <div className="flex justify-center">
         <button
-          className={`mb-5 ml-5 btn btn-${
-            !userSelectedTS ? "primary" : "accent"
-          }`}
+          className={cn("mb-5 ml-5 btn", {
+            "btn-primary": !userSelectedTS,
+            "btn-accent": userSelectedTS,
+          })}
           onClick={async () => {
             if (userSelectedKeplr || !isTerraConnected) {
               await handleOnTokensTransfer();
@@ -410,7 +416,7 @@ export const CosmosWalletTransfer = () => {
         >
           <span className="mr-2">
             {userSelectedKeplr || !isTerraConnected
-              ? "Send from Keplr "
+              ? "Send from Keplr"
               : "Switch to Keplr"}
           </span>
           <div className="flex justify-center my-2 gap-x-5">
