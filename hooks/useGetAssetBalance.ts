@@ -154,7 +154,7 @@ const useGetEvmBalance = () => {
     );
     const num = bigNum.div(10 ** Number(asset?.decimals));
     setBalance(num.toFixed(4));
-  }, [nativeBalance, erc20Balance, isNativeBalance, asset?.decimals]);
+  }, [isNativeBalance, asset?.decimals]);
 
   /**
    * UPDATE BALANCE ON EVERY SWAP STATE CHANGE
