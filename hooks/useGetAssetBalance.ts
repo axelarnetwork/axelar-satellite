@@ -149,12 +149,15 @@ const useGetEvmBalance = () => {
       return setBalance(value);
     }
 
-    const bigNum = new BigNumber(
-      ethers.BigNumber.from(erc20Balance || "0").toString()
-    );
+    const bigNum = new BigNumber(erc20Balance?._hex || "0");
     const num = bigNum.div(10 ** Number(asset?.decimals));
     setBalance(num.toFixed(4));
-  }, [isNativeBalance, asset?.decimals]);
+  }, [
+    isNativeBalance,
+    asset?.decimals,
+    nativeBalance?.formatted,
+    erc20Balance?._hex,
+  ]);
 
   /**
    * UPDATE BALANCE ON EVERY SWAP STATE CHANGE
