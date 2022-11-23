@@ -18,7 +18,7 @@ const socket = io(SOCKET_API, {
 });
 
 export const useDetectDestTransferConfirmation = () => {
-  const { asset, destChain, swapStatus, setSwapStatus, destAddress } =
+  const { asset, srcChain, destChain, swapStatus, setSwapStatus, destAddress } =
     useSwapStore();
 
   function checkPayload(data: any) {
@@ -39,23 +39,38 @@ export const useDetectDestTransferConfirmation = () => {
   useEffect(() => {
     if (swapStatus !== SwapStatus.WAIT_FOR_CONFIRMATION) return;
 
+    let denom;
+
+    const sentNative =
+      // @ts-ignore
+      asset.is_native_asset &&
+      asset?.native_chain === srcChain.chainName?.toLowerCase();
+
     const assetCommonKey = asset?.common_key[ENVIRONMENT];
-    const assetData = destChain.assets?.find(
+    let assetData = destChain.assets?.find(
       (asset) => asset.common_key === assetCommonKey
     );
 
+    if (sentNative) {
+      //for now, the native asset is not in assets[] on destChain since it is hard-coded in satellite, so
+      //we check separately
+      const { fullDenomPath } =
+        asset.chain_aliases[destChain.chainName?.toLowerCase()];
+      if (!fullDenomPath) throw `chain config for ${asset.id} not defined`;
+      denom =
+        fullDenomPath.split("/").length > 1
+          ? fullDenomPath?.split("/")[2]
+          : fullDenomPath?.split("/")[0];
+    } else {
+      denom = assetData?.common_key as string;
+    }
+
     const roomId =
       destChain?.chainName?.toLowerCase() === "axelar"
-        ? buildAxelarTransferCompletedRoomId(
-            destAddress,
-            assetData?.common_key as string
-          )
-        : buildEvmTransferCompletedRoomId(
-            destAddress,
-            assetData?.common_key as string
-          );
+        ? buildAxelarTransferCompletedRoomId(destAddress, denom)
+        : buildEvmTransferCompletedRoomId(destAddress, denom);
 
-    console.log("room ID", roomId);
+    console.log("room ID for transfer complete", roomId);
 
     socket.emit("room:join", roomId);
 
@@ -67,5 +82,5 @@ export const useDetectDestTransferConfirmation = () => {
     return () => {
       socket.off("bridge-event");
     };
-  }, [destChain, swapStatus]);
+  }, [destChain, swapStatus, asset, srcChain]);
 };
