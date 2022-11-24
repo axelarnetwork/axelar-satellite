@@ -6,6 +6,7 @@ import fantom from "./fantom";
 import moonbeam from "./moonbeam";
 import polygon from "./polygon";
 import { binance } from "./binance";
+import { kava } from "./kava";
 
 export const testnetChains: ChainExtension[] = [
   aurora,
@@ -15,4 +16,5 @@ export const testnetChains: ChainExtension[] = [
   fantom,
   polygon,
   binance,
+  kava,
 ];
