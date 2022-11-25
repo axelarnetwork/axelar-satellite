@@ -11,7 +11,7 @@ export const celo = {
   blockExplorers: {
     default: {
       name: "Celo Explorer",
-      url: "https://alfajores-blockscout.celo-testnet.org",
+      url: "https://alfajores-blockscout.celo-testnet.org/",
     },
   },
   rpcUrls: {
