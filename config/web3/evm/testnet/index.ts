@@ -19,6 +19,6 @@ export const testnetChains: ChainExtension[] = [
   polygon,
   binance,
   kava,
-  // arbitrum, // TODO: check why arbitrum is throwing errors
+  arbitrum,
   celo,
 ];

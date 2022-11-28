@@ -1,7 +1,7 @@
 export const arbitrum = {
   id: 421_613,
   name: "Arbitrum Goerli Testnet",
-  network: "arbitrum",
+  network: "ethereum",
   networkNameOverride: "arbitrum",
   nativeCurrency: {
     name: "ETH",
