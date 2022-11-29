@@ -92,7 +92,7 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     genDepositAddress({
       fromChain: srcChain.chainIdentifier[ENVIRONMENT],
       toChain: destChain.chainIdentifier[ENVIRONMENT],
-      asset: asset?.common_key[ENVIRONMENT],
+      asset,
       destAddress,
       transferType,
     });
