@@ -225,7 +225,7 @@ export const EvmWalletTransfer = () => {
     if (ENVIRONMENT === "testnet") {
       // WRAP
       if (
-        asset?.native_chain === srcChain.chainIdentifier[ENVIRONMENT] &&
+        asset?.native_chain === srcChain.chainName.toLowerCase() &&
         asset.is_native_asset
       ) {
         return sendTransactionAsync?.()
