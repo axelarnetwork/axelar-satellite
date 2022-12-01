@@ -1,8 +1,10 @@
+import { GasToken } from "@axelar-network/axelarjs-sdk";
 import { NativeAssetConfig } from "../interface";
 
 export const nativeAssets: NativeAssetConfig[] = [
   {
     id: "avax-wei",
+    gas_token: GasToken.AVAX,
     common_key: {
       devnet: "avax-wei",
       testnet: "avax-wei",
@@ -186,6 +188,7 @@ export const nativeAssets: NativeAssetConfig[] = [
   },
   {
     id: "ftm-wei",
+    gas_token: GasToken.FTM,
     common_key: {
       devnet: "ftm-wei",
       testnet: "ftm-wei",
@@ -369,6 +372,7 @@ export const nativeAssets: NativeAssetConfig[] = [
   },
   {
     id: "matic-wei",
+    gas_token: GasToken.MATIC,
     common_key: {
       devnet: "matic-wei",
       testnet: "matic-wei",
@@ -552,6 +556,7 @@ export const nativeAssets: NativeAssetConfig[] = [
   },
   {
     id: "bnb-wei",
+    gas_token: GasToken.BINANCE,
     common_key: {
       devnet: "bnb-wei",
       testnet: "bnb-wei",
@@ -735,6 +740,7 @@ export const nativeAssets: NativeAssetConfig[] = [
   },
   {
     id: "dev-wei",
+    gas_token: GasToken.GLMR,
     common_key: {
       devnet: "dev-wei",
       testnet: "dev-wei",
@@ -918,6 +924,7 @@ export const nativeAssets: NativeAssetConfig[] = [
   },
   {
     id: "neth-wei",
+    gas_token: GasToken.ETH,
     common_key: {
       devnet: "neth-wei",
       testnet: "neth-wei",
