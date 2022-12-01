@@ -1,5 +1,5 @@
 import { AssetInfo, ChainInfo } from "@axelar-network/axelarjs-sdk";
-import { NativeAssetConfig } from "../../config/web3/evm/testnet/native-assets";
+import { NativeAssetConfig } from "../../config/web3/evm/interface";
 
 export function addNativeAssets(
   chains: ChainInfo[],

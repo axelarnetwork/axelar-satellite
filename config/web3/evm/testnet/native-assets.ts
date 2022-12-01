@@ -1,9 +1,4 @@
-import { AssetConfig, AssetInfo } from "@axelar-network/axelarjs-sdk";
-
-export interface NativeAssetConfig extends AssetConfig {
-  id: string;
-  is_native_asset?: boolean;
-}
+import { NativeAssetConfig } from "../interface";
 
 export const nativeAssets: NativeAssetConfig[] = [
   {

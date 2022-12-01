@@ -31,7 +31,7 @@ import {
 } from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
 import { renderGasFee } from "../../../../utils/renderGasFee";
-import { NativeAssetConfig } from "../../../../config/web3/evm/testnet/native-assets";
+import { NativeAssetConfig } from "../../../../config/web3/evm/interface";
 import { Hash } from "../../../../types";
 
 export const EvmWalletTransfer = () => {
@@ -222,21 +222,19 @@ export const EvmWalletTransfer = () => {
     //   );
     // }
 
-    if (ENVIRONMENT === "testnet") {
-      // WRAP
-      if (
-        asset?.native_chain === srcChain.chainName.toLowerCase() &&
-        asset.is_native_asset
-      ) {
-        return sendTransactionAsync?.()
-          .then((tx) => {
-            setTxInfo({
-              sourceTxHash: tx?.hash,
-              destStartBlockNumber: blockNumber,
-            });
-          })
-          .catch((error) => toast.error(error.reason));
-      }
+    // WRAP
+    if (
+      asset?.native_chain === srcChain.chainName.toLowerCase() &&
+      asset.is_native_asset
+    ) {
+      return sendTransactionAsync?.()
+        .then((tx) => {
+          setTxInfo({
+            sourceTxHash: tx?.hash,
+            destStartBlockNumber: blockNumber,
+          });
+        })
+        .catch((error) => toast.error(error.reason));
     }
 
     // check that the user has enough tokens

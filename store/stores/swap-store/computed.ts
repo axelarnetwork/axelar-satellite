@@ -2,7 +2,7 @@ import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import memoize from "proxy-memoize";
 import { ENVIRONMENT } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
-import { NativeAssetConfig } from "../../../config/web3/evm/testnet/native-assets";
+import { NativeAssetConfig } from "../../../config/web3/evm/interface";
 
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   if (!state.srcChain) return undefined;

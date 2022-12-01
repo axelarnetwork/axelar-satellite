@@ -48,7 +48,7 @@ import { TERRA_IBC_GAS_LIMIT } from ".";
 import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
 import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
 import { evmosSignDirect } from "../../../../hooks/kepler/evmos/evmosSignDirect";
-import { NativeAssetConfig } from "../../../../config/web3/evm/testnet/native-assets";
+import { NativeAssetConfig } from "../../../../config/web3/evm/interface";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);

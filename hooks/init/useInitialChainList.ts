@@ -13,10 +13,9 @@ import {
   DISABLED_CHAIN_NAMES,
   ENVIRONMENT,
 } from "../../config/constants";
-import {
-  NativeAssetConfig,
-  nativeAssets,
-} from "../../config/web3/evm/testnet/native-assets";
+import { NativeAssetConfig } from "../../config/web3/evm/interface";
+import { nativeAssets as testnetNativeAssets } from "../../config/web3/evm/testnet/native-assets";
+import { nativeAssets as mainnetNativeAssets } from "../../config/web3/evm/mainnet/native-assets";
 import { useSwapStore } from "../../store";
 import { RouteQuery } from "../../types";
 import { addNativeAssets, loadAllChains } from "../../utils/api";
@@ -73,7 +72,7 @@ export const useInitialChainList = () => {
   async function loadInitialChains() {
     // load chains with native assets
     const chains = await loadAllChains(ENVIRONMENT)
-      .then((_chains) => addNativeAssets(_chains, nativeAssets, ENVIRONMENT))
+      .then((_chains) => addNativeAssets(_chains, ENVIRONMENT === "mainnet" ? mainnetNativeAssets : testnetNativeAssets, ENVIRONMENT))
       .then((_chains) => setAllChains(_chains))
       .catch((error) => {
         toast.error(
@@ -156,7 +155,7 @@ export const useInitialChainList = () => {
   async function loadInitialAssets() {
     return loadAssets({ environment: ENVIRONMENT }).then(
       (assets: AssetConfig[]) => {
-        const assetsWithNative = [...nativeAssets, ...assets];
+        const assetsWithNative = [...(ENVIRONMENT === "mainnet" ? mainnetNativeAssets : testnetNativeAssets), ...assets];
         setAllAssets(assetsWithNative as NativeAssetConfig[]);
 
         const { asset_denom } = router.query as RouteQuery;

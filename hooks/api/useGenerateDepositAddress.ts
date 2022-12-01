@@ -22,43 +22,39 @@ export const useGenerateDepositAddress = () =>
   useMutation(async (payload: DepositAddressPayload) => {
     const { fromChain, toChain, destAddress, transferType, asset } = payload;
 
-    if (ENVIRONMENT === "testnet") {
-      if (transferType === "wrap") {
-        const depositAddress = await sdk.getDepositAddressForNativeWrap(
+    if (transferType === "wrap") {
+      const depositAddress = await sdk.getDepositAddressForNativeWrap(
+        fromChain,
+        toChain,
+        destAddress
+      );
+
+      return {
+        intermediaryDepositAddress: null,
+        finalDepositAddress: depositAddress,
+      };
+    }
+
+    if (transferType === "unwrap") {
+      const refundAddress = await sdk.getGasReceiverContractAddress(fromChain);
+      const intermediaryDepositAddress =
+        await sdk.validateOfflineDepositAddress(
+          "unwrap",
           fromChain,
           toChain,
-          destAddress
+          destAddress,
+          refundAddress,
+          HashZero
         );
-
-        return {
-          intermediaryDepositAddress: null,
-          finalDepositAddress: depositAddress,
-        };
-      }
-
-      if (transferType === "unwrap") {
-        const refundAddress = await sdk.getGasReceiverContractAddress(
-          fromChain
-        );
-        const intermediaryDepositAddress =
-          await sdk.validateOfflineDepositAddress(
-            "unwrap",
-            fromChain,
-            toChain,
-            destAddress,
-            refundAddress,
-            HashZero
-          );
-        const result = await sdk.getDepositAddressForNativeUnwrap(
-          fromChain,
-          toChain,
-          destAddress
-        );
-        return {
-          intermediaryDepositAddress,
-          finalDepositAddress: result,
-        };
-      }
+      const result = await sdk.getDepositAddressForNativeUnwrap(
+        fromChain,
+        toChain,
+        destAddress
+      );
+      return {
+        intermediaryDepositAddress,
+        finalDepositAddress: result,
+      };
     }
 
     const depositAddress = await sdk.getDepositAddress(

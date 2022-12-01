@@ -12,8 +12,7 @@ import { copyToClipboard } from "../../../utils";
 import { convertChainName } from "../../../utils/transformers";
 import { TransferStats } from "../parts";
 import { renderGasFee } from "../../../utils/renderGasFee";
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
-import { NativeAssetConfig } from "../../../config/web3/evm/testnet/native-assets";
+import { NativeAssetConfig } from "../../../config/web3/evm/interface";
 
 export const WaitDepositState = () => {
   const { depositAddress, destAddress, srcChain, destChain, asset } =
