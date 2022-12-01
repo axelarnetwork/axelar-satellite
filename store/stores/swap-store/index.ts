@@ -3,7 +3,7 @@ import create from "zustand";
 import { devtools } from "zustand/middleware";
 
 import { ENVIRONMENT } from "../../../config/constants";
-import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+import { NativeAssetConfig } from "../../../config/web3/evm/testnet/native-assets";
 import { SwapOrigin, SwapStatus } from "../../../utils/enums";
 
 export * from "./computed";

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwapStore } from "../store";
 import { ENVIRONMENT } from "../config/constants";
-import { NativeAssetConfig } from "../config/web3/evm/native-assets";
+import { NativeAssetConfig } from "../config/web3/evm/testnet/native-assets";
 
 export function useFilterSelectableAssetList() {
   const { srcChain, destChain, setAssetList, setAsset, asset, allAssets } =

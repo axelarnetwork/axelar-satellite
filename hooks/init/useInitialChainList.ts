@@ -16,7 +16,7 @@ import {
 import {
   NativeAssetConfig,
   nativeAssets,
-} from "../../config/web3/evm/native-assets";
+} from "../../config/web3/evm/testnet/native-assets";
 import { useSwapStore } from "../../store";
 import { RouteQuery } from "../../types";
 import { addNativeAssets, loadAllChains } from "../../utils/api";

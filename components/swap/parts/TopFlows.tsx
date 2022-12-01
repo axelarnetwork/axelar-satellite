@@ -4,7 +4,7 @@ import { useSwapStore } from "../../../store";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapStatus } from "../../../utils/enums";
-import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+import { NativeAssetConfig } from "../../../config/web3/evm/testnet/native-assets";
 
 export const Arrow = () => (
   <svg

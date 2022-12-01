@@ -1,6 +1,6 @@
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { addNativeAssets, loadAllChains } from "../..";
-import { nativeAssets } from "../../../../config/web3/evm/native-assets";
+import { nativeAssets } from "../../../../config/web3/evm/testnet/native-assets";
 
 describe("addNativeAssets", () => {
   describe("when called", () => {

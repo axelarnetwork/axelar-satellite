@@ -9,7 +9,7 @@ import { Environment, SwapStatus } from "../../../utils/enums";
 import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
-import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+import { NativeAssetConfig } from "../../../config/web3/evm/testnet/native-assets";
 import { USDC_POOLS } from "../../../data/pools";
 
 export const TransferStats = () => {

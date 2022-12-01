@@ -31,7 +31,7 @@ import {
 } from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
 import { renderGasFee } from "../../../../utils/renderGasFee";
-import { NativeAssetConfig } from "../../../../config/web3/evm/native-assets";
+import { NativeAssetConfig } from "../../../../config/web3/evm/testnet/native-assets";
 import { Hash } from "../../../../types";
 
 export const EvmWalletTransfer = () => {

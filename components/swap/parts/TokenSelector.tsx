@@ -24,7 +24,7 @@ import { getWagmiChains } from "../../../config/web3";
 
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
-import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+import { NativeAssetConfig } from "../../../config/web3/evm/testnet/native-assets";
 import { UnwrapToNativeChainCheckbox } from "./UnwrapToNativeChainCheckbox";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
