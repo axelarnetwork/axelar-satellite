@@ -14,6 +14,7 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   polygon: {
     pairs: ["axlUSDC/USDC"],
     dex: "Quickswap",
+    dex: "Curve",
     url: "https://quickswap.exchange/#/swap",
   },
   avalanche: {
