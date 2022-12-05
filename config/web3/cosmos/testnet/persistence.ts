@@ -1,11 +1,12 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
   chainId: "test-core-1",
   chainName: "Persistence Testnet",
   chainIdentifier: "persistence",
-  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=persistence",
+  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/persistence`,
   rest: "https://rest.testnet.persistence.one",
   bip44: {
     coinType: 118,

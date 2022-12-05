@@ -1,7 +1,8 @@
+import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=evmos",
+  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/evmos`,
   rest: "https://rest.bd.evmos.dev:1317",
   chainId: "evmos_9000-4",
   chainName: "Evmos Testnet",

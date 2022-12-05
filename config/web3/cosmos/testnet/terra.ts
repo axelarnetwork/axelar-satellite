@@ -1,8 +1,9 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "http://18.194.243.144:26657",
+  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/terra`,
   rest: "https://pisco-lcd.terra.dev",
   chainId: "pisco-1",
   chainName: "Terra Testnet",
