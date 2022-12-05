@@ -1,7 +1,8 @@
+import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=comdex",
+  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/comdex`,
   rest: "https://meteor.rest.comdex.one",
   chainId: "meteor-test",
   chainName: "Comdex Testnet",
@@ -45,5 +46,5 @@ export default {
     high: 0.05,
   },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
-  chainToAxelarChannelId: "channel-18"
+  chainToAxelarChannelId: "channel-18",
 } as CosmosChain;
