@@ -1,8 +1,9 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=axelar",
+  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/axelar`,
   rest: "https://axelar-testnet-lcd.axelar-dev.workers.dev",
   chainId: "axelar-testnet-lisbon-3",
   chainName: "Axelar Testnet",

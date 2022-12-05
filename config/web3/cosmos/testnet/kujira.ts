@@ -1,10 +1,11 @@
+import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
   chainId: "harpoon-4",
   chainName: "Kujira Testnet",
   chainIdentifier: "kujira",
-  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=kujira",
+  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/kujira`,
   rest: "https://lcd-harpoon.kujira.app",
   bip44: { coinType: 118 },
   bech32Config: {
@@ -39,5 +40,5 @@ export default {
   },
   coinType: 118,
   gasPriceStep: { low: 0.01, average: 0.025, high: 0.03 },
-  chainToAxelarChannelId: "channel-8"
+  chainToAxelarChannelId: "channel-8",
 } as CosmosChain;

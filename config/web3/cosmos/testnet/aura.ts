@@ -1,9 +1,10 @@
+import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
   chainId: "euphoria-1",
   chainName: "Aura Testnet",
-  rpc: "https://testnet-rpc-router.axelar-dev.workers.dev/?chain=aura",
+  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/aura"`,
   rest: "https://lcd.euphoria.aura.network",
   bip44: {
     coinType: 118,
@@ -46,5 +47,5 @@ export default {
   logo: "https://i.imgur.com/zi0mTYb.png",
   explorer: "https://euphoria.aurascan.io/",
   chainIdentifier: "aura",
-  chainToAxelarChannelId: "channel-5"
+  chainToAxelarChannelId: "channel-5",
 } as CosmosChain;
