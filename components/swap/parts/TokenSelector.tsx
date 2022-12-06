@@ -26,6 +26,7 @@ import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
 import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 import { UnwrapToNativeChainCheckbox } from "./UnwrapToNativeChainCheckbox";
+import { MaxButton } from "../../../features/max-button";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -535,14 +536,7 @@ export const TokenSelector = () => {
             className="checkbox checkbox-sm checkbox-primary"
           /> */}
           {addTokenToMetamaskButton()}
-          {swapOrigin === SwapOrigin.APP && (
-            <button
-              className="btn btn-info btn-xs"
-              onClick={handleOnMaxButtonClick}
-            >
-              Max
-            </button>
-          )}
+          <MaxButton />
         </div>
       </div>
       <div className="flex justify-between mt-2">
