@@ -1,7 +1,7 @@
 export default {
     id: 42_161,
     name: "Arbitrum",
-    network: "ethereum",
+    network: "arbitrum",
     networkNameOverride: "arbitrum",
     nativeCurrency: {
       name: "ETH",
