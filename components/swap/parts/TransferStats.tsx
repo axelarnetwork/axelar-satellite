@@ -200,14 +200,25 @@ export const TransferStats = () => {
     <StatsWrapper>
       <ul className="space-y-2 text-sm">
         <li className="flex justify-between">
-          <span>Relayer Gas Fees:</span>
+          <span
+            className="cursor-pointer tooltip tooltip-warning"
+            data-tip={
+              "The relayer gas fee is set to cover gas fees on average across all interconnected chains but is largely influenced by Ethereum. Satellite does not charge a bridge fee"
+            }
+          >
+            Relayer Gas Fees
+          </span>
           <span className="font-semibold">
             {renderGasFee(srcChain, destChain, asset as AssetConfig)}{" "}
             {selectedAssetSymbol}
           </span>
         </li>
+        <li className="flex justify-between">
+          <span>Bridge Fees</span>
+          <span className="font-semibold">0</span>
+        </li>
         <li className="flex justify-between ">
-          <span>Estimated wait time:</span>
+          <span>Estimated wait time</span>
           <span className="font-semibold">{renderWaitTime()}</span>
         </li>
         {renderPoolInfo()}
