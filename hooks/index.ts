@@ -15,3 +15,4 @@ export * from "./useNormalizeUrlPaths";
 export * from "./useNormalizeChains";
 
 export * from "./useDetectUnwrapTransfer";
+export * from "./useRestrictAssets";

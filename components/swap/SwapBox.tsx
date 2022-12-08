@@ -14,6 +14,7 @@ import {
 import {
   useDetectDepositConfirmation,
   usePreventDuplicateChains,
+  useRestrictAssets,
 } from "../../hooks";
 import { TopFlows } from "./parts/TopFlows";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
@@ -24,6 +25,9 @@ import { getUnwrappedAssetName, useSwapStore } from "../../store";
 export const SwapBox = () => {
   usePreventDuplicateChains();
   useDetectDepositConfirmation();
+
+  useRestrictAssets();
+
   const { srcChain } = useSwapStore((state) => state);
   const unwrappedAssetName = useSwapStore(getUnwrappedAssetName);
 

@@ -39,3 +39,10 @@ export const docsLinks: Record<string, string> = {
   testnet: "https://docs.axelar.dev/releases/testnet",
   mainnet: "https://docs.axelar.dev/releases/mainnet",
 };
+
+export const ASSET_RESTRICTIONS = [
+  {
+    assets: process.env.NEXT_PUBLIC_RESTRICTED_ASSETS?.split(","),
+    restrictToDestChain: process.env.NEXT_PUBLIC_RESTRICT_TO_DEST_CHAIN,
+  },
+];
