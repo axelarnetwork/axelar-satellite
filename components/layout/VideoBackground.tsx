@@ -17,7 +17,7 @@ export const VideoBackground = () => {
       muted
       loop
       id="myVideo"
-      poster="/video/video-poster.png"
+      poster="https://axelar-mainnet.s3.us-east-2.amazonaws.com/video-poster.png"
     >
       <source src="https://axelar-mainnet.s3.us-east-2.amazonaws.com/video.mp4" type="video/mp4" />
     </video>
