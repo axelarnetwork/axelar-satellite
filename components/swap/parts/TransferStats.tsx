@@ -19,6 +19,7 @@ export const TransferStats = () => {
     destChain,
     asset,
     depositAddress,
+    intermediaryDepositAddress,
     destAddress,
     swapStatus,
   } = useSwapStore((state) => state);
@@ -83,7 +84,7 @@ export const TransferStats = () => {
             destChain.chainName.substring(1)
           }`}
         >
-          Axelar Deposit Address
+          Axelar Deposit Address:
         </span>
         <div className="flex font-bold gap-x-2">
           <AddressShortener value={depositAddress} />
@@ -98,11 +99,50 @@ export const TransferStats = () => {
     );
   }
 
+  function renderIntermediateDepositAddress() {
+    if (swapStatus === SwapStatus.IDLE) return null;
+    if (!intermediaryDepositAddress) return null;
+    return (
+      <li className="flex justify-between">
+        <span
+          className="flex flex-row cursor-pointer tooltip tooltip-warning"
+          data-tip={`Initial ${destChain.chainName} recipient of tokens transferred. It unwraps the ERC20 tokens and then delivers native tokens to the final destination address.`}
+        >
+          <span>Holding Address</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            className="w-5 h-5 pb-1 stroke-current"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <span>:</span>
+        </span>
+
+        <span className="flex font-bold gap-x-2">
+          <AddressShortener value={intermediaryDepositAddress} />
+          <div
+            className="cursor-pointer"
+            onClick={() => copyToClipboard(intermediaryDepositAddress)}
+          >
+            <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+          </div>
+        </span>
+      </li>
+    );
+  }
+
   function renderDestinationAddress() {
     if (swapStatus === SwapStatus.IDLE) return null;
     return (
       <li className="flex justify-between">
-        <span>Destination Address</span>
+        <span>Destination Address:</span>
         <span className="flex font-bold gap-x-2">
           <AddressShortener value={destAddress} />
           <div
@@ -128,7 +168,7 @@ export const TransferStats = () => {
         : `${AXELARSCAN_URL}/transfer/`;
     return (
       <li className="flex justify-between">
-        <span>Deposit Confirmation</span>
+        <span>Deposit Confirmation:</span>
         <a
           href={`${rootUrl}${txInfo.sourceTxHash}`}
           target="_blank"
@@ -200,6 +240,7 @@ export const TransferStats = () => {
         </li>
         {renderPoolInfo()}
         {renderMaxTransferAmount()}
+        {renderIntermediateDepositAddress()}
         {renderDestinationAddress()}
         {renderDepositAddress()}
         {renderDepositConfirmationLink()}
