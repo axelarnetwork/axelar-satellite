@@ -3,6 +3,7 @@ import { ASSET_RESTRICTIONS } from "../config/constants";
 import { getRestrictedAssetIsSelected, useSwapStore } from "../store";
 
 export const useRestrictAssets = () => {
+  const asset = useSwapStore((state) => state.asset);
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const allChains = useSwapStore((state) => state.allChains);
@@ -11,20 +12,23 @@ export const useRestrictAssets = () => {
   const restrictedAssetIsSelected = useSwapStore(getRestrictedAssetIsSelected);
 
   useEffect(() => {
-    if (restrictedAssetIsSelected) {
+    if (restrictedAssetIsSelected) restrictDestChain();
+    // eslint-disable-next-line
+  }, [restrictedAssetIsSelected, srcChain, destChain]);
+
+  function restrictDestChain() {
+    const destChainName = destChain?.chainName?.toLowerCase();
+
+    for (const rule of ASSET_RESTRICTIONS) {
       if (
-        ASSET_RESTRICTIONS[0].restrictToDestChain !==
-        destChain?.chainName?.toLowerCase()
+        rule.assets.includes(asset?.id || "") &&
+        !rule.restrictDestChainsTo.includes(destChainName)
       ) {
-        // switch to chain
-        const chain = allChains.find(
-          (_chain) =>
-            _chain.chainName.toLowerCase() ===
-            ASSET_RESTRICTIONS[0].restrictToDestChain
+        const chain = allChains.find((_chain) =>
+          rule.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
         );
         if (chain) return setDestChain(chain);
       }
     }
-    // eslint-disable-next-line
-  }, [restrictedAssetIsSelected, srcChain, destChain]);
+  }
 };

@@ -41,10 +41,14 @@ export const DestChainSelector = () => {
       );
     if (!restrictedAssetIsSelected) return setFilteredChains(newChains);
 
+    // find the right policy based on asset
+    const policy = ASSET_RESTRICTIONS.find((_policy) =>
+      _policy.assets.includes(asset?.id || "")
+    );
+    if (!policy) return;
     setFilteredChains(
-      newChains.filter(
-        (_chain) =>
-          _chain.chainName === ASSET_RESTRICTIONS[0].restrictToDestChain
+      newChains.filter((_chain) =>
+        policy?.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
       )
     );
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
