@@ -263,7 +263,7 @@ export const TokenSelector = () => {
               )}
             </span>
           </div>
-          <UnwrapToNativeChainCheckbox />
+          {/* <UnwrapToNativeChainCheckbox /> */}
         </div>
       );
 
@@ -529,7 +529,7 @@ export const TokenSelector = () => {
   return asset ? (
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
-        <label className="block text-xs">I want to transfer</label>
+        <label className="block text-xs">I want to transfer from <span className="capitalize">{srcChain.chainName}</span></label>
         <div className="flex items-center">
           {/* <input
             type="checkbox"
