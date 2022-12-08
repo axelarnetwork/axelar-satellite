@@ -1,11 +1,7 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
-import {
-  getSelectedAssetName,
-  getUnwrappedAssetName,
-  useSwapStore,
-} from "../../../store";
+import { getUnwrappedAssetName, useSwapStore } from "../../../store";
 import { ENVIRONMENT } from "../../../config/constants";
 import { Blockable } from "../../common";
 import { nativeAssets } from "../../../config/web3/evm/native-assets";
@@ -45,6 +41,11 @@ export const DestinationTokenSelector = () => {
     setSelectedAssetName(selectedAssetName);
     setShouldUnwrapAsset(shouldUnwrap);
   };
+
+  // gets native or wrapped token logo based on user choice
+  const dynamicNativeTokenLogo = shouldUnwrapAsset
+    ? nativeOnDestChain?.common_key[ENVIRONMENT]?.toLowerCase()
+    : asset?.common_key[ENVIRONMENT];
 
   function renderAssetDropdown() {
     if (!dropdownOpen || !srcChain) return null;
@@ -110,7 +111,9 @@ export const DestinationTokenSelector = () => {
     );
   }
 
-  return asset ? (
+  if (!asset) return null;
+
+  return (
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
         <label className="block text-xs">
@@ -125,7 +128,7 @@ export const DestinationTokenSelector = () => {
               <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
                 <Image
                   loading="eager"
-                  src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
+                  src={`/assets/tokens/${dynamicNativeTokenLogo}.logo.svg`}
                   layout="intrinsic"
                   width={30}
                   height={30}
@@ -143,6 +146,7 @@ export const DestinationTokenSelector = () => {
                     layout="intrinsic"
                     width={35}
                     height={35}
+                    alt="arrow down"
                   />
                 </div>
               </div>
@@ -153,5 +157,5 @@ export const DestinationTokenSelector = () => {
         </Blockable>
       </div>
     </div>
-  ) : null;
+  );
 };
