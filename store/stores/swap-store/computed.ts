@@ -2,7 +2,7 @@ import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import memoize from "proxy-memoize";
 import { ENVIRONMENT } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
-import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+import { NativeAssetConfig, nativeAssets } from "../../../config/web3/evm/native-assets";
 
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   if (!state.srcChain) return undefined;
@@ -115,13 +115,14 @@ export const getUnwrappedAssetName = memoize(
     if (!isWrappedAsset) return null;
 
     // return asset symbol if wrapped asset
-    const nativeAsset = state.destChain.assets?.find(
-      (asset) =>
-        (asset as any).is_native_asset &&
-        asset.native_chain === state.destChain?.chainName?.toLowerCase()
-    );
+    const nativeAsset = nativeAssets.find(na => na.native_chain === state.destChain?.chainName.toLowerCase());
+    // const nativeAsset = state.destChain.assets?.find(
+    //   (asset) =>
+    //     (asset as any).is_native_asset &&
+    //     asset.native_chain === state.destChain?.chainName?.toLowerCase()
+    // );
 
-    return nativeAsset?.assetSymbol;
+    return nativeAsset?.chain_aliases[state.destChain?.chainName.toLowerCase()]?.assetSymbol;
   }
 );
 
