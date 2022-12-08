@@ -160,7 +160,7 @@ export const TransferStats = () => {
       const pool = USDC_POOLS[chainName];
       const pair = pool?.pairs[0];
 
-      const tooltipText = `axlUSDC is Axelar’s bridged version of Ethereum USDC. For every axlUSDC there is 1 USDC locked on Ethereum. When bridging to other chains please use our liquidity pool linked here to swap for native USDC. When you bridge axlUSDC back to Ethereum, native USDC is unlocked.`;
+      const tooltipText = `axlUSDC is Axelar’s bridged version of Ethereum USDC. For every axlUSDC, there is one USDC locked on Ethereum. When bridging to other chains, please use the liquidity pool linked here to swap for native USDC. When you bridge axlUSDC back to Ethereum, native USDC is unlocked`;
       if (!pair) return null;
 
       return (
@@ -200,22 +200,29 @@ export const TransferStats = () => {
     <StatsWrapper>
       <ul className="space-y-2 text-sm">
         <li className="flex justify-between">
-          <span
-            className="cursor-pointer tooltip tooltip-warning"
+          <div
+            className="flex items-center cursor-pointer tooltip tooltip-warning"
+            data-tip="Satellite does not charge a bridge fee"
+          >
+            <span>Bridge Fees</span>
+            {InfoIcon}
+          </div>
+          <span className="font-semibold">0</span>
+        </li>
+        <li className="flex justify-between">
+          <div
+            className="flex items-center cursor-pointer tooltip tooltip-warning"
             data-tip={
-              "The relayer gas fee is set to cover gas fees on average across all interconnected chains but is largely influenced by Ethereum. Satellite does not charge a bridge fee"
+              "The relayer gas fee is set to cover gas fees on average across all interconnected chains but is largely influenced by Ethereum"
             }
           >
-            Relayer Gas Fees
-          </span>
+            <span>Relayer Gas Fees</span>
+            {InfoIcon}
+          </div>
           <span className="font-semibold">
             {renderGasFee(srcChain, destChain, asset as AssetConfig)}{" "}
             {selectedAssetSymbol}
           </span>
-        </li>
-        <li className="flex justify-between">
-          <span>Bridge Fees</span>
-          <span className="font-semibold">0</span>
         </li>
         <li className="flex justify-between ">
           <span>Estimated wait time</span>
