@@ -67,7 +67,7 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
     url: "https://curve.fi/#/arbitrum/pools/factory-v2-64/swap",
   },
   moonbeam: {
-    pairs: ["GLMR/USDC"],
+    pairs: ["GLMR/axlUSDC"],
     dex: "Stellaswap",
     url: "https://app.stellaswap.com/exchange/swap",
   },
