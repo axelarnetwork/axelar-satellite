@@ -106,7 +106,7 @@ export const TransferStats = () => {
       <li className="flex justify-between">
         <span
           className="flex flex-row cursor-pointer tooltip tooltip-warning"
-          data-tip={`Intermediate recipient on ${destChain.chainName} of ERC20 tokens that then delivers native tokens to the final destination address.`}
+          data-tip={`Initial ${destChain.chainName} recipient of tokens transferred. It unwraps the ERC20 tokens and then delivers native tokens to the final destination address.`}
         >
           <span>Holding Address</span>
           <svg
