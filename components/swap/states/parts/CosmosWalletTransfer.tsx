@@ -188,7 +188,7 @@ export const CosmosWalletTransfer = () => {
         .toString(),
     };
     const fee: StdFee = {
-      gas: "150000",
+      gas: "250000",
       amount: [{ denom: "uaxl", amount: "30000" }],
     };
 

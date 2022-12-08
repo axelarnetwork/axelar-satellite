@@ -5,12 +5,28 @@ import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { AddressShortener, StatsWrapper } from "../../common";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import { copyToClipboard } from "../../../utils";
-import { Environment, SwapStatus } from "../../../utils/enums";
-import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
+import { SwapStatus } from "../../../utils/enums";
+import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
 import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 import { USDC_POOLS } from "../../../data/pools";
+
+const InfoIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    className="w-5 h-5 pb-1 mx-1 stroke-current"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+    ></path>
+  </svg>
+);
 
 export const TransferStats = () => {
   const {
@@ -43,24 +59,11 @@ export const TransferStats = () => {
       return (
         <li className="flex justify-between">
           <span
-            className="flex flex-row cursor-pointer tooltip tooltip-warning"
+            className="flex flex-row items-center cursor-pointer tooltip tooltip-warning"
             data-tip={tooltipText}
           >
             <span>Maximum Transfer Amount </span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="w-5 h-5 pb-1 stroke-current"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
-            <span>:</span>
+            {InfoIcon}
           </span>
           <span className="font-semibold">
             {BigInt(max).toLocaleString()} {selectedAssetSymbol}
@@ -158,26 +161,36 @@ export const TransferStats = () => {
       const pool = USDC_POOLS[chainName];
       const pair = pool?.pairs[0];
 
+      const tooltipText = `axlUSDC is Axelar’s bridged version of Ethereum USDC. For every axlUSDC, there is one USDC locked on Ethereum. When bridging to other chains, please use the liquidity pool linked here to swap for native USDC. When you bridge axlUSDC back to Ethereum, native USDC is unlocked`;
       if (!pair) return null;
 
       return (
-        <li className="flex justify-between font-normal">
-          <span>{pair} pool</span>
-          <a
-            className="text-[#00a6ff] flex items-center gap-x-2"
-            target="_blank"
-            rel="noreferrer"
-            href={pool.url}
-          >
-            {pool.dex}
-            <Image
-              src={"/assets/ui/link.svg"}
-              height={16}
-              width={16}
-              layout="intrinsic"
-            />
-          </a>
-        </li>
+        <div className="w-full cursor-pointer ">
+          <li className="flex justify-between w-full font-normal">
+            <span
+              className="flex tooltip tooltip-warning"
+              data-tip={tooltipText}
+            >
+              <span>{pair} pool</span>
+              {InfoIcon}
+            </span>
+            <a
+              className="text-[#00a6ff] flex items-center gap-x-2"
+              target="_blank"
+              rel="noreferrer"
+              href={pool.url}
+            >
+              {pool.dex}
+              <Image
+                src={"/assets/ui/link.svg"}
+                height={16}
+                width={16}
+                layout="intrinsic"
+                alt="link"
+              />
+            </a>
+          </li>
+        </div>
       );
     }
 
@@ -188,14 +201,32 @@ export const TransferStats = () => {
     <StatsWrapper>
       <ul className="space-y-2 text-sm">
         <li className="flex justify-between">
-          <span>Relayer Gas Fees:</span>
+          <div
+            className="flex items-center cursor-pointer tooltip tooltip-warning"
+            data-tip="Satellite does not charge a bridge fee"
+          >
+            <span>Bridge Fees</span>
+            {InfoIcon}
+          </div>
+          <span className="font-semibold">0</span>
+        </li>
+        <li className="flex justify-between">
+          <div
+            className="flex items-center cursor-pointer tooltip tooltip-warning"
+            data-tip={
+              "The relayer gas fee is set to cover gas fees on average across all interconnected chains but is largely influenced by Ethereum"
+            }
+          >
+            <span>Relayer Gas Fees</span>
+            {InfoIcon}
+          </div>
           <span className="font-semibold">
             {renderGasFee(srcChain, destChain, asset as NativeAssetConfig)}{" "}
             {selectedAssetSymbol}
           </span>
         </li>
         <li className="flex justify-between ">
-          <span>Estimated wait time:</span>
+          <span>Estimated wait time</span>
           <span className="font-semibold">{renderWaitTime()}</span>
         </li>
         {renderPoolInfo()}
