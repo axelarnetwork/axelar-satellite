@@ -29,10 +29,16 @@ export const DestChainSelector = () => {
           chain.chainName !== destChain.chainName
       )
       .filter((chain) =>
-        chain.assets?.map((a) =>
-          a.common_key!?.includes(asset?.common_key[ENVIRONMENT] as string)
+        chain.assets?.map(
+          (a) => a.common_key === (asset?.common_key[ENVIRONMENT] as string)
         )
-      );
+      )
+      .filter((chain) => {
+        const sourceAssets = srcChain.assets?.map((a) => a.common_key);
+        const destAssets = chain.assets?.map((a) => a.common_key);
+
+        return !!sourceAssets?.find((v) => destAssets?.includes(v));
+      });
     setFilteredChains(newChains);
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
 
@@ -52,12 +58,19 @@ export const DestChainSelector = () => {
   useEffect(() => {
     if (!searchChainInput) return;
 
-    const chains = allChains.filter(
-      (chain) =>
-        chain.chainName.toLowerCase().includes(searchChainInput) &&
-        chain.chainName !== srcChain.chainName &&
-        chain.chainName !== destChain.chainName
-    );
+    const chains = allChains
+      .filter(
+        (chain) =>
+          chain.chainName.toLowerCase().includes(searchChainInput) &&
+          chain.chainName !== srcChain.chainName &&
+          chain.chainName !== destChain.chainName
+      )
+      .filter((chain) => {
+        const sourceAssets = srcChain.assets?.map((a) => a.common_key);
+        const destAssets = chain.assets?.map((a) => a.common_key);
+
+        return !!sourceAssets?.find((v) => destAssets?.includes(v));
+      });
     setFilteredChains(chains);
   }, [allChains, searchChainInput]);
 
