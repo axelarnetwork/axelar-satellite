@@ -1,5 +1,5 @@
 import { useMutation } from "react-query";
-import { AxelarAssetTransfer } from "@axelar-network/axelarjs-sdk";
+import { AxelarAssetTransfer, AxelarQueryAPI } from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../config/constants";
 import { constants } from "ethers";
 import { NativeAssetConfig } from "../../config/web3/evm/native-assets";
@@ -38,8 +38,10 @@ export const useGenerateDepositAddress = () =>
       }
 
       if (transferType === "unwrap") {
-        const refundAddress = await sdk.getGasReceiverContractAddress(
-          fromChain
+        const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
+        const refundAddress = await axelarQueryApi.getContractAddressFromConfig(
+          fromChain,
+          "default_refund_collector"
         );
         const intermediaryDepositAddress =
           await sdk.validateOfflineDepositAddress(
