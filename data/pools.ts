@@ -71,4 +71,9 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
     dex: "Stellaswap",
     url: "https://app.stellaswap.com/exchange/swap",
   },
+  celo: {
+    pairs: ["axlUSDC/cUSD"],
+    dex: "Curve",
+    url: "https://curve.fi/#/celo/pools/factory-v2-3/swap",
+  },
 };
