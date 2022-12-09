@@ -1,8 +1,9 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=axelar",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/axelar`,
   rest: "https://axelar-lcd.quickapi.com",
   chainId: "axelar-dojo-1",
   chainName: "Axelar",

@@ -13,18 +13,18 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   polygon: {
     pairs: ["axlUSDC/USDC"],
-    dex: "Quickswap",
-    url: "https://quickswap.exchange/#/swap",
+    dex: "Curve",
+    url: "https://curve.fi/#/polygon/pools/factory-v2-221/swap",
   },
   avalanche: {
     pairs: ["axlUSDC/USDC"],
     dex: "Curve",
-    url: "https://avax.curve.fi/factory/82",
+    url: "https://curve.fi/#/avalanche/pools/factory-v2-82/swap",
   },
   fantom: {
     pairs: ["axlUSDC/USDC"],
     dex: "Curve",
-    url: "https://ftm.curve.fi/factory/85",
+    url: "https://curve.fi/#/fantom/pools/factory-v2-85/swap",
   },
   terra: {
     pairs: ["axlUSDC/axlUSDT", "axlUSDC/LUNA"],
@@ -60,5 +60,20 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
     pairs: ["axlUSDC/BUSD"],
     dex: "Ellipsis",
     url: "https://ellipsis.finance/pool/0x6731D8ce7C52FEc9136cf3b7d122C032C46fF58f",
+  },
+  arbitrum: {
+    pairs: ["axlUSDC/USDC"],
+    dex: "Curve",
+    url: "https://curve.fi/#/arbitrum/pools/factory-v2-64/swap",
+  },
+  moonbeam: {
+    pairs: ["GLMR/axlUSDC"],
+    dex: "Stellaswap",
+    url: "https://app.stellaswap.com/exchange/swap",
+  },
+  celo: {
+    pairs: ["axlUSDC/cUSD"],
+    dex: "Curve",
+    url: "https://curve.fi/#/celo/pools/factory-v2-3/swap",
   },
 };

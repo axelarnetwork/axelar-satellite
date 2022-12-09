@@ -3,17 +3,17 @@ import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/terra`,
-  rest: "https://phoenix-lcd.terra.dev",
-  chainId: "phoenix-1",
-  chainName: "Terra",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/terra-classic`,
+  rest: "https://api-terra-ia.cosmosia.notional.ventures",
+  chainId: "columbus-5",
+  chainName: "Terra Classic",
   stakeCurrency: {
     coinDenom: "LUNA",
     coinMinimalDenom: "uluna",
     coinDecimals: 6,
-    coinGeckoId: "terra-luna-2",
+    coinGeckoId: "terra-luna",
   },
-  chainIdentifier: "terra",
+  chainIdentifier: "terra classic",
   bip44: {
     coinType: 330,
   },
@@ -23,7 +23,7 @@ export default {
       coinDenom: "LUNA",
       coinMinimalDenom: "uluna",
       coinDecimals: 6,
-      coinGeckoId: "terra-luna-2",
+      coinGeckoId: "terra-luna",
     },
   ],
   feeCurrencies: [
@@ -31,10 +31,10 @@ export default {
       coinDenom: "LUNA",
       coinMinimalDenom: "uluna",
       coinDecimals: 6,
-      coinGeckoId: "terra-luna-2",
+      coinGeckoId: "terra-luna",
     },
   ],
   gasPriceStep: { low: 5.665, average: 5.665, high: 7 },
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
-  chainToAxelarChannelId: "channel-6",
+  chainToAxelarChannelId: "channel-19",
 } as CosmosChain;
