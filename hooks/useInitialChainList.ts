@@ -121,9 +121,16 @@ export const useInitialChainList = () => {
       const sortedChains = chains.sort((a, b) =>
         a.chainName.localeCompare(b.chainName)
       );
-      const filteredChains = sortedChains.filter(
-        (chain) => !DISABLED_CHAIN_NAMES.includes(chain.chainName.toLowerCase())
-      );
+      const filteredChains = sortedChains.filter((chain) => {
+        const splitChainNames = DISABLED_CHAIN_NAMES.split(",");
+        // console.log({
+        //   splitChainNames,
+        //   "!splitChainNames.find((c) => c === (chain as any).id)":
+        //     !splitChainNames.find((c) => c === (chain as any).id),
+        // });
+        return !splitChainNames.find((c) => c === (chain as any).id);
+        // !DISABLED_CHAIN_NAMES.split(',').includes(chain.chainName.toLowerCase())
+      });
       filteredChains.forEach((chain) => {
         chain.assets = [
           ...updateChainAssets(chain),
@@ -144,14 +151,16 @@ export const useInitialChainList = () => {
       let srcChainFound = chains.find(
         (chain) =>
           chain.chainName.toLowerCase() === source &&
-          !DISABLED_CHAIN_NAMES.toLowerCase().includes(source.toLowerCase())
+          !DISABLED_CHAIN_NAMES.split(",").find((c) => c === (chain as any).id)
+        // !DISABLED_CHAIN_NAMES.toLowerCase().includes(source.toLowerCase())
       ) as ChainInfo;
       let destChainFound = chains.find(
         (chain) =>
           chain.chainName.toLowerCase() === destination &&
-          !DISABLED_CHAIN_NAMES.toLowerCase().includes(
-            destination.toLowerCase()
-          )
+          !DISABLED_CHAIN_NAMES.split(",").find((c) => c === (chain as any).id)
+        // !DISABLED_CHAIN_NAMES.toLowerCase().includes(
+        //   destination.toLowerCase()
+        // )
       ) as ChainInfo;
 
       /**

@@ -55,8 +55,9 @@ export const DestChainSelector = () => {
     );
     if (!policy) return;
     setFilteredChains(
-      newChains.filter((_chain) =>
-        policy?.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
+      newChains.filter(
+        (_chain) =>
+          !!policy?.restrictDestChainsTo.find((c) => c === (_chain as any).id)
       )
     );
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
