@@ -27,7 +27,7 @@ export const useNormalizeChains = () => {
     }, 100);
 
     return () => clearTimeout(timeout);
-  }, [srcChain, destChain]);
+  }, [srcChain, destChain, asset]);
 
   /**
    * Use the source chain as base and find a destination chain that has an asset in common with the source chain
