@@ -18,6 +18,7 @@ import comdex from "./comdex";
 import regen from "./regen";
 import { agoric } from "./agoric";
 import { umee } from "./umee";
+import terraClassic from "./terra_classic";
 
 export const mainnetChains: CosmosChain[] = [
   terra,
@@ -39,4 +40,5 @@ export const mainnetChains: CosmosChain[] = [
   regen,
   agoric,
   umee,
+  terraClassic,
 ];
