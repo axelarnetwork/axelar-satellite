@@ -12,7 +12,7 @@ export function useDetectUnwrapTransfer() {
   useContractEvent({
     chainId: destChainId as number,
     address:
-      (asset?.chain_aliases?.[destChain?.chainIdentifier?.[ENVIRONMENT]]
+      (asset?.chain_aliases?.[destChain?.chainName.toLowerCase()]
         ?.tokenAddress as string) || "0x",
     abi: [
       {
@@ -37,7 +37,7 @@ export function useDetectUnwrapTransfer() {
     ],
     eventName: "Withdrawal",
     listener: (...event) => {
-      if (asset?.native_chain !== destChain.chainIdentifier[ENVIRONMENT])
+      if (asset?.native_chain !== destChain.chainName.toLowerCase())
         return;
       const address = event[0];
       if (
