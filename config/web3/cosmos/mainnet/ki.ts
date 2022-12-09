@@ -1,7 +1,8 @@
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=ki",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/ki`,
   rest: "https://api-mainnet.blockchain.ki",
   chainId: "kichain-2",
   chainName: "Ki",
@@ -41,6 +42,5 @@ export default {
   gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "ki",
-  chainToAxelarChannelId: "channel-19"
-
+  chainToAxelarChannelId: "channel-19",
 } as CosmosChain;

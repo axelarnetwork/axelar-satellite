@@ -24,7 +24,8 @@ export const DEFAULT_ASSET = process.env.NEXT_PUBLIC_DEFAULT_ASSET || "uaxl";
 
 export const COSMOS_PROXY_RPC_TESTNET =
   "https://testnet-rpc-router.axelar-dev.workers.dev";
-export const COSMOS_PROXY_RPC_MAINNET = "";
+export const COSMOS_PROXY_RPC_MAINNET =
+  "https://mainnet-rpc-router.axelar-dev.workers.dev";
 
 export const tokenContractDocs: Record<string, string> = {
   local: "https://docs.axelar.dev/resources/testnet",

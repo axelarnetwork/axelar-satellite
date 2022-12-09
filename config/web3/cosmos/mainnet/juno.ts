@@ -1,8 +1,9 @@
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
   rest: "https://lcd-juno.itastakers.com",
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=juno",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/juno`,
   chainId: "juno-1",
   chainToAxelarChannelId: "channel-71",
   currencies: [
