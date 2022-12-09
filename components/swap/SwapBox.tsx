@@ -15,6 +15,7 @@ import {
   useDetectDepositConfirmation,
   useDetectUnwrapTransfer,
   usePreventDuplicateChains,
+  useRestrictAssets,
 } from "../../hooks";
 import { TopFlows } from "./parts/TopFlows";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
@@ -24,6 +25,8 @@ export const SwapBox = () => {
   usePreventDuplicateChains();
   useDetectDepositConfirmation();
   useDetectUnwrapTransfer();
+
+  useRestrictAssets();
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
