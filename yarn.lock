@@ -20,10 +20,10 @@
   resolved "https://registry.yarnpkg.com/@axelar-network/axelar-cgp-solidity/-/axelar-cgp-solidity-4.3.0.tgz#90b42b261759fe6b229932152a0911cee071a6ee"
   integrity sha512-0cCgCFtxnipyzSplPnj/HxDx4DqqHGEr+J7M7NWKM1fXvfS4t/70aCAw/h9GYW8dZ3BmKOqKAYQCNpmP+2Oa+w==
 
-"@axelar-network/axelarjs-sdk@0.12.0-alpha.3":
-  version "0.12.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.12.0-alpha.3.tgz#d0e6b6b0c98362cc4cb51c82aef501801822cc27"
-  integrity sha512-BtjqjSZChkSuozKFaIJ7UfqZs0bdkoLGnDx7M8v6oVklZH24q7BQnEf3A59WnFyplYz7vAA9NGGoNX57CJMKEw==
+"@axelar-network/axelarjs-sdk@0.12.0-alpha.4":
+  version "0.12.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelarjs-sdk/-/axelarjs-sdk-0.12.0-alpha.4.tgz#0297d074de2d3c70f3f3e1097e2ab334b7061fe7"
+  integrity sha512-pxnrbonoXCMvlqhr7vEDyHNamXpQi/ECOzyHx6qtvd3uL6kbc89ieC0wYZJVqe0PKfcWTB/7rAfiNNVNCLMeLA==
   dependencies:
     "@axelar-network/axelar-cgp-solidity" "^4.3.0"
     "@axelar-network/axelarjs-types" "^0.27.0"
