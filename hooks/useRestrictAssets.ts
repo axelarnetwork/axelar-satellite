@@ -17,15 +17,16 @@ export const useRestrictAssets = () => {
   }, [restrictedAssetIsSelected, srcChain, destChain]);
 
   function restrictDestChain() {
-    const destChainName = destChain?.chainName?.toLowerCase();
+    const destChainNameId = (destChain as any).id;
 
     for (const rule of ASSET_RESTRICTIONS) {
       if (
         rule.assets.includes((asset as any)?.id || "") &&
-        !rule.restrictDestChainsTo.includes(destChainName)
+        !rule.restrictDestChainsTo.find((c) => c === destChainNameId)
       ) {
-        const chain = allChains.find((_chain) =>
-          rule.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
+        const chain = allChains.find(
+          (_chain) =>
+            !!rule.restrictDestChainsTo.find((c) => c === (_chain as any).id)
         );
         if (chain) return setDestChain(chain);
       }
