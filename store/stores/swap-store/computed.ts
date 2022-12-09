@@ -1,6 +1,7 @@
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { assert } from "console";
 import memoize from "proxy-memoize";
-import { ENVIRONMENT } from "../../../config/constants";
+import { ASSET_RESTRICTIONS, ENVIRONMENT } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 
@@ -122,6 +123,17 @@ export const getUnwrappedAssetName = memoize(
     );
 
     return nativeAsset?.assetSymbol;
+  }
+);
+
+export const getRestrictedAssetIsSelected = memoize(
+  (state: { asset: NativeAssetConfig | null }) => {
+    const restrictedAssets = ASSET_RESTRICTIONS.map(
+      (rule) => rule.assets
+    ).flat();
+    if (restrictedAssets.includes(state.asset?.id || "")) return true;
+
+    return false;
   }
 );
 

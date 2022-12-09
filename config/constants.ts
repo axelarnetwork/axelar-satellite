@@ -39,3 +39,12 @@ export const docsLinks: Record<string, string> = {
   testnet: "https://docs.axelar.dev/releases/testnet",
   mainnet: "https://docs.axelar.dev/releases/mainnet",
 };
+
+type AssetRestriction = {
+  assets: string[];
+  restrictDestChainsTo: string[];
+};
+const chainPolicies = process.env.NEXT_PUBLIC_CHAIN_POLICIES;
+export const ASSET_RESTRICTIONS: AssetRestriction[] = chainPolicies
+  ? JSON.parse(chainPolicies)
+  : [];
