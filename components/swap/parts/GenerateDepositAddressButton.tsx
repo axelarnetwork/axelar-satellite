@@ -52,6 +52,10 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
   }
 
   async function handleOnGenerateDepositAddress() {
+    if ((srcChain as any).id === "terra")
+      return toast.error(
+        "Only the transfers to Terra Classic are allowed for uluna and uusd"
+      );
     if (!asset) return toast.error("Asset can't be empty");
     if (!Number(tokensToTransfer))
       return toast.error("Please enter the amount of tokens to transfer");
