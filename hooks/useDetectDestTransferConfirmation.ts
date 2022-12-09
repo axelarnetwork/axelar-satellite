@@ -1,3 +1,4 @@
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { ENVIRONMENT, SOCKET_API } from "../config/constants";
@@ -22,11 +23,13 @@ export const useDetectDestTransferConfirmation = () => {
     useSwapStore();
 
   function checkPayload(data: any) {
+    console.log({ useDetectDestTransferConfirmation: data });
     if (destChain && destChain.chainName.toLowerCase() === "axelar") {
       if (data.Type !== `axelar.axelarnet.v1beta1.AxelarTransferCompleted`)
         return;
       //TODO: receipient is intentionally misspelled because that is the property that is received from the emitted event
-      if (!(data.Attributes.receipient as string)?.includes(destAddress)) return;
+      if (!(data.Attributes.receipient as string)?.includes(destAddress))
+        return;
     } else {
       if (data.Type !== "fungible_token_packet") return;
       if (data.Attributes.receiver !== destAddress) return;
@@ -39,6 +42,7 @@ export const useDetectDestTransferConfirmation = () => {
     if (swapStatus !== SwapStatus.WAIT_FOR_CONFIRMATION) return;
 
     const assetCommonKey = asset?.common_key[ENVIRONMENT];
+
     const assetData = destChain.assets?.find(
       (asset) => asset.common_key === assetCommonKey
     );
@@ -51,7 +55,9 @@ export const useDetectDestTransferConfirmation = () => {
           )
         : buildEvmTransferCompletedRoomId(
             destAddress,
-            assetData?.common_key as string
+            (destChain as any)?.id === "terra"
+              ? (asset?.chain_aliases["axelar"].fullDenomPath as string)
+              : (assetData?.common_key as string)
           );
 
     console.log("room ID", roomId);

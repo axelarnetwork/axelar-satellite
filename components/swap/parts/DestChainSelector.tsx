@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
+import {
+  getRestrictedAssetIsSelected,
+  getSelectedAssetSymbol,
+  useSwapStore,
+} from "../../../store";
 import { useOnClickOutside } from "usehooks-ts";
 import { convertChainName } from "../../../utils/transformers";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useRouter } from "next/router";
 import { extractDenom } from "../../../utils/extractDenom";
-import { ENVIRONMENT } from "../../../config/constants";
+import { ASSET_RESTRICTIONS, ENVIRONMENT } from "../../../config/constants";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -14,6 +18,8 @@ export const DestChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
   const { srcChain, allChains, setAllChains, asset } = useSwapStore();
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+  const restrictedAssetIsSelected = useSwapStore(getRestrictedAssetIsSelected);
+
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { destChain, setDestChain } = useSwapStore((state) => state);
@@ -40,6 +46,19 @@ export const DestChainSelector = () => {
         return !!sourceAssets?.find((v) => destAssets?.includes(v));
       });
     setFilteredChains(newChains);
+
+    if (!restrictedAssetIsSelected) return setFilteredChains(newChains);
+
+    // find the right policy based on asset
+    const policy = ASSET_RESTRICTIONS.find((_policy) =>
+      _policy.assets.includes((asset as any)?.id || "")
+    );
+    if (!policy) return;
+    setFilteredChains(
+      newChains.filter((_chain) =>
+        policy?.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
+      )
+    );
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
 
   useEffect(() => {

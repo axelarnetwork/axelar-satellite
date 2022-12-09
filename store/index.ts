@@ -3,7 +3,7 @@ import memoize from "proxy-memoize";
 import create, { createStore } from "zustand";
 import { persist } from "zustand/middleware";
 import { devtools } from "zustand/middleware";
-import { DEFAULT_ASSET, ENVIRONMENT } from "../config/constants";
+import { ASSET_RESTRICTIONS, ENVIRONMENT } from "../config/constants";
 import { NativeAssetConfig } from "../config/nativeAssetList/testnet";
 import { getWagmiChains } from "../config/web3";
 
@@ -117,6 +117,17 @@ export const getSelectedAssetSymbolDestinationChain = memoize(
     if (!assetInfo) return "";
 
     return assetInfo?.assetSymbol || "";
+  }
+);
+
+export const getRestrictedAssetIsSelected = memoize(
+  (state: { asset: NativeAssetConfig | null }) => {
+    const restrictedAssets = ASSET_RESTRICTIONS.map(
+      (rule) => rule.assets
+    ).flat();
+    if (restrictedAssets.includes((state.asset as any)?.id || "")) return true;
+
+    return false;
   }
 );
 
