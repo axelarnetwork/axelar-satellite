@@ -45,7 +45,8 @@ type AssetRestriction = {
   assets: string[];
   restrictDestChainsTo: string[];
 };
-const chainPolicies = process.env.NEXT_PUBLIC_CHAIN_POLICIES;
+const chainPolicies =
+  '[{"assets":["uluna", "uusd"],"restrictDestChainsTo":["terra"]}]';
 export const ASSET_RESTRICTIONS: AssetRestriction[] = chainPolicies
   ? JSON.parse(chainPolicies)
   : [];
