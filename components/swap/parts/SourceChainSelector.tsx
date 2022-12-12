@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
 import { convertChainName } from "../../../utils/transformers";
+import { ASSET_RESTRICTIONS } from "../../../config/constants";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -26,7 +27,9 @@ export const SourceChainSelector = () => {
     const newChains = allChains.filter(
       (chain) =>
         chain.chainName !== destChain.chainName &&
-        chain.chainName !== srcChain.chainName
+        chain.chainName !== srcChain.chainName &&
+        // TODO: fix correctly
+        !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes((chain as any).id)
     );
     // .filter((chain) =>
     //   chain.assets
@@ -55,7 +58,9 @@ export const SourceChainSelector = () => {
       (chain) =>
         chain.chainName.toLowerCase().includes(searchChainInput) &&
         chain.chainName !== destChain.chainName &&
-        chain.chainName !== srcChain.chainName
+        chain.chainName !== srcChain.chainName &&
+        // TODO: fix correctly
+        !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes((chain as any).id)
     );
     setFilteredChains(chains);
   }, [allChains, searchChainInput]);

@@ -44,9 +44,10 @@ export const docsLinks: Record<string, string> = {
 type AssetRestriction = {
   assets: string[];
   restrictDestChainsTo: string[];
+  hideSrcChains: string[];
 };
 const chainPolicies =
-  '[{"assets":["uluna", "uusd"],"restrictDestChainsTo":["terra"]}]';
+  '[{"assets":["uluna", "uusd"],"restrictDestChainsTo":["terra"], "hideSrcChains": ["terra"]}]';
 export const ASSET_RESTRICTIONS: AssetRestriction[] = chainPolicies
   ? JSON.parse(chainPolicies)
   : [];
