@@ -11,6 +11,8 @@ import aura from "./aura";
 import comdex from "./comdex";
 import persistence from "./persistence";
 import { CosmosChain } from "../interface";
+import xpla from "./xpla";
+import burnt from "./burnt";
 
 export const testnetChains: CosmosChain[] = [
   terra,
@@ -25,4 +27,6 @@ export const testnetChains: CosmosChain[] = [
   crescent,
   fetch,
   persistence,
+  xpla,
+  burnt,
 ];

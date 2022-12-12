@@ -197,7 +197,7 @@ export const TransferStats = () => {
 
   function renderPoolInfo() {
     if ((asset as any)?.id === "uusdc") {
-      const chainName = destChain.chainName.toLowerCase();
+      const chainName = destChain?.chainName?.toLowerCase();
       const pool = USDC_POOLS[chainName];
       const pair = pool?.pairs[0];
 
