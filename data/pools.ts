@@ -13,8 +13,8 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   polygon: {
     pairs: ["axlUSDC/USDC"],
-    dex: "Curve",
-    url: "https://curve.fi/#/polygon/pools/factory-v2-221/swap",
+    dex: "Quickswap",
+    url: "https://quickswap.exchange/#/swap",
   },
   avalanche: {
     pairs: ["axlUSDC/USDC"],
