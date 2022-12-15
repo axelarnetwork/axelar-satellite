@@ -13,7 +13,6 @@ export const SourceChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  console.log(dropdownOpen);
   const {
     allChains,
     srcChain,
