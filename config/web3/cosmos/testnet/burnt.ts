@@ -1,4 +1,3 @@
-import { Bech32Address } from "@keplr-wallet/cosmos";
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
@@ -9,23 +8,41 @@ export default {
   chainName: "Burnt Testnet",
   chainIdentifier: "burnt",
   stakeCurrency: {
-    coinDenom: "BURNT",
-    coinMinimalDenom: "burnt",
-    coinDecimals: 18,
+    coinDenom: "TURNT",
+    coinMinimalDenom: "uturnt",
+    coinDecimals: 6,
+    coinGeckoId: "burnt",
   },
-  bech32Config: Bech32Address.defaultBech32Config("burnt"),
-  bip44: { coinType: 330 },
+  bech32Config: {
+    bech32PrefixAccAddr: "burnt",
+    bech32PrefixAccPub: "burntpub",
+    bech32PrefixValAddr: "burntvaloper",
+    bech32PrefixValPub: "burntvaloperpub",
+    bech32PrefixConsAddr: "burntvalcons",
+    bech32PrefixConsPub: "burntvalconspub",
+  },
+  bip44: { coinType: 118 },
   currencies: [
-    { coinDenom: "BURNT", coinMinimalDenom: "burnt", coinDecimals: 18 },
+    {
+      coinDenom: "TURNT",
+      coinMinimalDenom: "uturnt",
+      coinDecimals: 6,
+      coinGeckoId: "turnt",
+    },
   ],
   feeCurrencies: [
     {
-      coinDenom: "BURNT",
-      coinMinimalDenom: "burn",
-      coinDecimals: 18,
+      coinDenom: "TURNT",
+      coinMinimalDenom: "uturnt",
+      coinDecimals: 6,
+      coinGeckoId: "turnt",
     },
   ],
-  gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
-  features: ["ibc-transfer"],
+  gasPriceStep: {
+    low: 0.25,
+    average: 0.25,
+    high: 0.4,
+  },
+  features: ["stargate", "no-legacy-stdTx", "cosmwasm", "ibc-transfer"],
   chainToAxelarChannelId: "channel-1",
 } as CosmosChain;
