@@ -9,6 +9,7 @@ import { mainnetChains as evmMainnetChains } from "./evm/mainnet";
 import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
 import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";
 import { CosmosChain } from "./cosmos/interface";
+import _ from "lodash";
 
 // sdk chains (generic)
 // export const allAssets = loadAssets({
@@ -37,29 +38,39 @@ export const getCosmosChains = (allAssets: AssetConfig[]) => {
     return [];
   }
 
-  return chains.map((cosmosChain) => {
-    return {
-      ...cosmosChain,
-      currencies: [
-        cosmosChain.currencies[0],
-        ...allAssets
-          .filter(
-            (assetConfig) =>
-              assetConfig.chain_aliases[cosmosChain.chainIdentifier] &&
-              assetConfig.common_key[ENVIRONMENT] !==
-                cosmosChain?.currencies[0]?.coinMinimalDenom
-          )
-          .map((assetConfig) => {
-            const asset =
-              assetConfig.chain_aliases[cosmosChain.chainIdentifier];
-            return {
-              coinDenom: asset.assetSymbol as string,
-              coinMinimalDenom: asset.ibcDenom as string,
-              coinDecimals: assetConfig.decimals,
-              coinGeckoId: asset.assetSymbol as string,
-            };
-          }),
-      ],
-    };
-  });
+  chains = chains
+    .map((cosmosChain) => {
+      return {
+        ...cosmosChain,
+        currencies: [
+          cosmosChain.currencies[0],
+          ...allAssets
+            .filter(
+              (assetConfig) =>
+                assetConfig.chain_aliases[cosmosChain.chainIdentifier] &&
+                assetConfig.common_key[ENVIRONMENT] !==
+                  cosmosChain?.currencies[0]?.coinMinimalDenom
+            )
+            .map((assetConfig) => {
+              const asset =
+                assetConfig.chain_aliases[cosmosChain.chainIdentifier];
+              return {
+                coinDenom: asset.assetSymbol as string,
+                coinMinimalDenom: asset.ibcDenom as string,
+                coinDecimals: assetConfig.decimals,
+                coinGeckoId: asset.assetSymbol as string,
+              };
+            }),
+        ],
+      };
+    })
+    .map((_chain) => {
+      _chain.currencies = _.uniqBy(
+        _chain.currencies,
+        (currency) => currency.coinDenom
+      );
+      return _chain;
+    });
+
+  return chains;
 };

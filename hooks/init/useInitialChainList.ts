@@ -6,6 +6,7 @@ import {
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import _ from "lodash";
 import {
   DEFAULT_ASSET,
   DEFAULT_DEST_CHAIN,
@@ -69,6 +70,16 @@ export const useInitialChainList = () => {
   async function loadInitialChains() {
     // load chains with native assets
     const chains = await loadAllChains(ENVIRONMENT)
+      .then((_chains) => {
+        _chains.map((_chain) => {
+          _chain.assets = _.uniqBy(
+            _chain.assets,
+            (_asset) => _asset.assetSymbol
+          );
+          return _chain;
+        });
+        return _chains;
+      })
       // .then((_chains) => addNativeAssets(_chains, nativeAssets, ENVIRONMENT))
       .then((_chains) => setAllChains(_chains))
       .catch((error) => {
