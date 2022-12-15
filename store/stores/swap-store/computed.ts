@@ -1,9 +1,8 @@
-import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
-import { assert } from "console";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import memoize from "proxy-memoize";
-import { ASSET_RESTRICTIONS, ENVIRONMENT } from "../../../config/constants";
-import { getWagmiChains } from "../../../config/web3";
-import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+import { ASSET_RESTRICTIONS, ENVIRONMENT } from "config/constants";
+import { getWagmiChains } from "config/web3";
+import { AssetConfigExtended } from "types";
 
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   if (!state.srcChain) return undefined;
@@ -28,7 +27,7 @@ export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
 });
 
 export const getSrcTokenAddress = memoize(
-  (state: { srcChain: ChainInfo; asset: AssetConfig | null }) => {
+  (state: { srcChain: ChainInfo; asset: AssetConfigExtended | null }) => {
     if (!state.asset || !state.srcChain) return null;
     const srcChain = state.srcChain;
     const assetCommonKey = state.asset.common_key[ENVIRONMENT];
@@ -41,21 +40,24 @@ export const getSrcTokenAddress = memoize(
 );
 
 export const getReservedAddresses = memoize(
-  (state: { allAssets: AssetConfig[] }) => {
-    const addresses = state.allAssets?.reduce((a: string[], b: AssetConfig) => {
-      return [
-        ...a,
-        ...Object.values(b.chain_aliases)
-          .map((chain) => chain?.tokenAddress || "")
-          .filter((data) => data !== ""), // clean
-      ];
-    }, []);
+  (state: { allAssets: AssetConfigExtended[] }) => {
+    const addresses = state.allAssets?.reduce(
+      (a: string[], b: AssetConfigExtended) => {
+        return [
+          ...a,
+          ...Object.values(b.chain_aliases)
+            .map((chain) => chain?.tokenAddress || "")
+            .filter((data) => data !== ""), // clean
+        ];
+      },
+      []
+    );
     return addresses;
   }
 );
 
 export const getSelectedAssetSymbol = memoize(
-  (state: { asset: AssetConfig | null; srcChain: ChainInfo }) => {
+  (state: { asset: AssetConfigExtended | null; srcChain: ChainInfo }) => {
     const chainName = state?.srcChain?.chainName?.toLowerCase();
     if (!chainName) return "";
     const assetInfo = state?.asset?.chain_aliases[chainName];
@@ -66,7 +68,7 @@ export const getSelectedAssetSymbol = memoize(
 );
 
 export const getSelectedAssetName = memoize(
-  (state: { asset: AssetConfig | null; srcChain: ChainInfo }) => {
+  (state: { asset: AssetConfigExtended | null; srcChain: ChainInfo }) => {
     const chainName = state?.srcChain?.chainName?.toLowerCase();
     if (!chainName) return "";
     const assetInfo = state?.asset?.chain_aliases[chainName];
@@ -77,13 +79,13 @@ export const getSelectedAssetName = memoize(
 );
 
 export const isAXLToken = memoize(
-  (state: { asset: AssetConfig | null; srcChain: ChainInfo }) => {
+  (state: { asset: AssetConfigExtended | null; srcChain: ChainInfo }) => {
     return state?.asset?.common_key[ENVIRONMENT] === "uaxl";
   }
 );
 
 export const getSelectedAssetNameDestChain = memoize(
-  (state: { asset: AssetConfig | null; destChain: ChainInfo }) => {
+  (state: { asset: AssetConfigExtended | null; destChain: ChainInfo }) => {
     const chainName = state?.destChain?.chainName?.toLowerCase();
     if (!chainName) return "";
     const assetInfo = state?.asset?.chain_aliases[chainName];
@@ -94,7 +96,7 @@ export const getSelectedAssetNameDestChain = memoize(
 );
 
 export const getSelectedAssetSymbolDestinationChain = memoize(
-  (state: { asset: AssetConfig | null; destChain: ChainInfo }) => {
+  (state: { asset: AssetConfigExtended | null; destChain: ChainInfo }) => {
     const chainName = state?.destChain?.chainName?.toLowerCase();
     if (!chainName) return "";
     const assetInfo = state?.asset?.chain_aliases[chainName];
@@ -104,30 +106,56 @@ export const getSelectedAssetSymbolDestinationChain = memoize(
   }
 );
 
-export const getUnwrappedAssetName = memoize(
+export const getSelectedAsssetIsWrapped = memoize(
   (state: {
-    asset: NativeAssetConfig | null;
+    asset: AssetConfigExtended | null;
+    destChain: ChainInfo;
+    srcChain: ChainInfo;
+  }): boolean => {
+    if (!state.asset) return false;
+    const destChainName = state.destChain?.chainName?.toLowerCase();
+    return (
+      !state.asset.is_gas_token && state.asset.native_chain === destChainName
+    );
+  }
+);
+
+export const getUnwrappedAssetSymbol = memoize(
+  (state: {
+    allAssets: AssetConfigExtended[];
+    asset: AssetConfigExtended | null;
     destChain: ChainInfo;
     srcChain: ChainInfo;
   }) => {
-    // return null if not a wrapped asset
-    const isWrappedAsset =
-      state?.asset?.native_chain === state.destChain?.chainName?.toLowerCase();
-    if (!isWrappedAsset) return null;
+    const nativeToken = state.allAssets.find(
+      (_asset) =>
+        _asset.native_chain === state.destChain.chainName?.toLowerCase() &&
+        _asset.is_gas_token
+    )?.chain_aliases[state.destChain.chainName?.toLowerCase()];
 
-    // return asset symbol if wrapped asset
-    const nativeAsset = state.destChain.assets?.find(
-      (asset) =>
-        (asset as any).is_native_asset &&
-        asset.native_chain === state.destChain?.chainName?.toLowerCase()
-    );
+    return nativeToken?.assetSymbol;
+  }
+);
 
-    return nativeAsset?.assetSymbol;
+export const getWrappedAssetName = memoize(
+  (state: {
+    allAssets: AssetConfigExtended[];
+    asset: AssetConfigExtended | null;
+    destChain: ChainInfo;
+    srcChain: ChainInfo;
+  }) => {
+    const wrappedToken = state.allAssets.find(
+      (_asset) =>
+        _asset.native_chain === state.destChain.chainName?.toLowerCase() &&
+        !_asset.is_gas_token
+    )?.chain_aliases[state.destChain.chainName?.toLowerCase()];
+
+    return wrappedToken?.assetSymbol;
   }
 );
 
 export const getRestrictedAssetIsSelected = memoize(
-  (state: { asset: NativeAssetConfig | null }) => {
+  (state: { asset: AssetConfigExtended | null }) => {
     const restrictedAssets = ASSET_RESTRICTIONS.map(
       (rule) => rule.assets
     ).flat();

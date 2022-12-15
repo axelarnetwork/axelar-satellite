@@ -20,16 +20,16 @@ import { TopFlows } from "./parts/TopFlows";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
 import { ENVIRONMENT as env } from "../../config/constants";
 import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
-import { getUnwrappedAssetName, useSwapStore } from "../../store";
+import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
   useDetectDepositConfirmation();
-
   useRestrictAssets();
 
-  const { srcChain } = useSwapStore((state) => state);
-  const unwrappedAssetName = useSwapStore(getUnwrappedAssetName);
+  const srcChain = useSwapStore((state) => state.srcChain);
+  const destChain = useSwapStore((state) => state.destChain);
+  const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
@@ -74,11 +74,13 @@ export const SwapBox = () => {
         <InputWrapper>
           <TokenSelector />
         </InputWrapper>
-        {unwrappedAssetName && srcChain?.module === "evm" && (
-          <InputWrapper>
-            <DestinationTokenSelector />
-          </InputWrapper>
-        )}
+        {srcChain?.module === "evm" &&
+          destChain?.module === "evm" &&
+          selectedAssetIsWrapped && (
+            <InputWrapper>
+              <DestinationTokenSelector />
+            </InputWrapper>
+          )}
 
         <SwapStates />
 

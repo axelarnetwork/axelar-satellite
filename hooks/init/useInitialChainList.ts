@@ -13,10 +13,6 @@ import {
   DISABLED_CHAIN_NAMES,
   ENVIRONMENT,
 } from "../../config/constants";
-import {
-  NativeAssetConfig,
-  nativeAssets,
-} from "../../config/web3/evm/native-assets";
 import { useSwapStore } from "../../store";
 import { RouteQuery } from "../../types";
 import { addNativeAssets, loadAllChains } from "../../utils/api";
@@ -73,7 +69,7 @@ export const useInitialChainList = () => {
   async function loadInitialChains() {
     // load chains with native assets
     const chains = await loadAllChains(ENVIRONMENT)
-      .then((_chains) => addNativeAssets(_chains, nativeAssets, ENVIRONMENT))
+      // .then((_chains) => addNativeAssets(_chains, nativeAssets, ENVIRONMENT))
       .then((_chains) => setAllChains(_chains))
       .catch((error) => {
         toast.error(
@@ -156,33 +152,32 @@ export const useInitialChainList = () => {
   async function loadInitialAssets() {
     return loadAssets({ environment: ENVIRONMENT }).then(
       (assets: AssetConfig[]) => {
-        const assetsWithNative = [...nativeAssets, ...assets];
-        setAllAssets(assetsWithNative as NativeAssetConfig[]);
+        setAllAssets(assets);
 
         const { asset_denom } = router.query as RouteQuery;
 
         // if asset not provided get default asset
         if (!asset_denom) {
           setAsset(
-            assetsWithNative.find((asset) =>
+            assets.find((asset) =>
               asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
-            ) as NativeAssetConfig
+            )
           );
           return {
             assetDenom: DEFAULT_ASSET,
           };
         }
 
-        const assetFound = assetsWithNative.find((asset) =>
+        const assetFound = assets.find((asset) =>
           asset?.common_key[ENVIRONMENT].includes(asset_denom)
         );
         if (assetFound) {
-          setAsset(assetFound as NativeAssetConfig);
+          setAsset(assetFound);
         } else {
           setAsset(
             assets.find((asset) =>
               asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
-            ) as NativeAssetConfig
+            )
           );
         }
 

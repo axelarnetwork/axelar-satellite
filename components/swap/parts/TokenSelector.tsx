@@ -24,9 +24,10 @@ import { getWagmiChains } from "../../../config/web3";
 
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
-import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+// import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 import { UnwrapToNativeChainCheckbox } from "./UnwrapToNativeChainCheckbox";
 import { MaxButton } from "../../../features/max-button";
+import { AssetConfigExtended } from "types";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -52,10 +53,10 @@ export const TokenSelector = () => {
       const newNetwork = data.networkNameOverride;
       const chain =
         srcChain.chainName?.toLowerCase() === newNetwork ? srcChain : destChain;
-      setTimeout(
-        () => addTokenToMetamask(asset as NativeAssetConfig, chain),
-        2000
-      );
+      setTimeout(() => {
+        if (!asset) return;
+        addTokenToMetamask(asset, chain);
+      }, 2000);
     },
   });
   const router = useRouter();
@@ -73,8 +74,7 @@ export const TokenSelector = () => {
     useIsTerraConnected();
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
-  const [filteredAssets, setFilteredAssets] =
-    useState<NativeAssetConfig[]>(selectableAssetList);
+  const [filteredAssets, setFilteredAssets] = useState<AssetConfigExtended[]>();
   const { balance, loading, terraStationBalance } = useGetAssetBalance();
   const connectTerraStation = useConnectTerraStation();
   const [showBalance, setShowBalance] = useState(false);
@@ -133,14 +133,21 @@ export const TokenSelector = () => {
   useEffect(() => {
     let list;
     if (srcChain.module === "evm") {
-      list = selectableAssetList.filter((asset) => {
-        // @ts-ignore
-        return (
-          !asset.is_native_asset ||
-          (asset.is_native_asset &&
-            srcChain.chainName?.toLowerCase() === asset.native_chain)
-        );
-      });
+      list = selectableAssetList
+        .filter((asset) => {
+          // @ts-ignore
+          return (
+            !asset.is_gas_token ||
+            (asset.is_gas_token &&
+              srcChain.chainName?.toLowerCase() === asset.native_chain)
+          );
+        })
+        .filter((asset) => {
+          const srcChainName = srcChain.chainName?.toLowerCase();
+          if (asset.is_gas_token && asset.native_chain !== srcChainName)
+            return false;
+          return true;
+        });
     }
     setFilteredAssets(list || selectableAssetList);
   }, [selectableAssetList, srcChain]);
@@ -204,7 +211,7 @@ export const TokenSelector = () => {
   });
 
   function handleOnDropdownToggle() {
-    if (dropdownOpen) setFilteredAssets(selectableAssetList);
+    // if (dropdownOpen) setFilteredAssets(selectableAssetList);
     setDropdownOpen(!dropdownOpen);
   }
 
@@ -212,7 +219,7 @@ export const TokenSelector = () => {
   //   setFilteredAssets(selectableAssetList);
   // }, [selectableAssetList]);
 
-  async function handleOnAssetChange(asset: NativeAssetConfig) {
+  async function handleOnAssetChange(asset: AssetConfigExtended) {
     // await router.push({
     //   query: {
     //     ...router.query,
@@ -381,15 +388,13 @@ export const TokenSelector = () => {
           />
         </div>
         <ul tabIndex={0} onClick={handleOnDropdownToggle}>
-          {filteredAssets.map((asset) => {
+          {filteredAssets?.map((asset) => {
             return (
-              <li key={asset.common_key[ENVIRONMENT]}>
+              <li key={asset.id}>
                 <button onClick={() => handleOnAssetChange(asset)}>
                   <Image
                     loading="eager"
-                    src={`/assets/tokens/${asset.common_key[
-                      ENVIRONMENT
-                    ]?.toLowerCase()}.logo.svg`}
+                    src={`/assets/tokens/${asset.id}.logo.svg`}
                     layout="intrinsic"
                     width={35}
                     height={35}
@@ -529,7 +534,10 @@ export const TokenSelector = () => {
   return asset ? (
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
-        <label className="block text-xs">I want to transfer from <span className="capitalize">{srcChain.chainName}</span></label>
+        <label className="block text-xs">
+          I want to transfer from{" "}
+          <span className="capitalize">{srcChain.chainName}</span>
+        </label>
         <div className="flex items-center">
           {/* <input
             type="checkbox"
