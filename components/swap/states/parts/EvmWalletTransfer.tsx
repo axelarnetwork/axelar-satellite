@@ -31,7 +31,6 @@ import {
 } from "../../../../store";
 import { ENVIRONMENT } from "../../../../config/constants";
 import { renderGasFee } from "../../../../utils/renderGasFee";
-import { NativeAssetConfig } from "../../../../config/web3/evm/native-assets";
 import { Hash } from "../../../../types";
 
 export const EvmWalletTransfer = () => {
@@ -98,7 +97,7 @@ export const EvmWalletTransfer = () => {
       chain?.id === srcChainId &&
       !!tokenAddress &&
       !!tokensToTransfer &&
-      !asset?.is_native_asset,
+      !asset?.is_gas_token,
     chainId: srcChainId, // call transfer on source chain
     address: tokenAddress,
     abi: erc20ABI,
@@ -129,7 +128,7 @@ export const EvmWalletTransfer = () => {
    */
   const { config: sendTxConfig } = usePrepareSendTransaction({
     enabled:
-      chain?.id === srcChainId && !!tokensToTransfer && asset?.is_native_asset,
+      chain?.id === srcChainId && !!tokensToTransfer && asset?.is_gas_token,
     chainId: srcChainId as number,
     request: {
       to: depositAddress,
@@ -171,8 +170,7 @@ export const EvmWalletTransfer = () => {
   }, [asset]);
 
   function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit =
-      renderGasFee(srcChain, destChain, asset as NativeAssetConfig) || 0;
+    const minDeposit = renderGasFee(srcChain, destChain, asset) || 0;
     console.log("min Deposit", minDeposit);
     if (new BigNumber(amount || 0).lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
@@ -226,7 +224,7 @@ export const EvmWalletTransfer = () => {
       // WRAP
       if (
         asset?.native_chain === srcChain.chainName.toLowerCase() &&
-        asset.is_native_asset
+        asset.is_gas_token
       ) {
         return sendTransactionAsync?.()
           .then((tx) => {

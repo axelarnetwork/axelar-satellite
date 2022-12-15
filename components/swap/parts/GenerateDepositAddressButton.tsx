@@ -78,7 +78,7 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     // we transfer native asset belonging to the source chain
     if (
       asset.native_chain === srcChain.chainName?.toLowerCase() &&
-      asset.is_native_asset
+      asset.is_gas_token
     ) {
       transferType = "wrap";
       // we transfer wrapped asset of native asset belonging to destination chain

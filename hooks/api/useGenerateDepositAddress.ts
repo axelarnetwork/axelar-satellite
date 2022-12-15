@@ -1,8 +1,11 @@
 import { useMutation } from "react-query";
-import { AxelarAssetTransfer, AxelarQueryAPI } from "@axelar-network/axelarjs-sdk";
+import {
+  AxelarAssetTransfer,
+  AxelarQueryAPI,
+} from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../config/constants";
 import { constants } from "ethers";
-import { NativeAssetConfig } from "../../config/web3/evm/native-assets";
+import { AssetConfigExtended } from "types";
 
 const { HashZero } = constants;
 
@@ -10,7 +13,7 @@ export type DepositAddressPayload = {
   fromChain: string;
   toChain: string;
   destAddress: string;
-  asset: NativeAssetConfig;
+  asset: AssetConfigExtended;
   transferType: "deposit-address" | "wrap" | "unwrap";
 };
 
@@ -27,7 +30,7 @@ export const useGenerateDepositAddress = () =>
         const depositAddress = await sdk.getDepositAddress({
           fromChain: fromChain,
           toChain: toChain,
-          asset: asset.gas_token as string,
+          asset: asset.id.toUpperCase(),
           destinationAddress: destAddress,
         });
 

@@ -37,7 +37,7 @@ export function useGetAllowedMaxBalance() {
   });
 
   const { data: tokenBalance } = useContractRead({
-    enabled: !asset?.is_native_asset,
+    enabled: !asset?.is_gas_token,
     address: srcTokenAddress as string,
     abi: erc20ABI,
     chainId: srcChainId,
@@ -59,7 +59,7 @@ export function useGetAllowedMaxBalance() {
   const computeRealMaxBalance = useCallback(
     async (balance: ethers.BigNumber) => {
       // if erc20 return token balance
-      if (!asset?.is_native_asset)
+      if (!asset?.is_gas_token)
         return formatUnits(tokenBalance || "0", asset?.decimals || 18);
 
       // if native asset return native token balance minus tx fee
@@ -71,13 +71,7 @@ export function useGetAllowedMaxBalance() {
         10
       );
     },
-    [
-      provider,
-      asset?.decimals,
-      asset?.is_native_asset,
-      tokenBalance,
-      estimateGas,
-    ]
+    [provider, asset?.decimals, asset?.is_gas_token, tokenBalance, estimateGas]
   );
 
   useEffect(() => {

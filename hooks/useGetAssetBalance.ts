@@ -138,7 +138,7 @@ const useGetEvmBalance = () => {
    */
   useEffect(() => {
     const isNativeAsset =
-      asset?.is_native_asset &&
+      asset?.is_gas_token &&
       asset.native_chain === srcChain.chainName?.toLowerCase();
     setIsNativeBalance(!!isNativeAsset);
   }, [srcChain, asset]);

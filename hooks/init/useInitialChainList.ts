@@ -14,7 +14,7 @@ import {
   ENVIRONMENT,
 } from "../../config/constants";
 import { useSwapStore } from "../../store";
-import { RouteQuery } from "../../types";
+import { AssetConfigExtended, RouteQuery } from "../../types";
 import { addNativeAssets, loadAllChains } from "../../utils/api";
 
 export const useInitialChainList = () => {
@@ -38,7 +38,7 @@ export const useInitialChainList = () => {
           updateRoutes(
             chains.srcChainName,
             chains.destChainName,
-            asset.assetDenom,
+            asset?.assetDenom || "",
             (router.query.destination_address as string) || ""
           );
         })
@@ -150,41 +150,40 @@ export const useInitialChainList = () => {
   }
 
   async function loadInitialAssets() {
-    return loadAssets({ environment: ENVIRONMENT }).then(
-      (assets: AssetConfig[]) => {
-        setAllAssets(assets);
+    return loadAssets({ environment: ENVIRONMENT }).then((a) => {
+      const assets = a as AssetConfigExtended[];
+      setAllAssets(assets);
 
-        const { asset_denom } = router.query as RouteQuery;
+      const { asset_denom } = router.query as RouteQuery;
 
-        // if asset not provided get default asset
-        if (!asset_denom) {
-          setAsset(
-            assets.find((asset) =>
-              asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
-            )
-          );
-          return {
-            assetDenom: DEFAULT_ASSET,
-          };
-        }
-
-        const assetFound = assets.find((asset) =>
-          asset?.common_key[ENVIRONMENT].includes(asset_denom)
+      // if asset not provided get default asset
+      if (!asset_denom) {
+        const _asset = assets.find((asset) =>
+          asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
         );
-        if (assetFound) {
-          setAsset(assetFound);
-        } else {
-          setAsset(
-            assets.find((asset) =>
-              asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
-            )
-          );
-        }
-
+        if (!_asset) return;
+        setAsset(_asset);
         return {
-          assetDenom: assetFound?.common_key[ENVIRONMENT] || DEFAULT_ASSET,
+          assetDenom: DEFAULT_ASSET,
         };
       }
-    );
+
+      const assetFound = assets.find((asset) =>
+        asset?.common_key[ENVIRONMENT].includes(asset_denom)
+      );
+      if (assetFound) {
+        setAsset(assetFound);
+      } else {
+        const _asset = assets.find((asset) =>
+          asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
+        );
+        if (!_asset) return;
+        setAsset(_asset);
+      }
+
+      return {
+        assetDenom: assetFound?.common_key[ENVIRONMENT] || DEFAULT_ASSET,
+      };
+    });
   }
 };
