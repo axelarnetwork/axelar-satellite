@@ -1,9 +1,9 @@
 import { AssetInfo, ChainInfo } from "@axelar-network/axelarjs-sdk";
-import { NativeAssetConfig } from "../../config/web3/evm/native-assets";
+import { AssetConfigExtended } from "types";
 
 export function addNativeAssets(
   chains: ChainInfo[],
-  nativeAssets: NativeAssetConfig[],
+  nativeAssets: AssetConfigExtended[],
   environment: string
 ) {
   for (const chain of chains) {
@@ -16,7 +16,7 @@ export function addNativeAssets(
 
     const nativeAsset: AssetInfo = {
       ...nativeAssetConfig.chain_aliases[chainName],
-      common_key: nativeAssetConfig.common_key[environment],
+      common_key: nativeAssetConfig.id,
       decimals: nativeAssetConfig.decimals,
       fullySupported: nativeAssetConfig.fully_supported,
       native_chain: nativeAssetConfig.native_chain,

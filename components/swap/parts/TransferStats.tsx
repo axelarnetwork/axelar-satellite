@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 
 import { AddressShortener, StatsWrapper } from "../../common";
 import { renderGasFee } from "../../../utils/renderGasFee";
@@ -9,7 +8,6 @@ import { SwapStatus } from "../../../utils/enums";
 import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
-import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 import { USDC_POOLS } from "../../../data/pools";
 
 const InfoIcon = (
@@ -261,8 +259,7 @@ export const TransferStats = () => {
             {InfoIcon}
           </div>
           <span className="font-semibold">
-            {renderGasFee(srcChain, destChain, asset as NativeAssetConfig)}{" "}
-            {selectedAssetSymbol}
+            {renderGasFee(srcChain, destChain, asset)} {selectedAssetSymbol}
           </span>
         </li>
         <li className="flex justify-between ">

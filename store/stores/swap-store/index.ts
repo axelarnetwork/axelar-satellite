@@ -1,9 +1,9 @@
-import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { AssetConfigExtended } from "types";
 import create from "zustand";
 import { devtools } from "zustand/middleware";
 
 import { ENVIRONMENT } from "../../../config/constants";
-import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 import { SwapOrigin, SwapStatus } from "../../../utils/enums";
 
 export * from "./computed";
@@ -15,13 +15,13 @@ interface TxInfo {
 }
 
 interface SwapState {
-  allAssets: NativeAssetConfig[];
+  allAssets: AssetConfigExtended[];
   allChains: ChainInfo[];
   srcChain: ChainInfo;
   destChain: ChainInfo;
   destAddress: string;
-  selectableAssetList: NativeAssetConfig[];
-  asset: NativeAssetConfig | null;
+  selectableAssetList: AssetConfigExtended[];
+  asset: AssetConfigExtended | null;
   swapStatus: SwapStatus;
   depositAddress: string;
   intermediaryDepositAddress: string;
@@ -33,13 +33,13 @@ interface SwapState {
 }
 
 interface SwapStore extends SwapState {
-  setAllAssets: (assets: NativeAssetConfig[]) => void;
+  setAllAssets: (assets: AssetConfigExtended[]) => void;
   setAllChains: (chains: ChainInfo[]) => ChainInfo[];
   setSrcChain: (chain: ChainInfo) => void;
   setDestChain: (chain: ChainInfo) => void;
   setDestAddress: (address: string) => void;
-  setAsset: (asset: NativeAssetConfig | null) => void;
-  setAssetList: (assets: NativeAssetConfig[]) => void;
+  setAsset: (asset: AssetConfigExtended | null) => void;
+  setAssetList: (assets: AssetConfigExtended[]) => void;
   switchChains: () => void;
   setSwapStatus: (newStatus: SwapStatus) => void;
   setDepositAddress: (address: string) => void;

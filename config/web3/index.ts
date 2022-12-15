@@ -9,7 +9,6 @@ import { mainnetChains as evmMainnetChains } from "./evm/mainnet";
 import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
 import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";
 import { CosmosChain } from "./cosmos/interface";
-import { nativeAssets } from "./evm/native-assets";
 
 // sdk chains (generic)
 // export const allAssets = loadAssets({
@@ -19,8 +18,6 @@ import { nativeAssets } from "./evm/native-assets";
 // export const allChains = loadChains({
 //   environment: ENVIRONMENT,
 // });
-
-const nativeDenoms = nativeAssets.map((asset) => asset.common_key[ENVIRONMENT]);
 
 export const getWagmiChains = () => {
   if (ENVIRONMENT === Environment.TESTNET) return evmTestnetChains;
@@ -46,9 +43,6 @@ export const getCosmosChains = (allAssets: AssetConfig[]) => {
       currencies: [
         cosmosChain.currencies[0],
         ...allAssets
-          .filter(
-            (asset) => !nativeDenoms.includes(asset.common_key[ENVIRONMENT])
-          )
           .filter(
             (assetConfig) =>
               assetConfig.chain_aliases[cosmosChain.chainIdentifier] &&

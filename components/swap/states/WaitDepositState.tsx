@@ -12,8 +12,6 @@ import { copyToClipboard } from "../../../utils";
 import { convertChainName } from "../../../utils/transformers";
 import { TransferStats } from "../parts";
 import { renderGasFee } from "../../../utils/renderGasFee";
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
-import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 
 export const WaitDepositState = () => {
   const { depositAddress, destAddress, srcChain, destChain, asset } =
@@ -22,11 +20,7 @@ export const WaitDepositState = () => {
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   function renderTransferInfo() {
-    const relayerGasFee = renderGasFee(
-      srcChain,
-      destChain,
-      asset as NativeAssetConfig
-    );
+    const relayerGasFee = renderGasFee(srcChain, destChain, asset);
     return (
       <div>
         <div>
