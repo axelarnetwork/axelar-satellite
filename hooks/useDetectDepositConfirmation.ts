@@ -62,16 +62,19 @@ export const useDetectDepositConfirmation = () => {
     if (!depositAddress) return;
 
     const sentNative =
-      // @ts-ignore
-      asset.is_native_asset &&
+      asset?.is_gas_token &&
       asset?.native_chain === srcChain.chainName?.toLowerCase();
 
     let roomId;
 
     if (sentNative) {
-      const { fullDenomPath } = asset.chain_aliases[destChain.chainName?.toLowerCase()];
-      if (!fullDenomPath) throw (`chain config for ${asset.id} not defined`);
-      const denom = fullDenomPath.split("/").length > 1 ? fullDenomPath?.split("/")[2] : fullDenomPath?.split("/")[0];
+      const { fullDenomPath } =
+        asset.chain_aliases[destChain.chainName?.toLowerCase()];
+      if (!fullDenomPath) throw `chain config for ${asset.id} not defined`;
+      const denom =
+        fullDenomPath.split("/").length > 1
+          ? fullDenomPath?.split("/")[2]
+          : fullDenomPath?.split("/")[0];
       roomId = buildTokenSentRoomId(
         srcChain,
         denom,
@@ -79,7 +82,7 @@ export const useDetectDepositConfirmation = () => {
         destChain,
         depositAddress
       );
-      } else
+    } else
       roomId = buildDepositConfirmationRoomId(srcChain.module, depositAddress);
 
     console.log("room ID joined", roomId);

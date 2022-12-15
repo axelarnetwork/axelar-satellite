@@ -42,8 +42,7 @@ export const useDetectDestTransferConfirmation = () => {
     let denom;
 
     const sentNative =
-      // @ts-ignore
-      asset.is_native_asset &&
+      asset?.is_gas_token &&
       asset?.native_chain === srcChain.chainName?.toLowerCase();
 
     const assetCommonKey = asset?.common_key[ENVIRONMENT];

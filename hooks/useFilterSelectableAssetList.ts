@@ -33,7 +33,7 @@ export function useFilterSelectableAssetList() {
     });
 
     const selectableAssetsWithNative = selectableAssets.filter((_asset) => {
-      if (!(_asset as any)?.is_native_asset) return true;
+      if (!_asset?.is_gas_token) return true;
       // if (_asset.native_chain !== srcChain.chainIdentifier[ENVIRONMENT])
       //   return false;
       return true;
