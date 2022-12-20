@@ -18,4 +18,5 @@ export const mainnetChains: ChainExtension[] = [
   moonbeam,
   fantom,
   polygon,
+  kava,
 ];
