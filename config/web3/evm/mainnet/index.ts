@@ -7,6 +7,7 @@ import moonbeam from "./moonbeam";
 import polygon from "./polygon";
 import arbitrum from "./arbitrum";
 import celo from "./celo";
+import kava from './kava'
 
 export const mainnetChains: ChainExtension[] = [
   arbitrum,
