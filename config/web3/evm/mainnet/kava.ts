@@ -1,6 +1,6 @@
 export default {
   id: 2222,
-  name: "Kava EVM Co-Chain",
+  name: "Kava EVM",
   network: "kava",
   networkNameOverride: "kava",
   nativeCurrency: {
