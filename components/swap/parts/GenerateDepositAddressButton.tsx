@@ -4,8 +4,6 @@ import React from "react";
 import toast from "react-hot-toast";
 
 import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
-import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
-import { DepositAddressPayload } from "../../../hooks/api";
 import {
   getReservedAddresses,
   getSelectedAssetSymbol,
@@ -17,7 +15,6 @@ import {
 } from "../../../utils/address";
 import { SwapStatus } from "../../../utils/enums";
 import { renderGasFee } from "../../../utils/renderGasFee";
-import { truncateEthAddress } from "../../../utils/truncateEthAddress";
 
 type Props = {
   loading: boolean;
@@ -35,14 +32,20 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     asset,
     setSwapStatus,
     tokensToTransfer,
+    shouldUnwrapAsset,
   } = useSwapStore((state) => state);
 
   const reservedAddresses = useSwapStore(getReservedAddresses);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit =
-      renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+    if (!asset) {
+      return {
+        minDeposit: 0,
+        minAmountOk: false,
+      };
+    }
+    const minDeposit = renderGasFee(srcChain, destChain, asset) || 0;
     if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
     return {
@@ -78,19 +81,22 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     // const shouldWrap = asset.native_chain === srcChain.chainIdentifier[ENVIRONMENT] &&
     // we transfer native asset belonging to the source chain
     if (
-      asset.native_chain === srcChain.chainIdentifier[ENVIRONMENT] &&
-      asset.is_native_asset
+      asset.native_chain === srcChain.chainName?.toLowerCase() &&
+      asset.is_gas_token
     ) {
       transferType = "wrap";
       // we transfer wrapped asset of native asset belonging to destination chain
-    } else if (asset.native_chain === destChain.chainIdentifier[ENVIRONMENT]) {
+    } else if (
+      shouldUnwrapAsset &&
+      asset.native_chain === destChain.chainName?.toLowerCase()
+    ) {
       transferType = "unwrap";
     }
 
     genDepositAddress({
       fromChain: srcChain.chainIdentifier[ENVIRONMENT],
       toChain: destChain.chainIdentifier[ENVIRONMENT],
-      asset: asset?.common_key[ENVIRONMENT],
+      asset,
       destAddress,
       transferType,
     });

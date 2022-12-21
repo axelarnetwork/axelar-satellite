@@ -15,7 +15,7 @@ export default {
     },
   },
   rpcUrls: {
-    default: "https://rpc.testnet.fantom.network",
+    default: "https://fantom-testnet-rpc.allthatnode.com",
   },
   testnet: true,
 };

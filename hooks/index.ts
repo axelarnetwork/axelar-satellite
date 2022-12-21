@@ -5,7 +5,6 @@ export * from "./useMonitorWalletConnect";
 export * from "./useDetectDepositConfirmation";
 export * from "./useDetectDestTransferConfirmation";
 export * from "./usePreventDuplicateChains";
-export * from "./useInitialChainList";
 export * from "./useGatewayQuery";
 export * from "./useGetMaxTransferAmount";
 

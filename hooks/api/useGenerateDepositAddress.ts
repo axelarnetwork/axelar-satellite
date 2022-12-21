@@ -1,7 +1,11 @@
 import { useMutation } from "react-query";
-import { AxelarAssetTransfer } from "@axelar-network/axelarjs-sdk";
+import {
+  AxelarAssetTransfer,
+  AxelarQueryAPI,
+} from "@axelar-network/axelarjs-sdk";
 import { ENVIRONMENT } from "../../config/constants";
 import { constants } from "ethers";
+import { AssetConfigExtended } from "types";
 
 const { HashZero } = constants;
 
@@ -9,7 +13,7 @@ export type DepositAddressPayload = {
   fromChain: string;
   toChain: string;
   destAddress: string;
-  asset: string;
+  asset: AssetConfigExtended;
   transferType: "deposit-address" | "wrap" | "unwrap";
 };
 
@@ -21,14 +25,14 @@ const sdk = new AxelarAssetTransfer({
 export const useGenerateDepositAddress = () =>
   useMutation(async (payload: DepositAddressPayload) => {
     const { fromChain, toChain, destAddress, transferType, asset } = payload;
-
     if (ENVIRONMENT === "testnet") {
       if (transferType === "wrap") {
-        const depositAddress = await sdk.getDepositAddressForNativeWrap(
-          fromChain,
-          toChain,
-          destAddress
-        );
+        const depositAddress = await sdk.getDepositAddress({
+          fromChain: fromChain,
+          toChain: toChain,
+          asset: asset.id.toUpperCase(),
+          destinationAddress: destAddress,
+        });
 
         return {
           intermediaryDepositAddress: null,
@@ -37,8 +41,10 @@ export const useGenerateDepositAddress = () =>
       }
 
       if (transferType === "unwrap") {
-        const refundAddress = await sdk.getGasReceiverContractAddress(
-          fromChain
+        const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
+        const refundAddress = await axelarQueryApi.getContractAddressFromConfig(
+          fromChain,
+          "default_refund_collector"
         );
         const intermediaryDepositAddress =
           await sdk.validateOfflineDepositAddress(
@@ -49,11 +55,17 @@ export const useGenerateDepositAddress = () =>
             refundAddress,
             HashZero
           );
-        const result = await sdk.getDepositAddressForNativeUnwrap(
+        const result = await sdk.getDepositAddress({
           fromChain,
           toChain,
-          destAddress
-        );
+          asset: asset.common_key[ENVIRONMENT],
+          destinationAddress: destAddress,
+          options: {
+            shouldUnwrapIntoNative: true,
+            refundAddress: refundAddress,
+          },
+        });
+
         return {
           intermediaryDepositAddress,
           finalDepositAddress: result,
@@ -61,12 +73,13 @@ export const useGenerateDepositAddress = () =>
       }
     }
 
-    const depositAddress = await sdk.getDepositAddress(
+    const depositAddress = await sdk.getDepositAddress({
       fromChain,
       toChain,
-      destAddress,
-      asset
-    );
+      destinationAddress: destAddress,
+      asset: asset.common_key[ENVIRONMENT],
+    });
+
     return {
       intermediaryDepositAddress: null,
       finalDepositAddress: depositAddress,

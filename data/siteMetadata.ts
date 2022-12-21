@@ -1,15 +1,23 @@
+function getSiteUrl() {
+  switch (process.env.NEXT_PUBLIC_ENVIRONMENT) {
+    case "testnet":
+      return "https://testnet.satellite.money";
+    case "mainnet":
+      return "https://satellite.money";
+    default:
+      return "https://testnet.satellite.money";
+  }
+}
+
 export const siteMetadata = {
   title: "Satellite | Powered by Axelar Network",
   description:
     "Transfer assets between EVM & Cosmos chains. Powered by the Cross Chain infrastructure of Axelar Network.",
   language: "en-us",
   theme: "dark",
-  siteUrl:
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://devnet.satellite.money",
-  siteLogo: "/assets/fav.svg",
-  socialBanner: "",
+  siteUrl: getSiteUrl(),
+  siteLogo: "/fav.svg",
+  socialBanner: "/social.jpg",
   locale: "en-US",
   twitter: "@axelarcore",
   analytics: {

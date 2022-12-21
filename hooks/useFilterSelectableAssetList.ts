@@ -24,13 +24,18 @@ export function useFilterSelectableAssetList() {
       const destHasAsset = destAssets.find(
         (_asset) => _asset.common_key === asset.common_key[ENVIRONMENT]
       );
-      return sourceHasAsset && destHasAsset;
+
+      // bypass filtering for native assets
+      const assetIsNative =
+        asset.is_gas_token &&
+        srcChain.chainName.toLowerCase() === asset.native_chain;
+      return (sourceHasAsset && destHasAsset) || assetIsNative;
     });
 
     const selectableAssetsWithNative = selectableAssets.filter((_asset) => {
-      if (!_asset.is_native_asset) return true;
-      if (_asset.native_chain !== srcChain.chainIdentifier[ENVIRONMENT])
-        return false;
+      if (!_asset?.is_gas_token) return true;
+      // if (_asset.native_chain !== srcChain.chainIdentifier[ENVIRONMENT])
+      //   return false;
       return true;
     });
 

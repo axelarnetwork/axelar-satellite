@@ -13,18 +13,23 @@ import {
 
 import {
   useDetectDepositConfirmation,
-  useDetectUnwrapTransfer,
   usePreventDuplicateChains,
   useRestrictAssets,
 } from "../../hooks";
 import { TopFlows } from "./parts/TopFlows";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
 import { ENVIRONMENT as env } from "../../config/constants";
+import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
+import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
   useDetectDepositConfirmation();
-  useDetectUnwrapTransfer();
+  useRestrictAssets();
+
+  const srcChain = useSwapStore((state) => state.srcChain);
+  const destChain = useSwapStore((state) => state.destChain);
+  const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
 
   useRestrictAssets();
 
@@ -54,8 +59,6 @@ export const SwapBox = () => {
           </div>
         </div>
 
-        {/* <OriginSwapper /> */}
-
         <Blockable>
           <div className="flex justify-between">
             <InputWrapper>
@@ -73,6 +76,13 @@ export const SwapBox = () => {
         <InputWrapper>
           <TokenSelector />
         </InputWrapper>
+        {srcChain?.module === "evm" &&
+          destChain?.module === "evm" &&
+          selectedAssetIsWrapped && (
+            <InputWrapper>
+              <DestinationTokenSelector />
+            </InputWrapper>
+          )}
 
         <SwapStates />
 

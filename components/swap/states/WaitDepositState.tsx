@@ -12,7 +12,6 @@ import { copyToClipboard } from "../../../utils";
 import { convertChainName } from "../../../utils/transformers";
 import { TransferStats } from "../parts";
 import { renderGasFee } from "../../../utils/renderGasFee";
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 
 export const WaitDepositState = () => {
   const { depositAddress, destAddress, srcChain, destChain, asset } =
@@ -21,11 +20,7 @@ export const WaitDepositState = () => {
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   function renderTransferInfo() {
-    const relayerGasFee = renderGasFee(
-      srcChain,
-      destChain,
-      asset as AssetConfig
-    );
+    const relayerGasFee = renderGasFee(srcChain, destChain, asset);
     return (
       <div>
         <div>
@@ -34,7 +29,11 @@ export const WaitDepositState = () => {
             {">"}
             {relayerGasFee} {selectedAssetSymbol}
           </strong>{" "}
-          on {convertChainName(srcChain.chainName)} to
+          on{" "}
+          <span className="capitalize">
+            {convertChainName(srcChain.chainName)}
+          </span>{" "}
+          to
         </div>
       </div>
     );
