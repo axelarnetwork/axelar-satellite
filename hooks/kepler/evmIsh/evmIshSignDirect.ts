@@ -10,15 +10,18 @@ import {
 import Long from "long";
 import { getCosmosChains } from "../../../config/web3";
 import { CosmosChain } from "../../../config/web3/cosmos/interface";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
-export const evmosSignDirect = async (
+export const evmIshSignDirect = async (
   amount: string,
   denom: string,
   senderAddress: string,
-  depositAddress: string
+  depositAddress: string,
+  srcChain: ChainInfo
 ) => {
+  const chainName = srcChain.chainName.toLowerCase();
   const keplrConfig: CosmosChain = getCosmosChains([]).find(
-    (chain) => chain.chainIdentifier === "evmos"
+    (chain) => chain.chainIdentifier === chainName
   ) as CosmosChain;
   const { chainId: keplrChainId, rest, chainToAxelarChannelId } = keplrConfig;
   const chain = {
@@ -27,7 +30,7 @@ export const evmosSignDirect = async (
   };
 
   const fetchSenderResults = await fetch(
-    `${rest}/cosmos/auth/v1beta1/accounts/${senderAddress}?chain=evmos`
+    `${rest}/cosmos/auth/v1beta1/accounts/${senderAddress}?chain=${chainName}`
   ).then((res) => res.json());
   const { account } = fetchSenderResults;
   const { base_account } = account;
@@ -85,9 +88,11 @@ export const evmosSignDirect = async (
     };
 
     let broadcastPost = await fetch(
-      `${rest}${generateEndpointBroadcast()}?chain=evmos`,
+      `${rest}${generateEndpointBroadcast()}?chain=${chainName}`,
       postOptions
     );
-    return await broadcastPost.json().then(res => ({ transactionHash: res?.tx_response?.txhash }));
+    return await broadcastPost
+      .json()
+      .then((res) => ({ transactionHash: res?.tx_response?.txhash }));
   }
 };
