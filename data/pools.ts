@@ -76,4 +76,9 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
     dex: "Curve",
     url: "https://curve.fi/#/celo/pools/factory-v2-3/swap",
   },
+  kava: {
+    pairs: ["axlUSDC/axlDai"],
+    dex: "Curve",
+    url: "https://curve.fi/#/kava/pools/factory-v2-2/swap",
+  },
 };
