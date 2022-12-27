@@ -29,24 +29,46 @@ export const evmIshSignDirect = async (
     cosmosChainId: keplrChainId,
   };
 
+  debugger;
+
   const fetchSenderResults = await fetch(
     `${rest}/cosmos/auth/v1beta1/accounts/${senderAddress}?chain=${chainName}`
   ).then((res) => res.json());
   const { account } = fetchSenderResults;
   const { base_account } = account;
-  const { address, pub_key, account_number, sequence } = base_account;
-  const pubKeyType = pub_key["@type"];
-  const pubKeyKey = pub_key.key;
+  let address: string,
+    pub_key: any,
+    account_number,
+    sequence: number,
+    pubKeyType,
+    pubKeyKey;
+  if (base_account) {
+    address = base_account.address;
+    pub_key = base_account.pub_key;
+    account_number = base_account.account_number;
+    sequence = base_account.sequence;
+    pubKeyType = pub_key ? pub_key["@type"] : null;
+    pubKeyKey = pub_key?.key;
+  } else {
+    address = account.address;
+    pub_key = account.pub_key;
+    account_number = account.account_number;
+    sequence = account.sequence;
+  }
+
   const sender = {
     accountAddress: address,
     sequence: sequence,
     accountNumber: account_number,
     pubkey: pubKeyKey,
   };
+  console.log("fetch sender results", fetchSenderResults);
+
+  debugger;
 
   const fee = {
     amount: "20",
-    denom: "aevmos",
+    denom: keplrConfig.feeCurrencies[0].coinMinimalDenom,
     gas: "200000",
   };
   const memo = "";

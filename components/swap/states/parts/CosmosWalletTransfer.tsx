@@ -238,7 +238,7 @@ export const CosmosWalletTransfer = () => {
         console.log(e);
       }
     } else if (
-      ["evmos", "xpla", "acre"].includes(srcChain.chainName.toLowerCase())
+      ["evmos", "xpla", "acrechain"].includes(srcChain.chainName.toLowerCase())
     ) {
       const sendCoin = {
         denom: currentAsset?.ibcDenom as string,
