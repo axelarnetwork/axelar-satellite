@@ -28,7 +28,7 @@ export const WaitDepositState = () => {
     );
   }, [srcChain, destChain, asset]);
 
-  async function renderTransferInfo() {
+  function renderTransferInfo() {
     if (!relayerGasFee) return;
     return (
       <div>
