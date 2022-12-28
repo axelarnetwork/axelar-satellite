@@ -134,7 +134,9 @@ export const useInitialChainList = () => {
       filteredChains.forEach((chain) => {
         chain.assets = [
           ...updateChainAssets(chain),
-          ...(chain.assets as AssetInfo[]),
+          ...(chain.assets.filter(
+            (asset) => asset.fullySupported
+          ) as AssetInfo[]),
         ];
       });
 
