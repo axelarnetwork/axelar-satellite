@@ -10,6 +10,8 @@ import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
 import { USDC_POOLS } from "../../../data/pools";
+import { useEffect, useState } from "react";
+import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
 
 const InfoIcon = (
   <svg
@@ -39,6 +41,15 @@ export const TransferStats = () => {
   } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const max = useGetMaxTransferAmount();
+  const [transferFee, setTransferFee] = useState<string>("");
+
+  useEffect(() => {
+    renderGasFee(srcChain, destChain, asset as NativeAssetConfig).then(
+      (res) => {
+        setTransferFee(res);
+      }
+    );
+  }, [srcChain, destChain, asset]);
 
   function renderWaitTime() {
     if (!srcChain) return "";
@@ -220,8 +231,7 @@ export const TransferStats = () => {
             {InfoIcon}
           </div>
           <span className="font-semibold">
-            {renderGasFee(srcChain, destChain, asset as AssetConfig)}{" "}
-            {selectedAssetSymbol}
+            {transferFee} {selectedAssetSymbol}
           </span>
         </li>
         <li className="flex justify-between ">

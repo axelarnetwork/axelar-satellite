@@ -132,9 +132,9 @@ export const EvmWalletTransfer = () => {
     setTokenAddress(assetData?.tokenAddress as string);
   }, [asset]);
 
-  function checkMinAmount(amount: string, minAmount?: number) {
+  async function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit =
-      renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+      (await renderGasFee(srcChain, destChain, asset as AssetConfig)) || 0;
     console.log("min Deposit", minDeposit);
     if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
@@ -152,7 +152,7 @@ export const EvmWalletTransfer = () => {
   async function handleOnTokensTransfer() {
     if (!wagmiConnected) await handleOnMetamaskSwitch();
     // token amount should not be null
-    const { minAmountOk, minDeposit } = checkMinAmount(
+    const { minAmountOk, minDeposit } = await checkMinAmount(
       tokensToTransfer,
       currentAsset?.minDepositAmt
     );

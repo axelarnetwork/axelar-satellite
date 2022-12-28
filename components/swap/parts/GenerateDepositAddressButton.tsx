@@ -40,9 +40,9 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
   const reservedAddresses = useSwapStore(getReservedAddresses);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
-  function checkMinAmount(amount: string, minAmount?: number) {
+  async function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit =
-      renderGasFee(srcChain, destChain, asset as AssetConfig) || 0;
+      (await renderGasFee(srcChain, destChain, asset as AssetConfig)) || 0;
     if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
     return {
@@ -61,7 +61,7 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
       return toast.error("Please enter the amount of tokens to transfer");
 
     if (!checkDestAddressFormat()) return;
-    const { minAmountOk, minDeposit } = checkMinAmount(tokensToTransfer);
+    const { minAmountOk, minDeposit } = await checkMinAmount(tokensToTransfer);
 
     if (!minAmountOk)
       return toast.error(

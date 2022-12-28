@@ -20,8 +20,8 @@ export const WaitDepositState = () => {
   const { wagmiConnected, keplrConnected } = useWalletStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
-  function renderTransferInfo() {
-    const relayerGasFee = renderGasFee(
+  async function renderTransferInfo() {
+    const relayerGasFee = await renderGasFee(
       srcChain,
       destChain,
       asset as AssetConfig
