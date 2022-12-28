@@ -114,8 +114,18 @@ export const getSelectedAsssetIsWrapped = memoize(
   }): boolean => {
     if (!state.asset) return false;
     const destChainName = state.destChain?.chainName?.toLowerCase();
+    const isGasToken = state.asset.is_gas_token; // e.g. is this pure avax/eth/ftm/etc
+    const destChainIsNativeChain = state.asset.native_chain === destChainName;
+    const assetIsWrappedVersionOfNativeAssetOnDestChain =
+      state &&
+      state.destChain &&
+      state.destChain.nativeAsset &&
+      state.destChain.nativeAsset.length > 0 &&
+      state.destChain?.nativeAsset.indexOf(state.asset.id) >= 0;
     return (
-      !state.asset.is_gas_token && state.asset.native_chain === destChainName
+      !isGasToken &&
+      destChainIsNativeChain &&
+      assetIsWrappedVersionOfNativeAssetOnDestChain
     );
   }
 );
