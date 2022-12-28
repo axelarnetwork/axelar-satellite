@@ -25,52 +25,50 @@ const sdk = new AxelarAssetTransfer({
 export const useGenerateDepositAddress = () =>
   useMutation(async (payload: DepositAddressPayload) => {
     const { fromChain, toChain, destAddress, transferType, asset } = payload;
-    if (ENVIRONMENT === "testnet") {
-      if (transferType === "wrap") {
-        const depositAddress = await sdk.getDepositAddress({
-          fromChain: fromChain,
-          toChain: toChain,
-          asset: asset.id.toUpperCase(),
-          destinationAddress: destAddress,
-        });
+    if (transferType === "wrap") {
+      const depositAddress = await sdk.getDepositAddress({
+        fromChain: fromChain,
+        toChain: toChain,
+        asset: asset.id.toUpperCase(),
+        destinationAddress: destAddress,
+      });
 
-        return {
-          intermediaryDepositAddress: null,
-          finalDepositAddress: depositAddress,
-        };
-      }
+      return {
+        intermediaryDepositAddress: null,
+        finalDepositAddress: depositAddress,
+      };
+    }
 
-      if (transferType === "unwrap") {
-        const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
-        const refundAddress = await axelarQueryApi.getContractAddressFromConfig(
-          fromChain,
-          "default_refund_collector"
-        );
-        const intermediaryDepositAddress =
-          await sdk.validateOfflineDepositAddress(
-            "unwrap",
-            fromChain,
-            toChain,
-            destAddress,
-            refundAddress,
-            HashZero
-          );
-        const result = await sdk.getDepositAddress({
+    if (transferType === "unwrap") {
+      const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
+      const refundAddress = await axelarQueryApi.getContractAddressFromConfig(
+        fromChain,
+        "default_refund_collector"
+      );
+      const intermediaryDepositAddress =
+        await sdk.validateOfflineDepositAddress(
+          "unwrap",
           fromChain,
           toChain,
-          asset: asset.common_key[ENVIRONMENT],
-          destinationAddress: destAddress,
-          options: {
-            shouldUnwrapIntoNative: true,
-            refundAddress: refundAddress,
-          },
-        });
+          destAddress,
+          refundAddress,
+          HashZero
+        );
+      const result = await sdk.getDepositAddress({
+        fromChain,
+        toChain,
+        asset: asset.common_key[ENVIRONMENT],
+        destinationAddress: destAddress,
+        options: {
+          shouldUnwrapIntoNative: true,
+          refundAddress: refundAddress,
+        },
+      });
 
-        return {
-          intermediaryDepositAddress,
-          finalDepositAddress: result,
-        };
-      }
+      return {
+        intermediaryDepositAddress,
+        finalDepositAddress: result,
+      };
     }
 
     const depositAddress = await sdk.getDepositAddress({

@@ -220,21 +220,19 @@ export const EvmWalletTransfer = () => {
     //   );
     // }
 
-    if (ENVIRONMENT === "testnet") {
-      // WRAP
-      if (
-        asset?.native_chain === srcChain.chainName.toLowerCase() &&
-        asset.is_gas_token
-      ) {
-        return sendTransactionAsync?.()
-          .then((tx) => {
-            setTxInfo({
-              sourceTxHash: tx?.hash,
-              destStartBlockNumber: blockNumber,
-            });
-          })
-          .catch((error) => toast.error(error.reason));
-      }
+    // WRAP
+    if (
+      asset?.native_chain === srcChain.chainName.toLowerCase() &&
+      asset.is_gas_token
+    ) {
+      return sendTransactionAsync?.()
+        .then((tx) => {
+          setTxInfo({
+            sourceTxHash: tx?.hash,
+            destStartBlockNumber: blockNumber,
+          });
+        })
+        .catch((error) => toast.error(error.reason));
     }
 
     // check that the user has enough tokens
