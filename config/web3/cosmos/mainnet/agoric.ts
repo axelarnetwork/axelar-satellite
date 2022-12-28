@@ -36,4 +36,5 @@ export const agoric: CosmosChain = {
   chainIdentifier: "agoric",
   chainToAxelarChannelId: "channel-9",
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx", "ibc-go"],
+  explorer: "https://bigdipper.live/agoric/accounts/",
 };

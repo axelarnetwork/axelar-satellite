@@ -7,6 +7,7 @@ import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
 import {
   getReservedAddresses,
   getSelectedAssetSymbol,
+  getTransferType,
   useSwapStore,
 } from "../../../store";
 import {
@@ -32,11 +33,11 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     asset,
     setSwapStatus,
     tokensToTransfer,
-    shouldUnwrapAsset,
   } = useSwapStore((state) => state);
 
   const reservedAddresses = useSwapStore(getReservedAddresses);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+  const transferType = useSwapStore(getTransferType);
 
   function checkMinAmount(amount: string, minAmount?: number) {
     if (!asset) {
@@ -76,22 +77,6 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
       reservedAddresses.includes(destAddress)
     )
       return toast.error("Cannot send to this address");
-
-    let transferType = "deposit-address";
-    // const shouldWrap = asset.native_chain === srcChain.chainIdentifier[ENVIRONMENT] &&
-    // we transfer native asset belonging to the source chain
-    if (
-      asset.native_chain === srcChain.chainName?.toLowerCase() &&
-      asset.is_gas_token
-    ) {
-      transferType = "wrap";
-      // we transfer wrapped asset of native asset belonging to destination chain
-    } else if (
-      shouldUnwrapAsset &&
-      asset.native_chain === destChain.chainName?.toLowerCase()
-    ) {
-      transferType = "unwrap";
-    }
 
     genDepositAddress({
       fromChain: srcChain.chainIdentifier[ENVIRONMENT],

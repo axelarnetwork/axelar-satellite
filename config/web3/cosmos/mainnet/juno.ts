@@ -15,4 +15,5 @@ export default {
     },
   ],
   chainIdentifier: "juno",
+  explorer: "https://www.mintscan.io/juno/account/",
 } as CosmosChain;

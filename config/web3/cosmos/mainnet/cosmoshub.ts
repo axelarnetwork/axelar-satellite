@@ -10,4 +10,5 @@ export default {
     { coinDenom: "ATOM", coinMinimalDenom: "uatom", coinDecimals: 6 },
   ],
   chainToAxelarChannelId: "channel-293",
+  explorer: "https://www.mintscan.io/cosmoshub/account/",
 } as CosmosChain;

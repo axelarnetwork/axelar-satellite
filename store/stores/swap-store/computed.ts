@@ -67,6 +67,35 @@ export const getSelectedAssetSymbol = memoize(
   }
 );
 
+export const getTransferType = memoize(
+  (state: {
+    asset: AssetConfigExtended | null;
+    srcChain: ChainInfo;
+    shouldUnwrapAsset: boolean;
+    destChain: ChainInfo;
+  }): "deposit-address" | "wrap" | "unwrap" => {
+    const { asset, srcChain, shouldUnwrapAsset, destChain } = state;
+
+    let transferType: "deposit-address" | "wrap" | "unwrap" = "deposit-address";
+    if (!asset) return transferType;
+
+    if (
+      asset.native_chain === srcChain.chainName?.toLowerCase() &&
+      asset.is_gas_token
+    ) {
+      transferType = "wrap";
+      // we transfer wrapped asset of native asset belonging to destination chain
+    } else if (
+      shouldUnwrapAsset &&
+      asset.native_chain === destChain.chainName?.toLowerCase()
+    ) {
+      transferType = "unwrap";
+    }
+
+    return transferType;
+  }
+);
+
 export const getSelectedAssetName = memoize(
   (state: { asset: AssetConfigExtended | null; srcChain: ChainInfo }) => {
     const chainName = state?.srcChain?.chainName?.toLowerCase();

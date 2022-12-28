@@ -35,5 +35,6 @@ export const umee: CosmosChain = {
   },
   chainIdentifier: "umee",
   chainToAxelarChannelId: "channel-33",
+  explorer: "https://www.mintscan.io/umee/account/",
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx", "ibc-go"],
 };

@@ -41,4 +41,5 @@ export default {
   gasPriceStep: { low: 0.01, average: 0.025, high: 0.03 },
   chainIdentifier: "kujira",
   chainToAxelarChannelId: "channel-9",
+  explorer: "https://www.mintscan.io/kujira/account/",
 } as CosmosChain;

@@ -107,9 +107,9 @@ export const TransferStats = () => {
       <li className="flex justify-between">
         <span
           className="flex flex-row cursor-pointer tooltip tooltip-warning"
-          data-tip={`Initial ${destChain.chainName} recipient of tokens transferred. It unwraps the ERC20 tokens and then delivers native tokens to the final destination address.`}
+          data-tip={`Swap contract that converts wrapped ERC-20 to native tokens on ${destChain.chainName} for recipient.`}
         >
-          <span>Holding Address</span>
+          <span>Swap Contract</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

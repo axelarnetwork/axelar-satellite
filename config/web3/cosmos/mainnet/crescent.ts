@@ -49,4 +49,5 @@ export default {
   },
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
   chainToAxelarChannelId: "channel-4",
+  explorer: "https://www.mintscan.io/crescent/account/",
 } as CosmosChain;
