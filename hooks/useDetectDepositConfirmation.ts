@@ -7,6 +7,7 @@ import { ENVIRONMENT, SOCKET_API } from "../config/constants";
 
 import { buildDepositConfirmationRoomId, buildTokenSentRoomId } from "../utils";
 import { SwapStatus } from "../utils/enums";
+import toast from "react-hot-toast";
 
 const socket = io(SOCKET_API, {
   transports: ["websocket"],
@@ -69,8 +70,11 @@ export const useDetectDepositConfirmation = () => {
 
     if (sentNative) {
       const { fullDenomPath } =
-        asset.chain_aliases[destChain.chainName?.toLowerCase()];
-      if (!fullDenomPath) throw `chain config for ${asset.id} not defined`;
+        asset?.chain_aliases?.[destChain?.chainName?.toLowerCase()] || {};
+      if (!fullDenomPath) {
+        toast.error(`chain config for ${asset.id} not defined`);
+        return;
+      }
       const denom =
         fullDenomPath.split("/").length > 1
           ? fullDenomPath?.split("/")[2]

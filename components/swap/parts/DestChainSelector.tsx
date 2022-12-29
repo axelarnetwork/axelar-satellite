@@ -35,9 +35,7 @@ export const DestChainSelector = () => {
           chain.chainName !== destChain.chainName
       )
       .filter((chain) =>
-        chain.assets?.map(
-          (a) => a.common_key === (asset?.common_key[ENVIRONMENT] as string)
-        )
+        chain.assets?.map((a) => a.common_key).includes(asset?.id)
       );
     if (!restrictedAssetIsSelected) return setFilteredChains(newChains);
 
@@ -51,7 +49,7 @@ export const DestChainSelector = () => {
         policy?.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
       )
     );
-  }, [srcChain, destChain, dropdownOpen, searchChainInput]);
+  }, [srcChain, destChain, dropdownOpen, searchChainInput, asset]);
 
   useEffect(() => {
     if (!router.isReady) return;
