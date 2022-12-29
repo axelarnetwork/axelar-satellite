@@ -76,13 +76,11 @@ export const SwapBox = () => {
         <InputWrapper>
           <TokenSelector />
         </InputWrapper>
-        {srcChain?.module === "evm" &&
-          destChain?.module === "evm" &&
-          selectedAssetIsWrapped && (
-            <InputWrapper>
-              <DestinationTokenSelector />
-            </InputWrapper>
-          )}
+        {destChain?.module === "evm" && selectedAssetIsWrapped && (
+          <InputWrapper>
+            <DestinationTokenSelector />
+          </InputWrapper>
+        )}
 
         <SwapStates />
 
