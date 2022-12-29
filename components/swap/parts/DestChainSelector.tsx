@@ -34,9 +34,13 @@ export const DestChainSelector = () => {
           chain.chainName !== srcChain.chainName &&
           chain.chainName !== destChain.chainName
       )
-      .filter((chain) =>
-        chain.assets?.map((a) => a.common_key).includes(asset?.id)
-      );
+      .filter((chain) => {
+        const assetCommentKeys = chain.assets?.map((a) => a.common_key);
+        return (
+          assetCommentKeys.includes(asset?.id) ||
+          assetCommentKeys.includes(asset?.wrapped_erc20)
+        );
+      });
     if (!restrictedAssetIsSelected) return setFilteredChains(newChains);
 
     // find the right policy based on asset
