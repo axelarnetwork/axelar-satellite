@@ -40,8 +40,7 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
   const transferType = useSwapStore(getTransferType);
 
   async function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit =
-      (await renderGasFee(srcChain, destChain, asset as AssetConfig)) || 0;
+    const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
     if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
     return {
