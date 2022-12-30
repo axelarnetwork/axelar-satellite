@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 
 import { AddressShortener, StatsWrapper } from "../../common";
 import { renderGasFee } from "../../../utils/renderGasFee";
@@ -11,7 +10,6 @@ import { getWagmiChains } from "../../../config/web3";
 import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
 import { USDC_POOLS } from "../../../data/pools";
 import { useEffect, useState } from "react";
-import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
 
 const InfoIcon = (
   <svg
@@ -36,6 +34,7 @@ export const TransferStats = () => {
     destChain,
     asset,
     depositAddress,
+    intermediaryDepositAddress,
     destAddress,
     swapStatus,
   } = useSwapStore((state) => state);
@@ -44,11 +43,9 @@ export const TransferStats = () => {
   const [transferFee, setTransferFee] = useState<string>("");
 
   useEffect(() => {
-    renderGasFee(srcChain, destChain, asset as NativeAssetConfig).then(
-      (res) => {
-        setTransferFee(res);
-      }
-    );
+    renderGasFee(srcChain, destChain, asset).then((res) => {
+      setTransferFee(res);
+    });
   }, [srcChain, destChain, asset]);
 
   function renderWaitTime() {
@@ -96,7 +93,7 @@ export const TransferStats = () => {
             destChain.chainName.substring(1)
           }`}
         >
-          Axelar Deposit Address
+          Axelar Deposit Address:
         </span>
         <div className="flex font-bold gap-x-2">
           <AddressShortener value={depositAddress} />
@@ -111,11 +108,50 @@ export const TransferStats = () => {
     );
   }
 
+  function renderIntermediateDepositAddress() {
+    if (swapStatus === SwapStatus.IDLE) return null;
+    if (!intermediaryDepositAddress) return null;
+    return (
+      <li className="flex justify-between">
+        <span
+          className="flex flex-row cursor-pointer tooltip tooltip-warning"
+          data-tip={`Swap contract that converts wrapped ERC-20 to native tokens on ${destChain.chainName} for recipient.`}
+        >
+          <span>Swap Contract</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            className="w-5 h-5 pb-1 stroke-current"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <span>:</span>
+        </span>
+
+        <span className="flex font-bold gap-x-2">
+          <AddressShortener value={intermediaryDepositAddress} />
+          <div
+            className="cursor-pointer"
+            onClick={() => copyToClipboard(intermediaryDepositAddress)}
+          >
+            <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+          </div>
+        </span>
+      </li>
+    );
+  }
+
   function renderDestinationAddress() {
     if (swapStatus === SwapStatus.IDLE) return null;
     return (
       <li className="flex justify-between">
-        <span>Destination Address</span>
+        <span>Destination Address:</span>
         <span className="flex font-bold gap-x-2">
           <AddressShortener value={destAddress} />
           <div
@@ -133,7 +169,7 @@ export const TransferStats = () => {
     if (!txInfo.sourceTxHash) return null;
     const evmRpc = getWagmiChains().find(
       (network) =>
-        network.networkNameOverride === srcChain.chainName.toLowerCase()
+        network.networkNameOverride === srcChain.chainName?.toLowerCase()
     );
     const rootUrl =
       srcChain.module === "evm"
@@ -141,7 +177,7 @@ export const TransferStats = () => {
         : `${AXELARSCAN_URL}/transfer/`;
     return (
       <li className="flex justify-between">
-        <span>Deposit Confirmation</span>
+        <span>Deposit Confirmation:</span>
         <a
           href={`${rootUrl}${txInfo.sourceTxHash}`}
           target="_blank"
@@ -167,7 +203,7 @@ export const TransferStats = () => {
 
   function renderPoolInfo() {
     if ((asset as any)?.id === "uusdc") {
-      const chainName = destChain.chainName.toLowerCase();
+      const chainName = destChain?.chainName?.toLowerCase();
       const pool = USDC_POOLS[chainName];
       const pair = pool?.pairs[0];
 
@@ -240,6 +276,7 @@ export const TransferStats = () => {
         </li>
         {renderPoolInfo()}
         {renderMaxTransferAmount()}
+        {renderIntermediateDepositAddress()}
         {renderDestinationAddress()}
         {renderDepositAddress()}
         {renderDepositConfirmationLink()}

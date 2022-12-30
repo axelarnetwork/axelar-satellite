@@ -4,7 +4,6 @@ import { useOnClickOutside } from "usehooks-ts";
 
 import {
   getSelectedAssetName,
-  getSelectedAssetSymbol,
   useSwapStore,
   useWalletStore,
 } from "../../../store";
@@ -14,7 +13,6 @@ import { useGetAssetBalance, useGetMaxTransferAmount } from "../../../hooks";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { Blockable } from "../../common";
 import { useRouter } from "next/router";
-import BigNumber from "bignumber.js";
 import { SpinnerDotted } from "spinners-react";
 import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import { roundNumberTo } from "../../../utils/roundNumberTo";
@@ -26,7 +24,10 @@ import { getWagmiChains } from "../../../config/web3";
 
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
 import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
-import { NativeAssetConfig } from "../../../config/nativeAssetList/testnet";
+// import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+import { UnwrapToNativeChainCheckbox } from "./UnwrapToNativeChainCheckbox";
+import { MaxButton } from "../../../features/max-button";
+import { AssetConfigExtended } from "types";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -51,12 +52,14 @@ export const TokenSelector = () => {
       //@ts-ignore
       const newNetwork = data.networkNameOverride;
       const chain =
-        srcChain.chainName.toLowerCase() === newNetwork ? srcChain : destChain;
-      setTimeout(() => addTokenToMetamask(asset as AssetConfig, chain), 2000);
+        srcChain.chainName?.toLowerCase() === newNetwork ? srcChain : destChain;
+      setTimeout(() => {
+        if (!asset) return;
+        addTokenToMetamask(asset, chain);
+      }, 2000);
     },
   });
   const router = useRouter();
-  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const {
     wagmiConnected,
     keplrConnected,
@@ -71,15 +74,8 @@ export const TokenSelector = () => {
     useIsTerraConnected();
 
   const [searchAssetInput, setSearchAssetInput] = useState<string>();
-  const [filteredAssets, setFilteredAssets] =
-    useState<AssetConfig[]>(selectableAssetList);
-  const {
-    balance,
-    setKeplrBalance,
-    loading,
-    terraStationBalance,
-    keplrBalance,
-  } = useGetAssetBalance();
+  const [filteredAssets, setFilteredAssets] = useState<AssetConfigExtended[]>();
+  const { balance, loading, terraStationBalance } = useGetAssetBalance();
   const connectTerraStation = useConnectTerraStation();
   const [showBalance, setShowBalance] = useState(false);
   const [balanceToShow, setBalanceToShow] = useState("");
@@ -118,7 +114,7 @@ export const TokenSelector = () => {
     if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
 
     const chains = selectableAssetList.filter((asset) =>
-      asset.common_key[ENVIRONMENT].toLowerCase().includes(searchAssetInput)
+      asset.common_key[ENVIRONMENT]?.toLowerCase().includes(searchAssetInput)
     );
     setFilteredAssets(chains);
   }, [searchAssetInput, selectableAssetList]);
@@ -137,14 +133,21 @@ export const TokenSelector = () => {
   useEffect(() => {
     let list;
     if (srcChain.module === "evm") {
-      list = selectableAssetList.filter((asset) => {
-        // @ts-ignore
-        return (
-          !(asset as NativeAssetConfig).is_native_asset ||
-          ((asset as NativeAssetConfig).is_native_asset &&
-            srcChain.chainName.toLowerCase() === asset.native_chain)
-        );
-      });
+      list = selectableAssetList
+        .filter((asset) => {
+          // @ts-ignore
+          return (
+            !asset.is_gas_token ||
+            (asset.is_gas_token &&
+              srcChain.chainName?.toLowerCase() === asset.native_chain)
+          );
+        })
+        .filter((asset) => {
+          const srcChainName = srcChain.chainName?.toLowerCase();
+          if (asset.is_gas_token && asset.native_chain !== srcChainName)
+            return false;
+          return true;
+        });
     }
     setFilteredAssets(list || selectableAssetList);
   }, [selectableAssetList, srcChain]);
@@ -153,7 +156,7 @@ export const TokenSelector = () => {
     const isEVM = !!(srcChain?.module === "evm" && wagmiConnected);
     const isAxelarnet = srcChain?.module === "axelarnet" && keplrConnected;
     const isTerra =
-      srcChain?.chainName.toLowerCase() === "terra" &&
+      srcChain?.chainName?.toLowerCase() === "terra" &&
       isTerraConnected &&
       userSelectionForCosmosWallet === "terraStation";
 
@@ -170,12 +173,12 @@ export const TokenSelector = () => {
       setUserSelectionForCosmosWallet("terraStation");
       setBalanceToShow(terraStationBalance as string);
     } else if (isAxelarnet) {
-      setBalanceToShow(keplrBalance);
+      setBalanceToShow(balance);
     }
   }, [
     srcChain,
     balance,
-    keplrBalance,
+    balance,
     wagmiConnected,
     isTerraConnected,
     keplrConnected,
@@ -186,13 +189,12 @@ export const TokenSelector = () => {
   // update asset balance from useGetAssetBalance hook if srcChain or asset changes
   useEffect(() => {
     if (
-      srcChain?.chainName.toLowerCase() === "terra" &&
+      srcChain?.chainName?.toLowerCase() === "terra" &&
       userSelectionForCosmosWallet == "terraStation"
     ) {
       if (!isTerraInitializingOrConnected) connectTerraWallet();
       return;
     }
-    if (srcChain?.module === "axelarnet" && keplrConnected) setKeplrBalance();
   }, [
     asset,
     srcChain,
@@ -209,7 +211,7 @@ export const TokenSelector = () => {
   });
 
   function handleOnDropdownToggle() {
-    if (dropdownOpen) setFilteredAssets(selectableAssetList);
+    // if (dropdownOpen) setFilteredAssets(selectableAssetList);
     setDropdownOpen(!dropdownOpen);
   }
 
@@ -217,7 +219,7 @@ export const TokenSelector = () => {
   //   setFilteredAssets(selectableAssetList);
   // }, [selectableAssetList]);
 
-  async function handleOnAssetChange(asset: AssetConfig) {
+  async function handleOnAssetChange(asset: AssetConfigExtended) {
     // await router.push({
     //   query: {
     //     ...router.query,
@@ -237,7 +239,7 @@ export const TokenSelector = () => {
     if (!balanceToShow || !showBalance) {
       let textToShow;
       if (srcChain.module === "evm") textToShow = "Metamask";
-      else if (srcChain?.chainName.toLowerCase() === "terra") {
+      else if (srcChain?.chainName?.toLowerCase() === "terra") {
         if (userSelectionForCosmosWallet === "keplr") textToShow = "Keplr";
         else textToShow = "Terra Station";
       } else textToShow = "Keplr";
@@ -251,21 +253,24 @@ export const TokenSelector = () => {
       );
     }
 
-    if (srcChain?.chainName.toLowerCase() !== "terra")
+    if (srcChain?.chainName?.toLowerCase() !== "terra")
       return (
-        <div className="flex flex-row justify-end space-x-1">
-          <span className="text-xs text-gray-500">Available</span>
-          <span className="w-auto text-xs text-[#86d6ff]">
-            {loading ? (
-              <SpinnerDotted
-                className="text-blue-500"
-                size={15}
-                color="#00a6ff"
-              />
-            ) : (
-              roundNumberTo(balanceToShow, 1)
-            )}
-          </span>
+        <div className="space-y-1">
+          <div className="flex justify-end space-x-2">
+            <span className="text-xs text-gray-500">Available</span>
+            <span className="w-auto text-xs min-w-[20px] flex justify-end text-[#86d6ff]">
+              {loading ? (
+                <SpinnerDotted
+                  className="text-blue-500"
+                  size={15}
+                  color="#00a6ff"
+                />
+              ) : (
+                roundNumberTo(balanceToShow, 1)
+              )}
+            </span>
+          </div>
+          {/* <UnwrapToNativeChainCheckbox /> */}
         </div>
       );
 
@@ -300,7 +305,6 @@ export const TokenSelector = () => {
         await connectToKeplr(allAssets);
         setKeplrConnected(true);
         setUserSelectionForCosmosWallet("keplr");
-        setKeplrBalance();
       };
       const switchTS = async () => {
         if (!isTerraConnected) connectTerraStation();
@@ -320,6 +324,7 @@ export const TokenSelector = () => {
             layout="intrinsic"
             width={10}
             height={10}
+            alt="arrow"
           />
         </span>
       );
@@ -327,7 +332,6 @@ export const TokenSelector = () => {
 
     return (
       <>
-        {" "}
         <div className="flex flex-row justify-end space-x-1">
           <span className="text-xs text-gray-500">
             Available{" "}
@@ -358,9 +362,9 @@ export const TokenSelector = () => {
   function renderTokenInput() {
     if (!srcChain) return null;
     return (
-      <div className="w-2/4 text-end">
+      <div className="text-end">
         <input
-          className="w-full text-lg font-bold text-right bg-transparent outline-none"
+          className="block text-lg font-bold text-right bg-transparent outline-none"
           type="number"
           value={tokensToTransfer}
           placeholder="0"
@@ -378,21 +382,19 @@ export const TokenSelector = () => {
       <div className="left-0 w-full h-64 p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
         <div className="px-2 py-2 ">
           <input
-            className="w-full bg-[#333c42] input input-sm"
+            className="bg-[#333c42] input input-sm w-full"
             placeholder="Search token"
             onChange={(e) => setSearchAssetInput(e.target.value)}
           />
         </div>
         <ul tabIndex={0} onClick={handleOnDropdownToggle}>
-          {filteredAssets.map((asset) => {
+          {filteredAssets?.map((asset) => {
             return (
-              <li key={asset.common_key[ENVIRONMENT]}>
+              <li key={asset.id}>
                 <button onClick={() => handleOnAssetChange(asset)}>
                   <Image
                     loading="eager"
-                    src={`/assets/tokens/${asset.common_key[
-                      ENVIRONMENT
-                    ].toLowerCase()}.logo.svg`}
+                    src={`/assets/tokens/${asset.id}.logo.svg`}
                     layout="intrinsic"
                     width={35}
                     height={35}
@@ -400,10 +402,11 @@ export const TokenSelector = () => {
                       e.currentTarget.src = defaultAssetImg;
                       e.currentTarget.srcset = defaultAssetImg;
                     }}
+                    alt="asset"
                   />
                   <span>
                     {
-                      asset.chain_aliases[srcChain.chainName.toLowerCase()]
+                      asset.chain_aliases[srcChain.chainName?.toLowerCase()]
                         ?.assetName
                     }
                   </span>
@@ -418,7 +421,7 @@ export const TokenSelector = () => {
 
   function renderAssetName() {
     if (!asset || !srcChain) return "Select an asset";
-    return asset.chain_aliases[srcChain.chainName.toLowerCase()]?.assetName;
+    return asset.chain_aliases[srcChain.chainName?.toLowerCase()]?.assetName;
   }
 
   function addTokenToMetamaskButton() {
@@ -452,7 +455,7 @@ export const TokenSelector = () => {
                   getWagmiChains().find(
                     (chain) =>
                       chain.networkNameOverride ===
-                      srcChain.chainName.toLowerCase()
+                      srcChain.chainName?.toLowerCase()
                   )?.id
                 );
               }}
@@ -467,17 +470,19 @@ export const TokenSelector = () => {
                     e.currentTarget.src = defaultAssetImg;
                     e.currentTarget.srcset = defaultAssetImg;
                   }}
+                  alt="asset"
                 />
                 <Arrow />
                 <Image
                   loading="eager"
-                  src={`/assets/chains/${srcChain.chainName.toLowerCase()}.logo.svg`}
+                  src={`/assets/chains/${srcChain.chainName?.toLowerCase()}.logo.svg`}
                   width={image}
                   height={image}
                   onError={(e) => {
                     e.currentTarget.src = defaultChainImg;
                     e.currentTarget.srcset = defaultChainImg;
                   }}
+                  alt="chain"
                 />
               </span>
             </li>
@@ -489,7 +494,7 @@ export const TokenSelector = () => {
                   getWagmiChains().find(
                     (chain) =>
                       chain.networkNameOverride ===
-                      destChain.chainName.toLowerCase()
+                      destChain.chainName?.toLowerCase()
                   )?.id
                 );
               }}
@@ -504,17 +509,19 @@ export const TokenSelector = () => {
                     e.currentTarget.src = defaultAssetImg;
                     e.currentTarget.srcset = defaultAssetImg;
                   }}
+                  alt="asset"
                 />
                 <Arrow />
                 <Image
                   loading="eager"
-                  src={`/assets/chains/${destChain.chainName.toLowerCase()}.logo.svg`}
+                  src={`/assets/chains/${destChain.chainName?.toLowerCase()}.logo.svg`}
                   width={image}
                   height={image}
                   onError={(e) => {
                     e.currentTarget.src = defaultChainImg;
                     e.currentTarget.srcset = defaultChainImg;
                   }}
+                  alt="chain"
                 />
               </span>
             </li>
@@ -527,30 +534,31 @@ export const TokenSelector = () => {
   return asset ? (
     <div ref={ref}>
       <div className="flex items-center justify-between h-6">
-        <label className="block text-xs">I want to transfer</label>
-        <div className="flex items-start">
+        <label className="block text-xs">
+          I want to transfer from{" "}
+          <span className="capitalize">{srcChain.chainName}</span>
+        </label>
+        <div className="flex items-center">
+          {/* <input
+            type="checkbox"
+            className="checkbox checkbox-sm checkbox-primary"
+          /> */}
           {addTokenToMetamaskButton()}
-          {swapOrigin === SwapOrigin.APP && (
-            <button
-              className="btn btn-info btn-xs"
-              onClick={handleOnMaxButtonClick}
-            >
-              Max
-            </button>
-          )}
+          <MaxButton />
         </div>
       </div>
       <div className="flex justify-between mt-2">
         <Blockable>
           <div className="static flex mt-1 dropdown dropdown-open">
             <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
-              <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
+              <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
                 <Image
                   loading="eager"
                   src={`/assets/tokens/${asset?.common_key[ENVIRONMENT]}.logo.svg`}
                   layout="intrinsic"
-                  width={35}
-                  height={35}
+                  width={30}
+                  height={30}
+                  alt="asset"
                   onError={(e) => {
                     e.currentTarget.src = defaultAssetImg;
                     e.currentTarget.srcset = defaultAssetImg;
@@ -562,8 +570,8 @@ export const TokenSelector = () => {
                     loading="eager"
                     src="/assets/ui/arrow-down.svg"
                     layout="intrinsic"
-                    width={25}
-                    height={25}
+                    width={35}
+                    height={35}
                   />
                 </div>
               </div>

@@ -38,4 +38,5 @@ export default {
   features: ["ibc-transfer", "ibc-go"],
   chainIdentifier: "stargaze",
   chainToAxelarChannelId: "channel-50",
+  explorer: "https://www.mintscan.io/stargaze/account/",
 } as CosmosChain;

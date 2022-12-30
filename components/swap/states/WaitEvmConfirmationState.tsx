@@ -12,6 +12,7 @@ import { SwapStatus } from "../../../utils/enums";
 import { InputWrapper, truncate } from "../../common";
 import { ProgressBar } from "./parts";
 import { TransferStats } from "../parts";
+import { useDetectUnwrapTransfer } from "../../../hooks";
 
 export const WaitEvmConfirmationState = () => {
   const {
@@ -25,18 +26,19 @@ export const WaitEvmConfirmationState = () => {
     depositAddress,
   } = useSwapStore((state) => state);
 
-  const chainAlias = destChain.chainName.toLowerCase();
+  const chainAlias = destChain.chainName?.toLowerCase();
   const tokenAddress = asset?.chain_aliases[chainAlias]?.tokenAddress;
 
   const destChainId = useSwapStore(getDestChainId);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
+  useDetectUnwrapTransfer();
   useContractEvent({
     chainId: destChainId as number,
-    addressOrName: tokenAddress as string,
-    contractInterface: erc20ABI,
+    address: tokenAddress as string,
+    abi: erc20ABI,
     eventName: "Transfer",
-    listener: (event) => {
+    listener(...event: any) {
       if (event[3].blockNumber < Number(txInfo.destStartBlockNumber)) return;
       if (event[1] === destAddress) {
         setTxInfo({

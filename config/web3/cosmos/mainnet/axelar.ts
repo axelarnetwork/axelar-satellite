@@ -24,4 +24,5 @@ export default {
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "axelar",
   chainToAxelarChannelId: "channel-0",
+  explorer: "https://www.mintscan.io/axelar/account/",
 } as CosmosChain;

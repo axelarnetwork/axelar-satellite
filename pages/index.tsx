@@ -11,11 +11,8 @@ import { SwapBox } from "../components/swap";
 import { FirstTimeWarning } from "../components/swap/parts/FirstTimeWarning";
 import { ENVIRONMENT, UNDER_MAINTENANCE } from "../config/constants";
 import { siteMetadata } from "../data";
-import {
-  useInitialChainList,
-  useNormalizeChains,
-  useNormalizeUrlPaths,
-} from "../hooks";
+import { useNormalizeChains, useNormalizeUrlPaths } from "../hooks";
+import { useInitialChainList } from "../hooks/init";
 import { drawBackground } from "../hooks/particle";
 import { useSwapStore } from "../store";
 

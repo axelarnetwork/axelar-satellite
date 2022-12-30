@@ -10,7 +10,7 @@ export function validateCosmosAddress(
 ): boolean {
   try {
     const _prefix = bech32.decode(address).prefix;
-    return _prefix === prefix.toLowerCase();
+    return _prefix === prefix?.toLowerCase();
   } catch (error) {
     return false;
   }

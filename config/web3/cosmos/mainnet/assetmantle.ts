@@ -43,4 +43,5 @@ export default {
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "assetmantle",
   chainToAxelarChannelId: "channel-10",
+  explorer: "https://explorer.assetmantle.one/wallet/",
 } as CosmosChain;

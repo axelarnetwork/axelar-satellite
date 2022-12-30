@@ -16,9 +16,8 @@ export function buildTokenSentRoomId(
   destChainInfo: ChainInfo,
   sender: string
 ): string {
-
   const topic = {
-    type: 'token-sent',
+    type: "token-sent",
     sourceChain: srcChainInfo.chainIdentifier[ENVIRONMENT],
     denom,
     destinationAddress,
@@ -37,7 +36,7 @@ export function buildDepositConfirmationRoomId(
 ): string {
   const topic = {
     type: "deposit-confirmation",
-    sourceModule: module.toLowerCase(),
+    sourceModule: module?.toLowerCase(),
     depositAddress,
   };
 

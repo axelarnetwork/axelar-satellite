@@ -44,4 +44,5 @@ export default {
   beta: true,
   chainIdentifier: "evmos",
   chainToAxelarChannelId: "channel-21",
+  explorer: "https://www.mintscan.io/evmos/account/",
 } as CosmosChain;

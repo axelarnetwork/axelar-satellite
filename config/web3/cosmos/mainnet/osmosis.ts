@@ -15,4 +15,5 @@ export default {
     },
   ],
   chainIdentifier: "osmosis",
+  explorer: "https://www.mintscan.io/osmosis/account/",
 } as CosmosChain;

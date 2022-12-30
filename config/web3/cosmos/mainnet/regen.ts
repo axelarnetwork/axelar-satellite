@@ -43,4 +43,5 @@ export default {
   features: ["ibc-go", "ibc-transfer"],
   chainIdentifier: "regen",
   chainToAxelarChannelId: "channel-48",
+  explorer: "https://www.mintscan.io/regen/account/",
 } as CosmosChain;

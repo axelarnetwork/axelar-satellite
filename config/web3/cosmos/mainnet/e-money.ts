@@ -15,4 +15,5 @@ export default {
     },
   ],
   chainToAxelarChannelId: "channel-26",
+  explorer: "https://www.mintscan.io/emoney/account/",
 } as CosmosChain;

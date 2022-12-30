@@ -14,9 +14,15 @@ export const SourceChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { allChains, srcChain, destChain, setSrcChain } = useSwapStore(
-    (state) => state
-  );
+  const {
+    allChains,
+    srcChain,
+    destChain,
+    setSrcChain,
+    asset,
+    allAssets,
+    setAsset,
+  } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   const ref = useRef(null);
@@ -56,7 +62,7 @@ export const SourceChainSelector = () => {
 
     const chains = allChains.filter(
       (chain) =>
-        chain.chainName.toLowerCase().includes(searchChainInput) &&
+        chain.chainName?.toLowerCase().includes(searchChainInput) &&
         chain.chainName !== destChain.chainName &&
         chain.chainName !== srcChain.chainName &&
         // TODO: fix correctly
@@ -74,12 +80,24 @@ export const SourceChainSelector = () => {
   }
 
   async function handleOnSourceChainChange(chain: ChainInfo) {
-    // await router.push({
-    //   query: {
-    //     ...router.query,
-    //     source: chain.chainName.toLowerCase(),
-    //   },
-    // });
+    /**
+     * Handle the case where the current asset is not compatible on selected source chain
+     */
+    const selectedChain = allChains.find((_chain) => _chain.id === chain.id);
+    if (!selectedChain) return;
+    const selectedChainHasAsset = selectedChain?.assets?.find(
+      (_asset) => _asset.common_key === asset?.id
+    );
+    if (selectedChainHasAsset) return setSrcChain(chain);
+
+    // if asset incompatible find fist compatible asset
+    const compatibleAsset = allAssets.find(
+      (_asset) =>
+        !!_asset.chain_aliases[selectedChain?.chainName.toLocaleLowerCase()] &&
+        !!_asset.chain_aliases[destChain?.chainName.toLocaleLowerCase()]
+    );
+    if (!compatibleAsset) return;
+    setAsset(compatibleAsset);
     setSrcChain(chain);
   }
 
@@ -102,7 +120,7 @@ export const SourceChainSelector = () => {
                 <button onClick={() => handleOnSourceChainChange(chain)}>
                   <Image
                     loading="eager"
-                    src={`/assets/chains/${chain.chainName.toLowerCase()}.logo.svg`}
+                    src={`/assets/chains/${chain.chainName?.toLowerCase()}.logo.svg`}
                     layout="intrinsic"
                     width={35}
                     height={35}

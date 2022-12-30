@@ -12,39 +12,39 @@ export default {
     coinDecimals: 18,
     coinGeckoId: "evmos",
   },
-  "bech32Config": {
-    "bech32PrefixAccAddr": "evmos",
-    "bech32PrefixAccPub": "evmospub",
-    "bech32PrefixValAddr": "evmosvaloper",
-    "bech32PrefixValPub": "evmosvaloperpub",
-    "bech32PrefixConsAddr": "evmosvalcons",
-    "bech32PrefixConsPub": "evmosvalconspub"
+  bech32Config: {
+    bech32PrefixAccAddr: "evmos",
+    bech32PrefixAccPub: "evmospub",
+    bech32PrefixValAddr: "evmosvaloper",
+    bech32PrefixValPub: "evmosvaloperpub",
+    bech32PrefixConsAddr: "evmosvalcons",
+    bech32PrefixConsPub: "evmosvalconspub",
   },
-  "bip44": {
-    "coinType": 118
+  bip44: {
+    coinType: 118,
   },
-  "currencies": [
+  currencies: [
     {
-      "coinDenom": "EVMOS",
-      "coinMinimalDenom": "atevmos",
-      "coinDecimals": 18,
-      "coinGeckoId": "evmos"
-    }
+      coinDenom: "EVMOS",
+      coinMinimalDenom: "atevmos",
+      coinDecimals: 18,
+      coinGeckoId: "evmos",
+    },
   ],
-  "feeCurrencies": [
+  feeCurrencies: [
     {
-      "coinDenom": "EVMOS",
-      "coinMinimalDenom": "atevmos",
-      "coinDecimals": 18,
-      "coinGeckoId": "evmos"
-    }
+      coinDenom: "EVMOS",
+      coinMinimalDenom: "atevmos",
+      coinDecimals: 18,
+      coinGeckoId: "evmos",
+    },
   ],
-  "gasPriceStep": {
-    "low": 25000000000,
-    "average": 25000000000,
-    "high": 40000000000
+  gasPriceStep: {
+    low: 25000000000,
+    average: 25000000000,
+    high: 40000000000,
   },
-  "features": ["stargate", "no-legacy-stdTx", "ibc-transfer"],
+  features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "evmos",
-  chainToAxelarChannelId: "channel-22"
+  chainToAxelarChannelId: "channel-22",
 } as CosmosChain;

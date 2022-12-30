@@ -36,5 +36,6 @@ export default {
   ],
   gasPriceStep: { low: 5.665, average: 5.665, high: 7 },
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
+  explorer: "https://finder.terra.money/mainnet/address/",
   chainToAxelarChannelId: "channel-19",
 } as CosmosChain;
