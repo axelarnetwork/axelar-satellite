@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   getSelectedAssetSymbol,
@@ -19,13 +19,17 @@ export const WaitDepositState = () => {
     useSwapStore((state) => state);
   const { wagmiConnected, keplrConnected } = useWalletStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+  const [relayerGasFee, setRelayerGasFee] = useState<string>("");
+
+  useEffect(() => {
+    if (!srcChain || !destChain || !asset) return;
+    renderGasFee(srcChain, destChain, asset as AssetConfig).then((res) =>
+      setRelayerGasFee(res)
+    );
+  }, [srcChain, destChain, asset]);
 
   function renderTransferInfo() {
-    const relayerGasFee = renderGasFee(
-      srcChain,
-      destChain,
-      asset as AssetConfig
-    );
+    if (!relayerGasFee) return;
     return (
       <div>
         <div>

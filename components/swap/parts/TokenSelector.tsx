@@ -14,7 +14,6 @@ import { useGetAssetBalance, useGetMaxTransferAmount } from "../../../hooks";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { Blockable } from "../../common";
 import { useRouter } from "next/router";
-import { renderGasFee } from "../../../utils/renderGasFee";
 import BigNumber from "bignumber.js";
 import { SpinnerDotted } from "spinners-react";
 import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
