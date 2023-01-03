@@ -13,6 +13,7 @@ export type DepositAddressPayload = {
   fromChain: string;
   toChain: string;
   destAddress: string;
+  fromChainModule: "evm" | "axelarnet";
   asset: AssetConfigExtended;
   transferType: "deposit-address" | "wrap" | "unwrap";
 };
@@ -24,7 +25,14 @@ const sdk = new AxelarAssetTransfer({
 
 export const useGenerateDepositAddress = () =>
   useMutation(async (payload: DepositAddressPayload) => {
-    const { fromChain, toChain, destAddress, transferType, asset } = payload;
+    const {
+      fromChain,
+      toChain,
+      destAddress,
+      transferType,
+      asset,
+      fromChainModule,
+    } = payload;
     if (transferType === "wrap") {
       const depositAddress = await sdk.getDepositAddress({
         fromChain: fromChain,
@@ -42,9 +50,10 @@ export const useGenerateDepositAddress = () =>
     if (transferType === "unwrap") {
       const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
       const refundAddress = await axelarQueryApi.getContractAddressFromConfig(
-        fromChain,
+        fromChainModule === "evm" ? fromChain : toChain,
         "default_refund_collector"
       );
+      console.log("refund address", refundAddress);
       const intermediaryDepositAddress =
         await sdk.validateOfflineDepositAddress(
           "unwrap",

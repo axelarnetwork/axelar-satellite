@@ -74,6 +74,7 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
 
     genDepositAddress({
       fromChain: srcChain.chainIdentifier[ENVIRONMENT],
+      fromChainModule: srcChain.module,
       toChain: destChain.chainIdentifier[ENVIRONMENT],
       asset,
       destAddress,

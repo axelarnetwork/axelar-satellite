@@ -87,8 +87,7 @@ export const getTransferType = memoize(
       // we transfer wrapped asset of native asset belonging to destination chain
     } else if (
       shouldUnwrapAsset &&
-      asset.native_chain === destChain.chainName?.toLowerCase() &&
-      srcChain.module === "evm"
+      asset.native_chain === destChain.chainName?.toLowerCase()
     ) {
       transferType = "unwrap";
     }
