@@ -183,11 +183,35 @@ export const getWrappedAssetName = memoize(
     destChain: ChainInfo;
     srcChain: ChainInfo;
   }) => {
-    const wrappedToken = state.allAssets.find(
-      (_asset) =>
-        _asset.native_chain === state.destChain.chainName?.toLowerCase() &&
-        !_asset.is_gas_token
-    )?.chain_aliases[state.destChain.chainName?.toLowerCase()];
+    const { destChain, allAssets } = state;
+
+    const assetFinder = (_asset: AssetConfigExtended) => {
+      // asset's native chain is the destination chain
+      const isAssetsNativeChain =
+        _asset.native_chain === state.destChain.chainName?.toLowerCase();
+
+      // asset is not gas token, e.g. ETH/AVAX/etc, but instead, wrapped version of them, WETH/WAVAX/etc.
+      const isNotGasToken = !_asset.is_gas_token;
+
+      // the nativeAsset list in the chain config for the destination chain includes the denom for the wrapped asset
+      // this avoids selection of wrapped assets on chains that are not wrapped native (e.g. USDC on Ethereum)
+      const assetIsWrappedVersionOfNativeAssetOnDestChain =
+        destChain &&
+        destChain.nativeAsset &&
+        destChain.nativeAsset.length > 0 &&
+        destChain?.nativeAsset.indexOf(_asset.id) >= 0;
+
+      return (
+        isAssetsNativeChain &&
+        isNotGasToken &&
+        assetIsWrappedVersionOfNativeAssetOnDestChain
+      );
+    };
+
+    const wrappedToken =
+      allAssets.find(assetFinder)?.chain_aliases[
+        destChain.chainName?.toLowerCase()
+      ];
 
     return wrappedToken?.assetSymbol;
   }
