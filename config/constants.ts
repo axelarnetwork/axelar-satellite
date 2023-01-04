@@ -49,3 +49,5 @@ const chainPolicies =
 export const ASSET_RESTRICTIONS: AssetRestriction[] = chainPolicies
   ? JSON.parse(chainPolicies)
   : [];
+
+export const defaultChainImg = "/assets/chains/default.logo.svg";
