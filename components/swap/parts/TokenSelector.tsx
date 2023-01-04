@@ -132,23 +132,23 @@ export const TokenSelector = () => {
   // update filtered assets state on chain change
   useEffect(() => {
     let list;
-    if (srcChain.module === "evm") {
-      list = selectableAssetList
-        .filter((asset) => {
-          // @ts-ignore
-          return (
-            !asset.is_gas_token ||
-            (asset.is_gas_token &&
-              srcChain.chainName?.toLowerCase() === asset.native_chain)
-          );
-        })
-        .filter((asset) => {
-          const srcChainName = srcChain.chainName?.toLowerCase();
-          if (asset.is_gas_token && asset.native_chain !== srcChainName)
-            return false;
-          return true;
-        });
-    }
+
+    list = selectableAssetList
+      .filter((asset) => {
+        // @ts-ignore
+        return (
+          !asset.is_gas_token ||
+          (asset.is_gas_token &&
+            srcChain.chainName?.toLowerCase() === asset.native_chain)
+        );
+      })
+      .filter((asset) => {
+        const srcChainName = srcChain.chainName?.toLowerCase();
+        if (asset.is_gas_token && asset.native_chain !== srcChainName)
+          return false;
+        return true;
+      });
+
     setFilteredAssets(list || selectableAssetList);
   }, [selectableAssetList, srcChain]);
 
