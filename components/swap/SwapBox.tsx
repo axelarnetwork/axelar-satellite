@@ -5,7 +5,6 @@ import {
   ActionButton,
   ChainSwapper,
   DestChainSelector,
-  SourceChainSelector,
   StopButton,
   SwapStates,
   TokenSelector,
@@ -21,13 +20,13 @@ import { EvmAssetWarningModal, ModalWindow } from "../modal";
 import { ENVIRONMENT as env } from "../../config/constants";
 import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
 import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
+import { SrcChainSelector } from "features/src-chain-selector";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
   useDetectDepositConfirmation();
   useRestrictAssets();
 
-  const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
 
@@ -62,7 +61,7 @@ export const SwapBox = () => {
         <Blockable>
           <div className="flex justify-between">
             <InputWrapper>
-              <SourceChainSelector />
+              <SrcChainSelector />
             </InputWrapper>
             <div className="relative z-40 flex items-center -mx-2">
               <ChainSwapper />
