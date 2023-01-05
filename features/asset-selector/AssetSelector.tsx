@@ -4,7 +4,9 @@ import Image from "next/image";
 import { defaultAssetImg } from "config/constants";
 import { Blockable } from "components/common";
 
+import { AddAssetButton } from "features/add-asset-button";
 import { AssetDropdown } from "features/asset-selector/AssetDropdown";
+import { AssetInput } from "features/asset-selector/AssetInput";
 import { useAssetFilter } from "features/asset-selector/hooks";
 import { MaxButton } from "features/max-button";
 
@@ -43,11 +45,7 @@ export const AssetSelector = () => {
           <span className="capitalize">{srcChain.chainName}</span>
         </label>
         <div className="flex items-center">
-          {/* <input
-        type="checkbox"
-        className="checkbox checkbox-sm checkbox-primary"
-      /> */}
-          {/* {addTokenToMetamaskButton()} */}
+          <AddAssetButton />
           <MaxButton />
         </div>
       </div>
@@ -89,10 +87,9 @@ export const AssetSelector = () => {
               filteredAssets={filteredAssets}
               handleOnDropdownToggle={handleOnDropdownToggle}
             />
-            {/* {renderAssetDropdown()} */}
           </div>
         </Blockable>
-        {/* {renderTokenInput()} */}
+        <AssetInput />
       </div>
     </div>
   );

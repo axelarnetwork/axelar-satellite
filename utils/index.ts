@@ -107,3 +107,5 @@ export function curateCosmosChainId(chainId: string) {
   if (ENVIRONMENT === Environment.MAINNET)
     return mapCosmosMainnetChains(chainId);
 }
+
+export * from "./roundNumberTo";

@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
-import classNames from "classnames";
 
-import { AssetConfigExtended } from "types";
 import { defaultAssetImg } from "config/constants";
+
+import { useSwitchAsset } from "features/asset-selector/hooks";
+
 import { useSwapStore } from "store";
+
+import classNames from "classnames";
+import { AssetConfigExtended } from "types";
 
 interface Props {
   dropdownOpen: boolean;
@@ -22,6 +26,9 @@ export const AssetDropdown: React.FC<Props> = ({
   handleOnDropdownToggle,
 }) => {
   const srcChain = useSwapStore((state) => state.srcChain);
+
+  const switchAsset = useSwitchAsset();
+
   // clean dropdown input on dropdown close
   useEffect(() => {
     if (!dropdownOpen) setSearchAssetInput("");
@@ -63,9 +70,7 @@ export const AssetDropdown: React.FC<Props> = ({
               })}
               key={asset.id}
             >
-              <button
-              // onClick={() => handleOnAssetChange(asset)}
-              >
+              <button onClick={() => switchAsset(asset)}>
                 <Image
                   loading="eager"
                   src={`/assets/tokens/${asset.id}.logo.svg`}
