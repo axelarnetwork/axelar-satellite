@@ -4,7 +4,6 @@ import { Blockable, InputWrapper } from "../common";
 import {
   ActionButton,
   ChainSwapper,
-  DestChainSelector,
   StopButton,
   SwapStates,
   TokenSelector,
@@ -21,6 +20,7 @@ import { ENVIRONMENT as env } from "../../config/constants";
 import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
 import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
 import { SrcChainSelector } from "features/src-chain-selector";
+import { DestChainSelector } from "features/dest-chain-selector";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
