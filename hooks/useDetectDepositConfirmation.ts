@@ -1,13 +1,14 @@
 import { useEffect } from "react";
+
+import { getDestChainId, useSwapStore } from "../store";
+
+import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 import { useBlockNumber } from "wagmi";
 
-import { getDestChainId, useSwapStore } from "../store";
 import { ENVIRONMENT, SOCKET_API } from "../config/constants";
-
 import { buildDepositConfirmationRoomId, buildTokenSentRoomId } from "../utils";
 import { SwapStatus } from "../utils/enums";
-import toast from "react-hot-toast";
 
 const socket = io(SOCKET_API, {
   transports: ["websocket"],

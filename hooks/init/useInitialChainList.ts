@@ -1,12 +1,17 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+
 import {
   AssetConfig,
   ChainInfo,
   loadAssets,
 } from "@axelar-network/axelarjs-sdk";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
+
+import { useSwapStore } from "../../store";
+
 import _ from "lodash";
+import toast from "react-hot-toast";
+
 import {
   DEFAULT_ASSET,
   DEFAULT_DEST_CHAIN,
@@ -14,7 +19,6 @@ import {
   DISABLED_CHAIN_NAMES,
   ENVIRONMENT,
 } from "../../config/constants";
-import { useSwapStore } from "../../store";
 import { AssetConfigExtended, RouteQuery } from "../../types";
 import { addNativeAssets, loadAllChains } from "../../utils/api";
 

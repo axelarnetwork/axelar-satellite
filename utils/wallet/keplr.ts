@@ -1,8 +1,13 @@
 import { OfflineSigner } from "@cosmjs/launchpad";
-import { SigningStargateClient, QueryClient } from "@cosmjs/stargate";
+import { QueryClient, SigningStargateClient } from "@cosmjs/stargate";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
+
+import {
+  QueryBalanceRequest,
+  QueryBalanceResponse,
+} from "cosmjs-types/cosmos/bank/v1beta1/query";
+
 import { CosmosChain } from "../../config/web3/cosmos/interface";
-import { QueryBalanceRequest, QueryBalanceResponse } from "cosmjs-types/cosmos/bank/v1beta1/query";
 
 export const connectChainId = async (chain: CosmosChain): Promise<void> => {
   const { keplr } = window;
@@ -30,16 +35,24 @@ export const getSigner = async (chain: CosmosChain): Promise<OfflineSigner> => {
   return (await keplr?.getOfflineSignerAuto(chain.chainId)) as OfflineSigner;
 };
 
-export const queryBalance = async (address: string, denom: string, rpc: string) => {
+export const queryBalance = async (
+  address: string,
+  denom: string,
+  rpc: string
+) => {
   const tmClient = await Tendermint34Client.connect(rpc);
   const client = QueryClient.withExtensions(tmClient);
-  const requestData = Uint8Array.from(QueryBalanceRequest.encode({ address, denom }).finish());
-  const data = await client.queryUnverified(`/cosmos.bank.v1beta1.Query/Balance`, requestData);
+  const requestData = Uint8Array.from(
+    QueryBalanceRequest.encode({ address, denom }).finish()
+  );
+  const data = await client.queryUnverified(
+    `/cosmos.bank.v1beta1.Query/Balance`,
+    requestData
+  );
   const response = QueryBalanceResponse.decode(data);
   tmClient.disconnect();
   return response.balance;
-  
-}
+};
 export const getSigningClient = async (
   chain: CosmosChain,
   rpcUrl: string

@@ -1,9 +1,12 @@
-import Image from "next/image";
-import cn from "classnames";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+
 import { useWalletStore } from "../../../store";
-import { ConnectIndicator } from "../../common";
+
+import cn from "classnames";
+
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
+import { ConnectIndicator } from "../../common";
 
 export const ConnectButton = () => {
   const { wagmiConnected, keplrConnected } = useWalletStore();

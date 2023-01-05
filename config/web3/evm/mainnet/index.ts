@@ -1,13 +1,13 @@
 import { ChainExtension } from "../interface";
-import binance from "./binance";
-import ethereum from "./ethereum";
+import arbitrum from "./arbitrum";
 import avalanche from "./avalanche";
+import binance from "./binance";
+import celo from "./celo";
+import ethereum from "./ethereum";
 import fantom from "./fantom";
+import kava from "./kava";
 import moonbeam from "./moonbeam";
 import polygon from "./polygon";
-import arbitrum from "./arbitrum";
-import celo from "./celo";
-import kava from "./kava";
 
 export const mainnetChains: ChainExtension[] = [
   arbitrum,

@@ -1,6 +1,21 @@
 import React from "react";
+
+import { AssetSelector } from "features/asset-selector";
+import { DestChainSelector } from "features/dest-chain-selector";
+import { SrcChainSelector } from "features/src-chain-selector";
+
+import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
+
 import cn from "classnames";
+
+import { ENVIRONMENT as env } from "../../config/constants";
+import {
+  useDetectDepositConfirmation,
+  usePreventDuplicateChains,
+  useRestrictAssets,
+} from "../../hooks";
 import { Blockable, InputWrapper } from "../common";
+import { EvmAssetWarningModal, ModalWindow } from "../modal";
 import {
   ActionButton,
   ChainSwapper,
@@ -8,20 +23,8 @@ import {
   SwapStates,
   TokenSelector,
 } from "./parts";
-
-import {
-  useDetectDepositConfirmation,
-  usePreventDuplicateChains,
-  useRestrictAssets,
-} from "../../hooks";
-import { TopFlows } from "./parts/TopFlows";
-import { EvmAssetWarningModal, ModalWindow } from "../modal";
-import { ENVIRONMENT as env } from "../../config/constants";
 import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
-import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
-import { SrcChainSelector } from "features/src-chain-selector";
-import { DestChainSelector } from "features/dest-chain-selector";
-import { AssetSelector } from "features/asset-selector";
+import { TopFlows } from "./parts/TopFlows";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();

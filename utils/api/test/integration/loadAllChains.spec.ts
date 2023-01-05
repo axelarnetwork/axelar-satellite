@@ -1,4 +1,5 @@
-import { ChainInfo, CHAINS } from "@axelar-network/axelarjs-sdk";
+import { CHAINS, ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import * as _module from "../..";
 
 const environment = "testnet";

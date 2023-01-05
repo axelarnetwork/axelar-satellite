@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-import { useSwitchDestChain } from "features/dest-chain-selector/hooks";
+
 import { defaultChainImg } from "config/constants";
+
+import { useSwitchDestChain } from "features/dest-chain-selector/hooks";
+
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import classNames from "classnames";
 
 interface Props {

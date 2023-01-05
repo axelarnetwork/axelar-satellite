@@ -1,15 +1,16 @@
-import toast from "react-hot-toast";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+
+import _ from "lodash";
+import toast from "react-hot-toast";
+
 import { Environment } from "../../utils/enums";
 import { ENVIRONMENT } from "../constants";
-
+import { CosmosChain } from "./cosmos/interface";
+import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";
+import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
+import { mainnetChains as evmMainnetChains } from "./evm/mainnet";
 // wagmi ready chains
 import { testnetChains as evmTestnetChains } from "./evm/testnet";
-import { mainnetChains as evmMainnetChains } from "./evm/mainnet";
-import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
-import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";
-import { CosmosChain } from "./cosmos/interface";
-import _ from "lodash";
 
 // sdk chains (generic)
 // export const allAssets = loadAssets({

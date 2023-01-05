@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+
 import {
   getSelectedAssetSymbol,
   useSwapStore,
   useWalletStore,
 } from "../../../store";
-import { AddressShortener, InputWrapper } from "../../common";
-import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
-import { copyToClipboard } from "../../../utils";
 
-import { convertChainName } from "../../../utils/transformers";
-import { TransferStats } from "../parts";
+import { copyToClipboard } from "../../../utils";
 import { renderGasFee } from "../../../utils/renderGasFee";
+import { convertChainName } from "../../../utils/transformers";
+import { AddressShortener, InputWrapper } from "../../common";
+import { TransferStats } from "../parts";
+import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
 
 export const WaitDepositState = () => {
   const { depositAddress, destAddress, srcChain, destChain, asset } =

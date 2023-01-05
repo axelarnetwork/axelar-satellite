@@ -1,15 +1,18 @@
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
-import BigNumber from "bignumber.js";
 import React from "react";
-import toast from "react-hot-toast";
 
-import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
+import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+
 import {
   getReservedAddresses,
   getSelectedAssetSymbol,
   getTransferType,
   useSwapStore,
 } from "../../../store";
+
+import BigNumber from "bignumber.js";
+import toast from "react-hot-toast";
+
+import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
 import {
   validateCosmosAddress,
   validateEvmAddress,

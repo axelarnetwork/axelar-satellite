@@ -1,11 +1,14 @@
 import React from "react";
 import Image from "next/image";
+
 import { useWalletStore } from "../../store";
+
 import { useIsTerraConnected } from "../../hooks/terra/useIsTerraConnected";
 
 export const ConnectIndicator = () => {
   const { wagmiConnected, keplrConnected } = useWalletStore();
-  const { isTerraConnected, isTerraInitializingOrConnected} = useIsTerraConnected();
+  const { isTerraConnected, isTerraInitializingOrConnected } =
+    useIsTerraConnected();
 
   return (
     <div className="flex items-center flex-column">
@@ -32,7 +35,11 @@ export const ConnectIndicator = () => {
           <Image height={18} width={18} src="/assets/wallets/kepler.logo.svg" />
         )}
         {isTerraConnected && (
-          <Image height={18} width={18} src="/assets/wallets/terra-station.logo.svg" />
+          <Image
+            height={18}
+            width={18}
+            src="/assets/wallets/terra-station.logo.svg"
+          />
         )}
       </div>
     </div>

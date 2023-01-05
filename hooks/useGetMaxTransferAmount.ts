@@ -1,6 +1,9 @@
-import { useSwapStore } from "../store";
 import { useEffect, useState } from "react";
+
+import { useSwapStore } from "../store";
+
 import { BigNumber } from "bignumber.js";
+
 import { ENVIRONMENT } from "../config/constants";
 
 export const useGetMaxTransferAmount = () => {
