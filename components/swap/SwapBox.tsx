@@ -21,6 +21,7 @@ import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
 import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
 import { SrcChainSelector } from "features/src-chain-selector";
 import { DestChainSelector } from "features/dest-chain-selector";
+import { AssetSelector } from "features/asset-selector";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
@@ -73,7 +74,8 @@ export const SwapBox = () => {
         </Blockable>
 
         <InputWrapper>
-          <TokenSelector />
+          {/* <TokenSelector /> */}
+          <AssetSelector />
         </InputWrapper>
         {destChain?.module === "evm" && selectedAssetIsWrapped && (
           <InputWrapper>
