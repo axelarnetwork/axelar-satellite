@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useSwapStore } from "../../../store";
+
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
+import { useSwapStore } from "../../../store";
+
+import { AssetConfigExtended } from "types";
+
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapStatus } from "../../../utils/enums";
-import { AssetConfigExtended } from "types";
 
 export const Arrow = () => (
   <svg

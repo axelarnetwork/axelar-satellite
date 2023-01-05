@@ -1,15 +1,16 @@
+import { useEffect, useState } from "react";
 import Image from "next/image";
+
 import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
 
-import { AddressShortener, StatsWrapper } from "../../common";
-import { renderGasFee } from "../../../utils/renderGasFee";
-import { copyToClipboard } from "../../../utils";
-import { SwapStatus } from "../../../utils/enums";
 import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
-import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
 import { USDC_POOLS } from "../../../data/pools";
-import { useEffect, useState } from "react";
+import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
+import { copyToClipboard } from "../../../utils";
+import { SwapStatus } from "../../../utils/enums";
+import { renderGasFee } from "../../../utils/renderGasFee";
+import { AddressShortener, StatsWrapper } from "../../common";
 
 const InfoIcon = (
   <svg

@@ -1,5 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+
+import { AssetInfo } from "@axelar-network/axelarjs-sdk";
+
+import {
+  getDestChainId,
+  getSelectedAssetSymbol,
+  getSrcChainId,
+  getSrcTokenAddress,
+  useSwapStore,
+  useWalletStore,
+} from "../../../../store";
+
+import { BigNumber } from "bignumber.js";
+import cn from "classnames";
+import { utils } from "ethers";
+import toast from "react-hot-toast";
+import { SpinnerRoundFilled } from "spinners-react";
 import {
   useAccount,
   useBalance,
@@ -15,23 +32,10 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { erc20ABI } from "wagmi";
-import { utils } from "ethers";
-import { BigNumber } from "bignumber.js";
-import toast from "react-hot-toast";
-import { AssetInfo } from "@axelar-network/axelarjs-sdk";
-import { SpinnerRoundFilled } from "spinners-react";
-import cn from "classnames";
-import {
-  getDestChainId,
-  getSrcChainId,
-  useSwapStore,
-  useWalletStore,
-  getSrcTokenAddress,
-  getSelectedAssetSymbol,
-} from "../../../../store";
+
 import { ENVIRONMENT } from "../../../../config/constants";
-import { renderGasFee } from "../../../../utils/renderGasFee";
 import { Hash } from "../../../../types";
+import { renderGasFee } from "../../../../utils/renderGasFee";
 
 export const EvmWalletTransfer = () => {
   const { connectAsync, connectors, error } = useConnect();

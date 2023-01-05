@@ -1,8 +1,12 @@
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useEffect } from "react";
-import { io } from "socket.io-client";
-import { ENVIRONMENT, SOCKET_API } from "../config/constants";
+
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import { useSwapStore } from "../store";
+
+import { io } from "socket.io-client";
+
+import { ENVIRONMENT, SOCKET_API } from "../config/constants";
 import {
   buildAxelarTransferCompletedRoomId,
   buildEvmTransferCompletedRoomId,

@@ -1,4 +1,5 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 

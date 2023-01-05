@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import { ASSET_RESTRICTIONS } from "../config/constants";
+
 import { getRestrictedAssetIsSelected, useSwapStore } from "../store";
+
+import { ASSET_RESTRICTIONS } from "../config/constants";
 
 export const useRestrictAssets = () => {
   const asset = useSwapStore((state) => state.asset);

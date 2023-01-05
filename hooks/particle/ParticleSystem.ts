@@ -5,7 +5,7 @@ export default class ParticleSystem {
   public updateHandler: any;
 
   constructor() {
-    this.particles = [];;
+    this.particles = [];
     this.updateHandler = null;
   }
 
