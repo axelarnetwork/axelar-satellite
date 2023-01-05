@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
+
 import { useSwapStore } from "../../store";
+
 import { SwapStatus } from "../../utils/enums";
 
 export const VideoBackground = () => {
@@ -19,7 +21,10 @@ export const VideoBackground = () => {
       id="myVideo"
       poster="https://axelar-mainnet.s3.us-east-2.amazonaws.com/video-poster.png"
     >
-      <source src="https://axelar-mainnet.s3.us-east-2.amazonaws.com/video.mp4" type="video/mp4" />
+      <source
+        src="https://axelar-mainnet.s3.us-east-2.amazonaws.com/video.mp4"
+        type="video/mp4"
+      />
     </video>
   );
 };

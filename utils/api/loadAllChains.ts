@@ -1,4 +1,5 @@
 import { Environment, loadChains } from "@axelar-network/axelarjs-sdk";
+
 import { getDisabledChains } from ".";
 
 export async function loadAllChains(environment: string) {

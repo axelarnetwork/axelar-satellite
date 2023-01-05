@@ -1,10 +1,12 @@
 import { FC } from "react";
+
+import { useApplicationStateStore } from "../../../store";
+
 import {
-  docsLinks,
   GETTING_STARTED_MODAL,
+  docsLinks,
   tokenContractDocs,
 } from "../../../config/constants";
-import { useApplicationStateStore } from "../../../store";
 import { Link } from "../../common/GetLink";
 
 type GettingStartedProps = {};
@@ -29,7 +31,9 @@ export const GettingStarted: FC<GettingStartedProps> = ({}) => {
       })}
       {Link({
         url: tokenContractDocs[process.env.NEXT_PUBLIC_ENVIRONMENT as string],
-        linkTitle: `Token Contracts & Channel IDs (${process.env.NEXT_PUBLIC_ENVIRONMENT as string})`,
+        linkTitle: `Token Contracts & Channel IDs (${
+          process.env.NEXT_PUBLIC_ENVIRONMENT as string
+        })`,
         linkDescription: `An IMPORTANT document with token contract addresses for all
         supported assets.`,
       })}
@@ -48,6 +52,3 @@ export const GettingStarted: FC<GettingStartedProps> = ({}) => {
     </div>
   );
 };
-
-
-

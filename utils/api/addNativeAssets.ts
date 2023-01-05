@@ -1,4 +1,5 @@
 import { AssetInfo, ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import { AssetConfigExtended } from "types";
 
 export function addNativeAssets(

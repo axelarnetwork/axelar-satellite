@@ -1,7 +1,8 @@
-import { useContractEvent } from "wagmi";
-import { ENVIRONMENT } from "../config/constants";
-
 import { getDestChainId, useSwapStore } from "../store";
+
+import { useContractEvent } from "wagmi";
+
+import { ENVIRONMENT } from "../config/constants";
 import { SwapStatus } from "../utils/enums";
 
 export function useDetectUnwrapTransfer() {
@@ -37,8 +38,7 @@ export function useDetectUnwrapTransfer() {
     ],
     eventName: "Withdrawal",
     listener: (...event) => {
-      if (asset?.native_chain !== destChain.chainName.toLowerCase())
-        return;
+      if (asset?.native_chain !== destChain.chainName.toLowerCase()) return;
       const address = event[0];
       if (
         address?.toLowerCase() === intermediaryDepositAddress?.toLowerCase()

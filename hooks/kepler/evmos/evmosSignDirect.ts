@@ -1,13 +1,15 @@
 import { createTxRaw } from "@evmos/proto";
 import {
-  createTxIBCMsgTransfer,
-  MessageIBCMsgTransfer,
-} from "@evmos/transactions";
-import {
   generateEndpointBroadcast,
   generatePostBodyBroadcast,
 } from "@evmos/provider";
+import {
+  MessageIBCMsgTransfer,
+  createTxIBCMsgTransfer,
+} from "@evmos/transactions";
+
 import Long from "long";
+
 import { getCosmosChains } from "../../../config/web3";
 import { CosmosChain } from "../../../config/web3/cosmos/interface";
 
@@ -88,6 +90,8 @@ export const evmosSignDirect = async (
       `${rest}${generateEndpointBroadcast()}?chain=evmos`,
       postOptions
     );
-    return await broadcastPost.json().then(res => ({ transactionHash: res?.tx_response?.txhash }));
+    return await broadcastPost
+      .json()
+      .then((res) => ({ transactionHash: res?.tx_response?.txhash }));
   }
 };

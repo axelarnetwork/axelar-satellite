@@ -1,12 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useSwapStore } from "store";
-import { convertChainName } from "utils/transformers";
-import { ChainsDropdown } from "features/src-chain-selector/ChainsDropdown";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import { defaultChainImg } from "config/constants";
-import { useOnClickOutside } from "usehooks-ts";
+
+import { ChainsDropdown } from "features/src-chain-selector/ChainsDropdown";
 import { useChainFilter } from "features/src-chain-selector/hooks";
+
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
+import { useSwapStore } from "store";
+
+import { useOnClickOutside } from "usehooks-ts";
+import { convertChainName } from "utils/transformers";
 
 // TODO: abstract the state into a zustand sourceChainStore
 

@@ -1,19 +1,19 @@
-import terra from "./terra";
-import osmosis from "./osmosis";
-import kujira from "./kujira";
+import { CosmosChain } from "../interface";
+import acrechain from "./acrechain";
+import aura from "./aura";
 import axelar from "./axelar";
-import sei from "./sei";
+import burnt from "./burnt";
+import comdex from "./comdex";
 import cosmoshub from "./cosmoshub";
 import crescent from "./crescent";
-import fetch from "./fetch";
 import evmos from "./evmos";
-import aura from "./aura";
-import comdex from "./comdex";
+import fetch from "./fetch";
+import kujira from "./kujira";
+import osmosis from "./osmosis";
 import persistence from "./persistence";
-import { CosmosChain } from "../interface";
+import sei from "./sei";
+import terra from "./terra";
 import xpla from "./xpla";
-import burnt from "./burnt";
-import acrechain from "./acrechain";
 
 export const testnetChains: CosmosChain[] = [
   terra,

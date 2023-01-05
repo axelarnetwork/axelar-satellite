@@ -1,11 +1,14 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
-import { useOnClickOutside } from "usehooks-ts";
+
 import {
   getUnwrappedAssetSymbol,
   getWrappedAssetName,
   useSwapStore,
 } from "store";
+
+import { useOnClickOutside } from "usehooks-ts";
+
 import { ENVIRONMENT } from "../../../config/constants";
 import { Blockable } from "../../common";
 

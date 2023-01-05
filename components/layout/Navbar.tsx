@@ -1,12 +1,14 @@
 import React from "react";
 import Image from "next/image";
+
+import { useApplicationStateStore } from "../../store";
+
 import {
   FAQ_MODAL,
   GETTING_STARTED_MODAL,
   SUPPORT_MODAL,
   TOS_MODAL,
 } from "../../config/constants";
-import { useApplicationStateStore } from "../../store";
 import { ConnectButton } from "../swap/parts";
 
 const SatelliteLogo = () => {

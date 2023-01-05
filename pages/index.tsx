@@ -1,20 +1,18 @@
 import type { NextPage } from "next";
 import { useEffect } from "react";
 
-import {
-  Layout,
-  UnderMaintenance,
-  VideoBackground,
-} from "../components/layout";
-import { PageSEO } from "../components/seo";
-import { SwapBox } from "../components/swap";
-import { FirstTimeWarning } from "../components/swap/parts/FirstTimeWarning";
-import { ENVIRONMENT, UNDER_MAINTENANCE } from "../config/constants";
+import { ENVIRONMENT, UNDER_MAINTENANCE } from "config/constants";
+import { Layout, UnderMaintenance, VideoBackground } from "components/layout";
+import { PageSEO } from "components/seo";
+import { SwapBox } from "components/swap";
+import { FirstTimeWarning } from "components/swap/parts/FirstTimeWarning";
+
+import { useSwapStore } from "../store";
+
 import { siteMetadata } from "../data";
 import { useNormalizeChains, useNormalizeUrlPaths } from "../hooks";
 import { useInitialChainList } from "../hooks/init";
 import { drawBackground } from "../hooks/particle";
-import { useSwapStore } from "../store";
 
 const Home: NextPage = () => {
   const { allAssets, allChains } = useSwapStore();
