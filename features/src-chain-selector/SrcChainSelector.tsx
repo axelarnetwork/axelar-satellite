@@ -13,7 +13,7 @@ import { useChainFilter } from "features/src-chain-selector/hooks";
 export const SrcChainSelector = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const [searchChainInput, setSearchChainInput] = useState<string>();
+  const [searchChainInput, setSearchChainInput] = useState<string>("");
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
 
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -79,6 +79,7 @@ export const SrcChainSelector = () => {
         <ChainsDropdown
           dropdownOpen={dropdownOpen}
           filteredChains={filteredChains}
+          searchChainInput={searchChainInput}
           setSearchChainInput={setSearchChainInput}
           handleOnDropdownToggle={handleOnDropdownToggle}
         />

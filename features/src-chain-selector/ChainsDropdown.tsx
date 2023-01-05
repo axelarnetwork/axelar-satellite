@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwitchSrcChain } from "features/src-chain-selector/hooks";
@@ -7,17 +7,24 @@ import classNames from "classnames";
 
 interface Props {
   dropdownOpen: boolean;
+  searchChainInput: string;
   filteredChains: ChainInfo[];
   setSearchChainInput: (value: string) => void;
   handleOnDropdownToggle: () => void;
 }
 export const ChainsDropdown: React.FC<Props> = ({
   dropdownOpen,
+  searchChainInput,
   filteredChains,
   setSearchChainInput,
   handleOnDropdownToggle,
 }) => {
   const switchChain = useSwitchSrcChain();
+
+  // clean dropdown input on dropdown close
+  useEffect(() => {
+    if (!dropdownOpen) setSearchChainInput("");
+  }, [dropdownOpen, setSearchChainInput]);
 
   return (
     <div
@@ -35,6 +42,7 @@ export const ChainsDropdown: React.FC<Props> = ({
         <input
           className="w-full bg-[#333c42] input input-sm"
           placeholder="Search chain"
+          value={searchChainInput}
           onChange={(e) => setSearchChainInput(e.target.value)}
         />
       </div>
