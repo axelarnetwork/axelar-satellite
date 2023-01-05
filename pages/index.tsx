@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { ENVIRONMENT, UNDER_MAINTENANCE } from "config/constants";
 import { Layout, UnderMaintenance, VideoBackground } from "components/layout";
@@ -15,8 +15,14 @@ import { useInitialChainList } from "../hooks/init";
 import { drawBackground } from "../hooks/particle";
 
 const Home: NextPage = () => {
-  const { allAssets, allChains } = useSwapStore();
-  const storeReady = allAssets.length > 0 && allChains.length > 0;
+  const allAssets = useSwapStore((state) => state.allAssets);
+  const allChains = useSwapStore((state) => state.allChains);
+
+  const [storeIsReady, setStoreIsReady] = useState(false);
+
+  useEffect(() => {
+    if (allAssets.length > 0 && allChains.length > 0) setStoreIsReady(true);
+  }, [allAssets, allChains]);
 
   useEffect(() => drawBackground(), []);
   useInitialChainList();
@@ -34,7 +40,7 @@ const Home: NextPage = () => {
             className="flex items-start justify-center"
             style={{ paddingTop: "calc(50px + 10vh)" }}
           >
-            {storeReady && <SwapBox />}
+            {storeIsReady && <SwapBox />}
           </div>
         </div>
       </>
@@ -50,7 +56,7 @@ const Home: NextPage = () => {
       />
       <canvas id="canvas" className="absolute w-screen h-screen -z-5 "></canvas>
       <Layout>
-        <VideoBackground />
+        {/* <VideoBackground /> */}
 
         {renderContent()}
       </Layout>
