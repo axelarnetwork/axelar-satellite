@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-import { useSwitchSrcChain } from "features/src-chain-selector/hooks";
+import { useSwitchDestChain } from "features/dest-chain-selector/hooks";
 import { defaultChainImg } from "config/constants";
 import classNames from "classnames";
 
@@ -19,7 +19,7 @@ export const ChainsDropdown: React.FC<Props> = ({
   setSearchChainInput,
   handleOnDropdownToggle,
 }) => {
-  const switchChain = useSwitchSrcChain();
+  const switchChain = useSwitchDestChain();
 
   // clean dropdown input on dropdown close
   useEffect(() => {

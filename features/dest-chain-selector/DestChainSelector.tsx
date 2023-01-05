@@ -2,22 +2,22 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useSwapStore } from "store";
 import { convertChainName } from "utils/transformers";
-import { ChainsDropdown } from "features/src-chain-selector/ChainsDropdown";
+import { ChainsDropdown } from "features/dest-chain-selector/ChainsDropdown";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { defaultChainImg } from "config/constants";
 import { useOnClickOutside } from "usehooks-ts";
-import { useChainFilter } from "features/src-chain-selector/hooks";
+import { useChainFilter } from "features/dest-chain-selector/hooks";
 
-// TODO: abstract the state into a zustand sourceChainStore
+// TODO: abstract the state into a zustand destChainStore
 
-export const SrcChainSelector = () => {
+export const DestChainSelector = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const [searchChainInput, setSearchChainInput] = useState<string>("");
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
 
-  const srcChain = useSwapStore((state) => state.srcChain);
-  const chainName = srcChain?.chainName?.toLowerCase();
+  const destChain = useSwapStore((state) => state.destChain);
+  const chainName = destChain?.chainName?.toLowerCase();
 
   const allChains = useSwapStore((state) => state.allChains);
 
