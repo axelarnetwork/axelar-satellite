@@ -1,5 +1,7 @@
 import { useEffect } from "react";
+
 import { useSwapStore } from "store";
+
 import { AssetConfigExtended } from "types";
 
 export const useAssetFilter = (
@@ -25,5 +27,5 @@ export const useAssetFilter = (
 
     setFilteredAssets(assets);
     // eslint-disable-next-line
-  }, [allAssets, input]);
+  }, [allAssets, input, srcChain, destChain]);
 };
