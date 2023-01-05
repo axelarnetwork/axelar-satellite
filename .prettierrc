@@ -1,3 +1,19 @@
 {
-  "printWidth": 80
+  "printWidth": 80,
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true,
+  "importOrder": [
+    "^react$",
+    "^next(.*)$",
+    "",
+    "^config(.*)$",
+    "^components(.*)$",
+    "",
+    "^features(.*)$",
+    "",
+    "store",
+    "",
+    "<THIRD_PARTY_MODULES>",
+    "<TYPES>"
+  ]
 }
