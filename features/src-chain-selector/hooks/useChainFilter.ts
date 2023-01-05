@@ -3,6 +3,7 @@ import { ASSET_RESTRICTIONS } from "config/constants";
 import { useEffect } from "react";
 import { useSwapStore } from "store";
 
+// TODO: abstract into global hook since it's used in src-chain & dest-chain selectors
 export const useChainFilter = (
   input: string | undefined,
   setFilteredChains: (value: ChainInfo[]) => void
@@ -12,13 +13,10 @@ export const useChainFilter = (
   const srcChain = useSwapStore((state) => state.srcChain);
 
   useEffect(() => {
-    if (!input) {
-      setFilteredChains(allChains);
-      return;
-    }
-
     const chains = allChains.filter((chain) => {
-      const chainMatchesSearch = chain.chainName?.toLowerCase().includes(input);
+      const chainMatchesSearch = chain.chainName
+        ?.toLowerCase()
+        .includes(input || ""); // if input is undefined chain always matches
       const isDuplicateChain =
         chain.chainName === destChain.chainName ||
         chain.chainName === srcChain.chainName;
