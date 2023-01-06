@@ -66,7 +66,7 @@ export const AssetSelector = () => {
                     e.currentTarget.srcset = defaultAssetImg;
                   }}
                 />
-                <span>{selectedAssetName}</span>
+                <span>{selectedAssetName || "Select an Asset"}</span>
                 <div className="flex items-center">
                   <Image
                     loading="eager"
