@@ -2,8 +2,10 @@ import React, { useRef, useState } from "react";
 import Image from "next/image";
 
 import {
+  getSelectedAsssetIsWrapped,
   getUnwrappedAssetSymbol,
   getWrappedAssetName,
+  useSquidStateStore,
   useSwapStore,
 } from "store";
 
@@ -26,9 +28,11 @@ export const DestinationTokenSelector = () => {
   } = useSwapStore((state) => state);
   const unwrappedAssetSymbol = useSwapStore(getUnwrappedAssetSymbol);
   const wrappedAssetSymbol = useSwapStore(getWrappedAssetName);
+  const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
   const [selectedAssetSymbol, setSelectedAssetSymbol] = useState(
     shouldUnwrapAsset ? unwrappedAssetSymbol : wrappedAssetSymbol
   );
+  const squidTokens = useSquidStateStore((state) => state.squidTokens);
   const ref = useRef(null);
   const nativeAsset = allAssets.find(
     (_asset) =>
@@ -58,53 +62,99 @@ export const DestinationTokenSelector = () => {
   // const dynamicNativeTokenLogo = asset?.common_key[ENVIRONMENT];
 
   function renderAssetDropdown() {
+    console.log("dest chain", destChain.chainName.toLowerCase());
+    console.log("unfiltered", squidTokens);
+    console.log(
+      "filtered",
+      squidTokens.filter(
+        (t) =>
+          t?.chainName?.toLowerCase() === destChain?.chainName?.toLowerCase()
+      )
+    );
     if (!dropdownOpen || !srcChain) return null;
 
     return (
       <div className="left-0 w-full p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
         <ul tabIndex={0} onClick={handleOnDropdownToggle}>
-          <li key={"native_version"}>
-            <button onClick={() => handleSelect(true, unwrappedAssetSymbol)}>
-              <Image
-                loading="eager"
-                src={`/assets/tokens/${nativeAsset?.id}.logo.svg`}
-                layout="intrinsic"
-                width={35}
-                height={35}
-                onError={(e) => {
-                  e.currentTarget.src = defaultAssetImg;
-                  e.currentTarget.srcset = defaultAssetImg;
-                }}
-                alt="asset"
-              />
-              <span>{unwrappedAssetSymbol}</span>
-            </button>
-          </li>
-          <li key={"wrapped_version"}>
-            <button
-              onClick={() =>
-                handleSelect(
-                  false,
-                  asset?.chain_aliases[destChain.chainName?.toLowerCase()]
-                    ?.assetName as string
-                )
-              }
-            >
-              <Image
-                loading="eager"
-                src={`/assets/tokens/${asset?.id}.logo.svg`}
-                layout="intrinsic"
-                width={35}
-                height={35}
-                onError={(e) => {
-                  e.currentTarget.src = defaultAssetImg;
-                  e.currentTarget.srcset = defaultAssetImg;
-                }}
-                alt="asset"
-              />
-              <span>{wrappedAssetSymbol}</span>
-            </button>
-          </li>
+          {destChain?.module === "evm" && selectedAssetIsWrapped && (
+            <li key={"native_version"}>
+              <button onClick={() => handleSelect(true, unwrappedAssetSymbol)}>
+                <Image
+                  loading="eager"
+                  src={`/assets/tokens/${nativeAsset?.id}.logo.svg`}
+                  layout="intrinsic"
+                  width={35}
+                  height={35}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultAssetImg;
+                    e.currentTarget.srcset = defaultAssetImg;
+                  }}
+                  alt="asset"
+                />
+                <span>{unwrappedAssetSymbol}</span>
+              </button>
+            </li>
+          )}
+          {destChain?.module === "evm" && selectedAssetIsWrapped && (
+            <li key={"wrapped_version"}>
+              <button
+                onClick={() =>
+                  handleSelect(
+                    false,
+                    asset?.chain_aliases[destChain.chainName?.toLowerCase()]
+                      ?.assetName as string
+                  )
+                }
+              >
+                <Image
+                  loading="eager"
+                  src={`/assets/tokens/${asset?.id}.logo.svg`}
+                  layout="intrinsic"
+                  width={35}
+                  height={35}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultAssetImg;
+                    e.currentTarget.srcset = defaultAssetImg;
+                  }}
+                  alt="asset"
+                />
+                <span>{wrappedAssetSymbol}</span>
+              </button>
+            </li>
+          )}
+          {squidTokens
+            .filter(
+              (t) =>
+                t?.chainName?.toLowerCase() ===
+                destChain?.chainName?.toLowerCase()
+            )
+            .map((t) => (
+              <li key={`squid_token_${t.address}`}>
+                <button
+                  onClick={() =>
+                    handleSelect(
+                      false,
+                      asset?.chain_aliases[destChain.chainName?.toLowerCase()]
+                        ?.assetName as string
+                    )
+                  }
+                >
+                  <Image
+                    loading="eager"
+                    src={`/assets/tokens/${asset?.id}.logo.svg`}
+                    layout="intrinsic"
+                    width={35}
+                    height={35}
+                    onError={(e) => {
+                      e.currentTarget.src = defaultAssetImg;
+                      e.currentTarget.srcset = defaultAssetImg;
+                    }}
+                    alt="asset"
+                  />
+                  <span>via Squid: {t.symbol}</span>
+                </button>
+              </li>
+            ))}
         </ul>
       </div>
     );

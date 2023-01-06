@@ -18,6 +18,7 @@ import { wagmiClient } from "../wagmi.config";
 import "animate.css";
 import "../styles/globals.css";
 import "../styles/loader.css";
+import { squid } from "squid.config";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ function MyApp({
       <Toaster position="top-right" reverseOrder={false} />
     </QueryClientProvider>
   );
+  const squidApi = squid;
 
   return typeof window !== "undefined" ? (
     <WalletProvider

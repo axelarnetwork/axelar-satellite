@@ -22,6 +22,9 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         <div className="ml-2 text-xs text-slate-500">
           SDK version: {dependencies?.["@axelar-network/axelarjs-sdk"]}
         </div>
+        <div className="ml-2 text-xs text-slate-500">
+          Squid SDK version: {dependencies?.["@0xsquid/sdk"]}
+        </div>
       </footer>
     </>
   );

@@ -11,7 +11,7 @@ import { useSwapStore } from "../store";
 
 import { siteMetadata } from "../data";
 import { useNormalizeChains, useNormalizeUrlPaths } from "../hooks";
-import { useInitialChainList } from "../hooks/init";
+import { useInitialChainList, useSquidList } from "../hooks/init";
 import { drawBackground } from "../hooks/particle";
 
 const Home: NextPage = () => {
@@ -28,6 +28,7 @@ const Home: NextPage = () => {
   useInitialChainList();
   useNormalizeUrlPaths();
   useNormalizeChains();
+  useSquidList();
 
   function renderContent() {
     if (UNDER_MAINTENANCE) return <UnderMaintenance />;

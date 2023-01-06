@@ -4,7 +4,11 @@ import { AssetSelector } from "features/asset-selector";
 import { DestChainSelector } from "features/dest-chain-selector";
 import { SrcChainSelector } from "features/src-chain-selector";
 
-import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
+import {
+  getSelectedAsssetIsWrapped,
+  useSquidStateStore,
+  useSwapStore,
+} from "../../store";
 
 import cn from "classnames";
 
@@ -27,6 +31,7 @@ export const SwapBox = () => {
 
   const destChain = useSwapStore((state) => state.destChain);
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
+  const squidChains = useSquidStateStore((state) => state.squidChains);
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
@@ -71,7 +76,11 @@ export const SwapBox = () => {
         <InputWrapper>
           <AssetSelector />
         </InputWrapper>
-        {destChain?.module === "evm" && selectedAssetIsWrapped && (
+        {((destChain?.module === "evm" && selectedAssetIsWrapped) ||
+          squidChains.find(
+            (t) =>
+              t.chainName.toLowerCase() === destChain?.chainName?.toLowerCase()
+          )) && (
           <InputWrapper>
             <DestinationTokenSelector />
           </InputWrapper>
