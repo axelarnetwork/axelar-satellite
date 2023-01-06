@@ -22,7 +22,18 @@ export const useAssetFilter = (
         asset.chain_aliases[srcChain?.chainName?.toLowerCase() || ""] &&
         asset.chain_aliases[destChain?.chainName?.toLowerCase() || ""];
 
-      return assetMatchesSearch && assetIsSupportedByBothChains;
+      // filter out native asset if source chain is not the asset's native chain
+      if (asset.is_gas_token) {
+        const showNativeAsset =
+          srcChain.chainName?.toLowerCase() === asset.native_chain;
+        return (
+          assetMatchesSearch &&
+          !!assetIsSupportedByBothChains &&
+          showNativeAsset
+        );
+      }
+
+      return assetMatchesSearch && !!assetIsSupportedByBothChains;
     });
 
     setFilteredAssets(assets);
