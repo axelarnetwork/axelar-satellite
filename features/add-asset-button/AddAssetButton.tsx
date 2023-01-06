@@ -61,8 +61,8 @@ export const AddAssetButton = () => {
 
   return (
     <div
-      className="dropdown dropdown-end dropdown-hover tooltip"
-      data-tip="Add token to Metamask"
+      className=" dropdown tooltip tooltip-warning dropdown-end"
+      data-tip={`Click to add ${asset?.id} to Metamask`}
     >
       <label
         tabIndex={0}
@@ -81,7 +81,8 @@ export const AddAssetButton = () => {
       </label>
       <ul
         tabIndex={0}
-        className="w-32 p-1 shadow dropdown-content menu bg-base-100 rounded-box"
+        className="w-32 p-1 rounded-lg shadow-lg dropdown-content menu"
+        style={{ backgroundColor: "#16212e" }}
       >
         {srcChain?.module === "evm" && (
           <li onClick={handleOnAddTokenOnSrcChain}>
