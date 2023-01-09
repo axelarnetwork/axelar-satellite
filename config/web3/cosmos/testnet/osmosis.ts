@@ -53,5 +53,5 @@ export default {
     high: 0.025,
   },
   features: ["ibc-transfer", "ibc-go"],
-  chainToAxelarChannelId: "channel-312",
+  chainToAxelarChannelId: "channel-1946",
 } as CosmosChain;
