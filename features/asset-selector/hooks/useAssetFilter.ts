@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import { assetIsCompatibleBetweenChains } from "features/asset-selector/utils";
+
 import { useSwapStore } from "store";
 
 import { AssetConfigExtended } from "types";
@@ -13,14 +15,15 @@ export const useAssetFilter = (
   const destChain = useSwapStore((state) => state.destChain);
 
   useEffect(() => {
-    const assets = allAssets.filter((asset) => {
+    let assets = allAssets.filter((asset) => {
       const assetMatchesSearch = asset.id
         .toLowerCase()
         ?.toLowerCase()
         .includes(input || "");
+
+      // make sure asset is supported on src chain
       const assetIsSupportedByBothChains =
-        asset.chain_aliases[srcChain?.chainName?.toLowerCase() || ""] &&
-        asset.chain_aliases[destChain?.chainName?.toLowerCase() || ""];
+        asset.chain_aliases[srcChain?.chainName?.toLowerCase() || ""];
 
       // filter out native asset if source chain is not the asset's native chain
       if (asset.is_gas_token) {
@@ -35,6 +38,13 @@ export const useAssetFilter = (
 
       return assetMatchesSearch && !!assetIsSupportedByBothChains;
     });
+
+    // sort assets based on their compatiblity with both chains
+    assets.sort(
+      (firstAsset, nextAsset) =>
+        Number(assetIsCompatibleBetweenChains(nextAsset, srcChain, destChain)) -
+        Number(assetIsCompatibleBetweenChains(firstAsset, srcChain, destChain))
+    );
 
     setFilteredAssets(assets);
     // eslint-disable-next-line
