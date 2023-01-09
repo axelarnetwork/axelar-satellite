@@ -56,7 +56,7 @@ const Home: NextPage = () => {
       />
       <canvas id="canvas" className="absolute w-screen h-screen -z-5 "></canvas>
       <Layout>
-        {/* <VideoBackground /> */}
+        <VideoBackground />
 
         {renderContent()}
       </Layout>
