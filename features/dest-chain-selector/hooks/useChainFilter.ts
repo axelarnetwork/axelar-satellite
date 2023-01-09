@@ -23,14 +23,11 @@ export const useChainFilter = (
       const isDuplicateChain =
         chain.chainName === destChain.chainName ||
         chain.chainName === srcChain.chainName;
-      const chainIsRestricted = ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes(
-        chain.id
-      );
 
-      return chainMatchesSearch && !isDuplicateChain && !chainIsRestricted;
+      return chainMatchesSearch && !isDuplicateChain;
     });
 
     setFilteredChains(chains);
     // eslint-disable-next-line
-  }, [allChains, input]);
+  }, [allChains, input, srcChain, destChain]);
 };

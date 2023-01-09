@@ -32,5 +32,5 @@ export const useChainFilter = (
 
     setFilteredChains(chains);
     // eslint-disable-next-line
-  }, [allChains, input]);
+  }, [allChains, input, srcChain, destChain]);
 };
