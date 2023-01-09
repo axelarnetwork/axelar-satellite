@@ -45,7 +45,7 @@ type AssetRestriction = {
   hideSrcChains: string[];
 };
 const chainPolicies =
-  '[{"assets":["uluna", "uusd"],"restrictDestChainsTo":["terra"], "hideSrcChains": ["terra"]}]';
+  '[{"assets":["uluna", "uusd"],"restrictDestChainsTo":["terra classic"], "hideSrcChains": ["terra"]}]';
 export const ASSET_RESTRICTIONS: AssetRestriction[] = chainPolicies
   ? JSON.parse(chainPolicies)
   : [];
