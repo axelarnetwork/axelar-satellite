@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-import Image from "next/image";
 
-import { defaultAssetImg } from "config/constants";
-
+import { AssetItem } from "features/asset-selector/AssetDropdownItem";
 import { useSwitchAsset } from "features/asset-selector/hooks";
 
 import { useSwapStore } from "store";
@@ -60,34 +58,9 @@ export const AssetDropdown: React.FC<Props> = ({
         tabIndex={0}
         onClick={handleOnDropdownToggle}
       >
-        {filteredAssets?.map((asset, i) => {
-          const assetName =
-            asset.chain_aliases[srcChain.chainName?.toLowerCase()]?.assetName;
-          return (
-            <li
-              className={classNames({
-                "mt-2": i === 0,
-              })}
-              key={asset.id}
-            >
-              <button onClick={() => switchAsset(asset)}>
-                <Image
-                  loading="eager"
-                  src={`/assets/tokens/${asset.id}.logo.svg`}
-                  layout="intrinsic"
-                  width={35}
-                  height={35}
-                  onError={(e) => {
-                    e.currentTarget.src = defaultAssetImg;
-                    e.currentTarget.srcset = defaultAssetImg;
-                  }}
-                  alt={asset.id}
-                />
-                <span>{assetName}</span>
-              </button>
-            </li>
-          );
-        })}
+        {filteredAssets?.map((asset) => (
+          <AssetItem key={asset.id} asset={asset} />
+        ))}
       </ul>
     </div>
   );
