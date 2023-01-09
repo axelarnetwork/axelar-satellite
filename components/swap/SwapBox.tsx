@@ -16,13 +16,7 @@ import {
 } from "../../hooks";
 import { Blockable, InputWrapper } from "../common";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
-import {
-  ActionButton,
-  ChainSwapper,
-  StopButton,
-  SwapStates,
-  TokenSelector,
-} from "./parts";
+import { ActionButton, ChainSwapper, StopButton, SwapStates } from "./parts";
 import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
 import { TopFlows } from "./parts/TopFlows";
 
@@ -33,8 +27,6 @@ export const SwapBox = () => {
 
   const destChain = useSwapStore((state) => state.destChain);
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
-
-  useRestrictAssets();
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
@@ -77,7 +69,6 @@ export const SwapBox = () => {
         </Blockable>
 
         <InputWrapper>
-          {/* <TokenSelector /> */}
           <AssetSelector />
         </InputWrapper>
         {destChain?.module === "evm" && selectedAssetIsWrapped && (
