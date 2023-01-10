@@ -58,6 +58,12 @@ export const AddAssetButton = () => {
 
   if (!wagmiConnected) return null;
   if (srcChain.module !== "evm" && destChain.module !== "evm") return null;
+  if (
+    srcChain.module === "evm" &&
+    asset?.is_gas_token &&
+    destChain.module !== "evm"
+  )
+    return null;
 
   return (
     <div
@@ -84,7 +90,7 @@ export const AddAssetButton = () => {
         className="w-32 p-1 rounded-lg shadow-lg dropdown-content menu"
         style={{ backgroundColor: "#16212e" }}
       >
-        {srcChain?.module === "evm" && (
+        {srcChain?.module === "evm" && !asset?.is_gas_token && (
           <li onClick={handleOnAddTokenOnSrcChain}>
             <span>
               <Image
