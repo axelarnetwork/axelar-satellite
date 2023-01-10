@@ -1,6 +1,12 @@
 import { FC, useState } from "react";
-import { docsLinks, FAQ_MODAL, tokenContractDocs } from "../../../config/constants";
+
 import { useApplicationStateStore } from "../../../store";
+
+import {
+  FAQ_MODAL,
+  docsLinks,
+  tokenContractDocs,
+} from "../../../config/constants";
 
 type FAQProps = {};
 
@@ -110,18 +116,23 @@ const FAQs = [
     title: "Can I move non-Axelar Wrapped assets via Satellite?",
     text: (
       <div>
-        No. Satellite supports moving of Axelar Wrapped Assets only. Before you deposit your tokens to the deposit address, please verify that you’re using the correct token contract. If you send a non-Axelar wrapped asset to the deposit address, it will be lost.
+        No. Satellite supports moving of Axelar Wrapped Assets only. Before you
+        deposit your tokens to the deposit address, please verify that you’re
+        using the correct token contract. If you send a non-Axelar wrapped asset
+        to the deposit address, it will be lost.
         <div className="mt-5">
-          See the {" "}
+          See the{" "}
           <a
-            href={tokenContractDocs[process.env.NEXT_PUBLIC_ENVIRONMENT as string]}
+            href={
+              tokenContractDocs[process.env.NEXT_PUBLIC_ENVIRONMENT as string]
+            }
             className="link link-primary"
             target="_blank"
             rel="noopener noreferrer nofollow"
           >
             docs
-          </a>
-          {" "}for a list of token contracts supported by Satellite on the mainnet.
+          </a>{" "}
+          for a list of token contracts supported by Satellite on the mainnet.
         </div>
       </div>
     ),

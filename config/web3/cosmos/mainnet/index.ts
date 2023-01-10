@@ -1,24 +1,24 @@
 import { CosmosChain } from "../interface";
-import terra from "./terra";
-import osmosis from "./osmosis";
-import kujira from "./kujira";
+import { agoric } from "./agoric";
+import assetmantle from "./assetmantle";
 import axelar from "./axelar";
+import comdex from "./comdex";
 import cosmoshub from "./cosmoshub";
 import crescent from "./crescent";
-import secret from "./secret";
-import juno from "./juno";
 import eMoney from "./e-money";
-import injective from "./injective";
 import evmos from "./evmos";
-import stargaze from "./stargaze";
-import assetmantle from "./assetmantle";
-import ki from "./ki";
 import fetch from "./fetch";
-import comdex from "./comdex";
+import injective from "./injective";
+import juno from "./juno";
+import ki from "./ki";
+import kujira from "./kujira";
+import osmosis from "./osmosis";
 import regen from "./regen";
-import { agoric } from "./agoric";
-import { umee } from "./umee";
+import secret from "./secret";
+import stargaze from "./stargaze";
+import terra from "./terra";
 import terraClassic from "./terra_classic";
+import { umee } from "./umee";
 
 export const mainnetChains: CosmosChain[] = [
   terra,

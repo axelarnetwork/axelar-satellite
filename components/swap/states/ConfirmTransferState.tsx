@@ -1,14 +1,18 @@
 import React from "react";
 import Image from "next/image";
+
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import { getTransferType, useSwapStore } from "../../../store";
-import { AddressShortener, InputWrapper } from "../../common";
-import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
-import { ProgressBar } from "./parts";
-import { copyToClipboard } from "../../../utils";
+
 import { useSwitchNetwork } from "wagmi";
-import { getWagmiChains, getCosmosChains } from "../../../config/web3";
+
+import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
+import { getCosmosChains, getWagmiChains } from "../../../config/web3";
+import { copyToClipboard } from "../../../utils";
+import { AddressShortener, InputWrapper } from "../../common";
 import { TransferStats } from "../parts";
+import { ProgressBar } from "./parts";
 
 export const addTokenToMetamask = async (
   asset: AssetConfig,

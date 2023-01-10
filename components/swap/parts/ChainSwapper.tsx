@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+
 import { useSwapStore } from "../../../store";
 
 export const ChainSwapper = () => {
@@ -17,16 +18,16 @@ export const ChainSwapper = () => {
     setSrcChain(destChain);
 
     // if switching from a native token should choose the wrapped version
-    if (
-      asset?.is_gas_token &&
-      asset.native_chain === srcChain.chainName?.toLowerCase()
-    ) {
-      const wrappedAsset = allAssets.find(
-        (_asset) => _asset.id === asset.wrapped_erc20
-      );
-      if (!wrappedAsset) return;
-      setAsset(wrappedAsset);
-    }
+    // if (
+    //   asset?.is_gas_token &&
+    //   asset.native_chain === srcChain.chainName?.toLowerCase()
+    // ) {
+    //   const wrappedAsset = allAssets.find(
+    //     (_asset) => _asset.id === asset.wrapped_erc20
+    //   );
+    //   if (!wrappedAsset) return;
+    //   setAsset(wrappedAsset);
+    // }
   };
 
   return (

@@ -1,4 +1,5 @@
 import React from "react";
+
 import { siteMetadata } from "../../data";
 import { CommonSEO } from "./CommonSEO";
 
@@ -12,10 +13,8 @@ export const PageSEO: React.FC<PageSEOType> = ({
   description,
   keywords,
 }) => {
-  const ogImageUrl =
-    siteMetadata.siteUrl + siteMetadata.socialBanner;
-  const twImageUrl =
-    siteMetadata.siteUrl + siteMetadata.socialBanner;
+  const ogImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner;
+  const twImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner;
   return (
     <>
       <CommonSEO
@@ -25,9 +24,7 @@ export const PageSEO: React.FC<PageSEOType> = ({
         ogImage={ogImageUrl}
         twImage={twImageUrl}
       />
-      {keywords && (
-        <meta name="keywords" content={keywords} />
-      )}
+      {keywords && <meta name="keywords" content={keywords} />}
     </>
   );
 };

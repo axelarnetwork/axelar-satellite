@@ -1,8 +1,9 @@
-import { createClient, configureChains } from "wagmi";
+import { configureChains, createClient } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
+
 import { getWagmiChains } from "./config/web3";
 
 const { chains, provider } = configureChains(

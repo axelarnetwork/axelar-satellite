@@ -7,11 +7,7 @@ type LinkProps = {
   linkDescription: string;
 };
 
-export const Link: FC<LinkProps> = ({
-  linkDescription,
-  linkTitle,
-  url,
-}) => {
+export const Link: FC<LinkProps> = ({ linkDescription, linkTitle, url }) => {
   return (
     <a
       className="flex items-center mb-5 space-x-2"

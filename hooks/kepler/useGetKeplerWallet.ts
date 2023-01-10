@@ -1,5 +1,6 @@
-import { Keplr } from "@keplr-wallet/types";
 import { useEffect, useState } from "react";
+
+import { Keplr } from "@keplr-wallet/types";
 
 export const useGetKeplerWallet = () => {
   const [kepler, setKepler] = useState<Keplr>();

@@ -1,24 +1,28 @@
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import {
-  Layout,
-  UnderMaintenance,
-  VideoBackground,
-} from "../components/layout";
-import { PageSEO } from "../components/seo";
-import { SwapBox } from "../components/swap";
-import { FirstTimeWarning } from "../components/swap/parts/FirstTimeWarning";
-import { ENVIRONMENT, UNDER_MAINTENANCE } from "../config/constants";
+import { ENVIRONMENT, UNDER_MAINTENANCE } from "config/constants";
+import { Layout, UnderMaintenance, VideoBackground } from "components/layout";
+import { PageSEO } from "components/seo";
+import { SwapBox } from "components/swap";
+import { FirstTimeWarning } from "components/swap/parts/FirstTimeWarning";
+
+import { useSwapStore } from "../store";
+
 import { siteMetadata } from "../data";
 import { useNormalizeChains, useNormalizeUrlPaths } from "../hooks";
 import { useInitialChainList } from "../hooks/init";
 import { drawBackground } from "../hooks/particle";
-import { useSwapStore } from "../store";
 
 const Home: NextPage = () => {
-  const { allAssets, allChains } = useSwapStore();
-  const storeReady = allAssets.length > 0 && allChains.length > 0;
+  const allAssets = useSwapStore((state) => state.allAssets);
+  const allChains = useSwapStore((state) => state.allChains);
+
+  const [storeIsReady, setStoreIsReady] = useState(false);
+
+  useEffect(() => {
+    if (allAssets.length > 0 && allChains.length > 0) setStoreIsReady(true);
+  }, [allAssets, allChains]);
 
   useEffect(() => drawBackground(), []);
   useInitialChainList();
@@ -36,7 +40,7 @@ const Home: NextPage = () => {
             className="flex items-start justify-center"
             style={{ paddingTop: "calc(50px + 10vh)" }}
           >
-            {storeReady && <SwapBox />}
+            {storeIsReady && <SwapBox />}
           </div>
         </div>
       </>

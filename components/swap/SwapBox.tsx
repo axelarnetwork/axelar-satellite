@@ -1,37 +1,32 @@
 import React from "react";
-import cn from "classnames";
-import { Blockable, InputWrapper } from "../common";
-import {
-  ActionButton,
-  ChainSwapper,
-  DestChainSelector,
-  SourceChainSelector,
-  StopButton,
-  SwapStates,
-  TokenSelector,
-} from "./parts";
 
+import { AssetSelector } from "features/asset-selector";
+import { DestChainSelector } from "features/dest-chain-selector";
+import { SrcChainSelector } from "features/src-chain-selector";
+
+import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
+
+import cn from "classnames";
+
+import { ENVIRONMENT as env } from "../../config/constants";
 import {
   useDetectDepositConfirmation,
   usePreventDuplicateChains,
   useRestrictAssets,
 } from "../../hooks";
-import { TopFlows } from "./parts/TopFlows";
+import { Blockable, InputWrapper } from "../common";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
-import { ENVIRONMENT as env } from "../../config/constants";
+import { ActionButton, ChainSwapper, StopButton, SwapStates } from "./parts";
 import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
-import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
+import { TopFlows } from "./parts/TopFlows";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
   useDetectDepositConfirmation();
   useRestrictAssets();
 
-  const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
-
-  useRestrictAssets();
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
@@ -62,7 +57,7 @@ export const SwapBox = () => {
         <Blockable>
           <div className="flex justify-between">
             <InputWrapper>
-              <SourceChainSelector />
+              <SrcChainSelector />
             </InputWrapper>
             <div className="relative z-40 flex items-center -mx-2">
               <ChainSwapper />
@@ -74,7 +69,7 @@ export const SwapBox = () => {
         </Blockable>
 
         <InputWrapper>
-          <TokenSelector />
+          <AssetSelector />
         </InputWrapper>
         {destChain?.module === "evm" && selectedAssetIsWrapped && (
           <InputWrapper>

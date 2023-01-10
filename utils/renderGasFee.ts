@@ -3,10 +3,12 @@ import {
   AxelarQueryAPI,
   ChainInfo,
 } from "@axelar-network/axelarjs-sdk";
+
 import Big from "big.js";
 import { formatUnits } from "ethers/lib/utils.js";
-import { ENVIRONMENT } from "../config/constants";
 import { AssetConfigExtended } from "types";
+
+import { ENVIRONMENT } from "../config/constants";
 
 export async function renderGasFee(
   srcChain: ChainInfo,

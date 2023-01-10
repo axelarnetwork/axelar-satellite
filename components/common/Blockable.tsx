@@ -1,7 +1,9 @@
 import React, { PropsWithChildren } from "react";
+
+import { useSwapStore } from "store";
+
 import cn from "classnames";
 
-import { useSwapStore } from "../../store";
 import { SwapStatus } from "../../utils/enums";
 
 export const Blockable: React.FC<PropsWithChildren> = (props) => {
