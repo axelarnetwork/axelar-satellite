@@ -115,7 +115,7 @@ const useGetEvmBalance = () => {
     isFetching: nativeBalanceIsLoading,
     refetch: refetchNativeBalance,
   } = useBalance({
-    enabled: srcChain.module === "evm",
+    enabled: srcChain?.module === "evm",
     address: address,
     chainId: srcChainId,
     onError: (error) => {
@@ -129,7 +129,7 @@ const useGetEvmBalance = () => {
     isFetching: erc20BalanceIsLoading,
     refetch: refetchErc20Balance,
   } = useContractRead({
-    enabled: srcChain.module === "evm",
+    enabled: srcChain?.module === "evm",
     address: srcTokenAddress as string,
     abi: erc20ABI,
     chainId: srcChainId,
