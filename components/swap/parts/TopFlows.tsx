@@ -88,8 +88,8 @@ export const TopFlows = () => {
     const moonbeam = allChains.find((chain) =>
       chain.chainName?.toLowerCase().includes("osmosis")
     ) as ChainInfo;
-    const asset = allAssets.find((asset) =>
-      asset.common_key[ENVIRONMENT].includes("weth")
+    const asset = allAssets.find(
+      (asset) => asset.id === "eth"
     ) as AssetConfigExtended;
 
     setAsset(asset);
