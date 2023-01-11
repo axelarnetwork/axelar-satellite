@@ -16,8 +16,9 @@ export async function renderGasFee(
   asset: AssetConfigExtended | null
 ) {
   const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
+  const id = asset?.wrapped_erc20 ? asset.wrapped_erc20 : asset?.id;
   const feeQuery = await axelarQueryApi
-    .getTransferFee(srcChain?.id, destChain?.id, asset?.id as string, 0)
+    .getTransferFee(srcChain?.id, destChain?.id, id as string, 0)
     .then((res) => formatUnits(res.fee?.amount as string, asset?.decimals))
     .catch((e) => null);
   if (feeQuery) return feeQuery;
