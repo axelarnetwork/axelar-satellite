@@ -28,7 +28,7 @@ const Home: NextPage = () => {
   useInitialChainList();
   useNormalizeUrlPaths();
   useNormalizeChains();
-  useSquidList();
+  // useSquidList();
 
   function renderContent() {
     if (UNDER_MAINTENANCE) return <UnderMaintenance />;

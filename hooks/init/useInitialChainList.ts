@@ -7,10 +7,12 @@ import {
   loadAssets,
 } from "@axelar-network/axelarjs-sdk";
 
-import { useSwapStore } from "../../store";
+import { useSquidStateStore, useSwapStore } from "../../store";
 
+import { useSquidList } from "hooks/init/useSquidList";
 import _ from "lodash";
 import toast from "react-hot-toast";
+import { squid } from "squid.config";
 
 import {
   DEFAULT_ASSET,
@@ -32,6 +34,9 @@ export const useInitialChainList = () => {
     rehydrateAssets,
     setRehydrateAssets,
   } = useSwapStore();
+
+  useSquidList();
+  const { squidChains, squidTokens } = useSquidStateStore();
 
   const router = useRouter();
 
@@ -75,6 +80,11 @@ export const useInitialChainList = () => {
     // load chains with native assets
     const chains = await loadAllChains(ENVIRONMENT)
       .then((_chains) => {
+        console.log(
+          "squid tokens in loadINitialChians",
+          squidChains,
+          squidTokens
+        );
         _chains.map((_chain) => {
           _chain.assets = _.uniqBy(
             _chain.assets,
