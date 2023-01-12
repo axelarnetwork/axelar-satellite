@@ -13,7 +13,7 @@ export const AssetInput = () => {
   return (
     <div className="text-end">
       <input
-        className="block text-lg font-bold text-right bg-transparent outline-none"
+        className="text-lg font-bold text-right bg-transparent outline-none"
         type="number"
         value={tokensToTransfer}
         placeholder="0"
