@@ -178,7 +178,7 @@ const useGetEvmBalance = () => {
     updateBalance,
     refetchNativeBalance,
     refetchErc20Balance,
-    srcChain.module,
+    srcChain,
   ]);
 
   return {
