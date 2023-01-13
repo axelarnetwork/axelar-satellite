@@ -13,10 +13,10 @@ export function renderIncompatibilityMsg(
     !asset.chain_aliases[destChain?.chainName?.toLowerCase()];
 
   if (incompatibleOnSrcChain && incompatibleOnDestChain) {
-    return `${asset.id} is not available on ${srcChain.chainName} and  ${destChain.chainName}`;
+    return `Asset is not available on ${srcChain.chainName} and  ${destChain.chainName}`;
   } else if (incompatibleOnSrcChain) {
-    return `${asset.id} is not available on ${srcChain.chainName}`;
+    return `Asset is not available on ${srcChain.chainName}`;
   } else if (incompatibleOnDestChain) {
-    return `${asset.id} is not available on ${destChain.chainName}`;
+    return `Asset is not available on ${destChain.chainName}`;
   }
 }

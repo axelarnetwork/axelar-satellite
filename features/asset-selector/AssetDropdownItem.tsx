@@ -25,9 +25,20 @@ export const AssetItem: React.FC<Props> = ({ asset }) => {
   const assetName =
     asset.chain_aliases[srcChain.chainName?.toLowerCase()]?.assetName;
 
+  const compatibleOnSrc =
+    asset.chain_aliases[srcChain?.chainName?.toLowerCase()];
+  const compatibleOnDest =
+    asset.chain_aliases[destChain?.chainName?.toLowerCase()];
+  const disabled = !compatibleOnSrc || !compatibleOnDest;
+
   return (
     <li key={asset.id}>
-      <button className="relative block" onClick={() => switchAsset(asset)}>
+      <button
+        className={`relative flex flex-row justify-between block ${
+          disabled ? "disabled" : ""
+        }`}
+        onClick={(e) => (disabled ? e.stopPropagation() : switchAsset(asset))}
+      >
         <div className="flex items-center gap-x-4">
           <Image
             loading="eager"
@@ -53,10 +64,7 @@ export const AssetItem: React.FC<Props> = ({ asset }) => {
             {assetName}
           </span>
         </div>
-        <div
-          className="absolute text-xs text-slate-400 text-end"
-          style={{ right: 10, bottom: 5 }}
-        >
+        <div className="text-xs text-slate-400 text-end">
           {renderIncompatibilityMsg(asset, srcChain, destChain)}
         </div>
       </button>
