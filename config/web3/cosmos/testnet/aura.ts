@@ -2,9 +2,9 @@ import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  chainId: "euphoria-1",
+  chainId: "euphoria-2",
   chainName: "Aura Testnet",
-  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/aura"`,
+  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/aura`,
   rest: "https://lcd.euphoria.aura.network",
   bip44: {
     coinType: 118,

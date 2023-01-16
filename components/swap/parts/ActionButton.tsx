@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
-import toast from "react-hot-toast";
-import { useGenerateDepositAddress } from "../../../hooks/api";
+
 import { useSwapStore } from "../../../store";
+
+import toast from "react-hot-toast";
+
+import { useGenerateDepositAddress } from "../../../hooks/api";
 import { SwapStatus } from "../../../utils/enums";
 import { GenerateDepositAddressButton } from "./GenerateDepositAddressButton";
 

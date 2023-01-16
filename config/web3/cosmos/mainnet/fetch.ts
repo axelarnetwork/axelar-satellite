@@ -43,4 +43,5 @@ export default {
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "fetch",
   chainToAxelarChannelId: "channel-14",
+  explorer: "https://www.mintscan.io/fetchai/account/",
 } as CosmosChain;

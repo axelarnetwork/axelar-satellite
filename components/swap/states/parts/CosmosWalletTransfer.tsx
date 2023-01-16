@@ -1,63 +1,69 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+
 import {
   AssetConfig,
   AssetInfo,
   CosmosChain,
 } from "@axelar-network/axelarjs-sdk";
-import { BigNumber } from "bignumber.js";
+import { OfflineSigner } from "@cosmjs/launchpad";
 import {
   SigningStargateClient,
   StargateClient,
   StdFee,
 } from "@cosmjs/stargate";
-import { OfflineSigner } from "@cosmjs/launchpad";
-import { ENVIRONMENT } from "../../../../config/constants";
+import {
+  Fee,
+  LCDClient,
+  MsgTransfer,
+  Coin as TerraCoin,
+} from "@terra-money/terra.js";
+import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/client/Height";
+import {
+  WalletStatus,
+  useConnectedWallet,
+  useLCDClient,
+  useWallet as useTerraWallet,
+} from "@terra-money/wallet-provider";
+
 import { useSwapStore, useWalletStore } from "../../../../store";
+
+import { BigNumber } from "bignumber.js";
+import cn from "classnames";
+import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
+import { Height } from "cosmjs-types/ibc/core/client/v1/client";
+import { ethers, utils } from "ethers";
+import Long from "long";
+import toast from "react-hot-toast";
+import { SpinnerRoundFilled } from "spinners-react";
+
+import { TERRA_IBC_GAS_LIMIT } from ".";
+import { ENVIRONMENT } from "../../../../config/constants";
+import { getCosmosChains } from "../../../../config/web3";
 import {
   useDetectDepositConfirmation,
   useGetAssetBalance,
   useGetKeplerWallet,
   useHasKeplerWallet,
 } from "../../../../hooks";
-import { curateCosmosChainId } from "../../../../utils";
-import { getCosmosChains } from "../../../../config/web3";
-import { ethers, utils } from "ethers";
-import toast from "react-hot-toast";
-import Long from "long";
-import { Height } from "cosmjs-types/ibc/core/client/v1/client";
-import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
-import { SwapStatus } from "../../../../utils/enums";
-import { SpinnerRoundFilled } from "spinners-react";
-import { renderGasFee } from "../../../../utils/renderGasFee";
-import {
-  useWallet as useTerraWallet,
-  WalletStatus,
-  useConnectedWallet,
-  useLCDClient,
-} from "@terra-money/wallet-provider";
-import {
-  Coin as TerraCoin,
-  Fee,
-  LCDClient,
-  MsgTransfer,
-} from "@terra-money/terra.js";
-import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/client/Height";
-import { TERRA_IBC_GAS_LIMIT } from ".";
-import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
-import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
 import { evmosSignDirect } from "../../../../hooks/kepler/evmos/evmosSignDirect";
+import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
+import { curateCosmosChainId } from "../../../../utils";
+import { SwapStatus } from "../../../../utils/enums";
+import { renderGasFee } from "../../../../utils/renderGasFee";
+import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
   const [currentAsset, setCurrentAsset] = useState<AssetInfo>();
   const [tokenAddress, setTokenAddress] = useState<string>("");
-  const { setKeplrBalance } = useGetAssetBalance();
+
   const { isTerraConnected, isTerraInitializingOrConnected } =
     useIsTerraConnected();
 
   // used to hide wallets when transaction has been triggered
   const [isTxOngoing, setIsTxOngoing] = useState(false);
+  const [txIsLoading, setTxIsLoading] = useState(false);
 
   const {
     srcChain,
@@ -94,8 +100,7 @@ export const CosmosWalletTransfer = () => {
   }, [asset]);
 
   async function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit =
-      (await renderGasFee(srcChain, destChain, asset as AssetConfig)) || 0;
+    const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
     console.log("min Deposit", minDeposit);
     if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
@@ -136,13 +141,14 @@ export const CosmosWalletTransfer = () => {
   }
 
   async function handleOnTokensTransfer() {
+    setTxIsLoading(true);
     // if (!hasKeplerWallet) {
     //   const connectionResult = await handleOnKeplrConnect();
     //   if (!connectionResult) return;
     // }
 
     const cosmosChains = getCosmosChains(allAssets);
-    const chainIdentifier = srcChain.chainName.toLowerCase();
+    const chainIdentifier = srcChain.chainName?.toLowerCase();
     const cosmosChain = cosmosChains.find(
       (chain) => chain.chainIdentifier === chainIdentifier
     );
@@ -203,7 +209,8 @@ export const CosmosWalletTransfer = () => {
     const _action = "transfer";
     const _channel = getCosmosChains(allAssets).find(
       (chain) =>
-        chain.chainIdentifier.toLowerCase() === srcChain.chainName.toLowerCase()
+        chain.chainIdentifier?.toLowerCase() ===
+        srcChain.chainName?.toLowerCase()
     )?.chainToAxelarChannelId as string;
 
     const timeoutHeight: Height = {
@@ -214,7 +221,7 @@ export const CosmosWalletTransfer = () => {
 
     let result;
 
-    if (srcChain.chainName.toLowerCase() === "axelar") {
+    if (srcChain.chainName?.toLowerCase() === "axelar") {
       try {
         result = cosmjs
           .sendTokens(sourceAddress, depositAddress, [sendCoin], fee)
@@ -224,7 +231,6 @@ export const CosmosWalletTransfer = () => {
               sourceTxHash: e.transactionHash,
             });
 
-            setIsTxOngoing(true);
             // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
           .catch((e) => {
@@ -235,7 +241,7 @@ export const CosmosWalletTransfer = () => {
         toast.error(e?.message as any);
         console.log(e);
       }
-    } else if (srcChain.chainName.toLowerCase() === "evmos") {
+    } else if (srcChain.chainName?.toLowerCase() === "evmos") {
       const sendCoin = {
         denom: currentAsset?.ibcDenom as string,
         amount: utils
@@ -298,6 +304,7 @@ export const CosmosWalletTransfer = () => {
     // } catch (error: any) {
     //   throw new Error(error)
     // }
+    setTxIsLoading(false);
   }
 
   async function handleOnTerraStationIBCTransfer(): Promise<any> {
@@ -365,11 +372,13 @@ export const CosmosWalletTransfer = () => {
   }
 
   const getSendButtons = () => {
-    if (srcChain?.chainName.toLowerCase() !== "terra") {
+    if (srcChain?.chainName?.toLowerCase() !== "terra") {
       return (
         <div className="flex justify-center">
           <button
-            className="mb-5 btn btn-primary"
+            className={cn("mb-5 ml-5 btn btn-primary", {
+              loading: txIsLoading,
+            })}
             onClick={handleOnTokensTransfer}
           >
             <span className="mr-2">Send from Keplr</span>
@@ -391,9 +400,10 @@ export const CosmosWalletTransfer = () => {
     return (
       <div className="flex justify-center">
         <button
-          className={`mb-5 ml-5 btn btn-${
-            !userSelectedTS ? "primary" : "accent"
-          }`}
+          className={cn("mb-5 ml-5 btn", {
+            "btn-primary": !userSelectedTS,
+            "btn-accent": userSelectedTS,
+          })}
           onClick={async () => {
             if (userSelectedKeplr || !isTerraConnected) {
               await handleOnTokensTransfer();
@@ -408,7 +418,7 @@ export const CosmosWalletTransfer = () => {
         >
           <span className="mr-2">
             {userSelectedKeplr || !isTerraConnected
-              ? "Send from Keplr "
+              ? "Send from Keplr"
               : "Switch to Keplr"}
           </span>
           <div className="flex justify-center my-2 gap-x-5">

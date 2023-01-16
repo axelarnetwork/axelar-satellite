@@ -1,7 +1,9 @@
-import router from "next/router";
 import { useEffect } from "react";
-import { ENVIRONMENT } from "../config/constants";
+import router from "next/router";
+
 import { useSwapStore } from "../store";
+
+import { ENVIRONMENT } from "../config/constants";
 
 export const useNormalizeUrlPaths = () => {
   const { asset, srcChain, destChain, destAddress } = useSwapStore();
@@ -17,8 +19,8 @@ export const useNormalizeUrlPaths = () => {
     )
       return;
     updateRoutes(
-      srcChain.chainName.toLowerCase(),
-      destChain.chainName.toLowerCase(),
+      srcChain.chainName?.toLowerCase(),
+      destChain.chainName?.toLowerCase(),
       asset?.common_key[ENVIRONMENT] as string,
       destAddress
     );

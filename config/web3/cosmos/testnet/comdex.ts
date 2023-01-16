@@ -3,8 +3,8 @@ import { CosmosChain } from "../interface";
 
 export default {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/comdex`,
-  rest: "https://meteor.rest.comdex.one",
-  chainId: "meteor-test",
+  rest: "https://test2-rest.comdex.one",
+  chainId: "comdex-test2",
   chainName: "Comdex Testnet",
   chainIdentifier: "comdex",
   stakeCurrency: {
@@ -46,5 +46,5 @@ export default {
     high: 0.05,
   },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
-  chainToAxelarChannelId: "channel-18",
+  chainToAxelarChannelId: "channel-2",
 } as CosmosChain;

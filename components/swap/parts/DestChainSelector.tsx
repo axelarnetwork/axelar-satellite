@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
+
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import {
   getRestrictedAssetIsSelected,
   getSelectedAssetSymbol,
   useSwapStore,
 } from "../../../store";
+
 import { useOnClickOutside } from "usehooks-ts";
-import { convertChainName } from "../../../utils/transformers";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-import { useRouter } from "next/router";
-import { extractDenom } from "../../../utils/extractDenom";
+
 import { ASSET_RESTRICTIONS, ENVIRONMENT } from "../../../config/constants";
+import { extractDenom } from "../../../utils/extractDenom";
+import { convertChainName } from "../../../utils/transformers";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -34,33 +38,26 @@ export const DestChainSelector = () => {
           chain.chainName !== srcChain.chainName &&
           chain.chainName !== destChain.chainName
       )
-      .filter((chain) =>
-        chain.assets?.map(
-          (a) => a.common_key === (asset?.common_key[ENVIRONMENT] as string)
-        )
-      )
       .filter((chain) => {
-        const sourceAssets = srcChain.assets?.map((a) => a.common_key);
-        const destAssets = chain.assets?.map((a) => a.common_key);
-
-        return !!sourceAssets?.find((v) => destAssets?.includes(v));
+        const assetCommentKeys = chain.assets?.map((a) => a.common_key);
+        return (
+          assetCommentKeys.includes(asset?.id) ||
+          assetCommentKeys.includes(asset?.wrapped_erc20)
+        );
       });
-    setFilteredChains(newChains);
-
     if (!restrictedAssetIsSelected) return setFilteredChains(newChains);
 
     // find the right policy based on asset
     const policy = ASSET_RESTRICTIONS.find((_policy) =>
-      _policy.assets.includes((asset as any)?.id || "")
+      _policy.assets.includes(asset?.id || "")
     );
     if (!policy) return;
     setFilteredChains(
-      newChains.filter(
-        (_chain) =>
-          !!policy?.restrictDestChainsTo.find((c) => c === (_chain as any).id)
+      newChains.filter((_chain) =>
+        policy?.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
       )
     );
-  }, [srcChain, destChain, dropdownOpen, searchChainInput]);
+  }, [srcChain, destChain, dropdownOpen, searchChainInput, asset]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -78,19 +75,12 @@ export const DestChainSelector = () => {
   useEffect(() => {
     if (!searchChainInput) return;
 
-    const chains = allChains
-      .filter(
-        (chain) =>
-          chain.chainName.toLowerCase().includes(searchChainInput) &&
-          chain.chainName !== srcChain.chainName &&
-          chain.chainName !== destChain.chainName
-      )
-      .filter((chain) => {
-        const sourceAssets = srcChain.assets?.map((a) => a.common_key);
-        const destAssets = chain.assets?.map((a) => a.common_key);
-
-        return !!sourceAssets?.find((v) => destAssets?.includes(v));
-      });
+    const chains = allChains.filter(
+      (chain) =>
+        chain.chainName?.toLowerCase().includes(searchChainInput) &&
+        chain.chainName !== srcChain.chainName &&
+        chain.chainName !== destChain.chainName
+    );
     setFilteredChains(chains);
   }, [allChains, searchChainInput]);
 
@@ -106,7 +96,7 @@ export const DestChainSelector = () => {
     // await router.push({
     //   query: {
     //     ...router.query,
-    //     destination: chain.chainName.toLowerCase(),
+    //     destination: chain.chainName?.toLowerCase(),
     //     destination_address: "",
     //   },
     // });

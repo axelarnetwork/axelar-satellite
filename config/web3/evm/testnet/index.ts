@@ -1,11 +1,14 @@
 import { ChainExtension } from "../interface";
-import ethereum from "./ethereum";
+import { arbitrum } from "./arbitrum";
 import aurora from "./aurora";
 import avalanche from "./avalanche";
+import { binance } from "./binance";
+import { celo } from "./celo";
+import ethereum from "./ethereum";
 import fantom from "./fantom";
+import { kava } from "./kava";
 import moonbeam from "./moonbeam";
 import polygon from "./polygon";
-import { binance } from "./binance";
 
 export const testnetChains: ChainExtension[] = [
   aurora,
@@ -15,4 +18,7 @@ export const testnetChains: ChainExtension[] = [
   fantom,
   polygon,
   binance,
+  kava,
+  arbitrum,
+  celo,
 ];

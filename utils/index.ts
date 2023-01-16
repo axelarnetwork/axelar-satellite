@@ -1,5 +1,7 @@
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import toast from "react-hot-toast";
+
 import { ENVIRONMENT } from "../config/constants";
 import { Environment } from "./enums";
 
@@ -16,9 +18,8 @@ export function buildTokenSentRoomId(
   destChainInfo: ChainInfo,
   sender: string
 ): string {
-
   const topic = {
-    type: 'token-sent',
+    type: "token-sent",
     sourceChain: srcChainInfo.chainIdentifier[ENVIRONMENT],
     denom,
     destinationAddress,
@@ -37,7 +38,7 @@ export function buildDepositConfirmationRoomId(
 ): string {
   const topic = {
     type: "deposit-confirmation",
-    sourceModule: module.toLowerCase(),
+    sourceModule: module?.toLowerCase(),
     depositAddress,
   };
 
@@ -106,3 +107,5 @@ export function curateCosmosChainId(chainId: string) {
   if (ENVIRONMENT === Environment.MAINNET)
     return mapCosmosMainnetChains(chainId);
 }
+
+export * from "./roundNumberTo";

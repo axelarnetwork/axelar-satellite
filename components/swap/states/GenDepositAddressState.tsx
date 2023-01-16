@@ -1,5 +1,7 @@
 import React from "react";
+
 import { SpinnerRoundFilled } from "spinners-react";
+
 import { InputWrapper } from "../../common";
 import { TransferStats } from "../parts";
 import { ProgressBar } from "./parts";

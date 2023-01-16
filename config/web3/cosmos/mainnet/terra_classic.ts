@@ -1,4 +1,5 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
@@ -36,5 +37,6 @@ export default {
   ],
   gasPriceStep: { low: 5.665, average: 5.665, high: 7 },
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
+  explorer: "https://finder.terra.money/mainnet/address/",
   chainToAxelarChannelId: "channel-19",
 } as CosmosChain;

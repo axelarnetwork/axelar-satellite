@@ -1,10 +1,12 @@
 import { useEffect } from "react";
+
+import { getDestChainId, useSwapStore } from "../store";
+
+import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 import { useBlockNumber } from "wagmi";
 
-import { getDestChainId, useSwapStore } from "../store";
 import { ENVIRONMENT, SOCKET_API } from "../config/constants";
-
 import { buildDepositConfirmationRoomId, buildTokenSentRoomId } from "../utils";
 import { SwapStatus } from "../utils/enums";
 
@@ -62,22 +64,30 @@ export const useDetectDepositConfirmation = () => {
     if (!depositAddress) return;
 
     const sentNative =
-      // @ts-ignore
-      asset.is_native_asset &&
-      asset?.native_chain === srcChain.chainName.toLowerCase();
+      asset?.is_gas_token &&
+      asset?.native_chain === srcChain.chainName?.toLowerCase();
 
     let roomId;
 
-    if (sentNative)
+    if (sentNative) {
+      const { fullDenomPath } =
+        asset?.chain_aliases?.[destChain?.chainName?.toLowerCase()] || {};
+      if (!fullDenomPath) {
+        toast.error(`chain config for ${asset.id} not defined`);
+        return;
+      }
+      const denom =
+        fullDenomPath.split("/").length > 1
+          ? fullDenomPath?.split("/")[2]
+          : fullDenomPath?.split("/")[0];
       roomId = buildTokenSentRoomId(
         srcChain,
-        asset.chain_aliases[destChain.chainName.toLowerCase()]
-          .fullDenomPath as string,
-        destAddress.toLowerCase(),
+        denom,
+        destAddress?.toLowerCase(),
         destChain,
         depositAddress
       );
-    else
+    } else
       roomId = buildDepositConfirmationRoomId(srcChain.module, depositAddress);
 
     console.log("room ID joined", roomId);

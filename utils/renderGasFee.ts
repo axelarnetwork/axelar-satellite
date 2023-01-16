@@ -3,25 +3,23 @@ import {
   AxelarQueryAPI,
   ChainInfo,
 } from "@axelar-network/axelarjs-sdk";
+
 import Big from "big.js";
-import { formatUnits, parseUnits } from "ethers/lib/utils.js";
+import { formatUnits } from "ethers/lib/utils.js";
+import { AssetConfigExtended } from "types";
+
 import { ENVIRONMENT } from "../config/constants";
-import { NativeAssetConfig } from "../config/nativeAssetList/testnet";
 
 export async function renderGasFee(
   srcChain: ChainInfo,
   destChain: ChainInfo,
-  asset: NativeAssetConfig
+  asset: AssetConfigExtended | null
 ) {
   const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
+  const id = asset?.wrapped_erc20 ? asset.wrapped_erc20 : asset?.id;
   const feeQuery = await axelarQueryApi
-    .getTransferFee(
-      srcChain.chainIdentifier[ENVIRONMENT],
-      destChain.chainIdentifier[ENVIRONMENT],
-      asset.common_key[ENVIRONMENT],
-      0
-    )
-    .then((res) => formatUnits(res.fee?.amount as string, asset.decimals))
+    .getTransferFee(srcChain?.id, destChain?.id, id as string, 0)
+    .then((res) => formatUnits(res.fee?.amount as string, asset?.decimals))
     .catch((e) => null);
   if (feeQuery) return feeQuery;
 

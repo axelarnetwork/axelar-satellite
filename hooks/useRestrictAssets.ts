@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import { ASSET_RESTRICTIONS } from "../config/constants";
+
 import { getRestrictedAssetIsSelected, useSwapStore } from "../store";
+
+import { ASSET_RESTRICTIONS } from "../config/constants";
 
 export const useRestrictAssets = () => {
   const asset = useSwapStore((state) => state.asset);
@@ -17,16 +19,15 @@ export const useRestrictAssets = () => {
   }, [restrictedAssetIsSelected, srcChain, destChain]);
 
   function restrictDestChain() {
-    const destChainNameId = (destChain as any).id;
+    const destChainName = destChain?.chainName?.toLowerCase();
 
     for (const rule of ASSET_RESTRICTIONS) {
       if (
-        rule.assets.includes((asset as any)?.id || "") &&
-        !rule.restrictDestChainsTo.find((c) => c === destChainNameId)
+        rule.assets.includes(asset?.id || "") &&
+        !rule.restrictDestChainsTo.includes(destChainName)
       ) {
-        const chain = allChains.find(
-          (_chain) =>
-            !!rule.restrictDestChainsTo.find((c) => c === (_chain as any).id)
+        const chain = allChains.find((_chain) =>
+          rule.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
         );
         if (chain) return setDestChain(chain);
       }

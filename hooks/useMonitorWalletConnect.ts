@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import { useAccount } from "wagmi";
+
 import { useWalletStore } from "../store";
+
+import { useAccount } from "wagmi";
 
 export const useMonitorWalletConnect = () => {
   const { isConnected } = useAccount();

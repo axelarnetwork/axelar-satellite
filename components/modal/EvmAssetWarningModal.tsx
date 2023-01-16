@@ -1,11 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { useAccount } from "wagmi";
+
+import {
+  getSelectedAssetName,
+  getSelectedAssetNameDestChain,
+  getSelectedAssetSymbol,
+  getSelectedAssetSymbolDestinationChain,
+  getUnwrappedAssetSymbol,
+  isAXLToken,
+  useSwapStore,
+} from "../../store";
+
 import cn from "classnames";
+import { useAccount } from "wagmi";
 
 import { tokenContractDocs } from "../../config/constants";
 import { useGetAssetBalance } from "../../hooks";
-import { getSelectedAssetName, getSelectedAssetNameDestChain, getSelectedAssetSymbol, getSelectedAssetSymbolDestinationChain, isAXLToken, useSwapStore } from "../../store";
 import { copyToClipboard } from "../../utils";
 import { SwapStatus } from "../../utils/enums";
 import { AddressShortener } from "../common";
@@ -15,9 +25,15 @@ export const EvmAssetWarningModal = () => {
     (state) => state
   );
   const selectedAssetSymbolOnSrcChain = useSwapStore(getSelectedAssetSymbol);
-  const selectedAssetSymbolOnDestinationChain = useSwapStore(getSelectedAssetSymbolDestinationChain);
+  const unwrappedAssetSymbol = useSwapStore(getUnwrappedAssetSymbol);
+  const { shouldUnwrapAsset } = useSwapStore((state) => state);
+  const selectedAssetSymbolOnDestinationChain = useSwapStore(
+    getSelectedAssetSymbolDestinationChain
+  );
   const selectedAssetNameSrcChain = useSwapStore(getSelectedAssetName);
-  const selectedAssetNameOnDestinationChain = useSwapStore(getSelectedAssetNameDestChain);
+  const selectedAssetNameOnDestinationChain = useSwapStore(
+    getSelectedAssetNameDestChain
+  );
   const hasSelectedAXLToken = useSwapStore(isAXLToken);
 
   const { balance } = useGetAssetBalance();
@@ -44,7 +60,7 @@ export const EvmAssetWarningModal = () => {
     setShowAssetWarning(false);
   }, [setShowAssetWarning]);
 
-  const tokenAddress = asset?.chain_aliases[srcChain.chainName.toLowerCase()]
+  const tokenAddress = asset?.chain_aliases[srcChain.chainName?.toLowerCase()]
     ?.tokenAddress as string;
 
   return (
@@ -63,7 +79,12 @@ export const EvmAssetWarningModal = () => {
           <div>
             <div>
               Only send{" "}
-              <span className="font-bold">{selectedAssetNameSrcChain} {hasSelectedAXLToken ? `(might be ${selectedAssetSymbolOnSrcChain} in Metamask)` : null} </span>
+              <span className="font-bold">
+                {selectedAssetNameSrcChain}{" "}
+                {hasSelectedAXLToken
+                  ? `(might be ${selectedAssetSymbolOnSrcChain} in Metamask)`
+                  : null}{" "}
+              </span>
               to this deposit address on
               <strong className="capitalize"> {srcChain.chainName}</strong>
               <div>Any other tokens sent to this address will be lost.</div>
@@ -71,30 +92,35 @@ export const EvmAssetWarningModal = () => {
 
             <div className="py-2 text-center">
               <div className="mt-2">
-                <div className="font-light text-gray-300">
-                  {selectedAssetNameSrcChain} token contract address |{" "}
-                  <strong className="capitalize">{srcChain.chainName}</strong>
-                  <div className="flex items-center justify-center font-bold gap-x-2">
-                    <AddressShortener value={tokenAddress} />
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => copyToClipboard(tokenAddress)}
-                    >
-                      <Image
-                        src={"/assets/ui/copy.svg"}
-                        height={16}
-                        width={16}
-                      />
+                {!asset?.is_gas_token && (
+                  <div className="font-light text-gray-300">
+                    {selectedAssetNameSrcChain} token contract address |{" "}
+                    <strong className="capitalize">{srcChain.chainName}</strong>
+                    <div className="flex items-center justify-center font-bold gap-x-2">
+                      <AddressShortener value={tokenAddress} />
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => copyToClipboard(tokenAddress)}
+                      >
+                        <Image
+                          src={"/assets/ui/copy.svg"}
+                          height={16}
+                          width={16}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
               {address && (
                 <div className="mt-2">
                   <div className="font-light text-gray-300">
                     Connected wallet balance |{" "}
                     <strong className="">
-                      {balance} {hasSelectedAXLToken ? selectedAssetNameSrcChain : selectedAssetSymbolOnSrcChain}
+                      {balance}{" "}
+                      {hasSelectedAXLToken
+                        ? selectedAssetNameSrcChain
+                        : selectedAssetSymbolOnSrcChain}
                     </strong>
                     <div className="flex items-center justify-center font-bold gap-x-2">
                       <AddressShortener value={address} />
@@ -120,10 +146,18 @@ export const EvmAssetWarningModal = () => {
           <div className="mt-5">
             <span>
               The recipient will receive{" "}
-              <span className="font-bold">{selectedAssetNameOnDestinationChain}</span> on{" "}
-              <span className="capitalize">{destChain.chainName}</span>. If your
-              recipient doesn’t support{" "}
-              <span className="font-bold">{selectedAssetNameOnDestinationChain}</span>{" "}
+              <span className="font-bold">
+                {shouldUnwrapAsset && unwrappedAssetSymbol
+                  ? unwrappedAssetSymbol
+                  : selectedAssetNameOnDestinationChain}
+              </span>{" "}
+              on <span className="capitalize">{destChain.chainName}</span>. If
+              your recipient doesn’t support{" "}
+              <span className="font-bold">
+                {shouldUnwrapAsset && unwrappedAssetSymbol
+                  ? unwrappedAssetSymbol
+                  : selectedAssetNameOnDestinationChain}
+              </span>{" "}
               <strong className="font-bold text-red-400">
                 the funds will be lost!
               </strong>

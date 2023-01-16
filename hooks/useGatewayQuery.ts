@@ -1,11 +1,14 @@
-import { useContractRead } from "wagmi";
-import gatewayABI from "../data/abi/axelarGateway.json";
-import { useSwapStore } from "../store";
-import { useAxelarRPCQuery } from "./api/useAxelarRPCQuery";
 import { useEffect, useState } from "react";
-import { getWagmiChains } from "../config/web3";
-import { formatUnits } from "ethers/lib/utils";
+
+import { useSwapStore } from "../store";
+
 import { BigNumber } from "ethers";
+import { formatUnits } from "ethers/lib/utils";
+import { useContractRead } from "wagmi";
+
+import { getWagmiChains } from "../config/web3";
+import gatewayABI from "../data/abi/axelarGateway.json";
+import { useAxelarRPCQuery } from "./api/useAxelarRPCQuery";
 
 export const useGatewayQuery = () => {
   const { asset, destChain } = useSwapStore((state) => state);
@@ -13,11 +16,12 @@ export const useGatewayQuery = () => {
   const { api } = useAxelarRPCQuery();
 
   const { data: maxTransferAmount, error } = useContractRead({
-    addressOrName: gatewayAddr,
+    address: gatewayAddr,
     chainId: getWagmiChains().find(
-      (chain) => chain.networkNameOverride === destChain.chainName.toLowerCase()
+      (chain) =>
+        chain.networkNameOverride === destChain.chainName?.toLowerCase()
     )?.id,
-    contractInterface: gatewayABI,
+    abi: gatewayABI,
     functionName: "tokenMintLimit",
     enabled: !!(
       gatewayAddr &&
@@ -26,14 +30,16 @@ export const useGatewayQuery = () => {
       api &&
       destChain.module === "evm"
     ),
-    args: asset?.chain_aliases[destChain?.chainName.toLowerCase()].assetSymbol,
+    args: [
+      asset?.chain_aliases[destChain?.chainName?.toLowerCase()].assetSymbol,
+    ],
   });
 
   useEffect(() => {
     (async () => {
       if (!api) return;
       if (destChain.module !== "evm") return;
-      const chain = destChain?.chainName.toLowerCase();
+      const chain = destChain?.chainName?.toLowerCase();
       const gatewayAddress = await (
         await api?.evm?.GatewayAddress({ chain })
       ).address;

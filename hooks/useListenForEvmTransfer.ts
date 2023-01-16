@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+
+import { useSwapStore } from "../store";
+
 import { useContract, useContractRead } from "wagmi";
 import { erc20ABI } from "wagmi";
-import { useSwapStore } from "../store";
+
 import { SwapStatus } from "../utils/enums";
 
 export const useListenForEvmTransfer = () => {
@@ -10,9 +13,9 @@ export const useListenForEvmTransfer = () => {
   const [contractAddress, setContractAddress] = useState<string>();
 
   const { data, isError, isLoading, error } = useContractRead({
-    enabled: contractAddress ? true : false,
-    addressOrName: contractAddress as string,
-    contractInterface: erc20ABI,
+    enabled: !!contractAddress,
+    address: contractAddress as string,
+    abi: erc20ABI,
     functionName: "balanceOf",
     args: ["0xA57ADCE1d2fE72949E4308867D894CD7E7DE0ef2"],
     chainId: 43113,

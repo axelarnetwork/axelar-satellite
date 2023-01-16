@@ -1,4 +1,5 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
@@ -24,4 +25,5 @@ export default {
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "axelar",
   chainToAxelarChannelId: "channel-0",
+  explorer: "https://www.mintscan.io/axelar/account/",
 } as CosmosChain;

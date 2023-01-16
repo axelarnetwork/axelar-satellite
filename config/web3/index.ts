@@ -1,15 +1,16 @@
-import toast from "react-hot-toast";
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+
+import _ from "lodash";
+import toast from "react-hot-toast";
+
 import { Environment } from "../../utils/enums";
 import { ENVIRONMENT } from "../constants";
-
+import { CosmosChain } from "./cosmos/interface";
+import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";
+import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
+import { mainnetChains as evmMainnetChains } from "./evm/mainnet";
 // wagmi ready chains
 import { testnetChains as evmTestnetChains } from "./evm/testnet";
-import { mainnetChains as evmMainnetChains } from "./evm/mainnet";
-import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
-import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";
-import { CosmosChain } from "./cosmos/interface";
-import { nativeAssets } from "../nativeAssetList/testnet";
 
 // sdk chains (generic)
 // export const allAssets = loadAssets({
@@ -19,8 +20,6 @@ import { nativeAssets } from "../nativeAssetList/testnet";
 // export const allChains = loadChains({
 //   environment: ENVIRONMENT,
 // });
-
-const nativeDenoms = nativeAssets.map((asset) => asset.common_key[ENVIRONMENT]);
 
 export const getWagmiChains = () => {
   if (ENVIRONMENT === Environment.TESTNET) return evmTestnetChains;
@@ -40,32 +39,39 @@ export const getCosmosChains = (allAssets: AssetConfig[]) => {
     return [];
   }
 
-  return chains.map((cosmosChain) => {
-    return {
-      ...cosmosChain,
-      currencies: [
-        cosmosChain.currencies[0],
-        ...allAssets
-          .filter(
-            (asset) => !nativeDenoms.includes(asset.common_key[ENVIRONMENT])
-          )
-          .filter(
-            (assetConfig) =>
-              assetConfig.chain_aliases[cosmosChain.chainIdentifier] &&
-              assetConfig.common_key[ENVIRONMENT] !==
-                cosmosChain?.currencies[0]?.coinMinimalDenom
-          )
-          .map((assetConfig) => {
-            const asset =
-              assetConfig.chain_aliases[cosmosChain.chainIdentifier];
-            return {
-              coinDenom: asset.assetSymbol as string,
-              coinMinimalDenom: asset.ibcDenom as string,
-              coinDecimals: assetConfig.decimals,
-              coinGeckoId: asset.assetSymbol as string,
-            };
-          }),
-      ],
-    };
-  });
+  chains = chains
+    .map((cosmosChain) => {
+      return {
+        ...cosmosChain,
+        currencies: [
+          cosmosChain.currencies[0],
+          ...allAssets
+            .filter(
+              (assetConfig) =>
+                assetConfig.chain_aliases[cosmosChain.chainIdentifier] &&
+                assetConfig.common_key[ENVIRONMENT] !==
+                  cosmosChain?.currencies[0]?.coinMinimalDenom
+            )
+            .map((assetConfig) => {
+              const asset =
+                assetConfig.chain_aliases[cosmosChain.chainIdentifier];
+              return {
+                coinDenom: asset.assetSymbol as string,
+                coinMinimalDenom: asset.ibcDenom as string,
+                coinDecimals: assetConfig.decimals,
+                coinGeckoId: asset.assetSymbol as string,
+              };
+            }),
+        ],
+      };
+    })
+    .map((_chain) => {
+      _chain.currencies = _.uniqBy(
+        _chain.currencies,
+        (currency) => currency.coinDenom
+      );
+      return _chain;
+    });
+
+  return chains;
 };
