@@ -1,7 +1,7 @@
+import { siteMetadata } from "../../data";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
-import { siteMetadata } from "../../data";
 
 type CommonSEOProps = {
   title: string;
@@ -24,7 +24,6 @@ export const CommonSEO: React.FC<CommonSEOProps> = ({
   return (
     <Head>
       <title>{title}</title>
-      <meta name="robots" content="nofollow, noindex, disallow" />
       <meta name="description" content={description} />
       <meta
         property="og:url"
