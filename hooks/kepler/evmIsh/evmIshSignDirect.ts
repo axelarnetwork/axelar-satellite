@@ -1,3 +1,4 @@
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { createTxRaw } from "@evmos/proto";
 import {
   generateEndpointBroadcast,
@@ -12,7 +13,6 @@ import Long from "long";
 
 import { getCosmosChains } from "../../../config/web3";
 import { CosmosChain } from "../../../config/web3/cosmos/interface";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 export const evmIshSignDirect = async (
   amount: string,
@@ -56,6 +56,8 @@ export const evmIshSignDirect = async (
     pub_key = account.pub_key;
     account_number = account.account_number;
     sequence = account.sequence;
+    pubKeyType = pub_key ? pub_key["@type"] : null;
+    pubKeyKey = pub_key?.key;
   }
 
   const sender = {
