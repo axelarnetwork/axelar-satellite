@@ -1,8 +1,10 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=comdex",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/comdex`,
   rest: "https://rest.comdex.one",
   chainId: "comdex-1",
   chainName: "Comdex",
@@ -39,5 +41,6 @@ export default {
     high: 0.05,
   },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
-  chainToAxelarChannelId: "channel-34"
+  chainToAxelarChannelId: "channel-34",
+  explorer: "https://www.mintscan.io/comdex/account/",
 } as CosmosChain;

@@ -1,9 +1,10 @@
-import { CosmosChain } from "../interface"
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
+import { CosmosChain } from "../interface";
 
 export default {
   chainId: "kaiyo-1",
   chainName: "Kujira",
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=kujira",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/kujira`,
   rest: "https://lcd.kaiyo.kujira.setten.io",
   bip44: { coinType: 118 },
   bech32Config: {
@@ -20,7 +21,7 @@ export default {
       coinMinimalDenom: "ukuji",
       coinDecimals: 6,
       coinGeckoId: "kujira",
-    }
+    },
   ],
   feeCurrencies: [
     {
@@ -39,5 +40,6 @@ export default {
   coinType: 118,
   gasPriceStep: { low: 0.01, average: 0.025, high: 0.03 },
   chainIdentifier: "kujira",
-  chainToAxelarChannelId: "channel-9"
+  chainToAxelarChannelId: "channel-9",
+  explorer: "https://www.mintscan.io/kujira/account/",
 } as CosmosChain;

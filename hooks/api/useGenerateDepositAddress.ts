@@ -1,11 +1,13 @@
-import { useMutation } from "react-query";
 import {
   AxelarAssetTransfer,
   AxelarQueryAPI,
 } from "@axelar-network/axelarjs-sdk";
-import { ENVIRONMENT } from "../../config/constants";
+
 import { constants } from "ethers";
+import { useMutation } from "react-query";
 import { AssetConfigExtended } from "types";
+
+import { ENVIRONMENT } from "../../config/constants";
 
 const { HashZero } = constants;
 
@@ -13,6 +15,7 @@ export type DepositAddressPayload = {
   fromChain: string;
   toChain: string;
   destAddress: string;
+  fromChainModule: "evm" | "axelarnet";
   asset: AssetConfigExtended;
   transferType: "deposit-address" | "wrap" | "unwrap";
 };
@@ -24,53 +27,59 @@ const sdk = new AxelarAssetTransfer({
 
 export const useGenerateDepositAddress = () =>
   useMutation(async (payload: DepositAddressPayload) => {
-    const { fromChain, toChain, destAddress, transferType, asset } = payload;
-    if (ENVIRONMENT === "testnet") {
-      if (transferType === "wrap") {
-        const depositAddress = await sdk.getDepositAddress({
-          fromChain: fromChain,
-          toChain: toChain,
-          asset: asset.id.toUpperCase(),
-          destinationAddress: destAddress,
-        });
+    const {
+      fromChain,
+      toChain,
+      destAddress,
+      transferType,
+      asset,
+      fromChainModule,
+    } = payload;
+    if (transferType === "wrap") {
+      const depositAddress = await sdk.getDepositAddress({
+        fromChain: fromChain,
+        toChain: toChain,
+        asset: asset.id.toUpperCase(),
+        destinationAddress: destAddress,
+      });
 
-        return {
-          intermediaryDepositAddress: null,
-          finalDepositAddress: depositAddress,
-        };
-      }
+      return {
+        intermediaryDepositAddress: null,
+        finalDepositAddress: depositAddress,
+      };
+    }
 
-      if (transferType === "unwrap") {
-        const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
-        const refundAddress = await axelarQueryApi.getContractAddressFromConfig(
-          fromChain,
-          "default_refund_collector"
-        );
-        const intermediaryDepositAddress =
-          await sdk.validateOfflineDepositAddress(
-            "unwrap",
-            fromChain,
-            toChain,
-            destAddress,
-            refundAddress,
-            HashZero
-          );
-        const result = await sdk.getDepositAddress({
+    if (transferType === "unwrap") {
+      const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
+      const refundAddress = await axelarQueryApi.getContractAddressFromConfig(
+        fromChainModule === "evm" ? fromChain : toChain,
+        "default_refund_collector"
+      );
+      console.log("refund address", refundAddress);
+      const intermediaryDepositAddress =
+        await sdk.validateOfflineDepositAddress(
+          "unwrap",
           fromChain,
           toChain,
-          asset: asset.common_key[ENVIRONMENT],
-          destinationAddress: destAddress,
-          options: {
-            shouldUnwrapIntoNative: true,
-            refundAddress: refundAddress,
-          },
-        });
+          destAddress,
+          refundAddress,
+          HashZero
+        );
+      const result = await sdk.getDepositAddress({
+        fromChain,
+        toChain,
+        asset: asset.common_key[ENVIRONMENT],
+        destinationAddress: destAddress,
+        options: {
+          shouldUnwrapIntoNative: true,
+          refundAddress: refundAddress,
+        },
+      });
 
-        return {
-          intermediaryDepositAddress,
-          finalDepositAddress: result,
-        };
-      }
+      return {
+        intermediaryDepositAddress,
+        finalDepositAddress: result,
+      };
     }
 
     const depositAddress = await sdk.getDepositAddress({

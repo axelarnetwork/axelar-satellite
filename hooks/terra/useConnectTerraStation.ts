@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { useIsTerraInstalled } from "./useIsTerraInstalled";
+
 import {
   ConnectType,
   useWallet as useTerraWallet,
 } from "@terra-money/wallet-provider";
+
 import { useWalletStore } from "../../store";
+
+import { useIsTerraInstalled } from "./useIsTerraInstalled";
 
 export const useConnectTerraStation = () => {
   const terraWallet = useTerraWallet();

@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
+
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import {
   getRestrictedAssetIsSelected,
   getSelectedAssetSymbol,
   useSwapStore,
 } from "../../../store";
+
 import { useOnClickOutside } from "usehooks-ts";
-import { convertChainName } from "../../../utils/transformers";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-import { useRouter } from "next/router";
-import { extractDenom } from "../../../utils/extractDenom";
+
 import { ASSET_RESTRICTIONS, ENVIRONMENT } from "../../../config/constants";
+import { extractDenom } from "../../../utils/extractDenom";
+import { convertChainName } from "../../../utils/transformers";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -34,11 +38,13 @@ export const DestChainSelector = () => {
           chain.chainName !== srcChain.chainName &&
           chain.chainName !== destChain.chainName
       )
-      .filter((chain) =>
-        chain.assets?.map((a) =>
-          a.common_key!?.includes(asset?.common_key[ENVIRONMENT] as string)
-        )
-      );
+      .filter((chain) => {
+        const assetCommentKeys = chain.assets?.map((a) => a.common_key);
+        return (
+          assetCommentKeys.includes(asset?.id) ||
+          assetCommentKeys.includes(asset?.wrapped_erc20)
+        );
+      });
     if (!restrictedAssetIsSelected) return setFilteredChains(newChains);
 
     // find the right policy based on asset
@@ -51,7 +57,7 @@ export const DestChainSelector = () => {
         policy?.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
       )
     );
-  }, [srcChain, destChain, dropdownOpen, searchChainInput]);
+  }, [srcChain, destChain, dropdownOpen, searchChainInput, asset]);
 
   useEffect(() => {
     if (!router.isReady) return;

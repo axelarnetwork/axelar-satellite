@@ -13,13 +13,13 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   polygon: {
     pairs: ["axlUSDC/USDC"],
-    dex: "Curve",
-    url: "https://curve.fi/#/polygon/pools/factory-v2-221/swap",
+    dex: "Quickswap",
+    url: "https://quickswap.exchange/#/swap",
   },
   avalanche: {
     pairs: ["axlUSDC/USDC"],
-    dex: "Curve",
-    url: "https://curve.fi/#/avalanche/pools/factory-v2-82/swap",
+    dex: "Platypus",
+    url: "https://app.platypus.finance/swap?from=axlUSDC&to=USDC",
   },
   fantom: {
     pairs: ["axlUSDC/USDC"],
@@ -70,5 +70,15 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
     pairs: ["GLMR/axlUSDC"],
     dex: "Stellaswap",
     url: "https://app.stellaswap.com/exchange/swap",
+  },
+  celo: {
+    pairs: ["axlUSDC/cUSD"],
+    dex: "Curve",
+    url: "https://curve.fi/#/celo/pools/factory-v2-3/swap",
+  },
+  kava: {
+    pairs: ["axlUSDC/axlDAI"],
+    dex: "Curve",
+    url: "https://curve.fi/#/kava/pools/factory-v2-2/swap",
   },
 };

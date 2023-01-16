@@ -1,8 +1,9 @@
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
   rest: "https://emoney.validator.network/api",
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=e-money",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/e-money`,
   chainId: "emoney-3",
   chainIdentifier: "e-money",
   currencies: [
@@ -14,4 +15,5 @@ export default {
     },
   ],
   chainToAxelarChannelId: "channel-26",
+  explorer: "https://www.mintscan.io/emoney/account/",
 } as CosmosChain;

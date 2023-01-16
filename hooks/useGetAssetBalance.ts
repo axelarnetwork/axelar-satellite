@@ -1,23 +1,27 @@
-import { formatUnits } from "ethers/lib/utils";
-import { ethers } from "ethers";
-import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
-import { useAccount, useContractRead, erc20ABI, useBalance } from "wagmi";
-import { BigNumber } from "bignumber.js";
+
+import {
+  useLCDClient as useTerraLCDClient,
+  useWallet as useTerraWallet,
+} from "@terra-money/wallet-provider";
+
 import {
   getSrcChainId,
   getSrcTokenAddress,
   useSwapStore,
   useWalletStore,
 } from "../store";
-import { getAddress, queryBalance } from "../utils/wallet/keplr";
+
+import { BigNumber } from "bignumber.js";
+import { ethers } from "ethers";
+import { formatUnits } from "ethers/lib/utils";
+import toast from "react-hot-toast";
+import { erc20ABI, useAccount, useBalance, useContractRead } from "wagmi";
+
 import { getCosmosChains } from "../config/web3";
-import {
-  useWallet as useTerraWallet,
-  useLCDClient as useTerraLCDClient,
-} from "@terra-money/wallet-provider";
-import { useIsTerraConnected } from "./terra/useIsTerraConnected";
 import { Hash } from "../types";
+import { getAddress, queryBalance } from "../utils/wallet/keplr";
+import { useIsTerraConnected } from "./terra/useIsTerraConnected";
 
 export const useGetAssetBalance = () => {
   const { asset, srcChain } = useSwapStore((state) => state);
@@ -111,7 +115,7 @@ const useGetEvmBalance = () => {
     isFetching: nativeBalanceIsLoading,
     refetch: refetchNativeBalance,
   } = useBalance({
-    enabled: srcChain.module === "evm",
+    enabled: srcChain?.module === "evm",
     address: address,
     chainId: srcChainId,
     onError: (error) => {
@@ -125,7 +129,7 @@ const useGetEvmBalance = () => {
     isFetching: erc20BalanceIsLoading,
     refetch: refetchErc20Balance,
   } = useContractRead({
-    enabled: srcChain.module === "evm",
+    enabled: srcChain?.module === "evm",
     address: srcTokenAddress as string,
     abi: erc20ABI,
     chainId: srcChainId,
@@ -174,7 +178,7 @@ const useGetEvmBalance = () => {
     updateBalance,
     refetchNativeBalance,
     refetchErc20Balance,
-    srcChain.module,
+    srcChain,
   ]);
 
   return {

@@ -1,5 +1,7 @@
 import React from "react";
+
 import { useSwapStore } from "../../../store";
+
 import { SwapStatus } from "../../../utils/enums";
 
 export const StopButton = () => {

@@ -1,14 +1,18 @@
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
-import BigNumber from "bignumber.js";
 import React from "react";
-import toast from "react-hot-toast";
 
-import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
+import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+
 import {
   getReservedAddresses,
   getSelectedAssetSymbol,
+  getTransferType,
   useSwapStore,
 } from "../../../store";
+
+import BigNumber from "bignumber.js";
+import toast from "react-hot-toast";
+
+import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
 import {
   validateCosmosAddress,
   validateEvmAddress,
@@ -32,20 +36,14 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     asset,
     setSwapStatus,
     tokensToTransfer,
-    shouldUnwrapAsset,
   } = useSwapStore((state) => state);
 
   const reservedAddresses = useSwapStore(getReservedAddresses);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+  const transferType = useSwapStore(getTransferType);
 
-  function checkMinAmount(amount: string, minAmount?: number) {
-    if (!asset) {
-      return {
-        minDeposit: 0,
-        minAmountOk: false,
-      };
-    }
-    const minDeposit = renderGasFee(srcChain, destChain, asset) || 0;
+  async function checkMinAmount(amount: string, minAmount?: number) {
+    const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
     if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
     return {
@@ -55,12 +53,16 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
   }
 
   async function handleOnGenerateDepositAddress() {
+    if ((srcChain as any).id === "terra")
+      return toast.error(
+        "Only the transfers to Terra Classic are allowed for uluna and uusd"
+      );
     if (!asset) return toast.error("Asset can't be empty");
     if (!Number(tokensToTransfer))
       return toast.error("Please enter the amount of tokens to transfer");
 
     if (!checkDestAddressFormat()) return;
-    const { minAmountOk, minDeposit } = checkMinAmount(tokensToTransfer);
+    const { minAmountOk, minDeposit } = await checkMinAmount(tokensToTransfer);
 
     if (!minAmountOk)
       return toast.error(
@@ -73,24 +75,9 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     )
       return toast.error("Cannot send to this address");
 
-    let transferType = "deposit-address";
-    // const shouldWrap = asset.native_chain === srcChain.chainIdentifier[ENVIRONMENT] &&
-    // we transfer native asset belonging to the source chain
-    if (
-      asset.native_chain === srcChain.chainName?.toLowerCase() &&
-      asset.is_gas_token
-    ) {
-      transferType = "wrap";
-      // we transfer wrapped asset of native asset belonging to destination chain
-    } else if (
-      shouldUnwrapAsset &&
-      asset.native_chain === destChain.chainName?.toLowerCase()
-    ) {
-      transferType = "unwrap";
-    }
-
     genDepositAddress({
       fromChain: srcChain.chainIdentifier[ENVIRONMENT],
+      fromChainModule: srcChain.module,
       toChain: destChain.chainIdentifier[ENVIRONMENT],
       asset,
       destAddress,

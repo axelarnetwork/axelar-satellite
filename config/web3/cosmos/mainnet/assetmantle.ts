@@ -1,7 +1,8 @@
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=assetmantle",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/assetmantle`,
   rest: "https://rest.assetmantle.one",
   chainId: "mantle-1",
   chainName: "AssetMantle",
@@ -42,4 +43,5 @@ export default {
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "assetmantle",
   chainToAxelarChannelId: "channel-10",
+  explorer: "https://explorer.assetmantle.one/wallet/",
 } as CosmosChain;

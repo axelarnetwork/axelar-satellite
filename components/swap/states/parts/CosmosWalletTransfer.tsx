@@ -1,53 +1,57 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+
 import {
   AssetConfig,
   AssetInfo,
   CosmosChain,
 } from "@axelar-network/axelarjs-sdk";
-import { BigNumber } from "bignumber.js";
+import { OfflineSigner } from "@cosmjs/launchpad";
 import {
   SigningStargateClient,
   StargateClient,
   StdFee,
 } from "@cosmjs/stargate";
-import { OfflineSigner } from "@cosmjs/launchpad";
-import { ENVIRONMENT } from "../../../../config/constants";
+import {
+  Fee,
+  LCDClient,
+  MsgTransfer,
+  Coin as TerraCoin,
+} from "@terra-money/terra.js";
+import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/client/Height";
+import {
+  WalletStatus,
+  useConnectedWallet,
+  useLCDClient,
+  useWallet as useTerraWallet,
+} from "@terra-money/wallet-provider";
+
 import { useSwapStore, useWalletStore } from "../../../../store";
+
+import { BigNumber } from "bignumber.js";
+import cn from "classnames";
+import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
+import { Height } from "cosmjs-types/ibc/core/client/v1/client";
+import { ethers, utils } from "ethers";
+import Long from "long";
+import toast from "react-hot-toast";
+import { SpinnerRoundFilled } from "spinners-react";
+
+import { TERRA_IBC_GAS_LIMIT } from ".";
+import { ENVIRONMENT } from "../../../../config/constants";
+import { getCosmosChains } from "../../../../config/web3";
 import {
   useDetectDepositConfirmation,
   useGetAssetBalance,
   useGetKeplerWallet,
   useHasKeplerWallet,
 } from "../../../../hooks";
-import { curateCosmosChainId } from "../../../../utils";
-import { getCosmosChains } from "../../../../config/web3";
-import { ethers, utils } from "ethers";
-import toast from "react-hot-toast";
-import Long from "long";
-import { Height } from "cosmjs-types/ibc/core/client/v1/client";
-import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
-import { SwapStatus } from "../../../../utils/enums";
-import { SpinnerRoundFilled } from "spinners-react";
-import { renderGasFee } from "../../../../utils/renderGasFee";
-import {
-  useWallet as useTerraWallet,
-  WalletStatus,
-  useConnectedWallet,
-  useLCDClient,
-} from "@terra-money/wallet-provider";
-import {
-  Coin as TerraCoin,
-  Fee,
-  LCDClient,
-  MsgTransfer,
-} from "@terra-money/terra.js";
-import cn from "classnames";
-import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/client/Height";
-import { TERRA_IBC_GAS_LIMIT } from ".";
-import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
-import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
 import { evmIshSignDirect } from "../../../../hooks/kepler/evmIsh/evmIshSignDirect";
+import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
+import { curateCosmosChainId } from "../../../../utils";
+import { SwapStatus } from "../../../../utils/enums";
+import { renderGasFee } from "../../../../utils/renderGasFee";
+import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -95,8 +99,8 @@ export const CosmosWalletTransfer = () => {
     setTokenAddress(assetData?.tokenAddress as string);
   }, [asset]);
 
-  function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit = renderGasFee(srcChain, destChain, asset) || 0;
+  async function checkMinAmount(amount: string, minAmount?: number) {
+    const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
     console.log("min Deposit", minDeposit);
     if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
       return { minDeposit, minAmountOk: false };
@@ -169,7 +173,7 @@ export const CosmosWalletTransfer = () => {
       offlineSigner
     );
 
-    const { minAmountOk, minDeposit } = checkMinAmount(
+    const { minAmountOk, minDeposit } = await checkMinAmount(
       tokensToTransfer,
       currentAsset?.minDepositAmt
     );
@@ -307,7 +311,7 @@ export const CosmosWalletTransfer = () => {
   }
 
   async function handleOnTerraStationIBCTransfer(): Promise<any> {
-    const { minAmountOk, minDeposit } = checkMinAmount(
+    const { minAmountOk, minDeposit } = await checkMinAmount(
       tokensToTransfer,
       currentAsset?.minDepositAmt
     );

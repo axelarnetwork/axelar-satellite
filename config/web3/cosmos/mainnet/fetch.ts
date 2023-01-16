@@ -1,7 +1,8 @@
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=fetch",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/fetch`,
   rest: "https://rest-fetchhub.fetch.ai:443",
   chainId: "fetchhub-4",
   chainName: "Fetch",
@@ -41,5 +42,6 @@ export default {
   gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "fetch",
-  chainToAxelarChannelId: "channel-14"
+  chainToAxelarChannelId: "channel-14",
+  explorer: "https://www.mintscan.io/fetchai/account/",
 } as CosmosChain;

@@ -1,13 +1,15 @@
 import { createTxRaw } from "@evmos/proto";
 import {
-  createTxIBCMsgTransfer,
-  MessageIBCMsgTransfer,
-} from "@evmos/transactions";
-import {
   generateEndpointBroadcast,
   generatePostBodyBroadcast,
 } from "@evmos/provider";
+import {
+  MessageIBCMsgTransfer,
+  createTxIBCMsgTransfer,
+} from "@evmos/transactions";
+
 import Long from "long";
+
 import { getCosmosChains } from "../../../config/web3";
 import { CosmosChain } from "../../../config/web3/cosmos/interface";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";

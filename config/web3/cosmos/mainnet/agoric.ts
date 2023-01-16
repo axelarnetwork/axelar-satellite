@@ -1,8 +1,10 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export const agoric: CosmosChain = {
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=agoric",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/agoric`,
   rest: "https://main.api.agoric.net",
   chainId: "agoric-3",
   chainName: "Agoric",
@@ -35,4 +37,5 @@ export const agoric: CosmosChain = {
   chainIdentifier: "agoric",
   chainToAxelarChannelId: "channel-9",
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx", "ibc-go"],
+  explorer: "https://bigdipper.live/agoric/accounts/",
 };

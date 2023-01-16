@@ -22,9 +22,8 @@ export const DEFAULT_DEST_CHAIN =
   process.env.NEXT_PUBLIC_DEFAULT_DEST_CHAIN || "axelar";
 export const DEFAULT_ASSET = process.env.NEXT_PUBLIC_DEFAULT_ASSET || "uaxl";
 
-export const COSMOS_PROXY_RPC_TESTNET =
-  "https://testnet-rpc-router.axelar-dev.workers.dev";
-export const COSMOS_PROXY_RPC_MAINNET = "";
+export const COSMOS_PROXY_RPC_TESTNET = "https://testnet.rpc.axelar.dev";
+export const COSMOS_PROXY_RPC_MAINNET = "https://mainnet.rpc.axelar.dev";
 
 export const tokenContractDocs: Record<string, string> = {
   local: "https://docs.axelar.dev/resources/testnet",
@@ -43,8 +42,13 @@ export const docsLinks: Record<string, string> = {
 type AssetRestriction = {
   assets: string[];
   restrictDestChainsTo: string[];
+  hideSrcChains: string[];
 };
-const chainPolicies = process.env.NEXT_PUBLIC_CHAIN_POLICIES;
+const chainPolicies =
+  '[{"assets":["uluna", "uusd"],"restrictDestChainsTo":["terra classic"], "hideSrcChains": ["terra"]}]';
 export const ASSET_RESTRICTIONS: AssetRestriction[] = chainPolicies
   ? JSON.parse(chainPolicies)
   : [];
+
+export const defaultChainImg = "/assets/chains/default.logo.svg";
+export const defaultAssetImg = "/assets/chains/default.logo.svg";

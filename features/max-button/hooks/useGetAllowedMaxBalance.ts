@@ -1,5 +1,12 @@
-import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
+
+import {
+  getSrcChainId,
+  getSrcTokenAddress,
+  useSwapStore,
+} from "../../../store";
+
+import { ethers } from "ethers";
 import {
   erc20ABI,
   useAccount,
@@ -7,11 +14,7 @@ import {
   useContractRead,
   useProvider,
 } from "wagmi";
-import {
-  getSrcChainId,
-  getSrcTokenAddress,
-  useSwapStore,
-} from "../../../store";
+
 import { Hash } from "../../../types";
 
 const { utils } = ethers;

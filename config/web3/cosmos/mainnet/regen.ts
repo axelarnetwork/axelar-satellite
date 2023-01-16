@@ -1,8 +1,10 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=regen",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/regen`,
   rest: "https://rest-regen.ecostake.com",
   chainId: "regen-1",
   chainName: "Regen",
@@ -41,5 +43,6 @@ export default {
   },
   features: ["ibc-go", "ibc-transfer"],
   chainIdentifier: "regen",
-  chainToAxelarChannelId: "channel-48"
+  chainToAxelarChannelId: "channel-48",
+  explorer: "https://www.mintscan.io/regen/account/",
 } as CosmosChain;

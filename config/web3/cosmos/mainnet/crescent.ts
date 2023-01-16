@@ -1,7 +1,8 @@
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: "https://mainnet-rpc-router.axelar-dev.workers.dev/?chain=crescent",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/crescent`,
   rest: "https://mainnet.crescent.network:1317",
   chainId: "crescent-1",
   chainName: "Crescent",
@@ -48,4 +49,5 @@ export default {
   },
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
   chainToAxelarChannelId: "channel-4",
+  explorer: "https://www.mintscan.io/crescent/account/",
 } as CosmosChain;

@@ -1,8 +1,10 @@
 import React, { PropsWithChildren } from "react";
+
+import packages from "../../package.json";
 import { Navbar } from "./Navbar";
-import { dependencies, version } from "../../package.json";
 
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
+  const { dependencies, version } = packages;
   return (
     <>
       <header>

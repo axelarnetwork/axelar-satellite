@@ -1,14 +1,16 @@
+import { useEffect, useState } from "react";
 import Image from "next/image";
+
 import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
 
-import { AddressShortener, StatsWrapper } from "../../common";
-import { renderGasFee } from "../../../utils/renderGasFee";
-import { copyToClipboard } from "../../../utils";
-import { SwapStatus } from "../../../utils/enums";
 import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
-import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
 import { USDC_POOLS } from "../../../data/pools";
+import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
+import { copyToClipboard } from "../../../utils";
+import { SwapStatus } from "../../../utils/enums";
+import { renderGasFee } from "../../../utils/renderGasFee";
+import { AddressShortener, StatsWrapper } from "../../common";
 
 const InfoIcon = (
   <svg
@@ -39,6 +41,13 @@ export const TransferStats = () => {
   } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const max = useGetMaxTransferAmount();
+  const [transferFee, setTransferFee] = useState<string>("");
+
+  useEffect(() => {
+    renderGasFee(srcChain, destChain, asset).then((res) => {
+      setTransferFee(res);
+    });
+  }, [srcChain, destChain, asset]);
 
   function renderWaitTime() {
     if (!srcChain) return "";
@@ -107,9 +116,9 @@ export const TransferStats = () => {
       <li className="flex justify-between">
         <span
           className="flex flex-row cursor-pointer tooltip tooltip-warning"
-          data-tip={`Initial ${destChain.chainName} recipient of tokens transferred. It unwraps the ERC20 tokens and then delivers native tokens to the final destination address.`}
+          data-tip={`Swap contract that converts wrapped ERC-20 to native tokens on ${destChain.chainName} for recipient.`}
         >
-          <span>Holding Address</span>
+          <span>Swap Contract</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -259,7 +268,7 @@ export const TransferStats = () => {
             {InfoIcon}
           </div>
           <span className="font-semibold">
-            {renderGasFee(srcChain, destChain, asset)} {selectedAssetSymbol}
+            {transferFee} {selectedAssetSymbol}
           </span>
         </li>
         <li className="flex justify-between ">

@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useOnClickOutside } from "usehooks-ts";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useRouter } from "next/router";
 
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
+
+import { useOnClickOutside } from "usehooks-ts";
+
+import { ASSET_RESTRICTIONS } from "../../../config/constants";
 import { convertChainName } from "../../../utils/transformers";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
@@ -32,7 +36,9 @@ export const SourceChainSelector = () => {
     const newChains = allChains.filter(
       (chain) =>
         chain.chainName !== destChain.chainName &&
-        chain.chainName !== srcChain.chainName
+        chain.chainName !== srcChain.chainName &&
+        // TODO: fix correctly
+        !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes((chain as any).id)
     );
     // .filter((chain) =>
     //   chain.assets
@@ -61,7 +67,9 @@ export const SourceChainSelector = () => {
       (chain) =>
         chain.chainName?.toLowerCase().includes(searchChainInput) &&
         chain.chainName !== destChain.chainName &&
-        chain.chainName !== srcChain.chainName
+        chain.chainName !== srcChain.chainName &&
+        // TODO: fix correctly
+        !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes((chain as any).id)
     );
     setFilteredChains(chains);
   }, [allChains, searchChainInput]);

@@ -1,13 +1,15 @@
 import React from "react";
+
 import { useSwapStore } from "../../../store";
+
 import { SwapStatus } from "../../../utils/enums";
 import {
-  IdleState,
+  ConfirmTransferState,
   GenDepositAddressState,
+  IdleState,
+  WaitCosmosConfirmationState,
   WaitDepositState,
   WaitEvmConfirmationState,
-  WaitCosmosConfirmationState,
-  ConfirmTransferState,
 } from "../states";
 
 export const SwapStates = () => {

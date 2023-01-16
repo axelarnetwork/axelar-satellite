@@ -1,7 +1,9 @@
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-import memoize from "proxy-memoize";
 import { ASSET_RESTRICTIONS, ENVIRONMENT } from "config/constants";
 import { getWagmiChains } from "config/web3";
+
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
+import memoize from "proxy-memoize";
 import { AssetConfigExtended } from "types";
 
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
@@ -67,6 +69,35 @@ export const getSelectedAssetSymbol = memoize(
   }
 );
 
+export const getTransferType = memoize(
+  (state: {
+    asset: AssetConfigExtended | null;
+    srcChain: ChainInfo;
+    shouldUnwrapAsset: boolean;
+    destChain: ChainInfo;
+  }): "deposit-address" | "wrap" | "unwrap" => {
+    const { asset, srcChain, shouldUnwrapAsset, destChain } = state;
+
+    let transferType: "deposit-address" | "wrap" | "unwrap" = "deposit-address";
+    if (!asset) return transferType;
+
+    if (
+      asset.native_chain === srcChain.chainName?.toLowerCase() &&
+      asset.is_gas_token
+    ) {
+      transferType = "wrap";
+      // we transfer wrapped asset of native asset belonging to destination chain
+    } else if (
+      shouldUnwrapAsset &&
+      asset.native_chain === destChain.chainName?.toLowerCase()
+    ) {
+      transferType = "unwrap";
+    }
+
+    return transferType;
+  }
+);
+
 export const getSelectedAssetName = memoize(
   (state: { asset: AssetConfigExtended | null; srcChain: ChainInfo }) => {
     const chainName = state?.srcChain?.chainName?.toLowerCase();
@@ -114,8 +145,20 @@ export const getSelectedAsssetIsWrapped = memoize(
   }): boolean => {
     if (!state.asset) return false;
     const destChainName = state.destChain?.chainName?.toLowerCase();
+    const isGasToken = state.asset.is_gas_token; // e.g. is this pure avax/eth/ftm/etc
+    const isGlmr = state.asset.id.includes("glmr");
+    const destChainIsNativeChain = state.asset.native_chain === destChainName;
+    const assetIsWrappedVersionOfNativeAssetOnDestChain =
+      state &&
+      state.destChain &&
+      state.destChain.nativeAsset &&
+      state.destChain.nativeAsset.length > 0 &&
+      state.destChain?.nativeAsset.indexOf(state.asset.id) >= 0;
     return (
-      !state.asset.is_gas_token && state.asset.native_chain === destChainName
+      !isGasToken &&
+      destChainIsNativeChain &&
+      assetIsWrappedVersionOfNativeAssetOnDestChain &&
+      !isGlmr
     );
   }
 );
@@ -144,11 +187,35 @@ export const getWrappedAssetName = memoize(
     destChain: ChainInfo;
     srcChain: ChainInfo;
   }) => {
-    const wrappedToken = state.allAssets.find(
-      (_asset) =>
-        _asset.native_chain === state.destChain.chainName?.toLowerCase() &&
-        !_asset.is_gas_token
-    )?.chain_aliases[state.destChain.chainName?.toLowerCase()];
+    const { destChain, allAssets } = state;
+
+    const assetFinder = (_asset: AssetConfigExtended) => {
+      // asset's native chain is the destination chain
+      const isAssetsNativeChain =
+        _asset.native_chain === state.destChain.chainName?.toLowerCase();
+
+      // asset is not gas token, e.g. ETH/AVAX/etc, but instead, wrapped version of them, WETH/WAVAX/etc.
+      const isNotGasToken = !_asset.is_gas_token;
+
+      // the nativeAsset list in the chain config for the destination chain includes the denom for the wrapped asset
+      // this avoids selection of wrapped assets on chains that are not wrapped native (e.g. USDC on Ethereum)
+      const assetIsWrappedVersionOfNativeAssetOnDestChain =
+        destChain &&
+        destChain.nativeAsset &&
+        destChain.nativeAsset.length > 0 &&
+        destChain?.nativeAsset.indexOf(_asset.id) >= 0;
+
+      return (
+        isAssetsNativeChain &&
+        isNotGasToken &&
+        assetIsWrappedVersionOfNativeAssetOnDestChain
+      );
+    };
+
+    const wrappedToken =
+      allAssets.find(assetFinder)?.chain_aliases[
+        destChain.chainName?.toLowerCase()
+      ];
 
     return wrappedToken?.assetSymbol;
   }

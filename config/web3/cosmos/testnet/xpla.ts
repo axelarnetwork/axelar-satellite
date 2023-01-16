@@ -1,4 +1,5 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
@@ -38,6 +39,6 @@ export default {
     average: 850000000000,
     high: 1000000000000,
   },
-  features: ["ibc-transfer", "ibc-go"],
+  features: ["ibc-transfer", "ibc-go", "eth-address-gen", "eth-key-sign"],
   chainToAxelarChannelId: "channel-0",
 } as CosmosChain;

@@ -1,33 +1,35 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useOnClickOutside } from "usehooks-ts";
+import { useRouter } from "next/router";
+
+import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 
 import {
   getSelectedAssetName,
   useSwapStore,
   useWalletStore,
 } from "../../../store";
-import { ENVIRONMENT } from "../../../config/constants";
-import { SwapOrigin } from "../../../utils/enums";
-import { useGetAssetBalance, useGetMaxTransferAmount } from "../../../hooks";
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
-import { Blockable } from "../../common";
-import { useRouter } from "next/router";
-import { SpinnerDotted } from "spinners-react";
-import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
-import { roundNumberTo } from "../../../utils/roundNumberTo";
-import { connectToKeplr } from "../../web3/utils/handleOnKeplrConnect";
-import { Arrow } from "./TopFlows";
-import { useSwitchNetwork } from "wagmi";
-import { addTokenToMetamask } from "../states";
-import { getWagmiChains } from "../../../config/web3";
 
-import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
+import { SpinnerDotted } from "spinners-react";
+import { AssetConfigExtended } from "types";
+import { useOnClickOutside } from "usehooks-ts";
+import { useSwitchNetwork } from "wagmi";
+
+import { ENVIRONMENT } from "../../../config/constants";
+import { getWagmiChains } from "../../../config/web3";
+import { MaxButton } from "../../../features/max-button";
+import { useGetAssetBalance, useGetMaxTransferAmount } from "../../../hooks";
 import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
+import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
+import { SwapOrigin } from "../../../utils/enums";
+import { roundNumberTo } from "../../../utils/roundNumberTo";
+import { Blockable } from "../../common";
+import { connectToKeplr } from "../../web3/utils/handleOnKeplrConnect";
+import { addTokenToMetamask } from "../states";
+import { Arrow } from "./TopFlows";
 // import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
 import { UnwrapToNativeChainCheckbox } from "./UnwrapToNativeChainCheckbox";
-import { MaxButton } from "../../../features/max-button";
-import { AssetConfigExtended } from "types";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -132,23 +134,23 @@ export const TokenSelector = () => {
   // update filtered assets state on chain change
   useEffect(() => {
     let list;
-    if (srcChain.module === "evm") {
-      list = selectableAssetList
-        .filter((asset) => {
-          // @ts-ignore
-          return (
-            !asset.is_gas_token ||
-            (asset.is_gas_token &&
-              srcChain.chainName?.toLowerCase() === asset.native_chain)
-          );
-        })
-        .filter((asset) => {
-          const srcChainName = srcChain.chainName?.toLowerCase();
-          if (asset.is_gas_token && asset.native_chain !== srcChainName)
-            return false;
-          return true;
-        });
-    }
+
+    list = selectableAssetList
+      .filter((asset) => {
+        // @ts-ignore
+        return (
+          !asset.is_gas_token ||
+          (asset.is_gas_token &&
+            srcChain.chainName?.toLowerCase() === asset.native_chain)
+        );
+      })
+      .filter((asset) => {
+        const srcChainName = srcChain.chainName?.toLowerCase();
+        if (asset.is_gas_token && asset.native_chain !== srcChainName)
+          return false;
+        return true;
+      });
+
     setFilteredAssets(list || selectableAssetList);
   }, [selectableAssetList, srcChain]);
 

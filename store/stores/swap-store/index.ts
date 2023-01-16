@@ -1,4 +1,5 @@
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+
 import { AssetConfigExtended } from "types";
 import create from "zustand";
 import { devtools } from "zustand/middleware";
@@ -21,6 +22,7 @@ interface SwapState {
   destChain: ChainInfo;
   destAddress: string;
   selectableAssetList: AssetConfigExtended[];
+  initialAsset: AssetConfigExtended | null;
   asset: AssetConfigExtended | null;
   swapStatus: SwapStatus;
   depositAddress: string;
@@ -39,6 +41,7 @@ interface SwapStore extends SwapState {
   setDestChain: (chain: ChainInfo) => void;
   setDestAddress: (address: string) => void;
   setAsset: (asset: AssetConfigExtended | null) => void;
+  setInitialAsset: (asset: AssetConfigExtended | null) => void;
   setAssetList: (assets: AssetConfigExtended[]) => void;
   switchChains: () => void;
   setSwapStatus: (newStatus: SwapStatus) => void;
@@ -61,6 +64,7 @@ const initialState: SwapState = {
   selectableAssetList: [], // list of assets to select from
   srcChain: {} as ChainInfo,
   destChain: {} as ChainInfo,
+  initialAsset: null, // helper for switching between native/wrapped assets
   asset: null, // asset to transfer
   tokensToTransfer: "", // asset amount to transfer
   destAddress: "", // user owned account to transfer assets to
@@ -134,7 +138,14 @@ export const useSwapStore = create<SwapStore>()(
         "setAsset"
       );
     },
-
+    setInitialAsset: (asset) =>
+      set(
+        {
+          initialAsset: asset,
+        },
+        false,
+        "setInitialAsset"
+      ),
     setAssetList: (assets) =>
       set(
         {
