@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { useSwapStore } from "../../../store";
@@ -6,28 +6,48 @@ import { useSwapStore } from "../../../store";
 export const ChainSwapper = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
+  const initialAsset = useSwapStore((state) => state.initialAsset);
   const asset = useSwapStore((state) => state.asset);
   const allAssets = useSwapStore((state) => state.allAssets);
 
   const setSrcChain = useSwapStore((state) => state.setSrcChain);
   const setDestChain = useSwapStore((state) => state.setDestChain);
   const setAsset = useSwapStore((state) => state.setAsset);
+  const setInitialAsset = useSwapStore((state) => state.setInitialAsset);
+
+  /**
+   * TODO: maybe move elsewhere to avoid logic scattering
+   * If asset is a native asset at app load,
+   * cache the native asset so that when switch of chains occurs
+   * the native asset is selected vs the wrapped version
+   */
+  useEffect(() => {
+    if (!initialAsset) setInitialAsset(asset);
+  }, [asset, initialAsset, setInitialAsset]);
 
   const updateQueryParamsAndSwitch = async () => {
     setDestChain(srcChain);
     setSrcChain(destChain);
 
     // if switching from a native token should choose the wrapped version
-    // if (
-    //   asset?.is_gas_token &&
-    //   asset.native_chain === srcChain.chainName?.toLowerCase()
-    // ) {
-    //   const wrappedAsset = allAssets.find(
-    //     (_asset) => _asset.id === asset.wrapped_erc20
-    //   );
-    //   if (!wrappedAsset) return;
-    //   setAsset(wrappedAsset);
-    // }
+    if (
+      asset?.is_gas_token &&
+      asset.native_chain === srcChain.chainName?.toLowerCase()
+    ) {
+      const wrappedAsset = allAssets.find(
+        (_asset) => _asset.id === asset.wrapped_erc20
+      );
+      if (!wrappedAsset) return;
+      setAsset(wrappedAsset);
+    }
+
+    if (
+      !asset?.is_gas_token &&
+      asset?.native_chain === destChain.chainName?.toLowerCase() &&
+      initialAsset?.wrapped_erc20 === asset.id
+    ) {
+      setAsset(initialAsset);
+    }
   };
 
   return (
