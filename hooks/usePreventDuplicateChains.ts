@@ -20,7 +20,11 @@ export const usePreventDuplicateChains = () => {
     if (srcChain?.chainName === destChain?.chainName) updateChains();
 
     // reset deposit address on chain module change
-    if (originDestChain?.module !== destChain?.module) {
+    if (
+      originDestChain &&
+      originSrcChain &&
+      originDestChain?.module !== destChain?.module
+    ) {
       setDestAddress("");
     }
 
