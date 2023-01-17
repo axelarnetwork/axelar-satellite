@@ -31,6 +31,7 @@ export const useInitialChainList = () => {
     setAsset,
     rehydrateAssets,
     setRehydrateAssets,
+    setDestAddress,
   } = useSwapStore();
 
   const router = useRouter();
@@ -38,6 +39,8 @@ export const useInitialChainList = () => {
   const loadData = useCallback(async () => {
     const chains = await loadInitialChains();
     const assets = await loadInitialAssets();
+
+    setDestAddress((router.query?.destination_address as string) || "");
 
     updateRoutes(chains.srcChainName, chains.destChainName, assets?.assetDenom);
     setRehydrateAssets(false);
