@@ -64,6 +64,23 @@ export const TopFlows = () => {
 
   if (![SwapStatus.IDLE].includes(swapStatus)) return null;
 
+  function handleOnFlow0() {
+    const polygon = allChains.find((chain) =>
+      chain.chainName?.toLowerCase().includes("polygon")
+    ) as ChainInfo;
+    const osmosis = allChains.find((chain) =>
+      chain.chainName?.toLowerCase().includes("osmosis")
+    ) as ChainInfo;
+    const asset = allAssets.find((asset) =>
+      asset.common_key[ENVIRONMENT].includes("usdc")
+    ) as AssetConfigExtended;
+
+    setAsset(asset);
+    setSrcChain(polygon);
+    setDestChain(osmosis);
+    setMenuOpened(false);
+  }
+
   function handleOnFlow1() {
     const avax = allChains.find((chain) =>
       chain.chainName?.toLowerCase().includes("ethereum")
@@ -130,6 +147,33 @@ export const TopFlows = () => {
         className="z-50 p-2 shadow-lg gap-y-2 dropdown-content menu bg-neutral rounded-box w-52 top-8"
         onFocus={(e) => setMenuOpened(true)}
       >
+        <li
+          onClick={handleOnFlow0}
+          className="border rounded-lg border-[#00b0f4]"
+        >
+          <div className="flex">
+            <Image
+              src={`/assets/chains/polygon.logo.svg`}
+              layout="intrinsic"
+              width={35}
+              height={35}
+            />
+            <Arrow />
+            <Image
+              src={`/assets/tokens/uausdc.logo.svg`}
+              layout="intrinsic"
+              width={35}
+              height={35}
+            />
+            <Arrow />
+            <Image
+              src={`/assets/chains/osmosis.logo.svg`}
+              layout="intrinsic"
+              width={35}
+              height={35}
+            />
+          </div>
+        </li>
         <li
           onClick={handleOnFlow1}
           className="border rounded-lg border-[#00b0f4]"
