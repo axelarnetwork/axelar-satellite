@@ -6,6 +6,7 @@ import {
   getSelectedAssetNameDestChain,
   getSelectedAssetSymbol,
   getSelectedAssetSymbolDestinationChain,
+  getSelectedAsssetIsWrapped,
   getUnwrappedAssetSymbol,
   isAXLToken,
   useSwapStore,
@@ -27,6 +28,7 @@ export const EvmAssetWarningModal = () => {
   const selectedAssetSymbolOnSrcChain = useSwapStore(getSelectedAssetSymbol);
   const unwrappedAssetSymbol = useSwapStore(getUnwrappedAssetSymbol);
   const { shouldUnwrapAsset } = useSwapStore((state) => state);
+  const selectedAssetIsWrappedNative = useSwapStore(getSelectedAsssetIsWrapped);
   const selectedAssetSymbolOnDestinationChain = useSwapStore(
     getSelectedAssetSymbolDestinationChain
   );
@@ -147,14 +149,18 @@ export const EvmAssetWarningModal = () => {
             <span>
               The recipient will receive{" "}
               <span className="font-bold">
-                {shouldUnwrapAsset && unwrappedAssetSymbol
+                {shouldUnwrapAsset &&
+                unwrappedAssetSymbol &&
+                selectedAssetIsWrappedNative
                   ? unwrappedAssetSymbol
                   : selectedAssetNameOnDestinationChain}
               </span>{" "}
               on <span className="capitalize">{destChain.chainName}</span>. If
               your recipient doesn’t support{" "}
               <span className="font-bold">
-                {shouldUnwrapAsset && unwrappedAssetSymbol
+                {shouldUnwrapAsset &&
+                unwrappedAssetSymbol &&
+                selectedAssetIsWrappedNative
                   ? unwrappedAssetSymbol
                   : selectedAssetNameOnDestinationChain}
               </span>{" "}
