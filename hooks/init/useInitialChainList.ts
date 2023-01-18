@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import {
@@ -33,6 +33,7 @@ export const useInitialChainList = () => {
     setAsset,
     rehydrateAssets,
     setRehydrateAssets,
+    setDestAddress,
   } = useSwapStore();
 
   useSquidList();
@@ -40,30 +41,28 @@ export const useInitialChainList = () => {
 
   const router = useRouter();
 
+  const loadData = useCallback(async () => {
+    const chains = await loadInitialChains();
+    const assets = await loadInitialAssets();
+
+    setDestAddress((router.query?.destination_address as string) || "");
+
+    updateRoutes(chains.srcChainName, chains.destChainName, assets?.assetDenom);
+    setRehydrateAssets(false);
+    // eslint-disable-next-line
+  }, [squidTokens, squidChains]);
+
   useEffect(() => {
     if (!router.isReady) return;
-    if (rehydrateAssets) {
-      Promise.all([loadInitialChains(), loadInitialAssets()])
-        .then(([chains, asset]) => {
-          updateRoutes(
-            chains.srcChainName,
-            chains.destChainName,
-            asset?.assetDenom || "",
-            (router.query.destination_address as string) || ""
-          );
-        })
-        .then(() => {
-          setRehydrateAssets(false);
-        });
-    }
-    // eslint-disable-next-line
-  }, [router.isReady, rehydrateAssets]);
+    if (!rehydrateAssets) return;
+
+    loadData();
+  }, [router.isReady, rehydrateAssets, loadData]);
 
   function updateRoutes(
     source: string,
     destination: string,
-    asset_denom: string,
-    destination_address: string
+    asset_denom?: string
   ) {
     router.push({
       query: {
@@ -71,59 +70,42 @@ export const useInitialChainList = () => {
         source,
         destination,
         asset_denom,
-        destination_address,
       },
     });
   }
 
+  async function injectSquidAssets() {}
+
   async function loadInitialChains() {
-    // load chains with native assets
-    const chains = await loadAllChains(ENVIRONMENT)
-      .then((_chains) => {
-        console.log(
-          "squid tokens in loadINitialChians",
-          squidChains,
-          squidTokens
-        );
-        _chains.map((_chain) => {
-          _chain.assets = _.uniqBy(
-            _chain.assets,
-            (_asset) => _asset.assetSymbol
-          );
-          return _chain;
-        });
-        return _chains;
-      })
-      // .then((_chains) => addNativeAssets(_chains, nativeAssets, ENVIRONMENT))
-      .then((_chains) => setAllChains(_chains))
-      .catch((error) => {
-        toast.error(
-          "Error fetching chain configuration. Please refresh the page."
-        );
-        throw error;
-      });
-
+    const chains = await loadAllChains(ENVIRONMENT).catch((error) => {
+      toast.error(
+        "Error fetching chain configuration. Please refresh the page."
+      );
+      throw error;
+    });
+    const uniqueChains = chains.map((_chain) => {
+      _chain.assets = _.uniqBy(_chain.assets, (_asset) => _asset.assetSymbol);
+      return _chain;
+    });
+    setAllChains(uniqueChains);
     let { source, destination } = router.query as RouteQuery;
-
     // handle same srcChain === destChain. eg: moonbeam - moonbeam
     if (source === destination) {
       source = DEFAULT_SRC_CHAIN;
       destination = DEFAULT_DEST_CHAIN;
     }
-
-    let srcChainFound = chains.find(
+    let srcChainFound = uniqueChains.find(
       (chain) =>
         chain.chainName?.toLowerCase() === source &&
         !DISABLED_CHAIN_NAMES?.toLowerCase().includes(source?.toLowerCase())
     ) as ChainInfo;
-    let destChainFound = chains.find(
+    let destChainFound = uniqueChains.find(
       (chain) =>
         chain.chainName?.toLowerCase() === destination &&
         !DISABLED_CHAIN_NAMES?.toLowerCase().includes(
           destination?.toLowerCase()
         )
     ) as ChainInfo;
-
     /**
      * Handle edge case where srcChain === destChain after default chain setup
      * eg: moonbeam - moonbeamzzz
@@ -132,40 +114,36 @@ export const useInitialChainList = () => {
       srcChainFound?.chainName?.toLowerCase() === "moobeam" &&
       !destChainFound
     ) {
-      destChainFound = chains.find(
+      destChainFound = uniqueChains.find(
         (chain) => chain.chainName?.toLowerCase() === "avalanche"
       ) as ChainInfo;
     }
-
     if (
       destChainFound?.chainName?.toLowerCase() === "avalanche" &&
       !srcChainFound
     ) {
-      srcChainFound = chains.find(
+      srcChainFound = uniqueChains.find(
         (chain) => chain.chainName?.toLowerCase() === "moonbeam"
       ) as ChainInfo;
     }
-
     if (srcChainFound) {
       setSrcChain(srcChainFound);
     } else {
       setSrcChain(
-        chains.find(
+        uniqueChains.find(
           (chain) => chain.chainName?.toLowerCase() === DEFAULT_SRC_CHAIN
         ) as ChainInfo
       );
     }
-
     if (destChainFound) {
       setDestChain(destChainFound);
     } else {
       setDestChain(
-        chains.find(
+        uniqueChains.find(
           (chain) => chain.chainName?.toLowerCase() === DEFAULT_DEST_CHAIN
         ) as ChainInfo
       );
     }
-
     return {
       srcChainName:
         srcChainFound?.chainName?.toLowerCase() || DEFAULT_SRC_CHAIN,
@@ -176,11 +154,15 @@ export const useInitialChainList = () => {
 
   async function loadInitialAssets() {
     return loadAssets({ environment: ENVIRONMENT }).then((a) => {
+      console.log(
+        "squid tokens in loadInitialAssets",
+        squidChains,
+        squidTokens
+      );
       const assets = a as AssetConfigExtended[];
       setAllAssets(assets);
 
       const { asset_denom } = router.query as RouteQuery;
-
       // if asset not provided get default asset
       if (!asset_denom) {
         const _asset = assets.find((asset) =>

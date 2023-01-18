@@ -6,7 +6,8 @@ import { InputWrapper } from "../../common";
 import { AddressFiller, TransferStats } from "../parts";
 
 export const IdleState = () => {
-  const { destAddress, setDestAddress } = useSwapStore((state) => state);
+  const destAddress = useSwapStore((state) => state.destAddress);
+  const setDestAddress = useSwapStore((state) => state.setDestAddress);
 
   function handleOnAddressChange(address: string) {
     setDestAddress(address);

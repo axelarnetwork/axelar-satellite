@@ -15,7 +15,7 @@ export const useSquidList = () => {
   }, []);
 
   const getTokens = () => {
-    console.log("squid chains", squid.chains);
+    // console.log("squid chains", squid.chains);
     const tokensWithExtendedChainData: TokensWithExtendedChainData[] =
       squid.tokens.map((t) => {
         const chain = squid.chains.find((c) => c.chainId === t.chainId);
@@ -24,7 +24,7 @@ export const useSquidList = () => {
           chainName: chain?.chainName as ChainName,
         };
       });
-    console.log("squid tokens", tokensWithExtendedChainData);
+    // console.log("squid tokens", tokensWithExtendedChainData);
     if (squidTokens.length === 0) setSquidTokens(tokensWithExtendedChainData);
     if (squidChains.length === 0) setSquidChains(squid.chains);
   };
