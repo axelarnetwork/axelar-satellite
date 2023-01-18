@@ -14,7 +14,8 @@ export const PageSEO: React.FC<PageSEOType> = ({
   keywords,
 }) => {
   const ogImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner;
-  const twImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner;
+  const twImageUrl =
+    "https://axelar-mainnet.s3.us-east-2.amazonaws.com/social-image-square.jpg";
   return (
     <>
       <CommonSEO
