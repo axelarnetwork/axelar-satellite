@@ -13,7 +13,8 @@ export const PageSEO: React.FC<PageSEOType> = ({
   description,
   keywords,
 }) => {
-  const ogImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner;
+  const ogImageUrl =
+    "https://axelar-mainnet.s3.us-east-2.amazonaws.com/social-image-large.jpg";
   const twImageUrl =
     "https://axelar-mainnet.s3.us-east-2.amazonaws.com/social-image-large.jpg";
   return (
