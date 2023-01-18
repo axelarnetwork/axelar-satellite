@@ -37,7 +37,8 @@ export const useInitialChainList = () => {
   } = useSwapStore();
 
   useSquidList();
-  const { squidChains, squidTokens } = useSquidStateStore();
+  const { squidChains, squidTokens, squidLoaded, setSquidLoaded } =
+    useSquidStateStore();
 
   const router = useRouter();
 
@@ -50,7 +51,7 @@ export const useInitialChainList = () => {
     updateRoutes(chains.srcChainName, chains.destChainName, assets?.assetDenom);
     setRehydrateAssets(false);
     // eslint-disable-next-line
-  }, [squidTokens, squidChains]);
+  }, [squidTokens]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -74,7 +75,11 @@ export const useInitialChainList = () => {
     });
   }
 
-  async function injectSquidAssets() {}
+  async function injectSquidAssets(chains: ChainInfo[]) {
+    squidTokens.forEach((squidToken) => console.log(squidToken));
+    console.log("chains", chains);
+    return chains;
+  }
 
   async function loadInitialChains() {
     const chains = await loadAllChains(ENVIRONMENT).catch((error) => {
@@ -83,10 +88,13 @@ export const useInitialChainList = () => {
       );
       throw error;
     });
-    const uniqueChains = chains.map((_chain) => {
-      _chain.assets = _.uniqBy(_chain.assets, (_asset) => _asset.assetSymbol);
-      return _chain;
-    });
+    const uniqueChains = await injectSquidAssets(
+      chains.map((_chain) => {
+        _chain.assets = _.uniqBy(_chain.assets, (_asset) => _asset.assetSymbol);
+        return _chain;
+      })
+    );
+
     setAllChains(uniqueChains);
     let { source, destination } = router.query as RouteQuery;
     // handle same srcChain === destChain. eg: moonbeam - moonbeam
@@ -153,44 +161,84 @@ export const useInitialChainList = () => {
   }
 
   async function loadInitialAssets() {
-    return loadAssets({ environment: ENVIRONMENT }).then((a) => {
-      console.log(
-        "squid tokens in loadInitialAssets",
-        squidChains,
-        squidTokens
+    const a = await loadAssets({ environment: ENVIRONMENT });
+    const assets = a as AssetConfigExtended[];
+    // if (!squidLoaded) {
+    //   await injectSquidAssets();
+    //   setSquidLoaded(true);
+    // }
+    setAllAssets(assets);
+
+    const { asset_denom } = router.query as RouteQuery;
+    // if asset not provided get default asset
+    if (!asset_denom) {
+      const _asset = assets.find((asset) =>
+        asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
       );
-      const assets = a as AssetConfigExtended[];
-      setAllAssets(assets);
-
-      const { asset_denom } = router.query as RouteQuery;
-      // if asset not provided get default asset
-      if (!asset_denom) {
-        const _asset = assets.find((asset) =>
-          asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
-        );
-        if (!_asset) return;
-        setAsset(_asset);
-        return {
-          assetDenom: DEFAULT_ASSET,
-        };
-      }
-
-      const assetFound = assets.find((asset) =>
-        asset?.common_key[ENVIRONMENT].includes(asset_denom)
-      );
-      if (assetFound) {
-        setAsset(assetFound);
-      } else {
-        const _asset = assets.find((asset) =>
-          asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
-        );
-        if (!_asset) return;
-        setAsset(_asset);
-      }
-
+      if (!_asset) return;
+      setAsset(_asset);
       return {
-        assetDenom: assetFound?.common_key[ENVIRONMENT] || DEFAULT_ASSET,
+        assetDenom: DEFAULT_ASSET,
       };
-    });
+    }
+
+    const assetFound = assets.find((asset) =>
+      asset?.common_key[ENVIRONMENT].includes(asset_denom)
+    );
+    if (assetFound) {
+      setAsset(assetFound);
+    } else {
+      const _asset = assets.find((asset) =>
+        asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
+      );
+      if (!_asset) return;
+      setAsset(_asset);
+    }
+
+    return {
+      assetDenom: assetFound?.common_key[ENVIRONMENT] || DEFAULT_ASSET,
+    };
   }
+
+  // async function loadInitialAssets() {
+  //   return loadAssets({ environment: ENVIRONMENT }).then((a) => {
+  //     console.log(
+  //       "squid tokens in loadInitialAssets",
+  //       squidChains,
+  //       squidTokens
+  //     );
+  //     const assets = a as AssetConfigExtended[];
+  //     setAllAssets(assets);
+
+  //     const { asset_denom } = router.query as RouteQuery;
+  //     // if asset not provided get default asset
+  //     if (!asset_denom) {
+  //       const _asset = assets.find((asset) =>
+  //         asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
+  //       );
+  //       if (!_asset) return;
+  //       setAsset(_asset);
+  //       return {
+  //         assetDenom: DEFAULT_ASSET,
+  //       };
+  //     }
+
+  //     const assetFound = assets.find((asset) =>
+  //       asset?.common_key[ENVIRONMENT].includes(asset_denom)
+  //     );
+  //     if (assetFound) {
+  //       setAsset(assetFound);
+  //     } else {
+  //       const _asset = assets.find((asset) =>
+  //         asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
+  //       );
+  //       if (!_asset) return;
+  //       setAsset(_asset);
+  //     }
+
+  //     return {
+  //       assetDenom: assetFound?.common_key[ENVIRONMENT] || DEFAULT_ASSET,
+  //     };
+  //   });
+  // }
 };

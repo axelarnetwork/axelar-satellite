@@ -10,11 +10,13 @@ export interface TokensWithExtendedChainData extends TokenData {
 interface SquidState {
   squidTokens: TokensWithExtendedChainData[];
   squidChains: ChainData[];
+  squidLoaded: boolean;
 }
 
 interface SquidStateStore extends SquidState {
   setSquidTokens: (state: TokensWithExtendedChainData[]) => void;
   setSquidChains: (state: ChainData[]) => void;
+  setSquidLoaded: (state: boolean) => void;
 }
 
 export const useSquidStateStore = create<SquidStateStore>()(
@@ -36,6 +38,15 @@ export const useSquidStateStore = create<SquidStateStore>()(
         },
         false,
         "setSquidChains"
+      ),
+    squidLoaded: false,
+    setSquidLoaded: (state) =>
+      set(
+        {
+          squidLoaded: state,
+        },
+        false,
+        "setSquidLoaded"
       ),
   }))
 );
