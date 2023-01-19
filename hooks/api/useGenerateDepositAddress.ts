@@ -36,7 +36,6 @@ export const useGenerateDepositAddress = () =>
       fromChainModule,
     } = payload;
     if (transferType === "wrap") {
-      console.log("wrap");
       const depositAddress = await sdk.getDepositAddress({
         fromChain: fromChain,
         toChain: toChain,
@@ -51,7 +50,6 @@ export const useGenerateDepositAddress = () =>
     }
 
     if (transferType === "unwrap") {
-      console.log("unwrap");
       const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
       const refundAddress = await axelarQueryApi.getContractAddressFromConfig(
         fromChainModule === "evm" ? fromChain : toChain,
@@ -77,14 +75,12 @@ export const useGenerateDepositAddress = () =>
           refundAddress: refundAddress,
         },
       });
-      debugger;
 
       return {
         intermediaryDepositAddress,
         finalDepositAddress: result,
       };
     }
-    console.log("regular");
 
     const depositAddress = await sdk.getDepositAddress({
       fromChain,
