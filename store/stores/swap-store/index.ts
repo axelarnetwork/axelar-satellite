@@ -78,7 +78,7 @@ const initialState: SwapState = {
     destStartBlockNumber: 1,
   },
   rehydrateAssets: true,
-  shouldUnwrapAsset: true,
+  shouldUnwrapAsset: false,
 };
 
 export const useSwapStore = create<SwapStore>()(
