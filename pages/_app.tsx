@@ -18,16 +18,25 @@ import { wagmiClient } from "../wagmi.config";
 import "animate.css";
 import "../styles/globals.css";
 import "../styles/loader.css";
+import { useEffect, useState } from "react";
+
 import { squid } from "squid.config";
 
 const queryClient = new QueryClient();
 
 function MyApp({
   Component,
-  defaultNetwork,
-  walletConnectChainIds,
   pageProps,
 }: AppProps & WalletControllerChainOptions) {
+  const [terraConfig, setTerraConfig] =
+    useState<WalletControllerChainOptions>();
+
+  useEffect(() => {
+    getChainOptions().then((config) => setTerraConfig(config));
+  }, []);
+
+  if (!terraConfig) return null;
+
   const main = (
     <QueryClientProvider client={queryClient}>
       <WagmiConfig client={wagmiClient}>
@@ -43,23 +52,16 @@ function MyApp({
 
   return typeof window !== "undefined" ? (
     <WalletProvider
-      defaultNetwork={defaultNetwork}
-      walletConnectChainIds={walletConnectChainIds}
+      defaultNetwork={terraConfig.defaultNetwork}
+      walletConnectChainIds={terraConfig.walletConnectChainIds}
     >
       {main}
     </WalletProvider>
   ) : (
-    <StaticWalletProvider defaultNetwork={defaultNetwork}>
+    <StaticWalletProvider defaultNetwork={terraConfig.defaultNetwork}>
       {main}
     </StaticWalletProvider>
   );
 }
-
-MyApp.getInitialProps = async () => {
-  const chainOptions = await getChainOptions();
-  return {
-    ...chainOptions,
-  };
-};
 
 export default MyApp;

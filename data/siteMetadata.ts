@@ -12,7 +12,7 @@ function getSiteUrl() {
 export const siteMetadata = {
   title: "Satellite | Powered by Axelar Network",
   description:
-    "Transfer assets between EVM & Cosmos chains. Powered by the Cross Chain infrastructure of Axelar Network.",
+    "Transfer assets between EVM & Cosmos chains. Powered by the interchain infrastructure of Axelar Network.",
   language: "en-us",
   theme: "dark",
   siteUrl: getSiteUrl(),
