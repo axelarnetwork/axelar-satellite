@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 import {
   AssetConfig,
+  AssetInfo,
   ChainInfo,
   loadAssets,
 } from "@axelar-network/axelarjs-sdk";
@@ -58,7 +59,7 @@ export const useInitialChainList = () => {
     if (!rehydrateAssets) return;
 
     loadData();
-  }, [router.isReady, rehydrateAssets, loadData]);
+  }, [router.isReady, rehydrateAssets, loadData, squidTokens]);
 
   function updateRoutes(
     source: string,
@@ -76,8 +77,50 @@ export const useInitialChainList = () => {
   }
 
   async function injectSquidAssets(chains: ChainInfo[]) {
-    squidTokens.forEach((squidToken) => console.log(squidToken));
-    console.log("chains", chains);
+    if (squidTokens.length === 0 || squidLoaded) {
+      return chains;
+    }
+    // console.log("suid tokens and chains", squidChains, squidTokens);
+    squidTokens.forEach((squidToken) => {
+      const chainName = squidToken.chainName.toLowerCase();
+      const chain = chains.find((ch) => ch.id === chainName);
+      if (!chain) {
+        console.log("chain not found", squidToken);
+        return;
+      } else {
+        // console.log("chain found", squidToken, chain.assets);
+        let asset;
+        chain.assets = chain.assets.map((a) => {
+          if (
+            a.tokenAddress?.toLowerCase() === squidToken.address.toLowerCase()
+          ) {
+            // @ts-ignore
+            const asset = { ...a, isSquidAsset: true };
+            console.log("trueee", asset);
+            return asset;
+          }
+          return a;
+        });
+
+        if (!asset) {
+          console.log("asset not found", squidToken, chain.assets);
+          return;
+        }
+        // @ts-ignore
+        console.log("asset found", asset, chain);
+      }
+      // const asset = chain.assets.find(a => )
+      // @ts-ignore
+      if (chain.squidAssets) {
+        // @ts-ignore
+        chain.squidAssets.push(squidToken);
+      } else {
+        // @ts-ignore
+        chain.squidAssets = [];
+      }
+    });
+    console.log("chains in squid", chains);
+    setSquidLoaded(true);
     return chains;
   }
 
