@@ -8,6 +8,7 @@ export const useSwitchAsset = () => {
   const allChains = useSwapStore((state) => state.allChains);
   const allAssets = useSwapStore((state) => state.allAssets);
   const setAsset = useSwapStore((state) => state.setAsset);
+  const setInitialAsset = useSwapStore((state) => state.setInitialAsset);
   const setDestChain = useSwapStore((state) => state.setDestChain);
   const destChain = useSwapStore((state) => state.destChain);
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -45,6 +46,8 @@ export const useSwitchAsset = () => {
       if (nextCompatibleChain) setDestChain(nextCompatibleChain);
     }
 
+    // cache the initial asset
+    setInitialAsset(asset);
     // if asset not compatible with destination chain change to closest compatible dest chain
     // then change asset
     setAsset(asset);

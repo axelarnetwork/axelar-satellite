@@ -46,7 +46,7 @@ import {
   useGetKeplerWallet,
   useHasKeplerWallet,
 } from "../../../../hooks";
-import { evmosSignDirect } from "../../../../hooks/kepler/evmos/evmosSignDirect";
+import { evmIshSignDirect } from "../../../../hooks/kepler/evmIsh/evmIshSignDirect";
 import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
 import { curateCosmosChainId } from "../../../../utils";
 import { SwapStatus } from "../../../../utils/enums";
@@ -241,21 +241,24 @@ export const CosmosWalletTransfer = () => {
         toast.error(e?.message as any);
         console.log(e);
       }
-    } else if (srcChain.chainName?.toLowerCase() === "evmos") {
+    } else if (
+      ["evmos", "xpla", "acrechain"].includes(srcChain.chainName.toLowerCase())
+    ) {
       const sendCoin = {
         denom: currentAsset?.ibcDenom as string,
         amount: utils
           .parseUnits(tokensToTransfer, currentAsset?.decimals)
           .toString(),
       };
-      evmosSignDirect(
+      evmIshSignDirect(
         sendCoin.amount,
         sendCoin.denom,
         sourceAddress,
-        depositAddress
+        depositAddress,
+        srcChain
       )
         .then((res: any) => {
-          console.log("CosmosWalletTransfer: IBC transfer for EvmosJS", res);
+          console.log("CosmosWalletTransfer: IBC transfer for EVM signer", res);
 
           setTxInfo({
             sourceTxHash: res.transactionHash,

@@ -7,6 +7,6 @@ import {
 
 export const GlobalHooksContainer = () => {
   useMonitorWalletConnect();
-  useFilterSelectableAssetList();
+  // useFilterSelectableAssetList();
   return null;
 };

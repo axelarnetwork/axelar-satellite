@@ -46,7 +46,7 @@ export const DestChainSelector = () => {
 
   return (
     <div ref={ref}>
-      <label className="block text-xs">From</label>
+      <label className="block text-xs">To</label>
       <div className="static w-full mt-1 dropdown dropdown-open">
         <div
           className="w-full"

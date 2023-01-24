@@ -116,10 +116,12 @@ const FAQs = [
     title: "Can I move non-Axelar Wrapped assets via Satellite?",
     text: (
       <div>
-        No. Satellite supports moving of Axelar Wrapped Assets only. Before you
-        deposit your tokens to the deposit address, please verify that you’re
-        using the correct token contract. If you send a non-Axelar wrapped asset
-        to the deposit address, it will be lost.
+        Yes, we do support a limited amount of native assets such as AVAX, ETH,
+        FTM, MATIC, GLMR...etc. Before you deposit your tokens to the deposit
+        address, please verify that you’re using the correct token contract. If
+        you send a non-Axelar wrapped asset or a native asset we do not support
+        to the deposit address,{" "}
+        <b className="text-red-400 underline">it will be lost</b>!
         <div className="mt-5">
           See the{" "}
           <a

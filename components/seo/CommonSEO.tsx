@@ -25,7 +25,6 @@ export const CommonSEO: React.FC<CommonSEOProps> = ({
   return (
     <Head>
       <title>{title}</title>
-      <meta name="robots" content="nofollow, noindex, disallow" />
       <meta name="description" content={description} />
       <meta
         property="og:url"

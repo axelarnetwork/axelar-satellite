@@ -80,6 +80,12 @@ export const getTransferType = memoize(
 
     let transferType: "deposit-address" | "wrap" | "unwrap" = "deposit-address";
     if (!asset) return transferType;
+    const assetIsWrappedVersionOfNativeAssetOnDestChain =
+      state &&
+      state.destChain &&
+      state.destChain.nativeAsset &&
+      state.destChain.nativeAsset.length > 0 &&
+      state.destChain?.nativeAsset.indexOf(asset.id) >= 0;
 
     if (
       asset.native_chain === srcChain.chainName?.toLowerCase() &&
@@ -89,7 +95,9 @@ export const getTransferType = memoize(
       // we transfer wrapped asset of native asset belonging to destination chain
     } else if (
       shouldUnwrapAsset &&
-      asset.native_chain === destChain.chainName?.toLowerCase()
+      asset.native_chain === destChain.chainName?.toLowerCase() &&
+      destChain.module === "evm" &&
+      assetIsWrappedVersionOfNativeAssetOnDestChain
     ) {
       transferType = "unwrap";
     }
