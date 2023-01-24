@@ -113,7 +113,7 @@ export const useSwapStore = create<SwapStore>()(
       );
     },
     setDestChain: (chain) => {
-      console.log("setDestChain", chain);
+      // console.log("setDestChain", chain);
       set(
         {
           destChain: chain,

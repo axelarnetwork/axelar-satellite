@@ -45,16 +45,16 @@ export const DestinationTokenSelector = () => {
   );
 
   useEffect(() => {
-    console.log("dest chain", destChain);
+    // console.log("dest chain", destChain);
     //@ts-ignore
     if (destChain.squidAssets?.length === 0) return;
     const squidAssets = destChain.assets.filter(
       //@ts-ignore
-      (t) => t.isSquidAsset && t.common_key !== asset.id
+      (t) => t.isSquidAsset
     );
     //@ts-ignore
     setFilteredAssets(squidAssets);
-    console.log("squid filtered assetess", squidAssets, asset, destChain);
+    console.log("squid filtered assetess", squidAssets);
   }, [destChain, asset]);
 
   useOnClickOutside(ref, () => {

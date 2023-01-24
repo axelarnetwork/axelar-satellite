@@ -44,6 +44,7 @@ export const useInitialChainList = () => {
   const router = useRouter();
 
   const loadData = useCallback(async () => {
+    if (squidTokens?.length === 0) return;
     const chains = await loadInitialChains();
     const assets = await loadInitialAssets();
 
@@ -77,48 +78,26 @@ export const useInitialChainList = () => {
   }
 
   async function injectSquidAssets(chains: ChainInfo[]) {
-    if (!squidTokens || squidTokens.length === 0 || squidLoaded) {
-      return chains;
-    }
-    console.log("suid tokens", squidTokens);
-    const newChains: ChainInfo[] = [];
-    squidTokens.forEach((squidToken) => {
-      const chainName = squidToken.chainName.toLowerCase();
-      const chain = {
-        ...chains.find((ch) => ch.id === chainName),
-      } as ChainInfo;
-      if (!chain || Object.keys(chain).length === 0) return;
-      else {
-        const newAssets: AssetInfo[] = [];
-        // console.log("chain", chain);
-        chain.assets.forEach((a) => {
-          let asset;
-          if (
-            a.tokenAddress?.toLowerCase() === squidToken.address.toLowerCase()
-          ) {
-            // @ts-ignore
-            asset = { ...a, isSquidAsset: true };
-            // return asset;
-          } else {
-            asset = { ...a, isSquidAsset: false };
-            // return asset;
-          }
-          newAssets.push(asset);
-        });
-        chain.assets = newAssets;
-        // console.log("chainsss", chain);
-      }
+    // if (!squidTokens || squidTokens.length === 0 || squidLoaded) {
+    //   return chains;
+    // }
+    const newChains: ChainInfo[] = _.cloneDeep(chains);
+    newChains.forEach((chain) => {
+      const relevantSquidTokens = squidTokens.filter(
+        (t) => t.chainName.toLowerCase() === chain.id
+      );
+      relevantSquidTokens.forEach((t) => {
+        const asset = chain.assets.find(
+          (a) => a.tokenAddress?.toLowerCase() === t.address.toLowerCase()
+        );
+        // @ts-ignore
+        if (asset) asset.isSquidAsset = true;
+      });
       // @ts-ignore
-      if (chain.squidAssets) {
-        // @ts-ignore
-        chain.squidAssets.push(squidToken);
-      } else {
-        // @ts-ignore
-        chain.squidAssets = [];
-      }
-      newChains.push(chain);
+      chain.squidAssets = [relevantSquidTokens];
     });
-    console.log("chains in squid", chains);
+    // console.log("new chains", newChains);
+
     setSquidLoaded(true);
     return newChains;
   }
@@ -136,7 +115,8 @@ export const useInitialChainList = () => {
         return _chain;
       })
     );
-    console.log("uique chains", uniqueChains);
+    debugger;
+    console.log("uique chains", uniqueChains, squidTokens);
 
     setAllChains(uniqueChains);
     let { source, destination } = router.query as RouteQuery;
