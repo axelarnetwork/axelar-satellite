@@ -29,9 +29,21 @@ export const SwapBox = () => {
   useDetectDepositConfirmation();
   useRestrictAssets();
 
-  const destChain = useSwapStore((state) => state.destChain);
+  const { destChain, asset } = useSwapStore((state) => state);
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
   const squidChains = useSquidStateStore((state) => state.squidChains);
+  const squidAssets = destChain.assets
+    .filter(
+      //@ts-ignore
+      (t) => t.isSquidAsset
+    )
+    .filter(
+      (t) =>
+        t.tokenAddress?.toLowerCase() !==
+        asset?.chain_aliases[
+          destChain.chainName.toLowerCase()
+        ].tokenAddress.toLowerCase()
+    );
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
@@ -77,11 +89,9 @@ export const SwapBox = () => {
           <AssetSelector />
         </InputWrapper>
         {((destChain?.module === "evm" && selectedAssetIsWrapped) ||
-          squidChains.find(
-            (t) => t.chainName.toLowerCase() === destChain?.id
-          )) && (
+          squidAssets?.length > 0) && (
           <InputWrapper>
-            <DestinationTokenSelector />
+            <DestinationTokenSelector squidAssets={squidAssets} />
           </InputWrapper>
         )}
 

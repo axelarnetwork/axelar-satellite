@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
+
+import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 
 import {
   getSelectedAsssetIsWrapped,
@@ -9,15 +11,17 @@ import {
   useSwapStore,
 } from "store";
 
-import { AssetConfigExtended } from "types";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { ENVIRONMENT } from "../../../config/constants";
 import { Blockable } from "../../common";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
-export const DestinationTokenSelector = () => {
+export const DestinationTokenSelector = ({
+  squidAssets,
+}: {
+  squidAssets: AssetInfo[];
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const {
     asset,
@@ -33,9 +37,6 @@ export const DestinationTokenSelector = () => {
   const [selectedAssetSymbol, setSelectedAssetSymbol] = useState(
     shouldUnwrapAsset ? unwrappedAssetSymbol : wrappedAssetSymbol
   );
-  const [filteredAssets, setFilteredAssets] = useState<AssetConfigExtended[]>(
-    []
-  );
   const squidTokens = useSquidStateStore((state) => state.squidTokens);
   const ref = useRef(null);
   const nativeAsset = allAssets.find(
@@ -43,27 +44,7 @@ export const DestinationTokenSelector = () => {
       _asset.native_chain === destChain.chainName?.toLowerCase() &&
       _asset.is_gas_token
   );
-
-  useEffect(() => {
-    // console.log("dest chain", destChain);
-    //@ts-ignore
-    if (destChain.squidAssets?.length === 0) return;
-    const squidAssets = destChain.assets
-      .filter(
-        //@ts-ignore
-        (t) => t.isSquidAsset
-      )
-      .filter(
-        (t) =>
-          t.tokenAddress?.toLowerCase() !==
-          asset?.chain_aliases[
-            destChain.chainName.toLowerCase()
-          ].tokenAddress.toLowerCase()
-      );
-    //@ts-ignore
-    setFilteredAssets(squidAssets);
-    console.log("squid filtered assetess", squidAssets);
-  }, [destChain, asset]);
+  console.log("squid assets", squidAssets);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -84,19 +65,8 @@ export const DestinationTokenSelector = () => {
   const dynamicNativeTokenLogo = shouldUnwrapAsset
     ? nativeAsset?.id
     : asset?.id;
-  // const dynamicNativeTokenLogo = asset?.common_key[ENVIRONMENT];
 
   function renderAssetDropdown() {
-    // @ts-ignore
-    // console.log("dest chain squidassets", destChain.squidAssets);
-    // console.log("unfiltered", squidTokens);
-    // console.log(
-    //   "filtered",
-    //   squidTokens.filter(
-    //     (t) =>
-    //       t?.chainName?.toLowerCase() === destChain?.chainName?.toLowerCase()
-    //   )
-    // );
     if (!dropdownOpen || !srcChain) return null;
 
     return (
@@ -148,39 +118,33 @@ export const DestinationTokenSelector = () => {
               </button>
             </li>
           )}
-          {squidTokens
-            .filter(
-              (t) =>
-                t?.chainName?.toLowerCase() ===
-                destChain?.chainName?.toLowerCase()
-            )
-            .map((t) => (
-              <li key={`squid_token_${t.address}`}>
-                <button
-                  onClick={() =>
-                    handleSelect(
-                      false,
-                      asset?.chain_aliases[destChain.chainName?.toLowerCase()]
-                        ?.assetName as string
-                    )
-                  }
-                >
-                  <Image
-                    loading="eager"
-                    src={`/assets/tokens/${asset?.id}.logo.svg`}
-                    layout="intrinsic"
-                    width={35}
-                    height={35}
-                    onError={(e) => {
-                      e.currentTarget.src = defaultAssetImg;
-                      e.currentTarget.srcset = defaultAssetImg;
-                    }}
-                    alt="asset"
-                  />
-                  <span>via Squid: {t.symbol}</span>
-                </button>
-              </li>
-            ))}
+          {squidAssets.map((t) => (
+            <li key={`squid_token_${t.tokenAddress}`}>
+              <button
+                onClick={() =>
+                  handleSelect(
+                    false,
+                    asset?.chain_aliases[destChain.chainName?.toLowerCase()]
+                      ?.assetName as string
+                  )
+                }
+              >
+                <Image
+                  loading="eager"
+                  src={`/assets/tokens/${asset?.id}.logo.svg`}
+                  layout="intrinsic"
+                  width={35}
+                  height={35}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultAssetImg;
+                    e.currentTarget.srcset = defaultAssetImg;
+                  }}
+                  alt="asset"
+                />
+                <span>via Squid: {t.assetSymbol}</span>
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
     );
