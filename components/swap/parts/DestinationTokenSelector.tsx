@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import {
@@ -9,6 +9,7 @@ import {
   useSwapStore,
 } from "store";
 
+import { AssetConfigExtended } from "types";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { ENVIRONMENT } from "../../../config/constants";
@@ -32,6 +33,9 @@ export const DestinationTokenSelector = () => {
   const [selectedAssetSymbol, setSelectedAssetSymbol] = useState(
     shouldUnwrapAsset ? unwrappedAssetSymbol : wrappedAssetSymbol
   );
+  const [filteredAssets, setFilteredAssets] = useState<AssetConfigExtended[]>(
+    []
+  );
   const squidTokens = useSquidStateStore((state) => state.squidTokens);
   const ref = useRef(null);
   const nativeAsset = allAssets.find(
@@ -39,6 +43,19 @@ export const DestinationTokenSelector = () => {
       _asset.native_chain === destChain.chainName?.toLowerCase() &&
       _asset.is_gas_token
   );
+
+  useEffect(() => {
+    console.log("dest chain", destChain);
+    //@ts-ignore
+    if (destChain.squidAssets?.length === 0) return;
+    const squidAssets = destChain.assets.filter(
+      //@ts-ignore
+      (t) => t.isSquidAsset && t.common_key !== asset.id
+    );
+    //@ts-ignore
+    setFilteredAssets(squidAssets);
+    console.log("squid filtered assetess", squidAssets, asset, destChain);
+  }, [destChain, asset]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -62,15 +79,16 @@ export const DestinationTokenSelector = () => {
   // const dynamicNativeTokenLogo = asset?.common_key[ENVIRONMENT];
 
   function renderAssetDropdown() {
-    console.log("dest chain", destChain.chainName.toLowerCase());
-    console.log("unfiltered", squidTokens);
-    console.log(
-      "filtered",
-      squidTokens.filter(
-        (t) =>
-          t?.chainName?.toLowerCase() === destChain?.chainName?.toLowerCase()
-      )
-    );
+    // @ts-ignore
+    // console.log("dest chain squidassets", destChain.squidAssets);
+    // console.log("unfiltered", squidTokens);
+    // console.log(
+    //   "filtered",
+    //   squidTokens.filter(
+    //     (t) =>
+    //       t?.chainName?.toLowerCase() === destChain?.chainName?.toLowerCase()
+    //   )
+    // );
     if (!dropdownOpen || !srcChain) return null;
 
     return (

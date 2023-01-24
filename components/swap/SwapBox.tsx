@@ -78,8 +78,7 @@ export const SwapBox = () => {
         </InputWrapper>
         {((destChain?.module === "evm" && selectedAssetIsWrapped) ||
           squidChains.find(
-            (t) =>
-              t.chainName.toLowerCase() === destChain?.chainName?.toLowerCase()
+            (t) => t.chainName.toLowerCase() === destChain?.id
           )) && (
           <InputWrapper>
             <DestinationTokenSelector />

@@ -74,6 +74,7 @@ export const DestChainSelector = () => {
   // search chain input
   useEffect(() => {
     if (!searchChainInput) return;
+    console.log("allChains in DestChainSelector", allChains);
 
     const chains = allChains.filter(
       (chain) =>

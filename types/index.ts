@@ -13,6 +13,7 @@ export interface AssetConfigExtended extends AssetConfig {
   native_chain: string;
   wrapped_erc20: string;
   is_gas_token: boolean;
+  isSquidAsset: boolean;
   chain_aliases: Record<
     // this overwrites the AssetInfo in the sdk because the sdk does not have all the values eg: mintLimit
     string,
