@@ -48,10 +48,18 @@ export const DestinationTokenSelector = () => {
     // console.log("dest chain", destChain);
     //@ts-ignore
     if (destChain.squidAssets?.length === 0) return;
-    const squidAssets = destChain.assets.filter(
-      //@ts-ignore
-      (t) => t.isSquidAsset
-    );
+    const squidAssets = destChain.assets
+      .filter(
+        //@ts-ignore
+        (t) => t.isSquidAsset
+      )
+      .filter(
+        (t) =>
+          t.tokenAddress?.toLowerCase() !==
+          asset?.chain_aliases[
+            destChain.chainName.toLowerCase()
+          ].tokenAddress.toLowerCase()
+      );
     //@ts-ignore
     setFilteredAssets(squidAssets);
     console.log("squid filtered assetess", squidAssets);
