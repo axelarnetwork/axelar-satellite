@@ -37,26 +37,33 @@ export const DestinationTokenSelector = ({
   const [selectedAssetSymbol, setSelectedAssetSymbol] = useState(
     shouldUnwrapAsset ? unwrappedAssetSymbol : wrappedAssetSymbol
   );
-  const { setIsSquidTrade, selectedSquidAsset, setSelectedSquidAsset } =
-    useSquidStateStore();
+  const {
+    setIsSquidTrade,
+    selectedSquidAsset,
+    setSelectedSquidAsset,
+    isSquidTrade,
+    slippage,
+    setSlippage,
+  } = useSquidStateStore();
   const ref = useRef(null);
   const nativeAsset = allAssets.find(
     (_asset) =>
       _asset.native_chain === destChain.chainName?.toLowerCase() &&
       _asset.is_gas_token
   );
-  console.log("squid assets", squidAssets);
+
+  // console.log("squid assets", squidAssets);
 
   useEffect(() => {
-    if (asset) {
+    if (asset && srcChain) {
       setShouldUnwrapAsset(false);
       setSelectedAssetSymbol(
-        asset.chain_aliases[destChain.chainName.toLowerCase()].assetSymbol
+        asset.chain_aliases[destChain.chainName.toLowerCase()].assetName
       );
       setSelectedSquidAsset(null);
       setIsSquidTrade(false);
     }
-  }, [asset]);
+  }, [asset, srcChain]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -87,6 +94,11 @@ export const DestinationTokenSelector = ({
   const dynamicNativeTokenLogo = shouldUnwrapAsset
     ? nativeAsset?.id
     : asset?.id;
+
+  const srcIsSquidAsset = srcChain.assets.find(
+    (t) => t.common_key === asset?.id
+    // @ts-ignore
+  )?.isSquidAsset;
 
   function renderAssetDropdown() {
     if (!dropdownOpen || !srcChain) return null;
@@ -143,25 +155,26 @@ export const DestinationTokenSelector = ({
               </button>
             </li>
           )}
-          {squidAssets.map((t) => (
-            <li key={`squid_token_${t.tokenAddress}`}>
-              <button onClick={() => handleSquidSelect(t)}>
-                <Image
-                  loading="eager"
-                  src={`/assets/tokens/${t.common_key}.logo.svg`}
-                  layout="intrinsic"
-                  width={35}
-                  height={35}
-                  onError={(e) => {
-                    e.currentTarget.src = defaultAssetImg;
-                    e.currentTarget.srcset = defaultAssetImg;
-                  }}
-                  alt="asset"
-                />
-                <span>{t.assetSymbol} (via Squid)</span>
-              </button>
-            </li>
-          ))}
+          {srcIsSquidAsset &&
+            squidAssets.map((t) => (
+              <li key={`squid_token_${t.tokenAddress}`}>
+                <button onClick={() => handleSquidSelect(t)}>
+                  <Image
+                    loading="eager"
+                    src={`/assets/tokens/${t.common_key}.logo.svg`}
+                    layout="intrinsic"
+                    width={35}
+                    height={35}
+                    onError={(e) => {
+                      e.currentTarget.src = defaultAssetImg;
+                      e.currentTarget.srcset = defaultAssetImg;
+                    }}
+                    alt="asset"
+                  />
+                  <span>{t.assetSymbol} (via Squid)</span>
+                </button>
+              </li>
+            ))}
         </ul>
       </div>
     );
@@ -177,42 +190,63 @@ export const DestinationTokenSelector = ({
           <span className="capitalize">{destChain.chainName}</span>:
         </label>
       </div>
-      <div className="flex justify-between mt-2">
-        <Blockable>
-          <div className="static flex mt-1 dropdown dropdown-open">
-            <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
-              <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
+      <div className="flex justify-between w-full mt-2">
+        {/* <Blockable> */}
+        <div className="static flex justify-between w-full mt-1 dropdown dropdown-open">
+          <div
+            tabIndex={0}
+            onClick={() => setDropdownOpen(true)}
+            className="w-3/4"
+          >
+            <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
+              <Image
+                loading="eager"
+                src={`/assets/tokens/${
+                  selectedSquidAsset?.common_key || dynamicNativeTokenLogo
+                }.logo.svg`}
+                layout="intrinsic"
+                width={30}
+                height={30}
+                alt="asset"
+                onError={(e) => {
+                  e.currentTarget.src = defaultAssetImg;
+                  e.currentTarget.srcset = defaultAssetImg;
+                }}
+              />
+              <span>{selectedAssetSymbol}</span>
+              <div className="flex items-center">
                 <Image
                   loading="eager"
-                  src={`/assets/tokens/${
-                    selectedSquidAsset?.common_key || dynamicNativeTokenLogo
-                  }.logo.svg`}
+                  src="/assets/ui/arrow-down.svg"
                   layout="intrinsic"
-                  width={30}
-                  height={30}
-                  alt="asset"
-                  onError={(e) => {
-                    e.currentTarget.src = defaultAssetImg;
-                    e.currentTarget.srcset = defaultAssetImg;
-                  }}
+                  width={35}
+                  height={35}
+                  alt="arrow down"
                 />
-                <span>{selectedAssetSymbol}</span>
-                <div className="flex items-center">
-                  <Image
-                    loading="eager"
-                    src="/assets/ui/arrow-down.svg"
-                    layout="intrinsic"
-                    width={35}
-                    height={35}
-                    alt="arrow down"
-                  />
-                </div>
               </div>
             </div>
-
-            {renderAssetDropdown()}
           </div>
-        </Blockable>
+
+          {isSquidTrade && (
+            <div className="flex flex-col w-1/4 p-2">
+              <input
+                type="range"
+                min="0"
+                max="5"
+                value={slippage}
+                className="w-3/4 p-2 range range-primary range-xs"
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  setSlippage(e.target.value as any);
+                }}
+              />
+              <span className="pt-2 text-xs">Slippage: {slippage}%</span>
+            </div>
+          )}
+
+          {renderAssetDropdown()}
+        </div>
+        {/* </Blockable> */}
       </div>
     </div>
   );

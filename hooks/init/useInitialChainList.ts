@@ -115,7 +115,7 @@ export const useInitialChainList = () => {
         return _chain;
       })
     );
-    debugger;
+
     console.log("uique chains", uniqueChains, squidTokens);
 
     setAllChains(uniqueChains);

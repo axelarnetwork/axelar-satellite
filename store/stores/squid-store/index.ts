@@ -14,6 +14,7 @@ interface SquidState {
   squidLoaded: boolean;
   isSquidTrade: boolean;
   selectedSquidAsset: AssetInfo | null;
+  slippage: number;
 }
 
 interface SquidStateStore extends SquidState {
@@ -21,7 +22,8 @@ interface SquidStateStore extends SquidState {
   setSquidChains: (state: ChainData[]) => void;
   setSquidLoaded: (state: boolean) => void;
   setIsSquidTrade: (state: boolean) => void;
-  setSelectedSquidAsset: (state: AssetInfo) => void;
+  setSelectedSquidAsset: (state: AssetInfo | null) => void;
+  setSlippage: (state: number) => void;
 }
 
 export const useSquidStateStore = create<SquidStateStore>()(
@@ -70,6 +72,15 @@ export const useSquidStateStore = create<SquidStateStore>()(
         },
         false,
         "setSelectedSquidAsset"
+      ),
+    slippage: 1,
+    setSlippage: (state) =>
+      set(
+        {
+          slippage: state,
+        },
+        false,
+        "setSlippage"
       ),
   }))
 );

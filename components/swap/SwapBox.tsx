@@ -3,6 +3,7 @@ import React from "react";
 import { AssetSelector } from "features/asset-selector";
 import { DestChainSelector } from "features/dest-chain-selector";
 import { GetAddressBtn } from "features/gen-address-btn";
+import { SquidSwapBtn } from "features/squid-swap-btn";
 import { SrcChainSelector } from "features/src-chain-selector";
 
 import {
@@ -33,6 +34,7 @@ export const SwapBox = () => {
   const { destChain, asset } = useSwapStore((state) => state);
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
   const squidChains = useSquidStateStore((state) => state.squidChains);
+  const isSquidAsset = useSquidStateStore((state) => state.isSquidTrade);
   const squidAssets = destChain.assets
     .filter(
       //@ts-ignore
@@ -98,7 +100,7 @@ export const SwapBox = () => {
 
         <SwapStates />
 
-        <GetAddressBtn />
+        {isSquidAsset ? <SquidSwapBtn /> : <GetAddressBtn />}
       </div>
     </div>
   );
