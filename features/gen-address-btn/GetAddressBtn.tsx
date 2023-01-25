@@ -63,7 +63,9 @@ const GetAddressBtn = React.memo(() => {
       .catch((err) => {
         // revert back to idle state if error occurs in gen of deposit address
         setSwapStatus(SwapStatus.IDLE);
-        showErrorMsgAndThrow(err);
+        showErrorMsgAndThrow(
+          err?.message || "Error generating deposit address"
+        );
       });
   }
 
