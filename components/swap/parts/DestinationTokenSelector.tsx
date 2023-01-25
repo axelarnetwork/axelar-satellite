@@ -37,7 +37,8 @@ export const DestinationTokenSelector = ({
   const [selectedAssetSymbol, setSelectedAssetSymbol] = useState(
     shouldUnwrapAsset ? unwrappedAssetSymbol : wrappedAssetSymbol
   );
-  const [selectedSquid, setSelectedSquid] = useState<AssetInfo | null>(null);
+  const { setIsSquidTrade, selectedSquidAsset, setSelectedSquidAsset } =
+    useSquidStateStore();
   const ref = useRef(null);
   const nativeAsset = allAssets.find(
     (_asset) =>
@@ -52,7 +53,8 @@ export const DestinationTokenSelector = ({
       setSelectedAssetSymbol(
         asset.chain_aliases[destChain.chainName.toLowerCase()].assetSymbol
       );
-      setSelectedSquid(null);
+      setSelectedSquidAsset(null);
+      setIsSquidTrade(false);
     }
   }, [asset]);
 
@@ -69,14 +71,16 @@ export const DestinationTokenSelector = ({
     if (!assetSymbol) return;
     setSelectedAssetSymbol(assetSymbol);
     setShouldUnwrapAsset(shouldUnwrap);
-    setSelectedSquid(null);
+    setSelectedSquidAsset(null);
+    setIsSquidTrade(false);
   };
 
   const handleSquidSelect = async (t: AssetInfo) => {
     console.log("t", t);
     setShouldUnwrapAsset(false);
     setSelectedAssetSymbol(t.assetSymbol);
-    setSelectedSquid(t);
+    setSelectedSquidAsset(t);
+    setIsSquidTrade(true);
   };
 
   // gets native or wrapped token logo based on user choice
@@ -181,7 +185,7 @@ export const DestinationTokenSelector = ({
                 <Image
                   loading="eager"
                   src={`/assets/tokens/${
-                    selectedSquid?.common_key || dynamicNativeTokenLogo
+                    selectedSquidAsset?.common_key || dynamicNativeTokenLogo
                   }.logo.svg`}
                   layout="intrinsic"
                   width={30}

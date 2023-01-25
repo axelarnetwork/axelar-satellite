@@ -1,4 +1,5 @@
 import { ChainData, ChainName, TokenData } from "@0xsquid/sdk";
+import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 
 import create from "zustand";
 import { devtools } from "zustand/middleware";
@@ -11,12 +12,16 @@ interface SquidState {
   squidTokens: TokensWithExtendedChainData[];
   squidChains: ChainData[];
   squidLoaded: boolean;
+  isSquidTrade: boolean;
+  selectedSquidAsset: AssetInfo | null;
 }
 
 interface SquidStateStore extends SquidState {
   setSquidTokens: (state: TokensWithExtendedChainData[]) => void;
   setSquidChains: (state: ChainData[]) => void;
   setSquidLoaded: (state: boolean) => void;
+  setIsSquidTrade: (state: boolean) => void;
+  setSelectedSquidAsset: (state: AssetInfo) => void;
 }
 
 export const useSquidStateStore = create<SquidStateStore>()(
@@ -47,6 +52,24 @@ export const useSquidStateStore = create<SquidStateStore>()(
         },
         false,
         "setSquidLoaded"
+      ),
+    isSquidTrade: false,
+    setIsSquidTrade: (state) =>
+      set(
+        {
+          isSquidTrade: state,
+        },
+        false,
+        "setIsSquidTrade"
+      ),
+    selectedSquidAsset: null,
+    setSelectedSquidAsset: (state) =>
+      set(
+        {
+          selectedSquidAsset: state,
+        },
+        false,
+        "setSelectedSquidAsset"
       ),
   }))
 );

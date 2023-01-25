@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 
-import { useSwapStore } from "../../../store";
+import { GenerateSquidSwapButton } from "components/swap/parts/GenerateSquidSwapButton";
+
+import { useSquidStateStore, useSwapStore } from "../../../store";
 
 import toast from "react-hot-toast";
 
@@ -18,7 +20,10 @@ export const ActionButton = () => {
     setIntermediaryDepositAddress,
     setSwapStatus,
   } = useSwapStore((state) => state);
+  const isSquidTrade = useSquidStateStore((state) => state.isSquidTrade);
   const { mutate, isLoading, isSuccess, data } = useGenerateDepositAddress();
+
+  console.log("is squid trade", isSquidTrade);
 
   useEffect(() => {
     if (!isSuccess || !data) return;
@@ -39,13 +44,23 @@ export const ActionButton = () => {
       });
   }, [data, isSuccess, swapStatus]);
 
-  if (swapStatus === SwapStatus.IDLE)
-    return (
-      <GenerateDepositAddressButton
-        genDepositAddress={mutate}
-        loading={isLoading && swapStatus !== SwapStatus.IDLE}
-      />
-    );
+  if (swapStatus === SwapStatus.IDLE) {
+    if (!isSquidTrade) {
+      return (
+        <GenerateDepositAddressButton
+          genDepositAddress={mutate}
+          loading={isLoading && swapStatus !== SwapStatus.IDLE}
+        />
+      );
+    } else {
+      return (
+        <GenerateSquidSwapButton
+          genDepositAddress={mutate}
+          loading={isLoading && swapStatus !== SwapStatus.IDLE}
+        />
+      );
+    }
+  }
 
   if (swapStatus === SwapStatus.FINISHED)
     return (
