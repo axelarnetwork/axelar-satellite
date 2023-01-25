@@ -61,6 +61,7 @@ export const GetSocials = () => {
           width={25}
           height={50}
           src="/assets/ui/discord.svg"
+          alt="Discord icon"
         />
       </a>
       <a
@@ -74,6 +75,7 @@ export const GetSocials = () => {
           width={25}
           height={25}
           src="/assets/ui/twitter.svg"
+          alt="Twitter icon"
         />
       </a>
       <a
@@ -87,6 +89,7 @@ export const GetSocials = () => {
           width={25}
           height={25}
           src="/assets/ui/linkedin.svg"
+          alt="LinkedIn icon"
         />
       </a>
     </div>

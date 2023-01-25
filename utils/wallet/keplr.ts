@@ -41,7 +41,7 @@ export const queryBalance = async (
   rpc: string
 ) => {
   const tmClient = await Tendermint34Client.connect(rpc);
-  const client = QueryClient.withExtensions(tmClient);
+  const client = QueryClient.withExtensions(tmClient as any);
   const requestData = Uint8Array.from(
     QueryBalanceRequest.encode({ address, denom }).finish()
   );
