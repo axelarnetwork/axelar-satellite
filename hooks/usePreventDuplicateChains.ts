@@ -17,7 +17,7 @@ export const usePreventDuplicateChains = () => {
   const [originDestChain, setOriginDestChain] = useState<ChainInfo>();
 
   useEffect(() => {
-    // if (srcChain?.chainName === destChain?.chainName) updateChains();
+    if (srcChain?.chainName === destChain?.chainName) updateChains();
 
     // reset deposit address on chain module change
     if (
