@@ -2,6 +2,7 @@ import React from "react";
 
 import { AssetSelector } from "features/asset-selector";
 import { DestChainSelector } from "features/dest-chain-selector";
+import { GetAddressBtn } from "features/gen-address-btn";
 import { SrcChainSelector } from "features/src-chain-selector";
 
 import {
@@ -20,7 +21,7 @@ import {
 } from "../../hooks";
 import { Blockable, InputWrapper } from "../common";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
-import { ActionButton, ChainSwapper, StopButton, SwapStates } from "./parts";
+import { ChainSwapper, StopButton, SwapStates } from "./parts";
 import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
 import { TopFlows } from "./parts/TopFlows";
 
@@ -97,9 +98,7 @@ export const SwapBox = () => {
 
         <SwapStates />
 
-        <div className="z-0 pt-2">
-          <ActionButton />
-        </div>
+        <GetAddressBtn />
       </div>
     </div>
   );
