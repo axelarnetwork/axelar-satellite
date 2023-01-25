@@ -43,6 +43,7 @@
     "zustand-persist": "^0.4.0"
   },
   "devDependencies": {
+    "@cosmjs/launchpad": "^0.27.1",
     "@ianvs/prettier-plugin-sort-imports": "^3.7.1",
     "@keplr-wallet/types": "^0.10.13",
     "@testing-library/jest-dom": "^5.16.5",
