@@ -120,8 +120,10 @@ export const useInitialChainList = () => {
       ) as ChainInfo;
     }
     if (srcChainFound) {
+      console.log(8);
       setSrcChain(srcChainFound);
     } else {
+      console.log(9);
       setSrcChain(
         uniqueChains.find(
           (chain) => chain.chainName?.toLowerCase() === DEFAULT_SRC_CHAIN
