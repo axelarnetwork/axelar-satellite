@@ -21,7 +21,10 @@ export const useSwitchSrcChain = () => {
     const selectedChainHasAsset = selectedChain?.assets?.find(
       (_asset) => _asset.common_key === asset?.id
     );
-    if (selectedChainHasAsset) return setSrcChain(chain);
+    if (selectedChainHasAsset) {
+      console.log(5);
+      return setSrcChain(chain);
+    }
 
     // if asset incompatible find fist compatible asset
     const compatibleAsset = allAssets.find(
@@ -31,6 +34,7 @@ export const useSwitchSrcChain = () => {
     );
     if (!compatibleAsset) return;
     setAsset(compatibleAsset);
+    console.log(6);
     setSrcChain(chain);
   };
 };

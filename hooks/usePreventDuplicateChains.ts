@@ -37,6 +37,7 @@ export const usePreventDuplicateChains = () => {
       const newChain = allChains.find(
         (chain) => chain?.chainName !== srcChain?.chainName
       ) as ChainInfo;
+      console.log(7);
       setSrcChain(newChain);
     } else if (sourceChain === "destChain") {
       const newChain = allChains.find(
