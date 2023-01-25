@@ -17,7 +17,7 @@ export const usePreventDuplicateChains = () => {
   const [originDestChain, setOriginDestChain] = useState<ChainInfo>();
 
   useEffect(() => {
-    if (srcChain?.chainName === destChain?.chainName) updateChains();
+    // if (srcChain?.chainName === destChain?.chainName) updateChains();
 
     // reset deposit address on chain module change
     if (
@@ -37,7 +37,6 @@ export const usePreventDuplicateChains = () => {
       const newChain = allChains.find(
         (chain) => chain?.chainName !== srcChain?.chainName
       ) as ChainInfo;
-      console.log(7);
       setSrcChain(newChain);
     } else if (sourceChain === "destChain") {
       const newChain = allChains.find(
