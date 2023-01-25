@@ -27,7 +27,6 @@ export const ChainSwapper = () => {
 
   const updateQueryParamsAndSwitch = async () => {
     setDestChain(srcChain);
-    console.log(1);
     setSrcChain(destChain);
 
     // if switching from a native token should choose the wrapped version

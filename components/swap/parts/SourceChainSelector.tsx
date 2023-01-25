@@ -58,7 +58,6 @@ export const SourceChainSelector = () => {
       (candidate) => candidate.chainName === srcChainName
     );
     if (chain) {
-      console.log(2);
       setSrcChain(chain);
     }
   }, [router.query]);
@@ -95,7 +94,6 @@ export const SourceChainSelector = () => {
       (_asset) => _asset.common_key === asset?.id
     );
     if (selectedChainHasAsset) {
-      console.log(3);
       return setSrcChain(chain);
     }
 
@@ -107,7 +105,6 @@ export const SourceChainSelector = () => {
     );
     if (!compatibleAsset) return;
     setAsset(compatibleAsset);
-    console.log(4);
     setSrcChain(chain);
   }
 

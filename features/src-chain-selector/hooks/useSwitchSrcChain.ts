@@ -22,7 +22,6 @@ export const useSwitchSrcChain = () => {
       (_asset) => _asset.common_key === asset?.id
     );
     if (selectedChainHasAsset) {
-      console.log(5);
       return setSrcChain(chain);
     }
 
@@ -34,7 +33,6 @@ export const useSwitchSrcChain = () => {
     );
     if (!compatibleAsset) return;
     setAsset(compatibleAsset);
-    console.log(6);
     setSrcChain(chain);
   };
 };
