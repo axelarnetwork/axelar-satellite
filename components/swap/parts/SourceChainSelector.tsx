@@ -57,7 +57,9 @@ export const SourceChainSelector = () => {
     const chain = filteredChains.find(
       (candidate) => candidate.chainName === srcChainName
     );
-    if (chain) setSrcChain(chain);
+    if (chain) {
+      setSrcChain(chain);
+    }
   }, [router.query]);
 
   useEffect(() => {
@@ -91,7 +93,9 @@ export const SourceChainSelector = () => {
     const selectedChainHasAsset = selectedChain?.assets?.find(
       (_asset) => _asset.common_key === asset?.id
     );
-    if (selectedChainHasAsset) return setSrcChain(chain);
+    if (selectedChainHasAsset) {
+      return setSrcChain(chain);
+    }
 
     // if asset incompatible find fist compatible asset
     const compatibleAsset = allAssets.find(

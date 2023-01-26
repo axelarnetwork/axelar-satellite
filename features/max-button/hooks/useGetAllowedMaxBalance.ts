@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { getCosmosChains } from "config/web3";
+import { CosmosChain } from "config/web3/cosmos/interface";
+
 import {
   getSrcChainId,
   getSrcTokenAddress,
   useSwapStore,
+  useWalletStore,
 } from "../../../store";
 
 import { ethers } from "ethers";
+import { getAddress, queryBalance } from "utils/wallet/keplr";
 import {
   erc20ABI,
   useAccount,
@@ -26,9 +31,14 @@ const { formatUnits } = utils;
  */
 export function useGetAllowedMaxBalance() {
   const srcChainId = useSwapStore(getSrcChainId);
+  const srcChain = useSwapStore((state) => state.srcChain);
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
   const depositAddress = useSwapStore((state) => state.depositAddress);
   const asset = useSwapStore((state) => state.asset);
+  const allAssets = useSwapStore((state) => state.allAssets);
+
+  const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
+  const keplrConnected = useWalletStore((state) => state.keplrConnected);
 
   const { address } = useAccount();
   const { data: balance } = useBalance({
@@ -40,7 +50,7 @@ export function useGetAllowedMaxBalance() {
   });
 
   const { data: tokenBalance } = useContractRead({
-    enabled: !asset?.is_gas_token,
+    enabled: !asset?.is_gas_token && wagmiConnected,
     address: srcTokenAddress as string,
     abi: erc20ABI,
     chainId: srcChainId,
@@ -78,11 +88,43 @@ export function useGetAllowedMaxBalance() {
   );
 
   useEffect(() => {
+    if (srcChain.module !== "evm") return;
     if (!provider || !balance) return;
     computeRealMaxBalance(balance.value).then((balanceMinusFee) =>
       setMaxBalance(balanceMinusFee)
     );
   }, [provider, balance, computeRealMaxBalance]);
+
+  const getKplrBalance = useCallback(
+    async (fullChainConfig: CosmosChain, derivedDenom: string) => {
+      const res = await queryBalance(
+        await getAddress(fullChainConfig),
+        derivedDenom,
+        fullChainConfig.rpc
+      );
+      if (!res?.amount) return;
+      setMaxBalance(formatUnits(res.amount, asset?.decimals));
+    },
+    [asset?.decimals]
+  );
+
+  useEffect(() => {
+    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
+
+    const cosmosChains = getCosmosChains(allAssets);
+
+    const fullChainConfig = cosmosChains.find(
+      (chainConfig) =>
+        chainConfig.chainIdentifier?.toLowerCase() ===
+        srcChain.chainName?.toLowerCase()
+    );
+    const derivedDenom =
+      asset?.chain_aliases[srcChain.chainName.toLowerCase()].ibcDenom;
+
+    if (!fullChainConfig || !derivedDenom) return;
+
+    getKplrBalance(fullChainConfig, derivedDenom);
+  }, [srcChain, getKplrBalance, asset, allAssets, keplrConnected]);
 
   return maxBalance;
 }
