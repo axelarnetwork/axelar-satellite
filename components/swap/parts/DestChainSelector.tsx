@@ -133,6 +133,7 @@ export const DestChainSelector = () => {
                       e.currentTarget.src = defaultChainImg;
                       e.currentTarget.srcset = defaultChainImg;
                     }}
+                    alt={`${chain.chainName} logo`}
                   />
                   <span className="capitalize">{chain.chainName}</span>
                 </button>
@@ -163,6 +164,7 @@ export const DestChainSelector = () => {
                   e.currentTarget.src = defaultChainImg;
                   e.currentTarget.srcset = defaultChainImg;
                 }}
+                alt={`${destChain.chainName} logo`}
               />
               <span className="capitalize">
                 {convertChainName(destChain.chainName)}
@@ -174,6 +176,7 @@ export const DestChainSelector = () => {
                   layout="intrinsic"
                   width={25}
                   height={25}
+                  alt="arrow down"
                 />
               </div>
             </div>

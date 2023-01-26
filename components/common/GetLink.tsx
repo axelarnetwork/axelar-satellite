@@ -25,6 +25,7 @@ export const Link: FC<LinkProps> = ({ linkDescription, linkTitle, url }) => {
         width={20}
         height={20}
         src="/assets/ui/forward-arrow-link.svg"
+        alt="Forward Arrow Link"
       />
     </a>
   );

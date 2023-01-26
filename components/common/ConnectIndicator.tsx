@@ -29,16 +29,23 @@ export const ConnectIndicator = () => {
             height={25}
             width={25}
             src="/assets/wallets/metamask.logo.svg"
+            alt="Metamask Logo"
           />
         )}
         {keplrConnected && (
-          <Image height={18} width={18} src="/assets/wallets/kepler.logo.svg" />
+          <Image
+            height={18}
+            width={18}
+            src="/assets/wallets/kepler.logo.svg"
+            alt="Keplr Logo"
+          />
         )}
         {isTerraConnected && (
           <Image
             height={18}
             width={18}
             src="/assets/wallets/terra-station.logo.svg"
+            alt="Terra Station Logo"
           />
         )}
       </div>

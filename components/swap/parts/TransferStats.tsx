@@ -102,7 +102,12 @@ export const TransferStats = () => {
             className="cursor-pointer"
             onClick={() => copyToClipboard(depositAddress)}
           >
-            <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+            <Image
+              src={"/assets/ui/copy.svg"}
+              height={16}
+              width={16}
+              alt="copy"
+            />
           </div>
         </div>
       </li>
@@ -141,7 +146,12 @@ export const TransferStats = () => {
             className="cursor-pointer"
             onClick={() => copyToClipboard(intermediaryDepositAddress)}
           >
-            <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+            <Image
+              src={"/assets/ui/copy.svg"}
+              height={16}
+              width={16}
+              alt="copy"
+            />
           </div>
         </span>
       </li>
@@ -159,7 +169,12 @@ export const TransferStats = () => {
             className="cursor-pointer"
             onClick={() => copyToClipboard(destAddress)}
           >
-            <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+            <Image
+              src={"/assets/ui/copy.svg"}
+              height={16}
+              width={16}
+              alt="copy"
+            />
           </div>
         </span>
       </li>
@@ -196,6 +211,7 @@ export const TransferStats = () => {
             height={16}
             width={16}
             layout="intrinsic"
+            alt="link"
           />
         </a>
       </li>

@@ -19,7 +19,6 @@ import toast from "react-hot-toast";
 import { SpinnerRoundFilled } from "spinners-react";
 import {
   useAccount,
-  useBalance,
   useBlockNumber,
   useConnect,
   useContractRead,
@@ -354,6 +353,7 @@ export const EvmWalletTransfer = () => {
                   src="/assets/wallets/metamask.logo.svg"
                   height={30}
                   width={30}
+                  alt="metamask logo"
                 />
               </div>
             </button>

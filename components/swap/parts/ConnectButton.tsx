@@ -24,7 +24,12 @@ export const ConnectButton = () => {
     return (
       <>
         <div className="relative">
-          <Image src="/assets/ui/wallet.svg" height={16} width={16} />
+          <Image
+            src="/assets/ui/wallet.svg"
+            height={16}
+            width={16}
+            alt="Wallet Icon"
+          />
         </div>
         <span>Connect Wallet</span>
       </>

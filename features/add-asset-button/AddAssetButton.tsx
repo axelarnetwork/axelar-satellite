@@ -102,7 +102,7 @@ export const AddAssetButton = () => {
                   e.currentTarget.src = defaultAssetImg;
                   e.currentTarget.srcset = defaultAssetImg;
                 }}
-                alt={asset?.id}
+                alt={asset?.id || "asset"}
               />
               <Image
                 height={20}

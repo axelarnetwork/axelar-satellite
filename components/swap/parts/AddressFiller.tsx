@@ -95,6 +95,7 @@ export const AddressFiller = () => {
               height={25}
               width={25}
               src="/assets/wallets/metamask.logo.svg"
+              alt="metamask logo"
             />
           </div>
         </div>
@@ -127,6 +128,7 @@ export const AddressFiller = () => {
             height={20}
             width={20}
             src="/assets/wallets/kepler.logo.svg"
+            alt="keplr logo"
           />
         </div>
         {destChain?.chainName?.toLowerCase() === "terra" && (
@@ -141,6 +143,7 @@ export const AddressFiller = () => {
                 height={20}
                 width={20}
                 src="/assets/wallets/terra-station.logo.svg"
+                alt="terra station logo"
               />
             </div>
           </>
