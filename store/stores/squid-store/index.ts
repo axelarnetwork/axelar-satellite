@@ -23,6 +23,7 @@ interface SquidState {
   selectedSquidAsset: AssetInfo | null;
   slippage: number;
   routeData: RouteData | null;
+  routeDataLoading: boolean;
 }
 
 interface SquidStateStore extends SquidState {
@@ -34,6 +35,7 @@ interface SquidStateStore extends SquidState {
   setSlippage: (state: number) => void;
   setRouteData: (state: RouteData | null) => void;
   setRouteDataAsync: (params: GetRoute) => void;
+  setRouteDataLoading: (state: boolean) => void;
 }
 
 export const useSquidStateStore = create<SquidStateStore>()(
@@ -105,10 +107,23 @@ export const useSquidStateStore = create<SquidStateStore>()(
       try {
         const { route: routeData } = await squid.getRoute(params);
         console.log("setting route async", routeData);
-        set({ routeData }, false, "setRouteDataAsync");
+        set({ routeData, routeDataLoading: false }, false, "setRouteDataAsync");
       } catch (e) {
-        set({ routeData: null }, false, "setRouteDataAsync");
+        set(
+          { routeData: null, routeDataLoading: false },
+          false,
+          "setRouteDataAsync"
+        );
       }
     },
+    routeDataLoading: false,
+    setRouteDataLoading: (state) =>
+      set(
+        {
+          routeDataLoading: state,
+        },
+        false,
+        "setRouteDataLoading"
+      ),
   }))
 );

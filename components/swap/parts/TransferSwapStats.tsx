@@ -22,20 +22,21 @@ const InfoIcon = (
 
 export const TransferSwapStats = () => {
   const { srcChain, destChain, asset } = useSwapStore((state) => state);
-  const { routeData, selectedSquidAsset } = useSquidStateStore();
+  const { routeData, selectedSquidAsset, routeDataLoading } =
+    useSquidStateStore();
 
-  if (!routeData) return null;
-  if (!routeData.estimate) return null;
+  // if (!routeData) return null;
+  // if (!routeData.estimate) return null;
 
-  const { estimate } = routeData;
-  const {
-    aggregatePriceImpact,
-    estimatedRouteDuration,
-    exchangeRate,
-    toAmount,
-    toAmountMin,
-    toAmountUSD,
-  } = estimate;
+  // const { estimate } = routeData;
+  // const {
+  //   aggregatePriceImpact,
+  //   estimatedRouteDuration,
+  //   exchangeRate,
+  //   toAmount,
+  //   toAmountMin,
+  //   toAmountUSD,
+  // } = estimate;
 
   return (
     <StatsWrapper>
@@ -43,24 +44,31 @@ export const TransferSwapStats = () => {
         <Row
           text="Aggregate Price Impact"
           tooltip="Price impact"
-          data={aggregatePriceImpact}
+          data={routeData?.estimate?.aggregatePriceImpact || "NA"}
         />
         <Row
           text="Estimate Route Duration"
           tooltip=""
-          data={estimatedRouteDuration.toString()}
+          data={routeData?.estimate?.estimatedRouteDuration.toString() || "NA"}
         />
         <Row
           text="Expected Amount Received"
           tooltip=""
-          data={`${(+parseFloat(
-            formatUnits(toAmount, selectedSquidAsset?.decimals)
-          ).toFixed(5)).toString()} ${selectedSquidAsset?.assetName}`}
+          data={
+            routeData && routeData.estimate && selectedSquidAsset
+              ? `${(+parseFloat(
+                  formatUnits(
+                    routeData.estimate.toAmount,
+                    selectedSquidAsset?.decimals
+                  )
+                ).toFixed(5)).toString()} ${selectedSquidAsset?.assetName}`
+              : "NA"
+          }
         />
         <Row
           text="Expected Amount Received (USD)"
           tooltip=""
-          data={toAmountUSD}
+          data={routeData?.estimate?.toAmountUSD || "NA"}
         />
       </ul>
     </StatsWrapper>
@@ -76,16 +84,26 @@ export const Row = ({
   tooltip: string;
   data: string;
 }) => {
+  const { routeDataLoading } = useSquidStateStore();
   return (
     <li className="flex justify-between">
       <div
         className="flex items-center cursor-pointer tooltip tooltip-warning"
-        data-tip={tooltip}
+        data-tip={routeDataLoading ? "" : tooltip}
       >
         <span>{text}</span>
         {InfoIcon}
       </div>
-      <span className="font-semibold">{data}</span>
+
+      <span className="flex items-center font-semibold">
+        {routeDataLoading ? <LoadingRow /> : data}
+      </span>
     </li>
   );
 };
+
+export const LoadingRow = () => (
+  <div className="max-w-sm animate-pulse">
+    <div className="w-24 h-1 bg-gray-500 rounded-full "></div>
+  </div>
+);

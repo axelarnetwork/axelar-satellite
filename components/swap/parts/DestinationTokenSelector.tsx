@@ -52,6 +52,7 @@ export const DestinationTokenSelector = ({
     squidChains,
     setRouteDataAsync,
     setRouteData,
+    setRouteDataLoading,
   } = useSquidStateStore();
   const [selectedAssetSymbol, setSelectedAssetSymbol] = useState<string>();
   const ref = useRef(null);
@@ -61,7 +62,7 @@ export const DestinationTokenSelector = ({
       _asset.is_gas_token
   );
 
-  console.log("squid assets", squidAssets, destChain);
+  // console.log("squid assets", squidAssets, destChain);
 
   useEffect(() => {
     if (asset && srcChain) {
@@ -133,6 +134,7 @@ export const DestinationTokenSelector = ({
   const getRouteData = useCallback(
     async (t: AssetInfo) => {
       if (!asset) return;
+      setRouteDataLoading(true);
       const params: GetRoute = {
         fromChain: squidChains.find(
           (c) => c.chainName.toLowerCase() === srcChain.id
