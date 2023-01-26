@@ -20,7 +20,7 @@ import {
   usePreventDuplicateChains,
   useRestrictAssets,
 } from "../../hooks";
-import { Blockable, InputWrapper } from "../common";
+import { Blockable } from "../common";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
 import { ChainSwapper, StopButton, SwapStates } from "./parts";
 import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
@@ -75,31 +75,16 @@ export const SwapBox = () => {
         </div>
 
         <Blockable>
-          <div className="flex justify-between">
-            <InputWrapper>
-              <SrcChainSelector />
-            </InputWrapper>
-            <div className="relative z-40 flex items-center -mx-2">
-              <ChainSwapper />
-            </div>
-            <InputWrapper>
-              <DestChainSelector />
-            </InputWrapper>
+          <div className="flex">
+            <SrcChainSelector />
+            <ChainSwapper />
+            <DestChainSelector />
           </div>
         </Blockable>
 
-        <InputWrapper>
-          <AssetSelector />
-        </InputWrapper>
-        {((destChain?.module === "evm" && selectedAssetIsWrapped) ||
-          squidAssets?.length > 0) && (
-          <InputWrapper>
-            <DestinationTokenSelector squidAssets={squidAssets} />
-          </InputWrapper>
-        )}
-
+        <AssetSelector />
+        <DestinationTokenSelector squidAssets={squidAssets} />
         <SwapStates />
-
         {isSquidAsset ? <SquidSwapBtn /> : <GetAddressBtn />}
       </div>
     </div>
