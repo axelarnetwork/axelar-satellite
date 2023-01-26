@@ -8,6 +8,8 @@ import {
   checkReservedAddresses,
 } from "features/gen-address-btn/utils";
 
+import { GetRoute } from "@0xsquid/sdk";
+
 import { getReservedAddresses, useSquidStateStore, useSwapStore } from "store";
 
 import { parseUnits } from "ethers/lib/utils.js";
@@ -29,7 +31,7 @@ const SquidSwapBtn = React.memo(() => {
   const reservedAddresses = useSwapStore(getReservedAddresses);
 
   const setSwapStatus = useSwapStore((state) => state.setSwapStatus);
-  const { selectedSquidAsset, squidTokens, squidChains, slippage } =
+  const { selectedSquidAsset, setRouteData, squidChains, slippage } =
     useSquidStateStore();
 
   const { loading, getDepositAddress } = useGetDepositAddress();
@@ -47,16 +49,16 @@ const SquidSwapBtn = React.memo(() => {
 
     // console.log("squid chains", squidChains, squidTokens);
 
-    const params = {
+    const params: GetRoute = {
       fromChain: squidChains.find(
         (c) => c.chainName.toLowerCase() === srcChain.id
-      )?.chainId,
+      )?.chainId as string | number,
       fromToken:
         asset.chain_aliases[srcChain.chainName.toLowerCase()].tokenAddress,
       fromAmount: parseUnits(tokensToTransfer, asset.decimals).toString(),
       toChain: squidChains.find(
         (c) => c.chainName.toLowerCase() === destChain.id
-      )?.chainId,
+      )?.chainId as string | number,
       toToken: selectedSquidAsset?.tokenAddress as string, // aUSDC on Avalanche Fuji Testnet
       toAddress: destAddress,
       slippage,
@@ -67,18 +69,19 @@ const SquidSwapBtn = React.memo(() => {
     console.log("trade params", params);
 
     squid
-      // @ts-ignore
       .getRoute(params)
       .then(({ route }) => {
         console.log("route: \n", route);
-        // setSwapStatus(SwapStatus.WAIT_FOR_DEPOSIT);
+        setSwapStatus(SwapStatus.WAIT_FOR_SQUID);
+        setRouteData(route);
       })
       .catch((err) => {
         // revert back to idle state if error occurs in gen of deposit address
         setSwapStatus(SwapStatus.IDLE);
         showErrorMsgAndThrow(
           err?.message ||
-            "Could not find route pair for asset/chain combination"
+            "Could not find route pair for asset/chain combination",
+          false
         );
       });
 

@@ -1,6 +1,13 @@
-import { ChainData, ChainName, TokenData } from "@0xsquid/sdk";
+import {
+  ChainData,
+  ChainName,
+  GetRoute,
+  RouteData,
+  TokenData,
+} from "@0xsquid/sdk";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 
+import { squid } from "squid.config";
 import create from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -15,6 +22,7 @@ interface SquidState {
   isSquidTrade: boolean;
   selectedSquidAsset: AssetInfo | null;
   slippage: number;
+  routeData: RouteData | null;
 }
 
 interface SquidStateStore extends SquidState {
@@ -24,12 +32,14 @@ interface SquidStateStore extends SquidState {
   setIsSquidTrade: (state: boolean) => void;
   setSelectedSquidAsset: (state: AssetInfo | null) => void;
   setSlippage: (state: number) => void;
+  setRouteData: (state: RouteData | null) => void;
+  setRouteDataAsync: (params: GetRoute) => void;
 }
 
 export const useSquidStateStore = create<SquidStateStore>()(
   devtools((set, get) => ({
     squidTokens: [],
-    setSquidTokens: (state) =>
+    setSquidTokens: (state: TokensWithExtendedChainData[]) =>
       set(
         {
           squidTokens: state,
@@ -65,7 +75,7 @@ export const useSquidStateStore = create<SquidStateStore>()(
         "setIsSquidTrade"
       ),
     selectedSquidAsset: null,
-    setSelectedSquidAsset: (state) =>
+    setSelectedSquidAsset: (state: AssetInfo | null) =>
       set(
         {
           selectedSquidAsset: state,
@@ -82,5 +92,23 @@ export const useSquidStateStore = create<SquidStateStore>()(
         false,
         "setSlippage"
       ),
+    routeData: null,
+    setRouteData: (state: RouteData | null) =>
+      set(
+        {
+          routeData: state,
+        },
+        false,
+        "setRouteData"
+      ),
+    setRouteDataAsync: async (params: GetRoute) => {
+      try {
+        const { route: routeData } = await squid.getRoute(params);
+        console.log("setting route async", routeData);
+        set({ routeData }, false, "setRouteDataAsync");
+      } catch (e) {
+        set({ routeData: null }, false, "setRouteDataAsync");
+      }
+    },
   }))
 );

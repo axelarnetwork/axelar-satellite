@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 
-export function showErrorMsgAndThrow(msg: string) {
+export function showErrorMsgAndThrow(msg: string, throwMsg: boolean = false) {
   toast.error(msg);
-  throw new Error(msg);
+  if (throwMsg) throw new Error(msg);
 }

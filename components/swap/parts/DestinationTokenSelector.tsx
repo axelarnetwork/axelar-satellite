@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
+import { GetRoute } from "@0xsquid/sdk";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 
 import {
@@ -11,6 +12,7 @@ import {
   useSwapStore,
 } from "store";
 
+import { parseUnits } from "ethers/lib/utils.js";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { Blockable } from "../../common";
@@ -34,6 +36,8 @@ export const DestinationTokenSelector = ({
   const unwrappedAssetSymbol = useSwapStore(getUnwrappedAssetSymbol);
   const wrappedAssetSymbol = useSwapStore(getWrappedAssetName);
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
+  const tokensToTransfer = useSwapStore((state) => state.tokensToTransfer);
+  const destAddress = useSwapStore((state) => state.destAddress);
   const [selectedAssetSymbol, setSelectedAssetSymbol] = useState(
     shouldUnwrapAsset ? unwrappedAssetSymbol : wrappedAssetSymbol
   );
@@ -44,6 +48,9 @@ export const DestinationTokenSelector = ({
     isSquidTrade,
     slippage,
     setSlippage,
+    squidChains,
+    setRouteDataAsync,
+    setRouteData,
   } = useSquidStateStore();
   const ref = useRef(null);
   const nativeAsset = allAssets.find(
@@ -62,6 +69,7 @@ export const DestinationTokenSelector = ({
       );
       setSelectedSquidAsset(null);
       setIsSquidTrade(false);
+      setRouteData(null);
     }
   }, [asset, srcChain]);
 
@@ -80,6 +88,7 @@ export const DestinationTokenSelector = ({
     setShouldUnwrapAsset(shouldUnwrap);
     setSelectedSquidAsset(null);
     setIsSquidTrade(false);
+    setRouteData(null);
   };
 
   const handleSquidSelect = async (t: AssetInfo) => {
@@ -88,6 +97,24 @@ export const DestinationTokenSelector = ({
     setSelectedAssetSymbol(t.assetSymbol);
     setSelectedSquidAsset(t);
     setIsSquidTrade(true);
+    if (!asset) return;
+    const params: GetRoute = {
+      fromChain: squidChains.find(
+        (c) => c.chainName.toLowerCase() === srcChain.id
+      )?.chainId as string | number,
+      fromToken:
+        asset.chain_aliases[srcChain.chainName.toLowerCase()].tokenAddress,
+      fromAmount: parseUnits(tokensToTransfer, asset.decimals).toString(),
+      toChain: squidChains.find(
+        (c) => c.chainName.toLowerCase() === destChain.id
+      )?.chainId as string | number,
+      toToken: t?.tokenAddress as string,
+      toAddress: destAddress,
+      slippage,
+      enableForecall: false, // instant execution service, defaults to true
+      quoteOnly: false, // optional, defaults to false
+    };
+    setRouteDataAsync(params);
   };
 
   // gets native or wrapped token logo based on user choice
@@ -191,7 +218,6 @@ export const DestinationTokenSelector = ({
         </label>
       </div>
       <div className="flex justify-between w-full mt-2">
-        {/* <Blockable> */}
         <div className="static flex justify-between w-full mt-1 dropdown dropdown-open">
           <div
             tabIndex={0}
@@ -228,17 +254,15 @@ export const DestinationTokenSelector = ({
           </div>
 
           {isSquidTrade && (
-            <div className="flex flex-col w-1/4 p-2">
+            <div className="flex flex-col w-1/2 p-2">
               <input
                 type="range"
-                min="0"
-                max="5"
+                min="0.3"
+                max="99.99"
+                step=".01"
                 value={slippage}
                 className="w-3/4 p-2 range range-primary range-xs"
-                onChange={(e) => {
-                  console.log(e.target.value);
-                  setSlippage(e.target.value as any);
-                }}
+                onChange={(e) => setSlippage(e.target.value as any)}
               />
               <span className="pt-2 text-xs">Slippage: {slippage}%</span>
             </div>
@@ -246,7 +270,6 @@ export const DestinationTokenSelector = ({
 
           {renderAssetDropdown()}
         </div>
-        {/* </Blockable> */}
       </div>
     </div>
   );
