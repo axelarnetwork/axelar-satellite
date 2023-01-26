@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
+import { InputWrapper } from "components/common";
+
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 import {
@@ -26,7 +28,8 @@ export const DestChainSelector = () => {
 
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { destChain, setDestChain } = useSwapStore((state) => state);
+  const destChain = useSwapStore((state) => state.destChain);
+  const { setDestChain } = useSwapStore((state) => state);
   const ref = useRef(null);
   const router = useRouter();
 
@@ -141,39 +144,43 @@ export const DestChainSelector = () => {
     );
   }
 
-  return destChain ? (
-    <div ref={ref}>
-      <label className="block text-xs">To</label>
-      <div className="static mt-1 dropdown dropdown-open">
-        <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
-          <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
-            <Image
-              loading="eager"
-              src={`/assets/chains/${destChain?.chainName?.toLowerCase()}.logo.svg`}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              onError={(e) => {
-                e.currentTarget.src = defaultChainImg;
-                e.currentTarget.srcset = defaultChainImg;
-              }}
-            />
-            <span className="capitalize">
-              {convertChainName(destChain.chainName)}
-            </span>
-            <div className="flex items-center">
+  if (!destChain) return null;
+
+  return (
+    <InputWrapper>
+      <div ref={ref}>
+        <label className="block text-xs">To</label>
+        <div className="static mt-1 dropdown dropdown-open">
+          <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
+            <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
               <Image
                 loading="eager"
-                src="/assets/ui/arrow-down.svg"
+                src={`/assets/chains/${destChain?.chainName?.toLowerCase()}.logo.svg`}
                 layout="intrinsic"
-                width={25}
-                height={25}
+                width={35}
+                height={35}
+                onError={(e) => {
+                  e.currentTarget.src = defaultChainImg;
+                  e.currentTarget.srcset = defaultChainImg;
+                }}
               />
+              <span className="capitalize">
+                {convertChainName(destChain.chainName)}
+              </span>
+              <div className="flex items-center">
+                <Image
+                  loading="eager"
+                  src="/assets/ui/arrow-down.svg"
+                  layout="intrinsic"
+                  width={25}
+                  height={25}
+                />
+              </div>
             </div>
           </div>
+          {renderChainDropdown()}
         </div>
-        {renderChainDropdown()}
       </div>
-    </div>
-  ) : null;
+    </InputWrapper>
+  );
 };
