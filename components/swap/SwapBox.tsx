@@ -4,6 +4,7 @@ import { AssetSelector } from "features/asset-selector";
 import { DestChainSelector } from "features/dest-chain-selector";
 import { GetAddressBtn } from "features/gen-address-btn";
 import { SrcChainSelector } from "features/src-chain-selector";
+import { SwapExecutionState } from "features/swap-states";
 
 import cn from "classnames";
 
@@ -60,7 +61,8 @@ export const SwapBox = () => {
 
         <AssetSelector />
         <DestinationTokenSelector />
-        <SwapStates />
+        {/* <SwapStates /> */}
+        <SwapExecutionState />
         <GetAddressBtn />
       </div>
     </div>
