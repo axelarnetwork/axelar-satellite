@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 
 import { defaultAssetImg } from "config/constants";
-import { Blockable } from "components/common";
+import { Blockable, InputWrapper } from "components/common";
 
 import { AddAssetButton } from "features/add-asset-button";
 import { AssetDropdown } from "features/asset-selector/AssetDropdown";
@@ -38,59 +38,61 @@ export const AssetSelector = () => {
   useAssetFilter(searchAssetInput, setFilteredAssets);
 
   return (
-    <div ref={ref}>
-      <div className="flex items-center justify-between h-6">
-        <label className="block text-xs">
-          I want to transfer from{" "}
-          <span className="capitalize">{srcChain.chainName}</span>
-        </label>
-        <div className="flex items-center">
-          <AddAssetButton />
-          <MaxButton />
+    <InputWrapper>
+      <div ref={ref}>
+        <div className="flex items-center justify-between h-6">
+          <label className="block text-xs">
+            I want to transfer from{" "}
+            <span className="capitalize">{srcChain.chainName}</span>
+          </label>
+          <div className="flex items-center">
+            <AddAssetButton />
+            <MaxButton />
+          </div>
         </div>
-      </div>
-      <div className="flex justify-between mt-2">
-        <Blockable>
-          <div className="static flex mt-1 dropdown dropdown-open">
-            <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
-              <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
-                <Image
-                  loading="eager"
-                  src={`/assets/tokens/${asset?.id}.logo.svg`}
-                  layout="intrinsic"
-                  width={30}
-                  height={30}
-                  alt="asset"
-                  onError={(e) => {
-                    e.currentTarget.src = defaultAssetImg;
-                    e.currentTarget.srcset = defaultAssetImg;
-                  }}
-                />
-                <span>{selectedAssetName || "Select an Asset"}</span>
-                <div className="flex items-center">
+        <div className="flex justify-between mt-2">
+          <Blockable>
+            <div className="static flex mt-1 dropdown dropdown-open">
+              <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
+                <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
                   <Image
                     loading="eager"
-                    src="/assets/ui/arrow-down.svg"
+                    src={`/assets/tokens/${asset?.id}.logo.svg`}
                     layout="intrinsic"
-                    width={35}
-                    height={35}
-                    alt="arrow-down"
+                    width={30}
+                    height={30}
+                    alt="asset"
+                    onError={(e) => {
+                      e.currentTarget.src = defaultAssetImg;
+                      e.currentTarget.srcset = defaultAssetImg;
+                    }}
                   />
+                  <span>{selectedAssetName || "Select an Asset"}</span>
+                  <div className="flex items-center">
+                    <Image
+                      loading="eager"
+                      src="/assets/ui/arrow-down.svg"
+                      layout="intrinsic"
+                      width={35}
+                      height={35}
+                      alt="arrow-down"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <AssetDropdown
-              dropdownOpen={dropdownOpen}
-              searchAssetInput={searchAssetInput}
-              setSearchAssetInput={setSearchAssetInput}
-              filteredAssets={filteredAssets}
-              handleOnDropdownToggle={handleOnDropdownToggle}
-            />
-          </div>
-        </Blockable>
-        <AssetInput />
+              <AssetDropdown
+                dropdownOpen={dropdownOpen}
+                searchAssetInput={searchAssetInput}
+                setSearchAssetInput={setSearchAssetInput}
+                filteredAssets={filteredAssets}
+                handleOnDropdownToggle={handleOnDropdownToggle}
+              />
+            </div>
+          </Blockable>
+          <AssetInput />
+        </div>
       </div>
-    </div>
+    </InputWrapper>
   );
 };

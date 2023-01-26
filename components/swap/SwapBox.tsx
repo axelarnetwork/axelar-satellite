@@ -5,8 +5,6 @@ import { DestChainSelector } from "features/dest-chain-selector";
 import { GetAddressBtn } from "features/gen-address-btn";
 import { SrcChainSelector } from "features/src-chain-selector";
 
-import { getSelectedAsssetIsWrapped, useSwapStore } from "../../store";
-
 import cn from "classnames";
 
 import { ENVIRONMENT as env } from "../../config/constants";
@@ -15,7 +13,7 @@ import {
   usePreventDuplicateChains,
   useRestrictAssets,
 } from "../../hooks";
-import { Blockable, InputWrapper } from "../common";
+import { Blockable } from "../common";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
 import { ChainSwapper, StopButton, SwapStates } from "./parts";
 import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
@@ -25,9 +23,6 @@ export const SwapBox = () => {
   usePreventDuplicateChains();
   useDetectDepositConfirmation();
   useRestrictAssets();
-
-  const destChain = useSwapStore((state) => state.destChain);
-  const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
@@ -56,30 +51,16 @@ export const SwapBox = () => {
         </div>
 
         <Blockable>
-          <div className="flex justify-between">
-            <InputWrapper>
-              <SrcChainSelector />
-            </InputWrapper>
-            <div className="relative z-40 flex items-center -mx-2">
-              <ChainSwapper />
-            </div>
-            <InputWrapper>
-              <DestChainSelector />
-            </InputWrapper>
+          <div className="flex">
+            <SrcChainSelector />
+            <ChainSwapper />
+            <DestChainSelector />
           </div>
         </Blockable>
 
-        <InputWrapper>
-          <AssetSelector />
-        </InputWrapper>
-        {destChain?.module === "evm" && selectedAssetIsWrapped && (
-          <InputWrapper>
-            <DestinationTokenSelector />
-          </InputWrapper>
-        )}
-
+        <AssetSelector />
+        <DestinationTokenSelector />
         <SwapStates />
-
         <GetAddressBtn />
       </div>
     </div>
