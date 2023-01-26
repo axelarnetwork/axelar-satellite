@@ -16,11 +16,12 @@ import {
 
 export const SwapStates = () => {
   const { swapStatus, destChain } = useSwapStore((state) => state);
+
+  /**Deposit Address States */
   if (swapStatus === SwapStatus.IDLE) return <IdleState />;
   if (swapStatus === SwapStatus.GEN_DEPOSIT_ADDRESS)
     return <GenDepositAddressState />;
   if (swapStatus === SwapStatus.WAIT_FOR_DEPOSIT) return <WaitDepositState />;
-  if (swapStatus === SwapStatus.WAIT_FOR_SQUID) return <WaitSquidState />;
   if (
     swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION &&
     destChain?.module === "evm"
@@ -32,6 +33,9 @@ export const SwapStates = () => {
   )
     return <WaitCosmosConfirmationState />;
   if (swapStatus === SwapStatus.FINISHED) return <ConfirmTransferState />;
+
+  /**Squid states */
+  if (swapStatus === SwapStatus.WAIT_FOR_SQUID) return <WaitSquidState />;
 
   return null;
 };

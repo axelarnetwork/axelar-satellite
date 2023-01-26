@@ -59,7 +59,7 @@ export const DestinationTokenSelector = ({
       _asset.is_gas_token
   );
 
-  // console.log("squid assets", squidAssets);
+  console.log("squid assets", squidAssets, destChain);
 
   useEffect(() => {
     if (asset && srcChain) {

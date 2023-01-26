@@ -45,8 +45,8 @@ export const useInitialChainList = () => {
 
   const loadData = useCallback(async () => {
     if (squidTokens?.length === 0) return;
-    const chains = await loadInitialChains();
     const assets = await loadInitialAssets();
+    const chains = await loadInitialChains();
 
     setDestAddress((router.query?.destination_address as string) || "");
 
@@ -81,6 +81,7 @@ export const useInitialChainList = () => {
     // if (!squidTokens || squidTokens.length === 0 || squidLoaded) {
     //   return chains;
     // }
+    const nativeAssetIds: string[] = ["eth", "avax", "matic", "bnb", "ftm"];
     const newChains: ChainInfo[] = _.cloneDeep(chains);
     newChains.forEach((chain) => {
       const relevantSquidTokens = squidTokens.filter(
@@ -88,7 +89,9 @@ export const useInitialChainList = () => {
       );
       relevantSquidTokens.forEach((t) => {
         const asset = chain.assets.find(
-          (a) => a.tokenAddress?.toLowerCase() === t.address.toLowerCase()
+          (a) =>
+            a.tokenAddress?.toLowerCase() === t.address.toLowerCase() &&
+            !nativeAssetIds.includes(a.common_key as string)
         );
         // @ts-ignore
         if (asset) asset.isSquidAsset = true;
