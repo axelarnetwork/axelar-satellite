@@ -223,7 +223,9 @@ export const DestinationTokenSelector = ({
 
   if (!asset) return null;
 
-  if (destChain?.module !== "evm" || !_selectedAssetIsWrapped) return null;
+  const selectedWrapped = destChain?.module === "evm" && selectedAssetIsWrapped;
+  const hasSquidAssets = squidAssets?.length > 0;
+  if (!selectedWrapped && !hasSquidAssets) return null;
 
   return (
     <InputWrapper>
