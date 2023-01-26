@@ -13,7 +13,6 @@ import {
 } from "../store";
 
 import { BigNumber } from "bignumber.js";
-import { ethers } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import toast from "react-hot-toast";
 import { erc20ABI, useAccount, useBalance, useContractRead } from "wagmi";
@@ -25,7 +24,8 @@ import { useIsTerraConnected } from "./terra/useIsTerraConnected";
 
 export const useGetAssetBalance = () => {
   const { asset, srcChain } = useSwapStore((state) => state);
-  const { keplrConnected, userSelectionForCosmosWallet } = useWalletStore();
+  const { keplrConnected, userSelectionForCosmosWallet, wagmiConnected } =
+    useWalletStore();
 
   const { status, wallets } = useTerraWallet();
   const terraLcdClient = useTerraLCDClient();
@@ -43,6 +43,7 @@ export const useGetAssetBalance = () => {
    */
   const { balance: evmBalance, isLoading: evmIsLoading } = useGetEvmBalance();
   useEffect(() => {
+    if (!wagmiConnected) return;
     if (srcChain.module !== "evm") return;
     if (evmBalance) setBalance(evmBalance);
     setLoading(evmIsLoading);
@@ -106,6 +107,8 @@ const useGetEvmBalance = () => {
   const srcChainId = useSwapStore(getSrcChainId);
   const srcTokenAddress = useSwapStore(getSrcTokenAddress);
 
+  const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
+
   const [isNativeBalance, setIsNativeBalance] = useState(false);
   const [balance, setBalance] = useState<string>();
 
@@ -115,7 +118,7 @@ const useGetEvmBalance = () => {
     isFetching: nativeBalanceIsLoading,
     refetch: refetchNativeBalance,
   } = useBalance({
-    enabled: srcChain?.module === "evm",
+    enabled: srcChain?.module === "evm" && wagmiConnected,
     address: address,
     chainId: srcChainId,
     onError: (error) => {
@@ -129,7 +132,7 @@ const useGetEvmBalance = () => {
     isFetching: erc20BalanceIsLoading,
     refetch: refetchErc20Balance,
   } = useContractRead({
-    enabled: srcChain?.module === "evm",
+    enabled: srcChain?.module === "evm" && wagmiConnected,
     address: srcTokenAddress as string,
     abi: erc20ABI,
     chainId: srcChainId,
@@ -141,13 +144,16 @@ const useGetEvmBalance = () => {
    * DETECT IF A NATIVE ASSET IS SELECTED ON THE SOURCE CHAIN
    */
   useEffect(() => {
+    if (!wagmiConnected) return;
     const isNativeAsset =
       asset?.is_gas_token &&
       asset.native_chain === srcChain.chainName?.toLowerCase();
     setIsNativeBalance(!!isNativeAsset);
-  }, [srcChain, asset]);
+  }, [srcChain, asset, wagmiConnected]);
 
   const updateBalance = useCallback(() => {
+    if (!wagmiConnected) return;
+
     if (isNativeBalance) {
       const value = new BigNumber(nativeBalance?.formatted || "0").toFixed(4);
       return setBalance(value);
@@ -161,6 +167,7 @@ const useGetEvmBalance = () => {
     asset?.decimals,
     nativeBalance?.formatted,
     erc20Balance?._hex,
+    wagmiConnected,
   ]);
 
   /**
@@ -168,6 +175,7 @@ const useGetEvmBalance = () => {
    */
   useEffect(() => {
     if (srcChain.module !== "evm") return;
+    if (!wagmiConnected) return;
     if (isNativeBalance) refetchNativeBalance().then(() => updateBalance());
     if (!isNativeBalance) refetchErc20Balance().then(() => updateBalance());
   }, [
@@ -179,6 +187,7 @@ const useGetEvmBalance = () => {
     refetchNativeBalance,
     refetchErc20Balance,
     srcChain,
+    wagmiConnected,
   ]);
 
   return {

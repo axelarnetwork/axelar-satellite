@@ -7,6 +7,7 @@ import {
   getSrcChainId,
   getSrcTokenAddress,
   useSwapStore,
+  useWalletStore,
 } from "../../../store";
 
 import { ethers } from "ethers";
@@ -36,6 +37,9 @@ export function useGetAllowedMaxBalance() {
   const asset = useSwapStore((state) => state.asset);
   const allAssets = useSwapStore((state) => state.allAssets);
 
+  const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
+  const keplrConnected = useWalletStore((state) => state.keplrConnected);
+
   const { address } = useAccount();
   const { data: balance } = useBalance({
     chainId: srcChainId,
@@ -46,7 +50,7 @@ export function useGetAllowedMaxBalance() {
   });
 
   const { data: tokenBalance } = useContractRead({
-    enabled: !asset?.is_gas_token,
+    enabled: !asset?.is_gas_token && wagmiConnected,
     address: srcTokenAddress as string,
     abi: erc20ABI,
     chainId: srcChainId,
@@ -105,7 +109,7 @@ export function useGetAllowedMaxBalance() {
   );
 
   useEffect(() => {
-    if (srcChain.module !== "axelarnet") return;
+    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
 
     const cosmosChains = getCosmosChains(allAssets);
 
@@ -120,7 +124,7 @@ export function useGetAllowedMaxBalance() {
     if (!fullChainConfig || !derivedDenom) return;
 
     getKplrBalance(fullChainConfig, derivedDenom);
-  }, [srcChain, getKplrBalance, asset, allAssets]);
+  }, [srcChain, getKplrBalance, asset, allAssets, keplrConnected]);
 
   return maxBalance;
 }
