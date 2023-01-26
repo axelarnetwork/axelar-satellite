@@ -27,8 +27,8 @@ export const wagmiClient = createClient({
     new MetaMaskConnector({
       chains,
       options: {
-        shimDisconnect: true,
-        shimChainChangedDisconnect: true,
+        shimDisconnect: false,
+        shimChainChangedDisconnect: false,
       },
     }),
     new WalletConnectConnector({
