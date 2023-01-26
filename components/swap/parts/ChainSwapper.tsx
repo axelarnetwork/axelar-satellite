@@ -51,17 +51,19 @@ export const ChainSwapper = () => {
   };
 
   return (
-    <div
-      onClick={updateQueryParamsAndSwitch}
-      className="bg-gradient-to-b from-[#00fbfb] to-[#0066ff] h-10 w-10 p-[1px] rounded-xl cursor-pointer"
-    >
-      <div className="flex justify-center items-center h-full w-full bg-gradient-to-b from-[#00343d] to-[#001f3f] rounded-xl p-2.5">
-        <div className="relative w-full h-full">
-          <Image
-            layout="fill"
-            src="/assets/ui/double-arrows.svg"
-            alt="double-arrows"
-          />
+    <div className="relative z-40 flex items-center -mx-2">
+      <div
+        onClick={updateQueryParamsAndSwitch}
+        className="bg-gradient-to-b text-white h-10 w-10 p-[1px] rounded-xl cursor-pointer"
+      >
+        <div className="flex justify-center items-center h-full w-full bg-[#398cc9] rounded-xl p-2.5">
+          <div className="relative w-full h-full">
+            <Image
+              layout="fill"
+              src="/assets/ui/double-arrows.svg"
+              alt="double-arrows"
+            />
+          </div>
         </div>
       </div>
     </div>
