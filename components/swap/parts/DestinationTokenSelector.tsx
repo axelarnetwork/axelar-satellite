@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { GetRoute } from "@0xsquid/sdk";
@@ -87,6 +87,23 @@ export const DestinationTokenSelector = ({
     wrappedAssetSymbol,
   ]);
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (
+        isSquidTrade &&
+        tokensToTransfer &&
+        selectedSquidAsset &&
+        destAddress
+      ) {
+        getRouteData(selectedSquidAsset);
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [tokensToTransfer, selectedSquidAsset, isSquidTrade, destAddress]);
+
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
   });
@@ -111,25 +128,31 @@ export const DestinationTokenSelector = ({
     setSelectedAssetSymbol(t.assetSymbol);
     setSelectedSquidAsset(t);
     setIsSquidTrade(true);
-    if (!asset) return;
-    const params: GetRoute = {
-      fromChain: squidChains.find(
-        (c) => c.chainName.toLowerCase() === srcChain.id
-      )?.chainId as string | number,
-      fromToken:
-        asset.chain_aliases[srcChain.chainName.toLowerCase()].tokenAddress,
-      fromAmount: parseUnits(tokensToTransfer, asset.decimals).toString(),
-      toChain: squidChains.find(
-        (c) => c.chainName.toLowerCase() === destChain.id
-      )?.chainId as string | number,
-      toToken: t?.tokenAddress as string,
-      toAddress: destAddress,
-      slippage,
-      enableForecall: false, // instant execution service, defaults to true
-      quoteOnly: false, // optional, defaults to false
-    };
-    setRouteDataAsync(params);
   };
+
+  const getRouteData = useCallback(
+    async (t: AssetInfo) => {
+      if (!asset) return;
+      const params: GetRoute = {
+        fromChain: squidChains.find(
+          (c) => c.chainName.toLowerCase() === srcChain.id
+        )?.chainId as string | number,
+        fromToken:
+          asset.chain_aliases[srcChain.chainName.toLowerCase()].tokenAddress,
+        fromAmount: parseUnits(tokensToTransfer, asset.decimals).toString(),
+        toChain: squidChains.find(
+          (c) => c.chainName.toLowerCase() === destChain.id
+        )?.chainId as string | number,
+        toToken: t?.tokenAddress as string,
+        toAddress: destAddress,
+        slippage,
+        enableForecall: false, // instant execution service, defaults to true
+        quoteOnly: false, // optional, defaults to false
+      };
+      setRouteDataAsync(params);
+    },
+    [tokensToTransfer, squidChains, asset, destAddress]
+  );
 
   // gets native or wrapped token logo based on user choice
   const dynamicNativeTokenLogo = shouldUnwrapAsset
