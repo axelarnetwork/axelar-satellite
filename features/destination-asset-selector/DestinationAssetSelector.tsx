@@ -16,6 +16,7 @@ import { parseUnits } from "ethers/lib/utils.js";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { Blockable, InputWrapper } from "components/common";
+import { SquidParamConfig } from "features/squid-param-config/SquidParamConfig";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -48,7 +49,6 @@ export const DestinationAssetSelector = ({
     setSelectedSquidAsset,
     isSquidTrade,
     slippage,
-    setSlippage,
     squidChains,
     setRouteDataAsync,
     setRouteData,
@@ -255,6 +255,7 @@ export const DestinationAssetSelector = ({
             And receive on{" "}
             <span className="capitalize">{destChain.chainName}</span>:
           </label>
+          <SquidParamConfig />
         </div>
         <div className="flex justify-between mt-2">
           <Blockable>
@@ -288,21 +289,6 @@ export const DestinationAssetSelector = ({
                   </div>
                 </div>
               </div>
-
-              {isSquidTrade && (
-                <div className="flex flex-col w-1/2 p-2">
-                  <input
-                    type="range"
-                    min="0.3"
-                    max="99.99"
-                    step=".01"
-                    value={slippage}
-                    className="w-3/4 p-2 range range-primary range-xs"
-                    onChange={(e) => setSlippage(e.target.value as any)}
-                  />
-                  <span className="pt-2 text-xs">Slippage: {slippage}%</span>
-                </div>
-              )}
 
               {renderAssetDropdown()}
             </div>

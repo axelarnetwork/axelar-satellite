@@ -1,4 +1,4 @@
-import { useSquidStateStore, useSwapStore } from "../../../store";
+import { useSquidStateStore } from "../../../store";
 
 import { formatUnits } from "ethers/lib/utils.js";
 
@@ -21,26 +21,12 @@ const InfoIcon = (
 );
 
 export const TransferSwapStats = () => {
-  const { srcChain, destChain, asset } = useSwapStore((state) => state);
-  const { routeData, selectedSquidAsset, routeDataLoading } =
-    useSquidStateStore();
-
-  // if (!routeData) return null;
-  // if (!routeData.estimate) return null;
-
-  // const { estimate } = routeData;
-  // const {
-  //   aggregatePriceImpact,
-  //   estimatedRouteDuration,
-  //   exchangeRate,
-  //   toAmount,
-  //   toAmountMin,
-  //   toAmountUSD,
-  // } = estimate;
+  const { routeData, selectedSquidAsset, slippage } = useSquidStateStore();
 
   return (
     <StatsWrapper>
       <ul className="space-y-2 text-sm">
+        <Row text="Slippage" tooltip="Slippage" data={`${slippage}%` || "NA"} />
         <Row
           text="Aggregate Price Impact"
           tooltip="Price impact"

@@ -24,6 +24,7 @@ interface SquidState {
   isSquidTrade: boolean;
   selectedSquidAsset: AssetInfo | null;
   slippage: number;
+  enableGMPExpress: boolean;
   routeData: RouteData | null;
   routeDataLoading: boolean;
   txReceipt: TransactionReceipt | null;
@@ -42,6 +43,7 @@ interface SquidStateStore extends SquidState {
   setRouteDataLoading: (state: boolean) => void;
   setTxReceipt: (state: TransactionReceipt) => void;
   setStatusResponse: (state: StatusResponse) => void;
+  setEnableGMPExpress: (state: boolean) => void;
   resetSquidState: () => void;
 }
 
@@ -56,6 +58,7 @@ const initialState: SquidState = {
   routeDataLoading: false,
   txReceipt: null,
   statusResponse: null,
+  enableGMPExpress: false,
 };
 
 export const useSquidStateStore = create<SquidStateStore>()(
@@ -153,6 +156,14 @@ export const useSquidStateStore = create<SquidStateStore>()(
         },
         false,
         "setStatusResponse"
+      ),
+    setEnableGMPExpress: (state) =>
+      set(
+        {
+          enableGMPExpress: state,
+        },
+        false,
+        "setEnableGMPExpress"
       ),
     resetSquidState: () =>
       set(
