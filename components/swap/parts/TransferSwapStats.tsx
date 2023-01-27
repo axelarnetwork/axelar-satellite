@@ -1,6 +1,6 @@
 import { useSquidStateStore, useSwapStore } from "../../../store";
 import Image from "next/legacy/image";
-import { formatUnits } from "ethers/lib/utils.js";
+import { formatEther, formatUnits } from "ethers/lib/utils.js";
 
 import { StatsWrapper } from "../../common";
 import { getWagmiChains } from "config/web3";
@@ -64,11 +64,29 @@ export const TransferSwapStats = () => {
   return (
     <StatsWrapper>
       <ul className="space-y-2 text-sm">
-        <Row text="Slippage" tooltip="Slippage" data={`${slippage}%` || "NA"} />
+        <Row
+          text="Price Slippage"
+          tooltip="Slippage"
+          data={`${slippage}%` || "NA"}
+        />
+        <Row
+          text="Gas Cost (Native / USD-equiv)"
+          tooltip={`Gas to be paid to initiate swap on ${srcChain.chainName}`}
+          data={
+            `${formatEther(
+              routeData?.estimate.gasCosts[0].amount as string
+            )} ($${routeData?.estimate?.gasCosts[0]?.amountUSD})` || "NA"
+          }
+        />
         <Row
           text="Aggregate Price Impact"
           tooltip="Price impact"
           data={routeData?.estimate?.aggregatePriceImpact || "NA"}
+        />
+        <Row
+          text="Exchange Rate"
+          tooltip="Exchange Rate"
+          data={routeData?.estimate?.exchangeRate || "NA"}
         />
         <Row
           text="Estimate Route Duration"
