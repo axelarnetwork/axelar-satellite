@@ -23,8 +23,8 @@ import {
 import { Blockable } from "../common";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
 import { ChainSwapper, StopButton, SwapStates } from "./parts";
-import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
 import { TopFlows } from "./parts/TopFlows";
+import { DestinationAssetSelector } from "features/destination-asset-selector";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
@@ -83,7 +83,7 @@ export const SwapBox = () => {
         </Blockable>
 
         <AssetSelector />
-        <DestinationTokenSelector
+        <DestinationAssetSelector
           squidAssets={srcChain?.module === "evm" ? squidAssets : []}
         />
         <SwapStates />

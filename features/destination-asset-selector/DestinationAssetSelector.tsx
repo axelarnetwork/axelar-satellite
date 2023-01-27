@@ -15,12 +15,11 @@ import {
 import { parseUnits } from "ethers/lib/utils.js";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { Blockable, InputWrapper } from "../../common";
+import { Blockable, InputWrapper } from "components/common";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
-/** @deprecated */
-export const DestinationTokenSelector = ({
+export const DestinationAssetSelector = ({
   squidAssets,
 }: {
   squidAssets: AssetInfo[];
