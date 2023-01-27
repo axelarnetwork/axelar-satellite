@@ -8,18 +8,30 @@ import {
   checkReservedAddresses,
 } from "features/gen-address-btn/utils";
 
-import { GetRoute, RouteData } from "@0xsquid/sdk";
+import { RouteData } from "@0xsquid/sdk";
 
-import { getReservedAddresses, useSquidStateStore, useSwapStore } from "store";
+import {
+  getReservedAddresses,
+  getSrcChainId,
+  useSquidStateStore,
+  useSwapStore,
+  useWalletStore,
+} from "store";
 
-import { parseUnits } from "ethers/lib/utils.js";
-import toast from "react-hot-toast";
 import { squid } from "squid.config";
 import { SwapStatus } from "utils/enums";
 import { showErrorMsgAndThrow } from "utils/error";
-import { useSigner } from "wagmi";
+import { useConnect, useNetwork, useSigner, useSwitchNetwork } from "wagmi";
+import cn from "classnames";
 
 const SquidSwapBtn = React.memo(() => {
+  const { connectAsync, connectors } = useConnect();
+  const { chain } = useNetwork();
+  const { wagmiConnected } = useWalletStore();
+  const srcChainId = useSwapStore(getSrcChainId);
+  const { switchNetworkAsync } = useSwitchNetwork({
+    chainId: srcChainId,
+  });
   const { data: signer } = useSigner({
     onSuccess(data) {
       console.log("Success getting signer", data);
@@ -38,19 +50,24 @@ const SquidSwapBtn = React.memo(() => {
   const reservedAddresses = useSwapStore(getReservedAddresses);
 
   const setSwapStatus = useSwapStore((state) => state.setSwapStatus);
-  const {
-    selectedSquidAsset,
-    setRouteData,
-    squidChains,
-    slippage,
-    routeData,
-    setTxReceipt,
-    resetSquidState,
-  } = useSquidStateStore();
+  const { routeData, setTxReceipt, resetSquidState } = useSquidStateStore();
 
-  const { loading, getDepositAddress } = useGetDepositAddress();
+  const { loading } = useGetDepositAddress();
+
+  async function handleOnMetamaskSwitch() {
+    const connector = connectors.find((c) => c.name === "MetaMask");
+    return connectAsync({ connector });
+  }
 
   async function handleSwap() {
+    if (!wagmiConnected) {
+      await handleOnMetamaskSwitch();
+      return;
+    }
+    if (chain?.id !== srcChainId) {
+      await switchNetworkAsync?.();
+      return;
+    }
     // perform sanity checks
     checkAsset(asset, tokensToTransfer);
     checkReservedAddresses(destAddress);
@@ -113,10 +130,18 @@ const SquidSwapBtn = React.memo(() => {
 
   return (
     <button
-      className="w-full text-base font-semibold capitalize btn btn-primary"
+      className={cn("w-full text-base font-semibold capitalize btn", {
+        "btn-primary": chain?.id === srcChainId,
+        "btn-outline": chain?.id !== srcChainId,
+      })}
       onClick={handleSwap}
+      disabled={chain?.id === srcChainId && !routeData}
     >
-      Swap with Squid
+      {chain?.id !== srcChainId
+        ? `Switch to ${srcChain.chainName}`
+        : routeData
+        ? "Swap with Squid"
+        : "Select A Valid Swap Path"}
     </button>
   );
 });
