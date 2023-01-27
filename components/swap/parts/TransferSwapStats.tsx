@@ -88,14 +88,14 @@ export const TransferSwapStats = () => {
         <Row
           text="Exchange Rate"
           tooltip="Exchange Rate"
-          data={routeData?.estimate?.exchangeRate || "NA"}
+          data={(+(routeData?.estimate?.exchangeRate || 0)).toFixed(5) || "NA"}
         />
         <Row
           text="Estimate Route Duration"
           tooltip=""
           data={routeData?.estimate?.estimatedRouteDuration.toString() || "NA"}
         />
-        <Row
+        {/* <Row
           text="Expected Amount Received"
           tooltip=""
           data={
@@ -113,7 +113,7 @@ export const TransferSwapStats = () => {
           text="Expected Amount Received (USD)"
           tooltip=""
           data={routeData?.estimate?.toAmountUSD || "NA"}
-        />
+        /> */}
         {txReceipt && (
           <Row
             text={`${srcChain.chainName} Confirmation`}
