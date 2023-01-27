@@ -126,8 +126,6 @@ export const useInitialChainList = () => {
       })
     );
 
-    console.log("uique chains", uniqueChains, squidTokens);
-
     setAllChains(uniqueChains);
     let { source, destination } = router.query as RouteQuery;
     // handle same srcChain === destChain. eg: moonbeam - moonbeam
