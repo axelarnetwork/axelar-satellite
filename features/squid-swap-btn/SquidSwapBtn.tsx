@@ -62,6 +62,7 @@ const SquidSwapBtn = React.memo(() => {
     if (!asset || !routeData) return;
 
     try {
+      setSwapStatus(SwapStatus.WAIT_FOR_SQUID);
       const tx = await squid.executeRoute({
         signer: signer as any,
         route: routeData as RouteData,
@@ -69,7 +70,6 @@ const SquidSwapBtn = React.memo(() => {
       const txReceipt = await tx.wait();
       console.log("swap res: \n", txReceipt);
       setTxReceipt(txReceipt);
-      setSwapStatus(SwapStatus.WAIT_FOR_SQUID);
     } catch (err: any) {
       setSwapStatus(SwapStatus.IDLE);
       showErrorMsgAndThrow(

@@ -76,18 +76,6 @@ export const DestinationTokenSelector = ({
     }
   }, [asset, srcChain]);
 
-  // set correct asset when component loads
-  useEffect(() => {
-    setSelectedAssetSymbol(
-      shouldUnwrapAsset ? unwrappedAssetSymbol : wrappedAssetSymbol
-    );
-  }, [
-    setSelectedAssetSymbol,
-    shouldUnwrapAsset,
-    unwrappedAssetSymbol,
-    wrappedAssetSymbol,
-  ]);
-
   useEffect(() => {
     const handler = setTimeout(() => {
       if (
