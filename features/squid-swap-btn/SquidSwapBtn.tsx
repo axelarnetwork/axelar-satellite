@@ -33,9 +33,7 @@ const SquidSwapBtn = React.memo(() => {
     chainId: srcChainId,
   });
   const { data: signer } = useSigner({
-    onSuccess(data) {
-      console.log("Success getting signer", data);
-    },
+    onSuccess(data) {},
   });
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);

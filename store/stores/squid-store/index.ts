@@ -123,7 +123,6 @@ export const useSquidStateStore = create<SquidStateStore>()(
     setRouteDataAsync: async (params: GetRoute) => {
       try {
         const { route: routeData } = await squid.getRoute(params);
-        console.log("setting route async", routeData);
         set({ routeData, routeDataLoading: false }, false, "setRouteDataAsync");
       } catch (e) {
         set(
