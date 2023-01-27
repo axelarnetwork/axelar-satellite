@@ -1,32 +1,12 @@
 import React from "react";
 import Image from "next/image";
-
-import { AssetInfo } from "@axelar-network/axelarjs-sdk";
-
-import { useSquidStateStore, useSwapStore } from "../../../store";
-
-import { useSwitchNetwork } from "wagmi";
-import { getWagmiChains } from "../../../config/web3";
+import { useSquidStateStore } from "../../../store";
 import { InputWrapper } from "../../common";
 import { TransferSwapStats } from "../parts";
 import { ProgressBar } from "./parts";
-import { addTokenToMetamaskWithAssetInfo } from "utils/wallet/metamask";
 
 export const SquidFinished = () => {
-  const { destChain } = useSwapStore();
   const statusResponse = useSquidStateStore((state) => state.statusResponse);
-  const selectedSquidAsset = useSquidStateStore(
-    (state) => state.selectedSquidAsset
-  );
-  const { switchNetwork } = useSwitchNetwork({
-    onSuccess(data) {
-      console.log("Success", data);
-      setTimeout(
-        () => addTokenToMetamaskWithAssetInfo(selectedSquidAsset as AssetInfo),
-        2000
-      );
-    },
-  });
 
   function renderTxConfirmationInfo() {
     return (
@@ -44,29 +24,6 @@ export const SquidFinished = () => {
             <Image src={"/assets/ui/link.svg"} height={16} width={16} />
           </a>
         </div>
-        {destChain.module === "evm" && (
-          <div
-            className="flex items-center justify-center hover:underline hover:cursor-pointer gap-x-2"
-            onClick={() => {
-              switchNetwork?.(
-                getWagmiChains().find(
-                  (chain) =>
-                    chain.networkNameOverride ===
-                    destChain.chainName?.toLowerCase()
-                )?.id
-              );
-            }}
-          >
-            <span className="font-light text-gray-200">
-              Add token to Metamask ({destChain.chainName})
-            </span>
-            <Image
-              src={"/assets/wallets/metamask.logo.svg"}
-              height={16}
-              width={16}
-            />
-          </div>
-        )}
       </div>
     );
   }
