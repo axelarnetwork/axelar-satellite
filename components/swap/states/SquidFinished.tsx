@@ -1,69 +1,32 @@
 import React from "react";
 import Image from "next/image";
 
-import { AssetInfo, ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 
-import {
-  getTransferType,
-  useSquidStateStore,
-  useSwapStore,
-} from "../../../store";
+import { useSquidStateStore, useSwapStore } from "../../../store";
 
 import { useSwitchNetwork } from "wagmi";
 import { getWagmiChains } from "../../../config/web3";
 import { InputWrapper } from "../../common";
 import { TransferSwapStats } from "../parts";
 import { ProgressBar } from "./parts";
-
-export const addTokenToMetamask = async (
-  asset: AssetInfo,
-  chain: ChainInfo
-) => {
-  try {
-    const {
-      common_key,
-      decimals,
-      tokenAddress: address,
-      assetName,
-      assetSymbol,
-    } = asset;
-
-    return await (window as any).ethereum.request({
-      method: "wallet_watchAsset",
-      params: {
-        type: "ERC20",
-        options: {
-          address,
-          symbol: common_key === "uaxl" ? assetName : assetSymbol,
-          decimals,
-          image: assetSymbol
-            ? `https://raw.githubusercontent.com/axelarnetwork/axelar-docs/main/public/images/assets/${assetSymbol?.toLowerCase()}.png`
-            : "",
-        },
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+import { addTokenToMetamaskWithAssetInfo } from "utils/wallet/metamask";
 
 export const SquidFinished = () => {
-  const { destAddress, txInfo, destChain } = useSwapStore();
-  const transferType = useSwapStore(getTransferType);
+  const { destChain } = useSwapStore();
   const statusResponse = useSquidStateStore((state) => state.statusResponse);
   const selectedSquidAsset = useSquidStateStore(
     (state) => state.selectedSquidAsset
   );
-  const { chains, error, isLoading, pendingChainId, switchNetwork } =
-    useSwitchNetwork({
-      onSuccess(data) {
-        console.log("Success", data);
-        setTimeout(
-          () => addTokenToMetamask(selectedSquidAsset as AssetInfo, destChain),
-          2000
-        );
-      },
-    });
+  const { switchNetwork } = useSwitchNetwork({
+    onSuccess(data) {
+      console.log("Success", data);
+      setTimeout(
+        () => addTokenToMetamaskWithAssetInfo(selectedSquidAsset as AssetInfo),
+        2000
+      );
+    },
+  });
 
   function renderTxConfirmationInfo() {
     return (

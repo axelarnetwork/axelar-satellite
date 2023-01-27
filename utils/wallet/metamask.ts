@@ -1,8 +1,8 @@
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { AssetInfo, ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 import { AssetConfigExtended } from "types";
 
-export const addAssetToMetamask = async (
+export const addAssetToMetamaskWithAssetConfig = async (
   asset: AssetConfigExtended,
   chain: ChainInfo
 ) => {
@@ -28,4 +28,33 @@ export const addAssetToMetamask = async (
       },
     },
   });
+};
+
+export const addTokenToMetamaskWithAssetInfo = async (asset: AssetInfo) => {
+  try {
+    const {
+      common_key,
+      decimals,
+      tokenAddress: address,
+      assetName,
+      assetSymbol,
+    } = asset;
+
+    return await (window as any).ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC20",
+        options: {
+          address,
+          symbol: common_key === "uaxl" ? assetName : assetSymbol,
+          decimals,
+          image: assetSymbol
+            ? `https://raw.githubusercontent.com/axelarnetwork/axelar-docs/main/public/images/assets/${assetSymbol?.toLowerCase()}.png`
+            : "",
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };

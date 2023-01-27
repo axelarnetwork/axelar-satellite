@@ -19,6 +19,7 @@ import { Blockable, InputWrapper } from "components/common";
 import { SquidParamConfig } from "features/squid-param-config/SquidParamConfig";
 import { ARBITRARY_EVM_ADDRESS, NATIVE_ASSET_IDS } from "config/constants";
 import { ReceiveTokenInfo } from "features/destination-asset-selector/ReceiveTokenInfo";
+import { AddDestAssetButton } from "features/add-dest-asset-button";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -264,7 +265,10 @@ export const DestinationAssetSelector = ({
             And receive on{" "}
             <span className="capitalize">{destChain.chainName}</span>:
           </label>
-          <SquidParamConfig />
+          <div className="flex items-center">
+            <AddDestAssetButton />
+            <SquidParamConfig />
+          </div>
         </div>
         <div className="flex justify-between mt-2">
           <Blockable>

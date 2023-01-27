@@ -7,7 +7,7 @@ export const ReceiveTokenInfo = () => {
   const { routeDataLoading, routeData, selectedSquidAsset, isSquidTrade } =
     useSquidStateStore();
 
-  if (!isSquidTrade) return;
+  if (!isSquidTrade) return null;
 
   return (
     <div className="mt-5 space-y-1">
