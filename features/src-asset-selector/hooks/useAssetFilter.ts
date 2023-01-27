@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { assetIsCompatibleBetweenChains } from "features/asset-selector/utils";
+import { assetIsCompatibleBetweenChains } from "features/src-asset-selector/utils";
 
 import { useSwapStore } from "store";
 

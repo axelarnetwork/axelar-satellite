@@ -3,11 +3,11 @@ import Image from "next/legacy/image";
 
 import { defaultAssetImg } from "config/constants";
 
-import { useSwitchAsset } from "features/asset-selector/hooks";
+import { useSwitchAsset } from "features/src-asset-selector/hooks";
 import {
   assetIsCompatibleBetweenChains,
   renderIncompatibilityMsg,
-} from "features/asset-selector/utils";
+} from "features/src-asset-selector/utils";
 
 import { useSwapStore } from "store";
 

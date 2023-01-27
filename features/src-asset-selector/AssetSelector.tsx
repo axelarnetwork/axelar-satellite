@@ -5,9 +5,9 @@ import { defaultAssetImg } from "config/constants";
 import { Blockable, InputWrapper } from "components/common";
 
 import { AddAssetButton } from "features/add-src-asset-button";
-import { AssetDropdown } from "features/asset-selector/AssetDropdown";
-import { AssetInput } from "features/asset-selector/AssetInput";
-import { useAssetFilter } from "features/asset-selector/hooks";
+import { AssetDropdown } from "features/src-asset-selector/AssetDropdown";
+import { AssetInput } from "features/src-asset-selector/AssetInput";
+import { useAssetFilter } from "features/src-asset-selector/hooks";
 import { MaxButton } from "features/max-button";
 
 import { getSelectedAssetName, useSwapStore } from "store";

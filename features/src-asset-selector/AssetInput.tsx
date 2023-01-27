@@ -1,6 +1,6 @@
 import React from "react";
 
-import { BalanceInfo } from "features/asset-selector/BalanceInfo";
+import { BalanceInfo } from "features/src-asset-selector/BalanceInfo";
 
 import { useSwapStore } from "store";
 

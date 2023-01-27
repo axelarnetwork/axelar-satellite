@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AssetSelector } from "features/asset-selector";
+import { AssetSelector } from "features/src-asset-selector";
 import { DestChainSelector } from "features/dest-chain-selector";
 import { GetAddressBtn } from "features/gen-address-btn";
 import { SquidSwapBtn } from "features/squid-swap-btn";

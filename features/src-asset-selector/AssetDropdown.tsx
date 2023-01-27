@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
-import { AssetItem } from "features/asset-selector/AssetDropdownItem";
-import { useSwitchAsset } from "features/asset-selector/hooks";
+import { AssetItem } from "features/src-asset-selector/AssetDropdownItem";
+import { useSwitchAsset } from "features/src-asset-selector/hooks";
 
 import { useSwapStore } from "store";
 
