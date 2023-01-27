@@ -3,6 +3,7 @@ import React from "react";
 import { InputWrapper } from "components/common";
 
 import { useSwapStore } from "store";
+import { WalletFillBtn } from "../wallet-fill-btn";
 
 export const AddressFiller = () => {
   const destAddress = useSwapStore((state) => state.destAddress);
@@ -21,7 +22,7 @@ export const AddressFiller = () => {
         </div>
       </InputWrapper>
       <div className="h-full">
-        <AddressFiller />
+        <WalletFillBtn />
       </div>
     </div>
   );
