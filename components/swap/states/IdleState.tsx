@@ -61,8 +61,8 @@ export const IdleState = () => {
 
   return (
     <>
-      {!isSquidTrade ? <TransferStats /> : <TransferSwapStats />}
       {renderAddressFiller()}
+      {!isSquidTrade ? <TransferStats /> : <TransferSwapStats />}
     </>
   );
 };

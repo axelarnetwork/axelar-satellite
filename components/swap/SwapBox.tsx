@@ -35,6 +35,7 @@ export const SwapBox = () => {
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
   const squidChains = useSquidStateStore((state) => state.squidChains);
   const isSquidAsset = useSquidStateStore((state) => state.isSquidTrade);
+
   const squidAssets = destChain.assets
     .filter(
       //@ts-ignore
