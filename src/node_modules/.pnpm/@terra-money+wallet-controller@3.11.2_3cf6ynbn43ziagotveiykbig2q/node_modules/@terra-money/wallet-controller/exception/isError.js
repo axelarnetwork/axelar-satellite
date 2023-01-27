@@ -1,0 +1,11 @@
+export function isError(error, errorType) {
+    try {
+        return (
+        //@ts-ignore
+        error instanceof errorType || error.constructor.name === errorType.name);
+    }
+    catch (_a) {
+        return false;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaXNFcnJvci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3NyYy9AdGVycmEtbW9uZXkvd2FsbGV0LWNvbnRyb2xsZXIvZXhjZXB0aW9uL2lzRXJyb3IudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsTUFBTSxVQUFVLE9BQU8sQ0FDckIsS0FBYyxFQUNkLFNBQXNDO0lBRXRDLElBQUk7UUFDRixPQUFPO1FBQ0wsWUFBWTtRQUNaLEtBQUssWUFBWSxTQUFTLElBQUksS0FBSyxDQUFDLFdBQVcsQ0FBQyxJQUFJLEtBQUssU0FBUyxDQUFDLElBQUksQ0FDeEUsQ0FBQztLQUNIO0lBQUMsV0FBTTtRQUNOLE9BQU8sS0FBSyxDQUFDO0tBQ2Q7QUFDSCxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGZ1bmN0aW9uIGlzRXJyb3I8RSBleHRlbmRzIEVycm9yPihcbiAgZXJyb3I6IHVua25vd24sXG4gIGVycm9yVHlwZTogeyBuZXcgKC4uLmFyZ3M6IGFueVtdKTogRSB9LFxuKTogZXJyb3IgaXMgRSB7XG4gIHRyeSB7XG4gICAgcmV0dXJuIChcbiAgICAgIC8vQHRzLWlnbm9yZVxuICAgICAgZXJyb3IgaW5zdGFuY2VvZiBlcnJvclR5cGUgfHwgZXJyb3IuY29uc3RydWN0b3IubmFtZSA9PT0gZXJyb3JUeXBlLm5hbWVcbiAgICApO1xuICB9IGNhdGNoIHtcbiAgICByZXR1cm4gZmFsc2U7XG4gIH1cbn1cbiJdfQ==

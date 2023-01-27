@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.useInstallChromeExtension = void 0;
+const use_wallet_1 = require("@terra-money/use-wallet");
+const react_1 = require("react");
+function useInstallChromeExtension() {
+    const { availableInstallTypes, install } = (0, use_wallet_1.useWallet)();
+    return (0, react_1.useMemo)(() => {
+        return availableInstallTypes.some((type) => type === use_wallet_1.ConnectType.EXTENSION)
+            ? () => install(use_wallet_1.ConnectType.EXTENSION)
+            : null;
+    }, [availableInstallTypes, install]);
+}
+exports.useInstallChromeExtension = useInstallChromeExtension;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXNlSW5zdGFsbENocm9tZUV4dGVuc2lvbi5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3NyYy9AdGVycmEtbW9uZXkvd2FsbGV0LXByb3ZpZGVyL3VzZUluc3RhbGxDaHJvbWVFeHRlbnNpb24udHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsd0RBQWlFO0FBQ2pFLGlDQUFnQztBQUVoQyxTQUFnQix5QkFBeUI7SUFDdkMsTUFBTSxFQUFFLHFCQUFxQixFQUFFLE9BQU8sRUFBRSxHQUFHLElBQUEsc0JBQVMsR0FBRSxDQUFDO0lBRXZELE9BQU8sSUFBQSxlQUFPLEVBQXNCLEdBQUcsRUFBRTtRQUN2QyxPQUFPLHFCQUFxQixDQUFDLElBQUksQ0FBQyxDQUFDLElBQUksRUFBRSxFQUFFLENBQUMsSUFBSSxLQUFLLHdCQUFXLENBQUMsU0FBUyxDQUFDO1lBQ3pFLENBQUMsQ0FBQyxHQUFHLEVBQUUsQ0FBQyxPQUFPLENBQUMsd0JBQVcsQ0FBQyxTQUFTLENBQUM7WUFDdEMsQ0FBQyxDQUFDLElBQUksQ0FBQztJQUNYLENBQUMsRUFBRSxDQUFDLHFCQUFxQixFQUFFLE9BQU8sQ0FBQyxDQUFDLENBQUM7QUFDdkMsQ0FBQztBQVJELDhEQVFDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQ29ubmVjdFR5cGUsIHVzZVdhbGxldCB9IGZyb20gJ0B0ZXJyYS1tb25leS91c2Utd2FsbGV0JztcbmltcG9ydCB7IHVzZU1lbW8gfSBmcm9tICdyZWFjdCc7XG5cbmV4cG9ydCBmdW5jdGlvbiB1c2VJbnN0YWxsQ2hyb21lRXh0ZW5zaW9uKCkge1xuICBjb25zdCB7IGF2YWlsYWJsZUluc3RhbGxUeXBlcywgaW5zdGFsbCB9ID0gdXNlV2FsbGV0KCk7XG5cbiAgcmV0dXJuIHVzZU1lbW88KCgpID0+IHZvaWQpIHwgbnVsbD4oKCkgPT4ge1xuICAgIHJldHVybiBhdmFpbGFibGVJbnN0YWxsVHlwZXMuc29tZSgodHlwZSkgPT4gdHlwZSA9PT0gQ29ubmVjdFR5cGUuRVhURU5TSU9OKVxuICAgICAgPyAoKSA9PiBpbnN0YWxsKENvbm5lY3RUeXBlLkVYVEVOU0lPTilcbiAgICAgIDogbnVsbDtcbiAgfSwgW2F2YWlsYWJsZUluc3RhbGxUeXBlcywgaW5zdGFsbF0pO1xufVxuIl19

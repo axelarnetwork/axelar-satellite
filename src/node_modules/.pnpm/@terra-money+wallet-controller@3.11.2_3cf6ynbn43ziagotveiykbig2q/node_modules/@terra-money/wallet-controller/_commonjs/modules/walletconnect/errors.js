@@ -1,0 +1,44 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.WalletConnectSignBytesUnspecifiedError = exports.WalletConnectTxUnspecifiedError = exports.WalletConnectTimeout = exports.WalletConnectTxFailed = exports.WalletConnectCreateTxFailed = exports.WalletConnectUserDenied = void 0;
+class WalletConnectUserDenied extends Error {
+}
+exports.WalletConnectUserDenied = WalletConnectUserDenied;
+class WalletConnectCreateTxFailed extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'WalletConnectCreateTxFailed';
+    }
+}
+exports.WalletConnectCreateTxFailed = WalletConnectCreateTxFailed;
+class WalletConnectTxFailed extends Error {
+    constructor(txhash, message, raw_message) {
+        super(message);
+        this.txhash = txhash;
+        this.raw_message = raw_message;
+        this.name = 'WalletConnectTxFailed';
+    }
+}
+exports.WalletConnectTxFailed = WalletConnectTxFailed;
+class WalletConnectTimeout extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'WalletConnectTimeout';
+    }
+}
+exports.WalletConnectTimeout = WalletConnectTimeout;
+class WalletConnectTxUnspecifiedError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'WalletConnectTxUnspecifiedError';
+    }
+}
+exports.WalletConnectTxUnspecifiedError = WalletConnectTxUnspecifiedError;
+class WalletConnectSignBytesUnspecifiedError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'WalletConnectSignBytesUnspecifiedError';
+    }
+}
+exports.WalletConnectSignBytesUnspecifiedError = WalletConnectSignBytesUnspecifiedError;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZXJyb3JzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vc3JjL0B0ZXJyYS1tb25leS93YWxsZXQtY29udHJvbGxlci9tb2R1bGVzL3dhbGxldGNvbm5lY3QvZXJyb3JzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7OztBQUFBLE1BQWEsdUJBQXdCLFNBQVEsS0FBSztDQUFHO0FBQXJELDBEQUFxRDtBQUVyRCxNQUFhLDJCQUE0QixTQUFRLEtBQUs7SUFDcEQsWUFBWSxPQUFlO1FBQ3pCLEtBQUssQ0FBQyxPQUFPLENBQUMsQ0FBQztRQUNmLElBQUksQ0FBQyxJQUFJLEdBQUcsNkJBQTZCLENBQUM7SUFDNUMsQ0FBQztDQUNGO0FBTEQsa0VBS0M7QUFFRCxNQUFhLHFCQUFzQixTQUFRLEtBQUs7SUFDOUMsWUFDa0IsTUFBYyxFQUM5QixPQUFlLEVBQ0MsV0FBZ0I7UUFFaEMsS0FBSyxDQUFDLE9BQU8sQ0FBQyxDQUFDO1FBSkMsV0FBTSxHQUFOLE1BQU0sQ0FBUTtRQUVkLGdCQUFXLEdBQVgsV0FBVyxDQUFLO1FBR2hDLElBQUksQ0FBQyxJQUFJLEdBQUcsdUJBQXVCLENBQUM7SUFDdEMsQ0FBQztDQUNGO0FBVEQsc0RBU0M7QUFFRCxNQUFhLG9CQUFxQixTQUFRLEtBQUs7SUFDN0MsWUFBWSxPQUFlO1FBQ3pCLEtBQUssQ0FBQyxPQUFPLENBQUMsQ0FBQztRQUNmLElBQUksQ0FBQyxJQUFJLEdBQUcsc0JBQXNCLENBQUM7SUFDckMsQ0FBQztDQUNGO0FBTEQsb0RBS0M7QUFFRCxNQUFhLCtCQUFnQyxTQUFRLEtBQUs7SUFDeEQsWUFBWSxPQUFlO1FBQ3pCLEtBQUssQ0FBQyxPQUFPLENBQUMsQ0FBQztRQUNmLElBQUksQ0FBQyxJQUFJLEdBQUcsaUNBQWlDLENBQUM7SUFDaEQsQ0FBQztDQUNGO0FBTEQsMEVBS0M7QUFDRCxNQUFhLHNDQUF1QyxTQUFRLEtBQUs7SUFDL0QsWUFBWSxPQUFlO1FBQ3pCLEtBQUssQ0FBQyxPQUFPLENBQUMsQ0FBQztRQUNmLElBQUksQ0FBQyxJQUFJLEdBQUcsd0NBQXdDLENBQUM7SUFDdkQsQ0FBQztDQUNGO0FBTEQsd0ZBS0MiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgY2xhc3MgV2FsbGV0Q29ubmVjdFVzZXJEZW5pZWQgZXh0ZW5kcyBFcnJvciB7fVxuXG5leHBvcnQgY2xhc3MgV2FsbGV0Q29ubmVjdENyZWF0ZVR4RmFpbGVkIGV4dGVuZHMgRXJyb3Ige1xuICBjb25zdHJ1Y3RvcihtZXNzYWdlOiBzdHJpbmcpIHtcbiAgICBzdXBlcihtZXNzYWdlKTtcbiAgICB0aGlzLm5hbWUgPSAnV2FsbGV0Q29ubmVjdENyZWF0ZVR4RmFpbGVkJztcbiAgfVxufVxuXG5leHBvcnQgY2xhc3MgV2FsbGV0Q29ubmVjdFR4RmFpbGVkIGV4dGVuZHMgRXJyb3Ige1xuICBjb25zdHJ1Y3RvcihcbiAgICBwdWJsaWMgcmVhZG9ubHkgdHhoYXNoOiBzdHJpbmcsXG4gICAgbWVzc2FnZTogc3RyaW5nLFxuICAgIHB1YmxpYyByZWFkb25seSByYXdfbWVzc2FnZTogYW55LFxuICApIHtcbiAgICBzdXBlcihtZXNzYWdlKTtcbiAgICB0aGlzLm5hbWUgPSAnV2FsbGV0Q29ubmVjdFR4RmFpbGVkJztcbiAgfVxufVxuXG5leHBvcnQgY2xhc3MgV2FsbGV0Q29ubmVjdFRpbWVvdXQgZXh0ZW5kcyBFcnJvciB7XG4gIGNvbnN0cnVjdG9yKG1lc3NhZ2U6IHN0cmluZykge1xuICAgIHN1cGVyKG1lc3NhZ2UpO1xuICAgIHRoaXMubmFtZSA9ICdXYWxsZXRDb25uZWN0VGltZW91dCc7XG4gIH1cbn1cblxuZXhwb3J0IGNsYXNzIFdhbGxldENvbm5lY3RUeFVuc3BlY2lmaWVkRXJyb3IgZXh0ZW5kcyBFcnJvciB7XG4gIGNvbnN0cnVjdG9yKG1lc3NhZ2U6IHN0cmluZykge1xuICAgIHN1cGVyKG1lc3NhZ2UpO1xuICAgIHRoaXMubmFtZSA9ICdXYWxsZXRDb25uZWN0VHhVbnNwZWNpZmllZEVycm9yJztcbiAgfVxufVxuZXhwb3J0IGNsYXNzIFdhbGxldENvbm5lY3RTaWduQnl0ZXNVbnNwZWNpZmllZEVycm9yIGV4dGVuZHMgRXJyb3Ige1xuICBjb25zdHJ1Y3RvcihtZXNzYWdlOiBzdHJpbmcpIHtcbiAgICBzdXBlcihtZXNzYWdlKTtcbiAgICB0aGlzLm5hbWUgPSAnV2FsbGV0Q29ubmVjdFNpZ25CeXRlc1Vuc3BlY2lmaWVkRXJyb3InO1xuICB9XG59XG4iXX0=
