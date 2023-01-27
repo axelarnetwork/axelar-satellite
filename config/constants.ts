@@ -10,6 +10,15 @@ export const UNDER_MAINTENANCE =
 export const AXELARSCAN_URL = process.env.NEXT_PUBLIC_AXELARSCAN_URL as string;
 export const RESERVED_ADDRESSES = process.env
   .NEXT_PUBLIC_RESERVED_ADDRESSES as string;
+export const ARBITRARY_EVM_ADDRESS =
+  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+export const NATIVE_ASSET_IDS: string[] = [
+  "eth",
+  "avax",
+  "matic",
+  "bnb",
+  "ftm",
+];
 
 export const GETTING_STARTED_MODAL = "getting_started_modal";
 export const SUPPORT_MODAL = "support_modal";

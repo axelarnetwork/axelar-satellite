@@ -16,11 +16,13 @@ import toast from "react-hot-toast";
 import { squid } from "squid.config";
 
 import {
+  ARBITRARY_EVM_ADDRESS,
   DEFAULT_ASSET,
   DEFAULT_DEST_CHAIN,
   DEFAULT_SRC_CHAIN,
   DISABLED_CHAIN_NAMES,
   ENVIRONMENT,
+  NATIVE_ASSET_IDS,
 } from "../../config/constants";
 import { AssetConfigExtended, RouteQuery } from "../../types";
 import { addNativeAssets, loadAllChains } from "../../utils/api";
@@ -78,21 +80,26 @@ export const useInitialChainList = () => {
   }
 
   async function injectSquidAssets(chains: ChainInfo[]) {
-    // if (!squidTokens || squidTokens.length === 0 || squidLoaded) {
-    //   return chains;
-    // }
-    const nativeAssetIds: string[] = ["eth", "avax", "matic", "bnb", "ftm"];
     const newChains: ChainInfo[] = _.cloneDeep(chains);
     newChains.forEach((chain) => {
       const relevantSquidTokens = squidTokens.filter(
         (t) => t.chainName.toLowerCase() === chain.id
       );
       relevantSquidTokens.forEach((t) => {
-        const asset = chain.assets.find(
+        let asset = chain.assets.find(
           (a) =>
             a.tokenAddress?.toLowerCase() === t.address.toLowerCase() &&
-            !nativeAssetIds.includes(a.common_key as string)
+            !NATIVE_ASSET_IDS.includes(a.common_key as string)
         );
+        //maybe native asset?
+        if (!asset) {
+          asset = chain.assets.find(
+            (a) =>
+              NATIVE_ASSET_IDS.includes(
+                a.assetSymbol?.toLowerCase() as string
+              ) && t.address === ARBITRARY_EVM_ADDRESS
+          );
+        }
         // @ts-ignore
         if (asset) asset.isSquidAsset = true;
       });

@@ -17,6 +17,7 @@ import { useOnClickOutside } from "usehooks-ts";
 
 import { Blockable, InputWrapper } from "components/common";
 import { SquidParamConfig } from "features/squid-param-config/SquidParamConfig";
+import { ARBITRARY_EVM_ADDRESS, NATIVE_ASSET_IDS } from "config/constants";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -129,18 +130,25 @@ export const DestinationAssetSelector = ({
   const getRouteData = useCallback(
     async (t: AssetInfo) => {
       if (!asset) return;
+      const fromToken = asset.is_gas_token
+        ? ARBITRARY_EVM_ADDRESS
+        : asset.chain_aliases[srcChain.chainName.toLowerCase()].tokenAddress;
+      const toToken = NATIVE_ASSET_IDS.includes(
+        t.assetSymbol?.toLowerCase() as string
+      )
+        ? ARBITRARY_EVM_ADDRESS
+        : (t?.tokenAddress as string);
       setRouteDataLoading(true);
       const params: GetRoute = {
         fromChain: squidChains.find(
           (c) => c.chainName.toLowerCase() === srcChain.id
         )?.chainId as string | number,
-        fromToken:
-          asset.chain_aliases[srcChain.chainName.toLowerCase()].tokenAddress,
+        fromToken,
         fromAmount: parseUnits(tokensToTransfer, asset.decimals).toString(),
         toChain: squidChains.find(
           (c) => c.chainName.toLowerCase() === destChain.id
         )?.chainId as string | number,
-        toToken: t?.tokenAddress as string,
+        toToken,
         toAddress: destAddress,
         slippage,
         enableForecall: false, // instant execution service, defaults to true
@@ -218,7 +226,7 @@ export const DestinationAssetSelector = ({
           )}
           {srcIsSquidAsset &&
             squidAssets.map((t) => (
-              <li key={`squid_token_${t.tokenAddress}`}>
+              <li key={`squid_token_${t.tokenAddress}${t.assetSymbol}`}>
                 <button onClick={() => handleSquidSelect(t)}>
                   <Image
                     loading="eager"
