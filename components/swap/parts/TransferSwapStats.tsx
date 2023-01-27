@@ -1,8 +1,10 @@
-import { useSquidStateStore } from "../../../store";
-
+import { useSquidStateStore, useSwapStore } from "../../../store";
+import Image from "next/legacy/image";
 import { formatUnits } from "ethers/lib/utils.js";
 
 import { StatsWrapper } from "../../common";
+import { getWagmiChains } from "config/web3";
+import { AXELARSCAN_URL } from "config/constants";
 
 const InfoIcon = (
   <svg
@@ -21,7 +23,43 @@ const InfoIcon = (
 );
 
 export const TransferSwapStats = () => {
-  const { routeData, selectedSquidAsset, slippage } = useSquidStateStore();
+  const { routeData, selectedSquidAsset, slippage, txReceipt } =
+    useSquidStateStore();
+  const srcChain = useSwapStore((state) => state.srcChain);
+
+  function renderTxConfirmLink() {
+    if (!txReceipt.transactionHash) return null;
+    const evmRpc = getWagmiChains().find(
+      (network) =>
+        network.networkNameOverride === srcChain.chainName?.toLowerCase()
+    );
+    const rootUrl =
+      srcChain.module === "evm"
+        ? `${evmRpc?.blockExplorers?.default.url}tx/`
+        : `${AXELARSCAN_URL}/transfer/`;
+    return (
+      <a
+        href={`${rootUrl}${txReceipt.transactionHash}`}
+        target="_blank"
+        rel="noreferrer"
+        className="flex font-normal gap-x-2"
+      >
+        <span className="text-[#00a6ff]">
+          View on{" "}
+          {srcChain.module === "evm"
+            ? evmRpc?.blockExplorers?.default?.name
+            : "Axelarscan"}
+        </span>
+        <Image
+          src={"/assets/ui/link.svg"}
+          height={16}
+          width={16}
+          layout="intrinsic"
+          alt="link"
+        />
+      </a>
+    );
+  }
 
   return (
     <StatsWrapper>
@@ -56,6 +94,13 @@ export const TransferSwapStats = () => {
           tooltip=""
           data={routeData?.estimate?.toAmountUSD || "NA"}
         />
+        {txReceipt && (
+          <Row
+            text={`${srcChain.chainName} Confirmation`}
+            tooltip="Source chain transaction confirmation"
+            data={renderTxConfirmLink()}
+          />
+        )}
       </ul>
     </StatsWrapper>
   );
@@ -68,11 +113,11 @@ export const Row = ({
 }: {
   text: string;
   tooltip: string;
-  data: string;
+  data: any;
 }) => {
   const { routeDataLoading } = useSquidStateStore();
   return (
-    <li className="flex justify-between">
+    <li className="flex justify-between capitalize">
       <div
         className="flex items-center cursor-pointer tooltip tooltip-warning"
         data-tip={routeDataLoading ? "" : tooltip}
