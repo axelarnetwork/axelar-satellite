@@ -122,7 +122,6 @@ export const DestinationAssetSelector = ({
   };
 
   const handleSquidSelect = async (t: AssetInfo) => {
-    console.log("t", t);
     setShouldUnwrapAsset(false);
     setSelectedAssetSymbol(t.assetSymbol);
     setSelectedSquidAsset(t);
@@ -229,7 +228,10 @@ export const DestinationAssetSelector = ({
           {srcIsSquidAsset &&
             squidAssets.map((t) => (
               <li key={`squid_token_${t.tokenAddress}${t.assetSymbol}`}>
-                <button onClick={() => handleSquidSelect(t)}>
+                <button
+                  onClick={() => handleSquidSelect(t)}
+                  // className="flex justify-between"
+                >
                   <Image
                     loading="eager"
                     src={`/assets/tokens/${t.common_key}.logo.svg`}
@@ -242,7 +244,12 @@ export const DestinationAssetSelector = ({
                     }}
                     alt="asset"
                   />
-                  <span>{t.assetSymbol} (via Squid)</span>
+                  <div className="flex justify-between w-full">
+                    <span>{t.assetSymbol}</span>
+                    <div className="text-xs text-slate-400 text-end">
+                      Swap via Squid
+                    </div>
+                  </div>
                 </button>
               </li>
             ))}
