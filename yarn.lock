@@ -8850,6 +8850,11 @@ react-query@^3.39.1:
     broadcast-channel "^3.4.1"
     match-sorter "^6.0.2"
 
+react-use-poll@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-use-poll/-/react-use-poll-1.1.5.tgz#3f2002775631abf909fb39c3d100ed25dbfc57fd"
+  integrity sha512-MOU+GzuRatB7ejQdpTyBP38vzbemvavGCXGpx2jp3hnr6sEukC2QfD7UjiJqzI4Dw7jBOnHdn17ghO9xJvkFpQ==
+
 react@18.1.0:
   version "18.1.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.1.0.tgz#6f8620382decb17fdc5cc223a115e2adbf104890"

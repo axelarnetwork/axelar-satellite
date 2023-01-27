@@ -31,14 +31,22 @@ const SquidSwapBtn = React.memo(() => {
 
   const swapStatus = useSwapStore((state) => state.swapStatus);
   const resetState = useSwapStore((state) => state.resetState);
+
   const tokensToTransfer = useSwapStore((state) => state.tokensToTransfer);
   const destAddress = useSwapStore((state) => state.destAddress);
 
   const reservedAddresses = useSwapStore(getReservedAddresses);
 
   const setSwapStatus = useSwapStore((state) => state.setSwapStatus);
-  const { selectedSquidAsset, setRouteData, squidChains, slippage, routeData } =
-    useSquidStateStore();
+  const {
+    selectedSquidAsset,
+    setRouteData,
+    squidChains,
+    slippage,
+    routeData,
+    setTxReceipt,
+    resetSquidState,
+  } = useSquidStateStore();
 
   const { loading, getDepositAddress } = useGetDepositAddress();
 
@@ -53,30 +61,37 @@ const SquidSwapBtn = React.memo(() => {
 
     if (!asset || !routeData) return;
 
-    squid
-      .executeRoute({ signer: signer as any, route: routeData as RouteData })
-      .then((res) => {
-        console.log("swap res: \n", res);
-        setSwapStatus(SwapStatus.FINISHED);
-      })
-      .catch((err) => {
-        // revert back to idle state if error occurs in gen of deposit address
-        setSwapStatus(SwapStatus.IDLE);
-        showErrorMsgAndThrow(
-          err?.message ||
-            "Could not execute route pair for asset/chain combination",
-          false
-        );
+    try {
+      const tx = await squid.executeRoute({
+        signer: signer as any,
+        route: routeData as RouteData,
       });
+      const txReceipt = await tx.wait();
+      console.log("swap res: \n", txReceipt);
+      setTxReceipt(txReceipt);
+      setSwapStatus(SwapStatus.WAIT_FOR_SQUID);
+    } catch (err: any) {
+      setSwapStatus(SwapStatus.IDLE);
+      showErrorMsgAndThrow(
+        err?.message ||
+          "Could not execute route pair for asset/chain combination"
+      );
+    }
   }
 
   useEffect(() => {
     if (loading) setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
   }, [loading, setSwapStatus]);
 
-  if (swapStatus === SwapStatus.FINISHED)
+  if ([SwapStatus.FINISHED, SwapStatus.SQUID_FINISHED].includes(swapStatus))
     return (
-      <button className="w-full btn btn-primary" onClick={resetState}>
+      <button
+        className="w-full btn btn-primary"
+        onClick={() => {
+          resetSquidState();
+          resetState();
+        }}
+      >
         <div className="flex items-center gap-3">
           <span>Make another transfer?</span>
         </div>

@@ -228,7 +228,6 @@ export const TokenSelector = () => {
     //     asset_denom: asset.common_key[ENVIRONMENT],
     //   },
     // });
-    console.log("asset", asset);
     setAsset(asset);
   }
 

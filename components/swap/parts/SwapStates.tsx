@@ -1,5 +1,6 @@
 import React from "react";
 
+import { SquidFinished } from "components/swap/states/SquidFinished";
 import { WaitSquidState } from "components/swap/states/WaitSquidState";
 
 import { useSwapStore } from "../../../store";
@@ -36,6 +37,7 @@ export const SwapStates = () => {
 
   /**Squid states */
   if (swapStatus === SwapStatus.WAIT_FOR_SQUID) return <WaitSquidState />;
+  if (swapStatus === SwapStatus.SQUID_FINISHED) return <SquidFinished />;
 
   return null;
 };

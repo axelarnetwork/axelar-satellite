@@ -3,9 +3,11 @@ import {
   ChainName,
   GetRoute,
   RouteData,
+  StatusResponse,
   TokenData,
 } from "@0xsquid/sdk";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
+import { TransactionReceipt } from "@ethersproject/abstract-provider/lib/index";
 
 import { squid } from "squid.config";
 import create from "zustand";
@@ -24,6 +26,8 @@ interface SquidState {
   slippage: number;
   routeData: RouteData | null;
   routeDataLoading: boolean;
+  txReceipt: TransactionReceipt | null;
+  statusResponse: StatusResponse | null;
 }
 
 interface SquidStateStore extends SquidState {
@@ -36,11 +40,27 @@ interface SquidStateStore extends SquidState {
   setRouteData: (state: RouteData | null) => void;
   setRouteDataAsync: (params: GetRoute) => void;
   setRouteDataLoading: (state: boolean) => void;
+  setTxReceipt: (state: TransactionReceipt) => void;
+  setStatusResponse: (state: StatusResponse) => void;
+  resetSquidState: () => void;
 }
+
+const initialState: SquidState = {
+  squidTokens: [],
+  squidChains: [],
+  squidLoaded: false,
+  isSquidTrade: false,
+  selectedSquidAsset: null,
+  slippage: 1,
+  routeData: null,
+  routeDataLoading: false,
+  txReceipt: null,
+  statusResponse: null,
+};
 
 export const useSquidStateStore = create<SquidStateStore>()(
   devtools((set, get) => ({
-    squidTokens: [],
+    ...initialState,
     setSquidTokens: (state: TokensWithExtendedChainData[]) =>
       set(
         {
@@ -49,7 +69,6 @@ export const useSquidStateStore = create<SquidStateStore>()(
         false,
         "setSquidTokens"
       ),
-    squidChains: [],
     setSquidChains: (state) =>
       set(
         {
@@ -58,7 +77,6 @@ export const useSquidStateStore = create<SquidStateStore>()(
         false,
         "setSquidChains"
       ),
-    squidLoaded: false,
     setSquidLoaded: (state) =>
       set(
         {
@@ -67,7 +85,6 @@ export const useSquidStateStore = create<SquidStateStore>()(
         false,
         "setSquidLoaded"
       ),
-    isSquidTrade: false,
     setIsSquidTrade: (state) =>
       set(
         {
@@ -76,7 +93,6 @@ export const useSquidStateStore = create<SquidStateStore>()(
         false,
         "setIsSquidTrade"
       ),
-    selectedSquidAsset: null,
     setSelectedSquidAsset: (state: AssetInfo | null) =>
       set(
         {
@@ -85,7 +101,6 @@ export const useSquidStateStore = create<SquidStateStore>()(
         false,
         "setSelectedSquidAsset"
       ),
-    slippage: 1,
     setSlippage: (state) =>
       set(
         {
@@ -94,7 +109,6 @@ export const useSquidStateStore = create<SquidStateStore>()(
         false,
         "setSlippage"
       ),
-    routeData: null,
     setRouteData: (state: RouteData | null) =>
       set(
         {
@@ -116,7 +130,6 @@ export const useSquidStateStore = create<SquidStateStore>()(
         );
       }
     },
-    routeDataLoading: false,
     setRouteDataLoading: (state) =>
       set(
         {
@@ -124,6 +137,33 @@ export const useSquidStateStore = create<SquidStateStore>()(
         },
         false,
         "setRouteDataLoading"
+      ),
+    setTxReceipt: (state) =>
+      set(
+        {
+          txReceipt: state,
+        },
+        false,
+        "setTxReceipt"
+      ),
+    setStatusResponse: (state) =>
+      set(
+        {
+          statusResponse: state,
+        },
+        false,
+        "setStatusResponse"
+      ),
+    resetSquidState: () =>
+      set(
+        {
+          ...initialState,
+          squidChains: get().squidChains,
+          squidTokens: get().squidTokens,
+          squidLoaded: get().squidLoaded,
+        },
+        false,
+        "resetSquidState"
       ),
   }))
 );

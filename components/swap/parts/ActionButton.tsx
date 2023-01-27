@@ -62,7 +62,7 @@ export const ActionButton = () => {
     }
   }
 
-  if (swapStatus === SwapStatus.FINISHED)
+  if ([SwapStatus.FINISHED, SwapStatus.SQUID_FINISHED].includes(swapStatus))
     return (
       <button className="w-full btn btn-primary" onClick={resetState}>
         <div className="flex items-center gap-3">

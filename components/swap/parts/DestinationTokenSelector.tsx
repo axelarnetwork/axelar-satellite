@@ -94,7 +94,8 @@ export const DestinationTokenSelector = ({
         isSquidTrade &&
         tokensToTransfer &&
         selectedSquidAsset &&
-        destAddress
+        destAddress &&
+        slippage
       ) {
         getRouteData(selectedSquidAsset);
       }
@@ -103,7 +104,13 @@ export const DestinationTokenSelector = ({
     return () => {
       clearTimeout(handler);
     };
-  }, [tokensToTransfer, selectedSquidAsset, isSquidTrade, destAddress]);
+  }, [
+    tokensToTransfer,
+    selectedSquidAsset,
+    isSquidTrade,
+    destAddress,
+    slippage,
+  ]);
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -153,7 +160,7 @@ export const DestinationTokenSelector = ({
       };
       setRouteDataAsync(params);
     },
-    [tokensToTransfer, squidChains, asset, destAddress]
+    [tokensToTransfer, squidChains, asset, destAddress, slippage]
   );
 
   // gets native or wrapped token logo based on user choice
@@ -264,11 +271,7 @@ export const DestinationTokenSelector = ({
         <div className="flex justify-between mt-2">
           <Blockable>
             <div className="static flex justify-between w-full mt-1 dropdown dropdown-open">
-              <div
-                tabIndex={0}
-                onClick={() => setDropdownOpen(true)}
-                className="w-3/4"
-              >
+              <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
                 <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
                   <Image
                     loading="eager"

@@ -1,25 +1,64 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
+import { StatusResponse } from "@0xsquid/sdk";
+import { GMPStatus } from "@axelar-network/axelarjs-sdk";
+
 import {
   getSelectedAssetSymbol,
+  useSquidStateStore,
   useSwapStore,
-  useWalletStore,
 } from "../../../store";
+
+import usePoll from "react-use-poll";
+import { squid } from "squid.config";
+import { SwapStatus } from "utils/enums";
 
 import { copyToClipboard } from "../../../utils";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import { convertChainName } from "../../../utils/transformers";
 import { AddressShortener, InputWrapper } from "../../common";
 import { TransferSwapStats } from "../parts";
-import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
+import { ProgressBar } from "./parts";
 
 export const WaitSquidState = () => {
-  const { depositAddress, destAddress, srcChain, destChain, asset } =
+  const { setSwapStatus, destAddress, srcChain, destChain, asset } =
     useSwapStore((state) => state);
-  const { wagmiConnected, keplrConnected } = useWalletStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const [relayerGasFee, setRelayerGasFee] = useState<string>("");
+  const { txReceipt, routeData, statusResponse, setStatusResponse } =
+    useSquidStateStore();
+  const [progress, setProgress] = useState(1);
+  const [statusText, setStatusText] = useState("");
+
+  useEffect(() => {
+    if (statusResponse && statusResponse.status) {
+      let prog = 1,
+        txt = "";
+      switch (statusResponse.status) {
+        case GMPStatus.SRC_GATEWAY_CALLED:
+          txt = "Acknowledged on source chain";
+          prog = 1;
+          break;
+        case GMPStatus.DEST_GATEWAY_APPROVED:
+          txt = "Received on destination chain";
+          prog = 2;
+          break;
+        case GMPStatus.DEST_EXECUTING:
+          txt = "Executing on destination chain";
+          prog = 3;
+          break;
+        case GMPStatus.DEST_EXECUTED:
+          txt = "Swap complete!";
+          prog = 4;
+          setSwapStatus(SwapStatus.SQUID_FINISHED);
+          break;
+        default:
+      }
+      setProgress(prog);
+      setStatusText(txt);
+    }
+  }, [statusResponse]);
 
   useEffect(() => {
     if (!srcChain || !destChain || !asset) return;
@@ -28,36 +67,26 @@ export const WaitSquidState = () => {
     );
   }, [srcChain, destChain, asset]);
 
-  function renderTransferInfo() {
-    if (!relayerGasFee) return;
-    return (
-      <div>
-        <div>
-          Please transfer{" "}
-          <strong>
-            {">"}
-            {relayerGasFee} {selectedAssetSymbol}
-          </strong>{" "}
-          on{" "}
-          <span className="capitalize">
-            {convertChainName(srcChain.chainName)}
-          </span>{" "}
-          to
-        </div>
-      </div>
-    );
-  }
+  usePoll(
+    () => {
+      if (!txReceipt || !routeData) return;
+      if (statusResponse && statusResponse.status === GMPStatus.DEST_EXECUTED)
+        return;
 
-  function renderWalletSection() {
-    // if (!wagmiConnected && !keplrConnected) return;
+      const getStatusParams = {
+        transactionId: txReceipt.transactionHash,
+        routeType: routeData.transactionRequest.routeType,
+      };
 
-    return (
-      <div>
-        {srcChain.module === "evm" && <EvmWalletTransfer />}
-        {srcChain.module === "axelarnet" && <CosmosWalletTransfer />}
-      </div>
-    );
-  }
+      squid
+        .getStatus(getStatusParams)
+        .then((status: StatusResponse) => setStatusResponse(status));
+    },
+    [txReceipt, routeData],
+    {
+      interval: 3000,
+    }
+  );
 
   return (
     <>
@@ -66,29 +95,24 @@ export const WaitSquidState = () => {
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">
             <div className="h-full">
-              <ProgressBar level={2} />
+              <ProgressBar level={progress} numSteps={4} />
+              <div className="h-6" />
+              <h2 className="text-lg font-bold text-center">{statusText}</h2>
+              <div className="h-6" />
 
-              <div className="flex items-center justify-center py-4 text-sm gap-x-2">
-                <div>
-                  <label className="block text-center">
-                    {renderTransferInfo()}
-                  </label>
-                  <div className="flex justify-center font-bold text-info gap-x-2">
-                    <AddressShortener value={depositAddress} />
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => copyToClipboard(depositAddress)}
-                    >
-                      <Image
-                        src={"/assets/ui/copy.svg"}
-                        height={16}
-                        width={16}
-                      />
-                    </div>
-                  </div>
+              {statusResponse?.axelarTransactionUrl && (
+                <div className="flex items-center">
+                  <a
+                    href={statusResponse?.axelarTransactionUrl}
+                    target="_blank"
+                    className="w-full text-lg font-bold text-center"
+                  >
+                    Axelarscan link
+                  </a>
                 </div>
-              </div>
-              {renderWalletSection()}
+              )}
+
+              <div className="my-0 divider" />
             </div>
           </div>
         </div>
