@@ -30,7 +30,7 @@ export const ReceiveTokenInfo = () => {
               selectedSquidAsset.assetSymbol
             } / $${(+routeData.estimate.toAmountUSD).toFixed(2)} USD`
           ) : (
-            "0"
+            "NA"
           )}
         </span>
       </div>

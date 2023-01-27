@@ -20,6 +20,7 @@ import { convertChainName } from "../../../utils/transformers";
 import { AddressShortener, InputWrapper } from "../../common";
 import { TransferSwapStats } from "../parts";
 import { ProgressBar } from "./parts";
+import { SpinnerRoundFilled } from "spinners-react";
 
 export const WaitSquidState = () => {
   const { setSwapStatus, destAddress, srcChain, destChain, asset } =
@@ -39,15 +40,11 @@ export const WaitSquidState = () => {
         txt = "";
       switch (statusResponse.status) {
         case GMPStatus.SRC_GATEWAY_CALLED:
-          txt = `Acknowledged on ${srcChain.chainName}`;
+          txt = `Acknowledged. Processing your transaction.`;
           prog = 2;
           break;
-        // case GMPStatus.DEST_GATEWAY_APPROVED:
-        //   txt = "Received on destination chain";
-        //   prog = 2;
-        //   break;
         case GMPStatus.DEST_EXECUTING:
-          txt = "Executing on destination chain";
+          txt = `Awaiting final execution on ${destChain.chainName}.`;
           prog = 3;
           break;
         case GMPStatus.DEST_EXECUTED:
@@ -86,7 +83,7 @@ export const WaitSquidState = () => {
     },
     [txReceipt, routeData],
     {
-      interval: 3000,
+      interval: 10000,
     }
   );
 
@@ -99,24 +96,35 @@ export const WaitSquidState = () => {
             <div className="h-full">
               <ProgressBar level={progress} numSteps={4} />
               <div className="h-6" />
-              <h2 className="text-lg font-bold text-center capitalize">
-                {statusText}
-              </h2>
-              <div className="h-6" />
+              <div className="flex items-center justify-center h-full py-4 text-base gap-x-2">
+                <SpinnerRoundFilled
+                  size={20}
+                  thickness={147}
+                  color={"#00a5ff"}
+                />
+                <span className="font-semibold">{statusText}</span>
+              </div>
 
               {statusResponse?.axelarTransactionUrl && (
-                <div className="flex items-center">
+                <div className="flex flex-col items-center">
+                  <div className="my-0 divider" />
                   <a
+                    className="flex items-center text-primary hover:underline gap-x-2"
                     href={statusResponse?.axelarTransactionUrl}
                     target="_blank"
-                    className="w-full text-lg font-bold text-center"
+                    rel="noreferrer"
                   >
-                    Axelarscan link
+                    <span>{`View transaction progress on Axelarscan...`}</span>
+                    <Image
+                      src={"/assets/ui/link.svg"}
+                      height={16}
+                      width={16}
+                      alt="axelarscan"
+                    />
                   </a>
+                  <div className="h-2" />
                 </div>
               )}
-
-              <div className="my-0 divider" />
             </div>
           </div>
         </div>
