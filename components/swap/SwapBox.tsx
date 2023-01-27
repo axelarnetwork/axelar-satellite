@@ -31,7 +31,7 @@ export const SwapBox = () => {
   useDetectDepositConfirmation();
   useRestrictAssets();
 
-  const { destChain, asset } = useSwapStore((state) => state);
+  const { destChain, asset, srcChain } = useSwapStore((state) => state);
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
   const squidChains = useSquidStateStore((state) => state.squidChains);
   const isSquidAsset = useSquidStateStore((state) => state.isSquidTrade);
@@ -83,7 +83,9 @@ export const SwapBox = () => {
         </Blockable>
 
         <AssetSelector />
-        <DestinationTokenSelector squidAssets={squidAssets} />
+        <DestinationTokenSelector
+          squidAssets={srcChain?.module === "evm" ? squidAssets : []}
+        />
         <SwapStates />
         {isSquidAsset ? <SquidSwapBtn /> : <GetAddressBtn />}
       </div>
