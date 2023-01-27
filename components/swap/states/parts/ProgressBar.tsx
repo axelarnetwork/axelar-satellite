@@ -10,12 +10,16 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
   level,
   numSteps = 3,
 }) => {
-  const numGridCols = `grid-cols-${(numSteps + (numSteps - 1)).toString()}`;
   return (
     <div
       className={cn(
         "grid items-center w-full mt-2 text-xs font-medium justify-items-center",
-        numGridCols
+        {
+          "grid-cols-5": numSteps === 3,
+        },
+        {
+          "grid-cols-7": numSteps === 4,
+        }
       )}
     >
       <div
