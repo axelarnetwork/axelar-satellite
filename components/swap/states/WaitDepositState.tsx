@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import {
   getSelectedAssetSymbol,
@@ -83,6 +83,7 @@ export const WaitDepositState = () => {
                         src={"/assets/ui/copy.svg"}
                         height={16}
                         width={16}
+                        alt="copy"
                       />
                     </div>
                   </div>

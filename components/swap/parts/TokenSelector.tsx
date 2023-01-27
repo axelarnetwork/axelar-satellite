@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 
 import {
@@ -444,6 +443,7 @@ export const TokenSelector = () => {
             src={"/assets/wallets/metamask.logo.svg"}
             height={proprtions}
             width={proprtions}
+            alt="metamask logo"
           />
         </label>
         <ul
@@ -574,6 +574,7 @@ export const TokenSelector = () => {
                     layout="intrinsic"
                     width={35}
                     height={35}
+                    alt="arrow down"
                   />
                 </div>
               </div>

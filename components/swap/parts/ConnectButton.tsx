@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import { useWalletStore } from "../../../store";
 
@@ -24,7 +24,12 @@ export const ConnectButton = () => {
     return (
       <>
         <div className="relative">
-          <Image src="/assets/ui/wallet.svg" height={16} width={16} />
+          <Image
+            src="/assets/ui/wallet.svg"
+            height={16}
+            width={16}
+            alt="Wallet Icon"
+          />
         </div>
         <span>Connect Wallet</span>
       </>

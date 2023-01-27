@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import { defaultChainImg } from "config/constants";
 import { InputWrapper } from "components/common";

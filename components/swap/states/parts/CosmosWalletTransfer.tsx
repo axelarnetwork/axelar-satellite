@@ -1,26 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import Image from "next/legacy/image";
 
-import {
-  AssetConfig,
-  AssetInfo,
-  CosmosChain,
-} from "@axelar-network/axelarjs-sdk";
+import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { OfflineSigner } from "@cosmjs/launchpad";
-import {
-  SigningStargateClient,
-  StargateClient,
-  StdFee,
-} from "@cosmjs/stargate";
-import {
-  Fee,
-  LCDClient,
-  MsgTransfer,
-  Coin as TerraCoin,
-} from "@terra-money/terra.js";
+import { SigningStargateClient, StdFee } from "@cosmjs/stargate";
+import { Fee, MsgTransfer, Coin as TerraCoin } from "@terra-money/terra.js";
 import { Height as TerraHeight } from "@terra-money/terra.js/dist/core/ibc/core/client/Height";
 import {
-  WalletStatus,
   useConnectedWallet,
   useLCDClient,
   useWallet as useTerraWallet,
@@ -32,7 +18,7 @@ import { BigNumber } from "bignumber.js";
 import cn from "classnames";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { Height } from "cosmjs-types/ibc/core/client/v1/client";
-import { ethers, utils } from "ethers";
+import { utils } from "ethers";
 import Long from "long";
 import toast from "react-hot-toast";
 import { SpinnerRoundFilled } from "spinners-react";
@@ -42,14 +28,12 @@ import { ENVIRONMENT } from "../../../../config/constants";
 import { getCosmosChains } from "../../../../config/web3";
 import {
   useDetectDepositConfirmation,
-  useGetAssetBalance,
   useGetKeplerWallet,
   useHasKeplerWallet,
 } from "../../../../hooks";
 import { evmIshSignDirect } from "../../../../hooks/kepler/evmIsh/evmIshSignDirect";
 import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
 import { curateCosmosChainId } from "../../../../utils";
-import { SwapStatus } from "../../../../utils/enums";
 import { renderGasFee } from "../../../../utils/renderGasFee";
 import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
 
@@ -390,6 +374,7 @@ export const CosmosWalletTransfer = () => {
                 src="/assets/wallets/kepler.logo.svg"
                 height={25}
                 width={25}
+                alt="Keplr"
               />
             </div>
           </button>
@@ -429,6 +414,7 @@ export const CosmosWalletTransfer = () => {
               src="/assets/wallets/kepler.logo.svg"
               height={25}
               width={25}
+              alt="Keplr"
             />
           </div>
         </button>
@@ -455,6 +441,7 @@ export const CosmosWalletTransfer = () => {
                 src="/assets/wallets/terra-station.logo.svg"
                 height={25}
                 width={25}
+                alt="Terra Station"
               />
             </div>
           </button>

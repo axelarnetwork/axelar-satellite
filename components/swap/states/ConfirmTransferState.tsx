@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 
@@ -9,8 +9,7 @@ import { useSwitchNetwork } from "wagmi";
 
 import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
 import { getCosmosChains, getWagmiChains } from "../../../config/web3";
-import { copyToClipboard } from "../../../utils";
-import { AddressShortener, InputWrapper } from "../../common";
+import { InputWrapper } from "../../common";
 import { TransferStats } from "../parts";
 import { ProgressBar } from "./parts";
 
@@ -102,7 +101,12 @@ export const ConfirmTransferState = () => {
             rel="noreferrer"
           >
             <span>{links.text}</span>
-            <Image src={"/assets/ui/link.svg"} height={16} width={16} />
+            <Image
+              src={"/assets/ui/link.svg"}
+              height={16}
+              width={16}
+              alt="link"
+            />
           </a>
         </div>
         {destChain.module === "evm" && (
@@ -125,6 +129,7 @@ export const ConfirmTransferState = () => {
               src={"/assets/wallets/metamask.logo.svg"}
               height={16}
               width={16}
+              alt="metamask"
             />
           </div>
         )}

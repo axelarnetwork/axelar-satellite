@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
@@ -135,6 +135,7 @@ export const SourceChainSelector = () => {
                       e.currentTarget.src = defaultChainImg;
                       e.currentTarget.srcset = defaultChainImg;
                     }}
+                    alt={`${chain.chainName} logo`}
                   />
                   <span className="capitalize">{chain?.chainName}</span>
                 </button>
@@ -163,6 +164,7 @@ export const SourceChainSelector = () => {
                   e.currentTarget.src = defaultChainImg;
                   e.currentTarget.srcset = defaultChainImg;
                 }}
+                alt={`${srcChain?.chainName} logo`}
               />
               <span className="capitalize">
                 {convertChainName(srcChain.chainName)}
@@ -174,6 +176,7 @@ export const SourceChainSelector = () => {
                   layout="intrinsic"
                   width={25}
                   height={25}
+                  alt="arrow down"
                 />
               </div>
             </div>

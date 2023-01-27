@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import {
   getSelectedAssetName,
@@ -47,7 +47,7 @@ export const EvmAssetWarningModal = () => {
     if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) {
       return;
     }
-    if (!srcChain || !destChain) return;
+    if (!(srcChain && destChain)) return;
     if (![srcChain?.module, destChain?.module].includes("evm")) return;
 
     setShowAssetWarning(true);
@@ -108,6 +108,7 @@ export const EvmAssetWarningModal = () => {
                           src={"/assets/ui/copy.svg"}
                           height={16}
                           width={16}
+                          alt="copy address icon"
                         />
                       </div>
                     </div>
@@ -134,6 +135,7 @@ export const EvmAssetWarningModal = () => {
                           src={"/assets/ui/copy.svg"}
                           height={16}
                           width={16}
+                          alt="copy address icon"
                         />
                       </div>
                     </div>

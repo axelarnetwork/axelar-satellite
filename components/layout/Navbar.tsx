@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import { useApplicationStateStore } from "../../store";
 
@@ -16,16 +16,22 @@ const SatelliteLogo = () => {
     <div>
       <div className="relative flex items-center">
         <div className="relative flex items-center w-11 h-11">
-          <Image layout="fill" src="/assets/ui/satellite.logo.svg" />
+          <Image
+            layout="fill"
+            src="/assets/ui/satellite.logo.svg"
+            alt="Satellite Logo"
+          />
         </div>
         <div className="relative ml-4">
           <div className="text-4xl font-bold">Satellite</div>
           <div className="absolute">
             <a href="https://axelar.network">
-              <img
+              <Image
                 className="ml-3"
                 src="/assets/ui/powered.logo.svg"
                 width={150}
+                height={30}
+                alt="Powered by Axelar"
               />
             </a>
           </div>

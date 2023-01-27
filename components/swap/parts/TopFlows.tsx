@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
@@ -157,6 +157,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="polygon"
             />
             <Arrow />
             <Image
@@ -164,6 +165,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="usdc"
             />
             <Arrow />
             <Image
@@ -171,6 +173,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="osmosis"
             />
           </div>
         </li>
@@ -184,6 +187,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="ethereum"
             />
             <Arrow />
             <Image
@@ -191,6 +195,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="usdc"
             />
             <Arrow />
             <Image
@@ -198,6 +203,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="osmosis"
             />
           </div>
         </li>
@@ -211,6 +217,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="ethereum"
             />
             <Arrow />
             <Image
@@ -218,6 +225,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="axelar"
             />
             <Arrow />
             <Image
@@ -225,6 +233,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="axelar"
             />
           </div>
         </li>
@@ -239,6 +248,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="ethereum"
             />
             <Arrow />
             <Image
@@ -246,6 +256,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="weth"
             />
             <Arrow />
             <Image
@@ -253,6 +264,7 @@ export const TopFlows = () => {
               layout="intrinsic"
               width={35}
               height={35}
+              alt="osmosis"
             />
           </div>
         </li>
