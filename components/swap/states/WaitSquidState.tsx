@@ -29,7 +29,9 @@ export const WaitSquidState = () => {
   const { txReceipt, routeData, statusResponse, setStatusResponse } =
     useSquidStateStore();
   const [progress, setProgress] = useState(1);
-  const [statusText, setStatusText] = useState("");
+  const [statusText, setStatusText] = useState(
+    `Waiting for your transaction on ${srcChain.chainName}...`
+  );
 
   useEffect(() => {
     if (statusResponse && statusResponse.status) {
@@ -37,13 +39,13 @@ export const WaitSquidState = () => {
         txt = "";
       switch (statusResponse.status) {
         case GMPStatus.SRC_GATEWAY_CALLED:
-          txt = "Acknowledged on source chain";
-          prog = 1;
-          break;
-        case GMPStatus.DEST_GATEWAY_APPROVED:
-          txt = "Received on destination chain";
+          txt = `Acknowledged on ${srcChain.chainName}`;
           prog = 2;
           break;
+        // case GMPStatus.DEST_GATEWAY_APPROVED:
+        //   txt = "Received on destination chain";
+        //   prog = 2;
+        //   break;
         case GMPStatus.DEST_EXECUTING:
           txt = "Executing on destination chain";
           prog = 3;
@@ -97,7 +99,9 @@ export const WaitSquidState = () => {
             <div className="h-full">
               <ProgressBar level={progress} numSteps={4} />
               <div className="h-6" />
-              <h2 className="text-lg font-bold text-center">{statusText}</h2>
+              <h2 className="text-lg font-bold text-center capitalize">
+                {statusText}
+              </h2>
               <div className="h-6" />
 
               {statusResponse?.axelarTransactionUrl && (
