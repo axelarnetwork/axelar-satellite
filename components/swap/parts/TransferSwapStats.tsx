@@ -73,9 +73,11 @@ export const TransferSwapStats = () => {
           text="Gas Cost (Native / USD-equiv)"
           tooltip={`Gas to be paid to initiate swap on ${srcChain.chainName}`}
           data={
-            `${formatEther(
-              routeData?.estimate.gasCosts[0].amount as string
-            )} ($${routeData?.estimate?.gasCosts[0]?.amountUSD})` || "NA"
+            (routeData &&
+              `${formatEther(
+                routeData?.estimate?.gasCosts[0]?.amount as string
+              )} ($${routeData?.estimate?.gasCosts[0]?.amountUSD})`) ||
+            "NA"
           }
         />
         <Row

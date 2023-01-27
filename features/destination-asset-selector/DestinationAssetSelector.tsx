@@ -18,6 +18,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import { Blockable, InputWrapper } from "components/common";
 import { SquidParamConfig } from "features/squid-param-config/SquidParamConfig";
 import { ARBITRARY_EVM_ADDRESS, NATIVE_ASSET_IDS } from "config/constants";
+import { ReceiveTokenInfo } from "features/destination-asset-selector/ReceiveTokenInfo";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -301,6 +302,7 @@ export const DestinationAssetSelector = ({
               {renderAssetDropdown()}
             </div>
           </Blockable>
+          <ReceiveTokenInfo />
         </div>
       </div>
     </InputWrapper>
