@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import { defaultAssetImg } from "config/constants";
 import { Blockable, InputWrapper } from "components/common";

@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import { defaultAssetImg, defaultChainImg } from "config/constants";
 import { getWagmiChains } from "config/web3";
