@@ -47,7 +47,7 @@ export const AddDestAssetButton = () => {
       .catch((error) => console.log(error));
 
     // add token
-  }, [destChain, asset, switchNetworkAsync, isSquidTrade]);
+  }, [destChain, asset, switchNetworkAsync, isSquidTrade, selectedSquidAsset]);
 
   if (!wagmiConnected) return null;
   if (destChain.module !== "evm") return null;
