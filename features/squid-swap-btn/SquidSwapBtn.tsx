@@ -72,7 +72,6 @@ const SquidSwapBtn = React.memo(() => {
     checkDestAddressFormat(destChain, destAddress);
     reservedAddresses.includes(destAddress) &&
       showErrorMsgAndThrow("Cannot send to this address");
-    await checkMinTransfer(tokensToTransfer, srcChain, destChain, asset);
 
     if (!asset || !routeData) return;
 

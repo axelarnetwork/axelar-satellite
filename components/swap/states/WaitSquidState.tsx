@@ -4,29 +4,18 @@ import Image from "next/image";
 import { StatusResponse } from "@0xsquid/sdk";
 import { GMPStatus } from "@axelar-network/axelarjs-sdk";
 
-import {
-  getSelectedAssetSymbol,
-  useSquidStateStore,
-  useSwapStore,
-} from "../../../store";
+import { useSquidStateStore, useSwapStore } from "../../../store";
 
 import usePoll from "react-use-poll";
 import { squid } from "squid.config";
 import { SwapStatus } from "utils/enums";
-
-import { copyToClipboard } from "../../../utils";
-import { renderGasFee } from "../../../utils/renderGasFee";
-import { convertChainName } from "../../../utils/transformers";
-import { AddressShortener, InputWrapper } from "../../common";
+import { InputWrapper } from "../../common";
 import { TransferSwapStats } from "../parts";
 import { ProgressBar } from "./parts";
 import { SpinnerRoundFilled } from "spinners-react";
 
 export const WaitSquidState = () => {
-  const { setSwapStatus, destAddress, srcChain, destChain, asset } =
-    useSwapStore((state) => state);
-  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
-  const [relayerGasFee, setRelayerGasFee] = useState<string>("");
+  const { setSwapStatus, srcChain, destChain } = useSwapStore((state) => state);
   const { txReceipt, routeData, statusResponse, setStatusResponse } =
     useSquidStateStore();
   const [progress, setProgress] = useState(1);
@@ -58,13 +47,6 @@ export const WaitSquidState = () => {
       setStatusText(txt);
     }
   }, [statusResponse]);
-
-  useEffect(() => {
-    if (!srcChain || !destChain || !asset) return;
-    renderGasFee(srcChain, destChain, asset).then((res) =>
-      setRelayerGasFee(res)
-    );
-  }, [srcChain, destChain, asset]);
 
   usePoll(
     () => {

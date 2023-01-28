@@ -91,9 +91,13 @@ export const TransferSwapStats = () => {
           data={(+(routeData?.estimate?.exchangeRate || 0)).toFixed(5) || "NA"}
         />
         <Row
-          text="Estimate Route Duration"
-          tooltip=""
-          data={routeData?.estimate?.estimatedRouteDuration.toString() || "NA"}
+          text="Estimated Route Duration"
+          tooltip="Estimated time for transaction completion"
+          data={
+            `${(
+              (routeData?.estimate?.estimatedRouteDuration as number) / 60
+            ).toString()} minutes` || "NA"
+          }
         />
         {/* <Row
           text="Expected Amount Received"
