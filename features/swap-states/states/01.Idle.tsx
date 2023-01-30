@@ -8,7 +8,7 @@ import { useSwapStore } from "store";
 
 import { SwapStatus } from "utils/enums";
 
-export const IdleState = () => {
+export const Idle = () => {
   const swapStatus = useSwapStore((state) => state.swapStatus);
 
   if (swapStatus !== SwapStatus.IDLE) return null;

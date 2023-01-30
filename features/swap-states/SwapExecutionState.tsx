@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IdleState } from "features/swap-states/states";
+import { DepositAddressGeneration, Idle } from "features/swap-states/states";
 
 import { useSwapStore } from "store";
 
@@ -9,7 +9,12 @@ export const SwapExecutionState = () => {
 
   return (
     <>
-      <IdleState />
+      <Idle />
+      <DepositAddressGeneration />
+      {/* DepositAddressGenerationState */}
+      {/* WaitForSrcChainTxState */}
+      {/* WaitForDestChainTxState */}
+      {/* TxSummaryState */}
     </>
   );
   return null;
