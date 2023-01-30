@@ -18,7 +18,7 @@
     "@evmos/transactions": "^0.2.8",
     "@keplr-wallet/cosmos": "^0.10.13",
     "@terra-money/terra.js": "^3.1.7",
-    "@terra-money/wallet-provider": "^3.11.1",
+    "@terra-money/wallet-provider": "^3.11.2",
     "animate.css": "^4.1.1",
     "bech32": "^2.0.0",
     "big.js": "^6.2.0",
