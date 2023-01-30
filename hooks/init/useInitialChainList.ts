@@ -79,7 +79,7 @@ export const useInitialChainList = () => {
     });
   }
 
-  async function injectSquidAssets(chains: ChainInfo[]) {
+  async function injectSquidAssetsIntoChains(chains: ChainInfo[]) {
     const newChains: ChainInfo[] = _.cloneDeep(chains);
     newChains.forEach((chain) => {
       const relevantSquidTokens = squidTokens.filter(
@@ -119,7 +119,7 @@ export const useInitialChainList = () => {
       );
       throw error;
     });
-    const uniqueChains = await injectSquidAssets(
+    const uniqueChains = await injectSquidAssetsIntoChains(
       chains.map((_chain) => {
         _chain.assets = _.uniqBy(_chain.assets, (_asset) => _asset.assetSymbol);
         return _chain;
@@ -194,9 +194,32 @@ export const useInitialChainList = () => {
     };
   }
 
+  function injectSquidAssetsIntoAssets(assets: AssetConfig[]) {
+    const newAssets: AssetConfig[] = _.cloneDeep(assets);
+    // console.log("squid tokens", squidTokens);
+    // squidTokens.forEach((token) => {
+    //   newAssets.forEach((asset) => {
+    //     Object.keys(asset.chain_aliases).forEach((chain) => {
+    //       const config = asset.chain_aliases[chain];
+    //       if (
+    //         config.tokenAddress?.toLowerCase() === token.address.toLowerCase()
+    //       ) {
+    //         // @ts-ignore
+    //         config.isSquidToken = true;
+    //       }
+    //       if (chain === "acrechain") debugger;
+    //     });
+    //   });
+    // });
+    // TODO;
+    return newAssets;
+  }
+
   async function loadInitialAssets() {
     const a = await loadAssets({ environment: ENVIRONMENT });
-    const assets = a as AssetConfigExtended[];
+    const assets = injectSquidAssetsIntoAssets(a) as AssetConfigExtended[];
+    console.log("all assets", assets);
+    debugger;
     // if (!squidLoaded) {
     //   await injectSquidAssets();
     //   setSquidLoaded(true);
