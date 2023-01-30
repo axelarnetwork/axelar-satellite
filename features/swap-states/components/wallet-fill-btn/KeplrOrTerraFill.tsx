@@ -56,8 +56,9 @@ export const KeplrOrTerraFill = () => {
   }, [setDestAddress, terraStation]);
 
   if (
-    destChain.module !== "axelarnet" &&
-    destChain.chainName.toLowerCase() !== "terra"
+    destChain.module !== "axelarnet" ||
+    (destChain.module === "axelarnet" &&
+      destChain.chainName.toLowerCase() !== "terra")
   )
     return null;
 
