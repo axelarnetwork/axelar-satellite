@@ -4,7 +4,9 @@ import { getDestCosmosChain, useSwapStore, useWalletStore } from "store";
 import { useGetKeplerWallet } from "hooks";
 import toast from "react-hot-toast";
 
-export const KeplrFill = () => {
+import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
+
+export const KeplrOrTerraFill = () => {
   const destChain = useSwapStore((state) => state.destChain);
   const keplrConnected = useWalletStore((state) => state.keplrConnected);
   const setKeplrConnected = useWalletStore((state) => state.setKeplrConnected);
@@ -13,8 +15,9 @@ export const KeplrFill = () => {
   const destCosmosChain = useSwapStore(getDestCosmosChain);
 
   const keplr = useGetKeplerWallet();
+  const terraStation = useTerraWallet();
 
-  const handleOnClick = useCallback(async () => {
+  const handleOnKeplFill = useCallback(async () => {
     if (!keplr)
       return toast.error("Please install the Keplr wallet extension first!");
 
@@ -37,29 +40,49 @@ export const KeplrFill = () => {
     setKeplrConnected,
   ]);
 
+  const handleOnTerraFill = useCallback(async () => {
+    await terraStation.connect();
+    if (terraStation?.wallets?.length < 1) {
+      console.log({
+        wallets: terraStation?.wallets,
+      });
+      return toast.error(
+        "Please install the Terra Station wallet extension first!"
+      );
+    }
+
+    const address = terraStation.wallets[0].terraAddress;
+    setDestAddress(address);
+  }, [setDestAddress, terraStation]);
+
   if (
-    destChain.module !== "axelarnet" ||
-    destChain.chainName.toLowerCase() === "terra"
+    destChain.module !== "axelarnet" &&
+    destChain.chainName.toLowerCase() !== "terra"
   )
     return null;
 
   return (
-    <div
-      className="bg-gradient-to-b group from-[#9BDBFF] to-[#DA70FF] h-full w-28 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
-      onClick={handleOnClick}
-    >
+    <div className="bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full w-28 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse">
       <div className="flex justify-around items-center h-full w-full bg-gradient-to-b from-[#21374b] to-[#292d4b] rounded-lg p-3">
-        <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF]">
-          {keplrConnected ? "Fill with" : "Connect"}
-        </div>
-
-        <div className="relative flex items-center h-full ">
+        <div className="relative flex items-center h-full">
           <Image
-            className="duration-200 group-hover:-translate-y-1"
+            onClick={handleOnKeplFill}
+            className="duration-200 hover:-translate-y-1"
             height={20}
             width={20}
             src="/assets/wallets/kepler.logo.svg"
-            alt="keplr"
+            alt="terra-station"
+          />
+        </div>
+        <span className="text-xs">or</span>
+        <div className="relative flex items-center h-full">
+          <Image
+            onClick={handleOnTerraFill}
+            className="duration-200 hover:-translate-y-1"
+            height={20}
+            width={20}
+            src="/assets/wallets/terra-station.logo.svg"
+            alt="terra-station"
           />
         </div>
       </div>

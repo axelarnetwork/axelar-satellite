@@ -1,5 +1,6 @@
 import React from "react";
 import { KeplrFill } from "./KeplrFill";
+import { KeplrOrTerraFill } from "./KeplrOrTerraFill";
 import { MetamaskFill } from "./MetamaskFill";
 
 export const WalletFillBtn = () => {
@@ -7,6 +8,7 @@ export const WalletFillBtn = () => {
     <>
       <MetamaskFill />
       <KeplrFill />
+      <KeplrOrTerraFill />
     </>
   );
 };
