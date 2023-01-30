@@ -48,12 +48,7 @@ function MyApp({
   );
 
   return typeof window !== "undefined" ? (
-    <WalletProvider
-      defaultNetwork={terraConfig.defaultNetwork}
-      walletConnectChainIds={terraConfig.walletConnectChainIds}
-    >
-      {main}
-    </WalletProvider>
+    <WalletProvider {...terraConfig}>{main}</WalletProvider>
   ) : (
     <StaticWalletProvider defaultNetwork={terraConfig.defaultNetwork}>
       {main}
