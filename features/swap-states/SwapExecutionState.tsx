@@ -1,16 +1,20 @@
 import React from "react";
 
-import { DepositAddressGeneration, Idle } from "features/swap-states/states";
+import {
+  DepositAddressGeneration,
+  Idle,
+  SrcChainTxConfirmation,
+  SrcChainTxExecution,
+} from "features/swap-states/states";
 
 import { useSwapStore } from "store";
 
 export const SwapExecutionState = () => {
-  const swapStatus = useSwapStore((state) => state.swapStatus);
-
   return (
     <>
       <Idle />
       <DepositAddressGeneration />
+      <SrcChainTxExecution />
       {/* DepositAddressGenerationState */}
       {/* WaitForSrcChainTxState */}
       {/* WaitForDestChainTxState */}
