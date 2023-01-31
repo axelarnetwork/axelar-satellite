@@ -27,7 +27,7 @@ export default {
       coinDenom: "acre",
       coinMinimalDenom: "aacre",
       coinDecimals: 18,
-      coinGeckoId: "unknown",
+      coinGeckoId: "arable-protocol",
     },
   ],
   feeCurrencies: [
