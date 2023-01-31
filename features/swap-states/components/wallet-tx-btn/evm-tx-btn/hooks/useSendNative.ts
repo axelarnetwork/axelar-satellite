@@ -1,1 +1,79 @@
-export function useSendNative() {}
+import { utils } from "ethers";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { getDestChainId, getSrcChainId, useSwapStore } from "store";
+import {
+  useBlockNumber,
+  useNetwork,
+  usePrepareSendTransaction,
+  useSendTransaction,
+} from "wagmi";
+
+export function useSendNative() {
+  const { chain } = useNetwork();
+  const srcChainId = useSwapStore(getSrcChainId);
+  const destChainId = useSwapStore(getDestChainId);
+
+  const asset = useSwapStore((state) => state.asset);
+  const tokensToTransfer = useSwapStore((state) => state.tokensToTransfer);
+  const depositAddress = useSwapStore((state) => state.depositAddress);
+
+  const setTxInfo = useSwapStore((state) => state.setTxInfo);
+
+  const { data: blockNumber } = useBlockNumber({
+    chainId: destChainId as number,
+    enabled: !!destChainId,
+  });
+
+  // prepare tx to detect potential errors
+  const { config: sendTxConfig } = usePrepareSendTransaction({
+    enabled:
+      chain?.id === srcChainId && !!tokensToTransfer && asset?.is_gas_token,
+    chainId: srcChainId as number,
+    request: {
+      to: depositAddress,
+      value: utils.parseUnits(
+        !!tokensToTransfer ? tokensToTransfer : "0",
+        asset?.decimals
+      ),
+    },
+    onError(err: any) {
+      toast.error(
+        `Can't estimate gas limit for transaction. Please verify that you are not trying to transfer more native assets than what you have. Transaction might fail if you proceed.`
+      );
+    },
+  });
+
+  // tx execution
+  const { sendTransaction, isLoading, isSuccess, data, error } =
+    useSendTransaction(sendTxConfig);
+
+  // const { write, isLoading, isSuccess, data, error } =
+  //   useContractWrite(contractWriteConfig);
+
+  // on tx success save tx metadata in store for further use
+  useEffect(() => {
+    if (!isSuccess || !data) return;
+    setTxInfo({
+      sourceTxHash: data.hash,
+      destStartBlockNumber: blockNumber,
+    });
+  }, [isSuccess, data, setTxInfo, blockNumber]);
+
+  // detect tx error
+  useEffect(() => {
+    // error types don't match, maybe update to wagmi will fix
+    if (!error) return;
+    const _error: any = error;
+    if (_error.code === "ACTION_REJECTED") {
+      toast.error("Transaction cancelled");
+      return;
+    }
+    toast.error(_error?.message as string);
+  }, [error]);
+
+  return {
+    sendNative: sendTransaction,
+    loading: isLoading,
+  };
+}

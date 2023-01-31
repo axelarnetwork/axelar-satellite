@@ -3,7 +3,7 @@ import Image from "next/image";
 import { clsx } from "clsx";
 import { getSelectedAssetName, getSrcChainId, useSwapStore } from "store";
 import { useNetwork, useSwitchNetwork } from "wagmi";
-import { useSendErc20 } from "./hooks";
+import { useSendErc20, useSendNative } from "./hooks";
 import { useGetRelayerGasFee } from "hooks";
 import BigNumber from "bignumber.js";
 import toast from "react-hot-toast";
@@ -17,7 +17,8 @@ export const EvmTxBtn = () => {
   const assetName = useSwapStore(getSelectedAssetName);
   const relayerGasFee = useGetRelayerGasFee();
 
-  const { loading, sendErc20 } = useSendErc20();
+  const { loading: loadingErc20Tx, sendErc20 } = useSendErc20();
+  const { loading: loadingNativeTx, sendNative } = useSendNative();
   const { switchNetwork } = useSwitchNetwork({
     chainId: srcChainId,
   });
@@ -40,8 +41,7 @@ export const EvmTxBtn = () => {
       asset?.is_gas_token &&
       asset.native_chain === srcChain.chainName.toLowerCase()
     )
-      // TODO: add wrap logic
-      return;
+      return sendNative?.();
 
     // normal tokens transfer
     sendErc20?.();
@@ -56,7 +56,7 @@ export const EvmTxBtn = () => {
             "mb-5 btn",
             chain?.id === srcChainId && "btn-primary",
             chain?.id !== srcChainId && "btn-outline",
-            loading && "loading"
+            (loadingErc20Tx || loadingNativeTx) && "loading"
           )}
           onClick={handleOnClick}
         >
