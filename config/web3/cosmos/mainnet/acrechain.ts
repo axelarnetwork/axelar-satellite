@@ -43,6 +43,6 @@ export default {
     average: 0.025,
     high: 0.03,
   },
-  features: ["ibc-transfer", "ibc-go"],
+  features: ["ibc-transfer", "ibc-go", "eth-address-gen", "eth-key-sign"],
   chainToAxelarChannelId: "channel-5",
 } as CosmosChain;
