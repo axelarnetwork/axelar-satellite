@@ -1,3 +1,5 @@
+import acrechain from "config/web3/cosmos/mainnet/acrechain";
+import xpla from "config/web3/cosmos/mainnet/xpla";
 import { CosmosChain } from "../interface";
 import { agoric } from "./agoric";
 import assetmantle from "./assetmantle";
@@ -21,6 +23,7 @@ import terraClassic from "./terra_classic";
 import { umee } from "./umee";
 
 export const mainnetChains: CosmosChain[] = [
+  acrechain,
   terra,
   osmosis,
   kujira,
@@ -41,4 +44,5 @@ export const mainnetChains: CosmosChain[] = [
   agoric,
   umee,
   terraClassic,
+  xpla,
 ];
