@@ -2,6 +2,7 @@ import { utils } from "ethers";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { getDestChainId, getSrcChainId, useSwapStore } from "store";
+import { SwapStatus } from "utils/enums";
 import {
   useBlockNumber,
   useNetwork,
@@ -19,6 +20,7 @@ export function useSendNative() {
   const depositAddress = useSwapStore((state) => state.depositAddress);
 
   const setTxInfo = useSwapStore((state) => state.setTxInfo);
+  const setSwapStatus = useSwapStore((state) => state.setSwapStatus);
 
   const { data: blockNumber } = useBlockNumber({
     chainId: destChainId as number,
@@ -58,7 +60,8 @@ export function useSendNative() {
       sourceTxHash: data.hash,
       destStartBlockNumber: blockNumber,
     });
-  }, [isSuccess, data, setTxInfo, blockNumber]);
+    setSwapStatus(SwapStatus.WAIT_FOR_SRC_TX_PROPAGATION);
+  }, [isSuccess, data, setTxInfo, blockNumber, setSwapStatus]);
 
   // detect tx error
   useEffect(() => {
