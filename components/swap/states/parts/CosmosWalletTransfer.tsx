@@ -266,7 +266,12 @@ export const CosmosWalletTransfer = () => {
 
           setIsTxOngoing(true);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          toast.error(
+            `This looks like a new account that is not yet recognized on ${srcChain.chainName}. Please do a simple transfer from Keplr before using this in-app deposit feature.`
+          );
+        });
     } else {
       result = await cosmjs
         .sendIbcTokens(

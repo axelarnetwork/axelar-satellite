@@ -39,9 +39,9 @@ export default {
     },
   ],
   gasPriceStep: {
-    low: 0.01,
-    average: 0.025,
-    high: 0.03,
+    low: 380000000000,
+    average: 850000000000,
+    high: 1000000000000,
   },
   features: ["ibc-transfer", "ibc-go", "eth-address-gen", "eth-key-sign"],
   chainToAxelarChannelId: "channel-0",
