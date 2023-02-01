@@ -12,6 +12,7 @@ specifiers:
   '@ianvs/prettier-plugin-sort-imports': ^3.7.1
   '@keplr-wallet/cosmos': ^0.10.13
   '@keplr-wallet/types': ^0.10.13
+  '@playwright/test': ^1.30.0
   '@terra-money/terra.js': ^3.1.7
   '@terra-money/wallet-provider': ^3.11.2
   '@testing-library/jest-dom': ^5.16.5
@@ -96,6 +97,7 @@ devDependencies:
   '@cosmjs/tendermint-rpc': 0.29.5
   '@ianvs/prettier-plugin-sort-imports': 3.7.1_prettier@2.8.3
   '@keplr-wallet/types': 0.10.24
+  '@playwright/test': 1.30.0
   '@testing-library/jest-dom': 5.16.5
   '@testing-library/react': 13.4.0_ef5jwxihqo6n7gxfmzogljlgcm
   '@types/big.js': 6.1.6
@@ -1879,6 +1881,15 @@ packages:
       picocolors: 1.0.0
       tiny-glob: 0.2.9
       tslib: 2.4.1
+    dev: true
+
+  /@playwright/test/1.30.0:
+    resolution: {integrity: sha512-SVxkQw1xvn/Wk/EvBnqWIq6NLo1AppwbYOjNLmyU0R1RoQ3rLEBtmjTnElcnz8VEtn11fptj1ECxK0tgURhajw==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@types/node': 17.0.42
+      playwright-core: 1.30.0
     dev: true
 
   /@protobufjs/aspromise/1.1.2:
@@ -6465,6 +6476,12 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       find-up: 4.1.0
+    dev: true
+
+  /playwright-core/1.30.0:
+    resolution: {integrity: sha512-7AnRmTCf+GVYhHbLJsGUtskWTE33SwMZkybJ0v6rqR1boxq2x36U7p1vDRV7HO2IwTZgmycracLxPEJI49wu4g==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /pngjs/3.4.0:

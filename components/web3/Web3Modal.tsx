@@ -194,7 +194,7 @@ export const Web3Modal = () => {
   }
 
   return (
-    <div>
+    <div data-testid="web3-modal">
       <input
         ref={modalRef}
         type="checkbox"
