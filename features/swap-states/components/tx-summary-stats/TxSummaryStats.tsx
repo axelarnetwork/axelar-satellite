@@ -5,11 +5,13 @@ import { getWagmiChains } from "config/web3";
 
 import { useSwapStore } from "store";
 
+import { addAssetToMetamask } from "utils/wallet/metamask";
 import { useSwitchNetwork } from "wagmi";
 
 import { BlockExplorerLink } from "./BlockExplorerLink";
 
 export const TxSummaryStats = () => {
+  const asset = useSwapStore((state) => state.asset);
   const destChain = useSwapStore((state) => state.destChain);
   const { switchNetwork } = useSwitchNetwork();
 
@@ -31,7 +33,10 @@ export const TxSummaryStats = () => {
             );
           }}
         >
-          <span className="font-light text-gray-200">
+          <span
+            className="font-light text-gray-200"
+            onClick={() => asset && addAssetToMetamask(asset, destChain)}
+          >
             Add token to Metamask ({destChain.chainName})
           </span>
           <Image
