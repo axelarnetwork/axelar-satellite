@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 
-import { useSwapStore } from "../store";
-
 import { ENVIRONMENT } from "../config/constants";
+import { useSwapStore } from "../store";
 
 export function useFilterSelectableAssetList() {
   const { srcChain, destChain, setAssetList, setAsset, asset, allAssets } =

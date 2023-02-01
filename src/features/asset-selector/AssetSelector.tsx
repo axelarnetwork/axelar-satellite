@@ -1,19 +1,16 @@
 import { useCallback, useRef, useState } from "react";
 import Image from "next/legacy/image";
+import { useOnClickOutside } from "usehooks-ts";
 
-import { defaultAssetImg } from "~/config/constants";
 import { Blockable, InputWrapper } from "~/components/common";
-
+import { defaultAssetImg } from "~/config/constants";
 import { AddAssetButton } from "~/features/add-asset-button";
 import { AssetDropdown } from "~/features/asset-selector/AssetDropdown";
 import { AssetInput } from "~/features/asset-selector/AssetInput";
 import { useAssetFilter } from "~/features/asset-selector/hooks";
 import { MaxButton } from "~/features/max-button";
-
 import { getSelectedAssetName, useSwapStore } from "~/store";
-
 import { AssetConfigExtended } from "~/types";
-import { useOnClickOutside } from "usehooks-ts";
 
 export const AssetSelector = () => {
   const allAssets = useSwapStore((state) => state.allAssets);

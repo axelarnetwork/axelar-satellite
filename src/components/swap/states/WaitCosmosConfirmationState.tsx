@@ -1,10 +1,8 @@
 import React from "react";
-
-import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
-
 import { SpinnerRoundFilled } from "spinners-react";
 
 import { useDetectDestTransferConfirmation } from "../../../hooks";
+import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
 import { truncateEthAddress } from "../../../utils/truncateEthAddress";
 import { AddressShortener, InputWrapper, truncate } from "../../common";
 import { TransferStats } from "../parts";

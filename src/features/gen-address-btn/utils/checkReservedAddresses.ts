@@ -1,5 +1,4 @@
 import { RESERVED_ADDRESSES } from "~/config/constants";
-
 import { showErrorMsgAndThrow } from "~/utils/error";
 
 export function checkReservedAddresses(destAddress: string) {

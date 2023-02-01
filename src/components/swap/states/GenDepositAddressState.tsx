@@ -1,5 +1,4 @@
 import React from "react";
-
 import { SpinnerRoundFilled } from "spinners-react";
 
 import { InputWrapper } from "../../common";

@@ -1,14 +1,12 @@
 import React, { useCallback } from "react";
 import Image from "next/legacy/image";
+import { useSwitchNetwork } from "wagmi";
+import wait from "wait";
 
 import { defaultAssetImg, defaultChainImg } from "~/config/constants";
 import { getWagmiChains } from "~/config/web3";
-
 import { useSwapStore, useWalletStore } from "~/store";
-
 import { addAssetToMetamask } from "~/utils/wallet/metamask";
-import { useSwitchNetwork } from "wagmi";
-import wait from "wait";
 
 export const AddAssetButton = () => {
   const wagmiConnected = useWalletStore((state) => state.wagmiConnected);

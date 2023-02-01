@@ -1,6 +1,6 @@
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-
 import BigNumber from "bignumber.js";
+
 import { AssetConfigExtended } from "~/types";
 import { showErrorMsgAndThrow } from "~/utils/error";
 import { renderGasFee } from "~/utils/renderGasFee";

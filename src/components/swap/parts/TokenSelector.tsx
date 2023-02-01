@@ -1,19 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
-
 import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
-
-import {
-  getSelectedAssetName,
-  useSwapStore,
-  useWalletStore,
-} from "../../../store";
-
 import { SpinnerDotted } from "spinners-react";
-import { AssetConfigExtended } from "~/types";
 import { useOnClickOutside } from "usehooks-ts";
 import { useSwitchNetwork } from "wagmi";
+
+import { AssetConfigExtended } from "~/types";
 
 import { ENVIRONMENT } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
@@ -21,6 +14,11 @@ import { MaxButton } from "../../../features/max-button";
 import { useGetAssetBalance, useGetMaxTransferAmount } from "../../../hooks";
 import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
+import {
+  getSelectedAssetName,
+  useSwapStore,
+  useWalletStore,
+} from "../../../store";
 import { SwapOrigin } from "../../../utils/enums";
 import { roundNumberTo } from "../../../utils/roundNumberTo";
 import { Blockable } from "../../common";

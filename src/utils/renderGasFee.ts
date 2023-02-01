@@ -3,9 +3,9 @@ import {
   AxelarQueryAPI,
   ChainInfo,
 } from "@axelar-network/axelarjs-sdk";
-
 import Big from "big.js";
 import { formatUnits } from "ethers/lib/utils.js";
+
 import { AssetConfigExtended } from "~/types";
 
 import { ENVIRONMENT } from "../config/constants";

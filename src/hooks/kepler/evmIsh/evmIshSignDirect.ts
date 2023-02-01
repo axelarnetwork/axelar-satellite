@@ -8,7 +8,6 @@ import {
   MessageIBCMsgTransfer,
   createTxIBCMsgTransfer,
 } from "@evmos/transactions";
-
 import Long from "long";
 
 import { getCosmosChains } from "../../../config/web3";

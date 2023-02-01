@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
 import { useSwapStore } from "../../store";
-
 import { SwapStatus } from "../../utils/enums";
 
 export const VideoBackground = () => {

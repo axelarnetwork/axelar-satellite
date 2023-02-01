@@ -3,24 +3,13 @@
   "importOrderSeparation": false,
   "importOrderSortSpecifiers": true,
   "importOrder": [
-    "<TYPES>",
-    "^react$",
-    "^next(.*)$",
-    "",
-    "^config(.*)$",
-    "^components(.*)$",
-    "",
-    "^features(.*)$",
-    "",
-    "^@(.*)$",
-    "",
-    "store",
-    "",
+    "^(react/(.*)$)|^(react$)",
+    "^(next/(.*)$)|^(next$)",
     "<THIRD_PARTY_MODULES>",
     "",
-    "^[./]",
+    "^[~/]",
     "",
-    ".css$"
+    "^[./]"
   ],
   "plugins": [
     "@ianvs/prettier-plugin-sort-imports"

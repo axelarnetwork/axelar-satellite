@@ -1,5 +1,4 @@
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
-
 import _ from "lodash";
 import toast from "react-hot-toast";
 

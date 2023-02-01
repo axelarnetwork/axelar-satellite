@@ -1,9 +1,8 @@
 import { FC } from "react";
 import Image from "next/legacy/image";
 
-import { useApplicationStateStore } from "../../../store";
-
 import { SUPPORT_MODAL } from "../../../config/constants";
+import { useApplicationStateStore } from "../../../store";
 import { Link } from "../../common/GetLink";
 
 type SupportProps = {};

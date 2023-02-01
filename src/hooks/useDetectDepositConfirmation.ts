@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-
-import { getDestChainId, useSwapStore } from "../store";
-
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 import { useBlockNumber } from "wagmi";
 
 import { ENVIRONMENT, SOCKET_API } from "../config/constants";
+import { getDestChainId, useSwapStore } from "../store";
 import { buildDepositConfirmationRoomId, buildTokenSentRoomId } from "../utils";
 import { SwapStatus } from "../utils/enums";
 

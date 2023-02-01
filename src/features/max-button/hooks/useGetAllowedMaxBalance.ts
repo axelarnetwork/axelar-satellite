@@ -1,17 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-
-import { getCosmosChains } from "~/config/web3";
-import { CosmosChain } from "~/config/web3/cosmos/interface";
-
-import {
-  getSrcChainId,
-  getSrcTokenAddress,
-  useSwapStore,
-  useWalletStore,
-} from "../../../store";
-
 import { ethers } from "ethers";
-import { getAddress, queryBalance } from "~/utils/wallet/keplr";
 import {
   erc20ABI,
   useAccount,
@@ -20,6 +8,16 @@ import {
   useProvider,
 } from "wagmi";
 
+import { getCosmosChains } from "~/config/web3";
+import { CosmosChain } from "~/config/web3/cosmos/interface";
+import { getAddress, queryBalance } from "~/utils/wallet/keplr";
+
+import {
+  getSrcChainId,
+  getSrcTokenAddress,
+  useSwapStore,
+  useWalletStore,
+} from "../../../store";
 import { Hash } from "../../../types";
 
 const { utils } = ethers;

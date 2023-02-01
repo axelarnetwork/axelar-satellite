@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/legacy/image";
+import { useOnClickOutside } from "usehooks-ts";
 
 import {
   getSelectedAsssetIsWrapped,
@@ -7,8 +8,6 @@ import {
   getWrappedAssetName,
   useSwapStore,
 } from "~/store";
-
-import { useOnClickOutside } from "usehooks-ts";
 
 import { Blockable, InputWrapper } from "../../common";
 

@@ -1,12 +1,11 @@
 import { FC, useState } from "react";
 
-import { useApplicationStateStore } from "../../../store";
-
 import {
   FAQ_MODAL,
   docsLinks,
   tokenContractDocs,
 } from "../../../config/constants";
+import { useApplicationStateStore } from "../../../store";
 
 type FAQProps = {};
 

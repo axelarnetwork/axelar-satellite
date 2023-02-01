@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-
 import { AxelarQueryAPI, ChainInfo } from "@axelar-network/axelarjs-sdk";
-
-import { useSwapStore } from "../store";
-
 import { formatUnits } from "ethers/lib/utils.js";
 
 import { ENVIRONMENT } from "../config/constants";
+import { useSwapStore } from "../store";
 
 export const useGetMaxTransferAmount = () => {
   const { asset, srcChain, destChain } = useSwapStore((state) => state);

@@ -1,5 +1,5 @@
-import Image from "next/legacy/image";
 import { useEffect, useState } from "react";
+import Image from "next/legacy/image";
 import { SpinnerDotted } from "spinners-react";
 
 import { connectToKeplr } from "~/components/web3/utils/handleOnKeplrConnect";

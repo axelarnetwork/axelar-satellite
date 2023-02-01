@@ -1,13 +1,11 @@
 import { useState } from "react";
-
-import { ENVIRONMENT } from "~/config/constants";
-
 import {
   AxelarAssetTransfer,
   AxelarQueryAPI,
 } from "@axelar-network/axelarjs-sdk";
-
 import { constants } from "ethers";
+
+import { ENVIRONMENT } from "~/config/constants";
 import { AssetConfigExtended } from "~/types";
 import { showErrorMsgAndThrow } from "~/utils/error";
 

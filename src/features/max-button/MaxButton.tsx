@@ -1,7 +1,6 @@
 import React from "react";
 
 import { useSwapStore } from "../../store";
-
 import { useGetAllowedMaxBalance } from "./hooks/useGetAllowedMaxBalance";
 
 export const MaxButton = () => {

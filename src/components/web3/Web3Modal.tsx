@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/legacy/image";
-
 import { OfflineSigner } from "@cosmjs/proto-signing";
-
-import { useSwapStore, useWalletStore } from "../../store";
-
 import toast from "react-hot-toast";
 import { useConnect } from "wagmi";
 
@@ -13,6 +9,7 @@ import { CosmosChain } from "../../config/web3/cosmos/interface";
 import { useConnectTerraStation } from "../../hooks/terra/useConnectTerraStation";
 import { useIsTerraConnected } from "../../hooks/terra/useIsTerraConnected";
 import { useIsTerraInstalled } from "../../hooks/terra/useIsTerraInstalled";
+import { useSwapStore, useWalletStore } from "../../store";
 import { connectToKeplr } from "./utils/handleOnKeplrConnect";
 
 const DownloadButton = () => (

@@ -1,12 +1,11 @@
 import { FC } from "react";
 
-import { useApplicationStateStore } from "../../../store";
-
 import {
   GETTING_STARTED_MODAL,
   docsLinks,
   tokenContractDocs,
 } from "../../../config/constants";
+import { useApplicationStateStore } from "../../../store";
 import { Link } from "../../common/GetLink";
 
 type GettingStartedProps = {};

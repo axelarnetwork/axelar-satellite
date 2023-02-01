@@ -1,6 +1,6 @@
 import React from "react";
-
 import cn from "classnames";
+
 import { AssetSelector } from "~/features/asset-selector";
 import { DestChainSelector } from "~/features/dest-chain-selector";
 import { GetAddressBtn } from "~/features/gen-address-btn";
@@ -37,7 +37,9 @@ export const SwapBox = () => {
         >
           {env !== "mainnet" && (
             <div
-              className={`font-bold text-white bg-red-500 border-0 badge badge-primary`}
+              className={
+                "font-bold text-white bg-red-500 border-0 badge badge-primary"
+              }
             >
               {env.toUpperCase()}
             </div>

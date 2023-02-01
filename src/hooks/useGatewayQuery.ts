@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-
-import { useSwapStore } from "../store";
-
 import { BigNumber } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import { useContractRead } from "wagmi";
 
 import { getWagmiChains } from "../config/web3";
 import gatewayABI from "../data/abi/axelarGateway.json";
+import { useSwapStore } from "../store";
 import { useAxelarRPCQuery } from "./api/useAxelarRPCQuery";
 
 export const useGatewayQuery = () => {

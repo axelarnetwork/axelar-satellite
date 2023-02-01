@@ -1,12 +1,10 @@
 import type { AppProps } from "next/app";
-
 import {
   StaticWalletProvider,
   WalletControllerChainOptions,
   WalletProvider,
   getChainOptions,
 } from "@terra-money/wallet-provider";
-
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { WagmiConfig } from "wagmi";
@@ -14,7 +12,6 @@ import { WagmiConfig } from "wagmi";
 import { GoogleAnalytics } from "../components/scripts";
 import { GlobalHooksContainer, Web3Modal } from "../components/web3";
 import { wagmiClient } from "../wagmi.config";
-
 import "animate.css";
 import "../styles/globals.css";
 import "../styles/loader.css";

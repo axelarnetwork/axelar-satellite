@@ -1,20 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { useOnClickOutside } from "usehooks-ts";
 
 import { InputWrapper } from "~/components/common";
 
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-
+import { ASSET_RESTRICTIONS, ENVIRONMENT } from "../../../config/constants";
 import {
   getRestrictedAssetIsSelected,
   getSelectedAssetSymbol,
   useSwapStore,
 } from "../../../store";
-
-import { useOnClickOutside } from "usehooks-ts";
-
-import { ASSET_RESTRICTIONS, ENVIRONMENT } from "../../../config/constants";
 import { extractDenom } from "../../../utils/extractDenom";
 import { convertChainName } from "../../../utils/transformers";
 

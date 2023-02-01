@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
+import classNames from "classnames";
 
 import { AssetItem } from "~/features/asset-selector/AssetDropdownItem";
 import { useSwitchAsset } from "~/features/asset-selector/hooks";
-
 import { useSwapStore } from "~/store";
-
-import classNames from "classnames";
 import { AssetConfigExtended } from "~/types";
 
 interface Props {

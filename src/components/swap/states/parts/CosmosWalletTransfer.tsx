@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/legacy/image";
-
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { OfflineSigner } from "@cosmjs/launchpad";
 import { SigningStargateClient, StdFee } from "@cosmjs/stargate";
@@ -11,9 +10,6 @@ import {
   useLCDClient,
   useWallet as useTerraWallet,
 } from "@terra-money/wallet-provider";
-
-import { useSwapStore, useWalletStore } from "../../../../store";
-
 import { BigNumber } from "bignumber.js";
 import cn from "classnames";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
@@ -33,6 +29,7 @@ import {
 } from "../../../../hooks";
 import { evmIshSignDirect } from "../../../../hooks/kepler/evmIsh/evmIshSignDirect";
 import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
+import { useSwapStore, useWalletStore } from "../../../../store";
 import { curateCosmosChainId } from "../../../../utils";
 import { renderGasFee } from "../../../../utils/renderGasFee";
 import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";

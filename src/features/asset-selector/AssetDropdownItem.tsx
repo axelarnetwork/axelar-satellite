@@ -1,17 +1,14 @@
 import React from "react";
 import Image from "next/legacy/image";
+import classNames from "classnames";
 
 import { defaultAssetImg } from "~/config/constants";
-
 import { useSwitchAsset } from "~/features/asset-selector/hooks";
 import {
   assetIsCompatibleBetweenChains,
   renderIncompatibilityMsg,
 } from "~/features/asset-selector/utils";
-
 import { useSwapStore } from "~/store";
-
-import classNames from "classnames";
 import { AssetConfigExtended } from "~/types";
 
 interface Props {

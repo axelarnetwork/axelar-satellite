@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/legacy/image";
-
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
-
-import {
-  getDestChainId,
-  getSelectedAssetSymbol,
-  getSrcChainId,
-  getSrcTokenAddress,
-  useSwapStore,
-  useWalletStore,
-} from "../../../../store";
-
 import { BigNumber } from "bignumber.js";
 import cn from "classnames";
 import { utils } from "ethers";
@@ -33,6 +22,14 @@ import {
 import { erc20ABI } from "wagmi";
 
 import { ENVIRONMENT } from "../../../../config/constants";
+import {
+  getDestChainId,
+  getSelectedAssetSymbol,
+  getSrcChainId,
+  getSrcTokenAddress,
+  useSwapStore,
+  useWalletStore,
+} from "../../../../store";
 import { Hash } from "../../../../types";
 import { renderGasFee } from "../../../../utils/renderGasFee";
 

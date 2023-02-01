@@ -1,10 +1,8 @@
 import React from "react";
-
-import { useWalletStore } from "../../store";
-
 import { useAccount } from "wagmi";
 
 import { AXELARSCAN_URL } from "../../config/constants";
+import { useWalletStore } from "../../store";
 
 export const PageHeader = () => {
   const wagmiConnected = useWalletStore((state) => state.wagmiConnected);

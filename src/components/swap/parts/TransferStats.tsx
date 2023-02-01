@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/legacy/image";
 
-import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
-
 import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
 import { USDC_POOLS } from "../../../data/pools";
 import { useGetMaxTransferAmount } from "../../../hooks/useGetMaxTransferAmount";
+import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
 import { copyToClipboard } from "../../../utils";
 import { SwapStatus } from "../../../utils/enums";
 import { renderGasFee } from "../../../utils/renderGasFee";

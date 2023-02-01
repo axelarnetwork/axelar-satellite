@@ -1,16 +1,13 @@
 import React from "react";
 import Image from "next/legacy/image";
-
 import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
-
-import { useSwapStore, useWalletStore } from "../../../store";
-
 import toast from "react-hot-toast";
 import { useAccount, useConnect } from "wagmi";
 
 import { getCosmosChains } from "../../../config/web3";
 import { useGetKeplerWallet } from "../../../hooks";
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
+import { useSwapStore, useWalletStore } from "../../../store";
 
 export const AddressFiller = () => {
   const { address } = useAccount();

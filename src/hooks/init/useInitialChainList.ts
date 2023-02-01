@@ -1,14 +1,10 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
-
 import {
   AssetConfig,
   ChainInfo,
   loadAssets,
 } from "@axelar-network/axelarjs-sdk";
-
-import { useSwapStore } from "../../store";
-
 import _ from "lodash";
 import toast from "react-hot-toast";
 
@@ -19,6 +15,7 @@ import {
   DISABLED_CHAIN_NAMES,
   ENVIRONMENT,
 } from "../../config/constants";
+import { useSwapStore } from "../../store";
 import { AssetConfigExtended, RouteQuery } from "../../types";
 import { addNativeAssets, loadAllChains } from "../../utils/api";
 

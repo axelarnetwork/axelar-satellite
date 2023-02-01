@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/legacy/image";
+import cn from "classnames";
+import { useAccount } from "wagmi";
 
+import { tokenContractDocs } from "../../config/constants";
+import { useGetAssetBalance } from "../../hooks";
 import {
   getSelectedAssetName,
   getSelectedAssetNameDestChain,
@@ -11,12 +15,6 @@ import {
   isAXLToken,
   useSwapStore,
 } from "../../store";
-
-import cn from "classnames";
-import { useAccount } from "wagmi";
-
-import { tokenContractDocs } from "../../config/constants";
-import { useGetAssetBalance } from "../../hooks";
 import { copyToClipboard } from "../../utils";
 import { SwapStatus } from "../../utils/enums";
 import { AddressShortener } from "../common";

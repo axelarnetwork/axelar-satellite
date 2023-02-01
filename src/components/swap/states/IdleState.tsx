@@ -1,7 +1,6 @@
 import React from "react";
 
 import { useSwapStore } from "../../../store";
-
 import { InputWrapper } from "../../common";
 import { AddressFiller, TransferStats } from "../parts";
 

@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
 import Image from "next/legacy/image";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import classNames from "classnames";
 
 import { defaultChainImg } from "~/config/constants";
-
 import { useSwitchSrcChain } from "~/features/src-chain-selector/hooks";
-
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-
-import classNames from "classnames";
 
 interface Props {
   dropdownOpen: boolean;

@@ -7,9 +7,7 @@ import {
   checkMinTransfer,
   checkReservedAddresses,
 } from "~/features/gen-address-btn/utils";
-
 import { getReservedAddresses, getTransferType, useSwapStore } from "~/store";
-
 import { SwapStatus } from "~/utils/enums";
 import { showErrorMsgAndThrow } from "~/utils/error";
 

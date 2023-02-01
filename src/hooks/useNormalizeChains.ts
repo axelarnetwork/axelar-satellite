@@ -1,11 +1,9 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
-
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { toast } from "react-hot-toast";
 
 import { useSwapStore } from "../store";
-
-import { toast } from "react-hot-toast";
 
 /**
  * Make sure that the chains that have been selected have an asset in common

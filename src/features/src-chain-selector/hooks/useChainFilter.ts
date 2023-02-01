@@ -1,9 +1,7 @@
 import { useEffect } from "react";
-
-import { ASSET_RESTRICTIONS } from "~/config/constants";
-
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
+import { ASSET_RESTRICTIONS } from "~/config/constants";
 import { useSwapStore } from "~/store";
 
 // TODO: abstract into global hook since it's used in src-chain & dest-chain selectors

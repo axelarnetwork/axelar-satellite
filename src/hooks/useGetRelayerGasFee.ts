@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { useSwapStore } from "store";
-import { renderGasFee } from "utils/renderGasFee";
+
+import { useSwapStore } from "~/store";
+import { renderGasFee } from "~/utils/renderGasFee";
 
 export function useGetRelayerGasFee() {
   const srcChain = useSwapStore((state) => state.srcChain);

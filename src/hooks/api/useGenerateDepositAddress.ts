@@ -2,9 +2,9 @@ import {
   AxelarAssetTransfer,
   AxelarQueryAPI,
 } from "@axelar-network/axelarjs-sdk";
-
 import { constants } from "ethers";
 import { useMutation } from "react-query";
+
 import { AssetConfigExtended } from "~/types";
 
 import { ENVIRONMENT } from "../../config/constants";

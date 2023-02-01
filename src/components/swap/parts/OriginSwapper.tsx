@@ -1,9 +1,7 @@
 import React from "react";
-
-import { useSwapStore } from "../../../store";
-
 import cn from "classnames";
 
+import { useSwapStore } from "../../../store";
 import { SwapOrigin } from "../../../utils/enums";
 
 const tooltipMessage = `Select "exchange" if you plan on executing a transfer from an exchange wallet. Satellite will generate a deposit address. You can wire your funds directly from your favourite exchange.`;

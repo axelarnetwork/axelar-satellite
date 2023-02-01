@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import {
   WalletStatus,
   useWallet as useTerraWallet,

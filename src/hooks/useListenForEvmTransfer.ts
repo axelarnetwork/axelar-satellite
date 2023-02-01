@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-
-import { useSwapStore } from "../store";
-
 import { useContract, useContractRead } from "wagmi";
 import { erc20ABI } from "wagmi";
 
+import { useSwapStore } from "../store";
 import { SwapStatus } from "../utils/enums";
 
 export const useListenForEvmTransfer = () => {

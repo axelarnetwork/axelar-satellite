@@ -1,8 +1,7 @@
 import React, { PropsWithChildren } from "react";
+import cn from "classnames";
 
 import { useSwapStore } from "~/store";
-
-import cn from "classnames";
 
 import { SwapStatus } from "../../utils/enums";
 

@@ -1,7 +1,6 @@
 import { OfflineSigner } from "@cosmjs/launchpad";
 import { QueryClient, SigningStargateClient } from "@cosmjs/stargate";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
-
 import {
   QueryBalanceRequest,
   QueryBalanceResponse,

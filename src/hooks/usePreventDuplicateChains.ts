@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 import { useSwapStore } from "../store";
