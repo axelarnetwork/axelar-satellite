@@ -83,7 +83,7 @@ export const SrcChainTxPropagation = () => {
           <div className="flex flex-col items-center my-2 gap-x-5">
             <div className="h-full">
               <ProgressBar currentLevel={2} maxLevels={4} />
-              <div className="flex items-center gap-x-2">
+              <div className="flex items-center mt-8 gap-x-2">
                 <SpinnerRoundFilled
                   className="text-blue-500"
                   size={20}

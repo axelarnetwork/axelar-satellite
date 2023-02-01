@@ -92,7 +92,7 @@ export const SrcChainTxConfirmation = () => {
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">
             <div className="relative flex flex-col h-full">
-              <ProgressBar currentLevel={4} maxLevels={4} />
+              <ProgressBar currentLevel={3} maxLevels={4} />
               <div className="flex items-center justify-center h-full py-4 mt-auto text-xs gap-x-2">
                 {renderConfirmations()}
               </div>
