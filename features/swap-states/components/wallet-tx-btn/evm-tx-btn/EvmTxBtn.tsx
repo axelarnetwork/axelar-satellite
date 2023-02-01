@@ -1,12 +1,15 @@
 import React from "react";
 import Image from "next/image";
-import { clsx } from "clsx";
+
 import { getSelectedAssetName, getSrcChainId, useSwapStore } from "store";
-import { useNetwork, useSwitchNetwork } from "wagmi";
-import { useSendErc20, useSendNative } from "./hooks";
-import { useGetRelayerGasFee } from "hooks";
+
 import BigNumber from "bignumber.js";
+import { clsx } from "clsx";
+import { useGetRelayerGasFee } from "hooks";
 import toast from "react-hot-toast";
+import { useNetwork, useSwitchNetwork } from "wagmi";
+
+import { useSendErc20, useSendNative } from "./hooks";
 
 export const EvmTxBtn = () => {
   const { chain } = useNetwork();
@@ -46,6 +49,8 @@ export const EvmTxBtn = () => {
     // normal tokens transfer
     sendErc20?.();
   }
+
+  if (srcChain.module !== "evm") return null;
 
   return (
     <div>
