@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 
 import { AddressShortener, InputWrapper } from "components/common";
-import { ProgressBar } from "components/swap/states/parts";
 
 import { getSelectedAssetSymbol, useSwapStore } from "store";
 
@@ -11,7 +10,7 @@ import { copyToClipboard } from "utils";
 import { SwapStatus } from "utils/enums";
 import { convertChainName } from "utils/transformers";
 
-import { WalletTxBtn } from "../components/wallet-tx-btn";
+import { ProgressBar, WalletTxBtn } from "../components";
 
 export const SrcChainTxExecution = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -30,8 +29,7 @@ export const SrcChainTxExecution = () => {
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">
             <div className="h-full">
-              <ProgressBar level={2} />
-
+              <ProgressBar currentLevel={2} maxLevels={4} />
               <div className="flex items-center justify-center py-4 text-sm gap-x-2">
                 <div>
                   <label className="block text-center">

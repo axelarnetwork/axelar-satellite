@@ -10,6 +10,8 @@ import { Hash } from "types";
 import { SwapStatus } from "utils/enums";
 import { useWaitForTransaction } from "wagmi";
 
+import { ProgressBar } from "../components";
+
 export const SrcChainTxPropagation = () => {
   const swapStatus = useSwapStore((state) => state.swapStatus);
 
@@ -79,28 +81,31 @@ export const SrcChainTxPropagation = () => {
       <InputWrapper className="h-auto">
         <div className="h-full space-x-2">
           <div className="flex flex-col items-center my-2 gap-x-5">
-            <div className="flex items-center gap-x-2">
-              <SpinnerRoundFilled
-                className="text-blue-500"
-                size={20}
-                color="#00a6ff"
-              />
-              <span className="text-sm">
-                Waiting for{" "}
-                {Math.min(
-                  numConfirmationsSoFar,
-                  srcChain.confirmLevel as number
-                )}
-                /{srcChain.confirmLevel} confirmations before forwarding to
-                Axelar...
-              </span>
-            </div>
-            <div className="flex items-center mt-2 gap-x-2">
-              <progress
-                className="w-56 progress progress-success"
-                value={numConfirmationsSoFar}
-                max={srcChain.confirmLevel}
-              />
+            <div className="h-full">
+              <ProgressBar currentLevel={2} maxLevels={4} />
+              <div className="flex items-center gap-x-2">
+                <SpinnerRoundFilled
+                  className="text-blue-500"
+                  size={20}
+                  color="#00a6ff"
+                />
+                <span className="text-sm">
+                  Waiting for{" "}
+                  {Math.min(
+                    numConfirmationsSoFar,
+                    srcChain.confirmLevel as number
+                  )}
+                  /{srcChain.confirmLevel} confirmations before forwarding to
+                  Axelar...
+                </span>
+              </div>
+              <div className="flex items-center mt-2 gap-x-2">
+                <progress
+                  className="w-56 progress progress-success"
+                  value={numConfirmationsSoFar}
+                  max={srcChain.confirmLevel}
+                />
+              </div>
             </div>
           </div>
         </div>
