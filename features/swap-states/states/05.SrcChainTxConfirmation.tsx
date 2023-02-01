@@ -8,11 +8,10 @@ import { getDestChainId, getSelectedAssetSymbol, useSwapStore } from "store";
 
 import { useDetectUnwrapTransfer } from "hooks";
 import { SpinnerRoundFilled } from "spinners-react";
-import { Hash } from "types";
 import { SwapStatus } from "utils/enums";
-import { erc20ABI, useContractEvent, useWaitForTransaction } from "wagmi";
+import { erc20ABI, useContractEvent } from "wagmi";
 
-export const SrcChainTxPropagation = () => {
+export const SrcChainTxConfirmation = () => {
   const {
     asset,
     srcChain,
@@ -21,7 +20,6 @@ export const SrcChainTxPropagation = () => {
     setSwapStatus,
     txInfo,
     setTxInfo,
-    depositAddress,
   } = useSwapStore((state) => state);
 
   const chainAlias = destChain.chainName?.toLowerCase();
@@ -38,6 +36,9 @@ export const SrcChainTxPropagation = () => {
     eventName: "Transfer",
     listener(...event: any) {
       if (event[3].blockNumber < Number(txInfo.destStartBlockNumber)) return;
+      console.log({
+        event,
+      });
       if (event[1] === destAddress) {
         setTxInfo({
           destTxHash: event[3]?.transactionHash,
@@ -46,6 +47,10 @@ export const SrcChainTxPropagation = () => {
       }
     },
   });
+
+  const swapStatus = useSwapStore((state) => state.swapStatus);
+
+  if (swapStatus !== SwapStatus.WAIT_FOR_CONFIRMATION) return null;
 
   function renderConfirmations() {
     return (

@@ -3,8 +3,10 @@ import React from "react";
 import {
   DepositAddressGeneration,
   Idle,
+  SrcChainTxConfirmation,
   SrcChainTxExecution,
   SrcChainTxPropagation,
+  TxSummary,
 } from "features/swap-states/states";
 
 export const SwapExecutionState = () => {
@@ -14,11 +16,8 @@ export const SwapExecutionState = () => {
       <DepositAddressGeneration />
       <SrcChainTxExecution />
       <SrcChainTxPropagation />
-      {/* DepositAddressGenerationState */}
-      {/* WaitForSrcChainTxState */}
-      {/* WaitForDestChainTxState */}
-      {/* TxSummaryState */}
+      <SrcChainTxConfirmation />
+      <TxSummary />
     </>
   );
-  return null;
 };
