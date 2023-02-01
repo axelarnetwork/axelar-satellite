@@ -1,7 +1,6 @@
 import React from "react";
 
 import { InputWrapper } from "components/common";
-import { TransferStats } from "components/swap/parts";
 import { ProgressBar } from "components/swap/states/parts";
 
 import { useSwapStore } from "store";
@@ -16,7 +15,6 @@ export const DepositAddressGeneration = () => {
 
   return (
     <>
-      <TransferStats />
       <InputWrapper className="h-1 min-h-[10rem]">
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">

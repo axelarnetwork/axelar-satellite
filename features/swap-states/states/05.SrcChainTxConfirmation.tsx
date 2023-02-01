@@ -1,7 +1,6 @@
 import React from "react";
 
 import { InputWrapper, truncate } from "components/common";
-import { TransferStats } from "components/swap/parts";
 import { ProgressBar } from "components/swap/states/parts";
 
 import { getDestChainId, getSelectedAssetSymbol, useSwapStore } from "store";
@@ -88,7 +87,6 @@ export const SrcChainTxConfirmation = () => {
 
   return (
     <>
-      <TransferStats />
       <InputWrapper className="h-auto">
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import { ENVIRONMENT } from "config/constants";
 import { InputWrapper } from "components/common";
-import { TransferStats } from "components/swap/parts";
 
 import { getSrcChainId, useSwapStore } from "store";
 
@@ -43,7 +42,6 @@ export const SrcChainTxPropagation = () => {
   ) {
     return (
       <>
-        <TransferStats />
         <InputWrapper className="h-auto">
           <div className="h-full space-x-2">
             <div className="flex flex-col items-center my-2 gap-x-5">
@@ -78,7 +76,6 @@ export const SrcChainTxPropagation = () => {
 
   return (
     <>
-      <TransferStats />
       <InputWrapper className="h-auto">
         <div className="h-full space-x-2">
           <div className="flex flex-col items-center my-2 gap-x-5">

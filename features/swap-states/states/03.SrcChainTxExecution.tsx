@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 
 import { AddressShortener, InputWrapper } from "components/common";
-import { TransferStats } from "components/swap/parts";
 import { ProgressBar } from "components/swap/states/parts";
 
 import { getSelectedAssetSymbol, useSwapStore } from "store";
@@ -27,7 +26,6 @@ export const SrcChainTxExecution = () => {
 
   return (
     <>
-      <TransferStats />
       <InputWrapper className="h-auto">
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">

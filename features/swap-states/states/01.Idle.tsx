@@ -1,7 +1,5 @@
 import React from "react";
 
-import { TransferStats } from "components/swap/parts";
-
 import { AddressFiller } from "features/swap-states/components";
 
 import { useSwapStore } from "store";
@@ -15,7 +13,6 @@ export const Idle = () => {
 
   return (
     <>
-      <TransferStats />
       <AddressFiller />
     </>
   );

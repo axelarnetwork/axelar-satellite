@@ -1,5 +1,7 @@
 import React from "react";
 
+import { TransferStats } from "components/swap/parts";
+
 import {
   DepositAddressGeneration,
   Idle,
@@ -12,6 +14,7 @@ import {
 export const SwapExecutionState = () => {
   return (
     <>
+      <TransferStats />
       <Idle />
       <DepositAddressGeneration />
       <SrcChainTxExecution />
