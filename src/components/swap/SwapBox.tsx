@@ -1,11 +1,11 @@
 import React from "react";
 
+import cn from "classnames";
 import { AssetSelector } from "~/features/asset-selector";
 import { DestChainSelector } from "~/features/dest-chain-selector";
 import { GetAddressBtn } from "~/features/gen-address-btn";
 import { SrcChainSelector } from "~/features/src-chain-selector";
-
-import cn from "classnames";
+import { SwapExecutionState } from "~/features/swap-states";
 
 import { ENVIRONMENT as env } from "../../config/constants";
 import {
@@ -60,7 +60,8 @@ export const SwapBox = () => {
 
         <AssetSelector />
         <DestinationTokenSelector />
-        <SwapStates />
+        {/* <SwapStates /> */}
+        <SwapExecutionState />
         <GetAddressBtn />
       </div>
     </div>

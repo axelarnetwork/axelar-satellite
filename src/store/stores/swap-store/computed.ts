@@ -1,11 +1,12 @@
-import { ASSET_RESTRICTIONS, ENVIRONMENT } from "~/config/constants";
-import { getWagmiChains } from "~/config/web3";
-
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { ChainInfo as KeplrChainInfo } from "@keplr-wallet/types";
 
 import memoize from "proxy-memoize";
+import { ASSET_RESTRICTIONS, ENVIRONMENT } from "~/config/constants";
+import { getCosmosChains, getWagmiChains } from "~/config/web3";
 import { AssetConfigExtended } from "~/types";
 
+// TODO: should be named getWagmiSrcChainId
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   if (!state.srcChain) return undefined;
   const chains = getWagmiChains();
@@ -16,6 +17,18 @@ export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
   );
   return chain?.id;
 });
+
+// useful for extracting the cosmos chain id
+export const getDestCosmosChain = memoize(
+  (state: { allAssets: AssetConfigExtended[]; destChain: ChainInfo }) => {
+    const chain = getCosmosChains(state.allAssets).find(
+      (_chain) =>
+        _chain.chainIdentifier === state.destChain.chainName?.toLowerCase()
+    );
+    if (!chain) return null;
+    return chain as KeplrChainInfo;
+  }
+);
 
 export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
   if (!state.destChain) return null;

@@ -1,8 +1,8 @@
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
-import { AssetConfigExtended } from "~/types";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import { AssetConfigExtended } from "~/types";
 
 import { ENVIRONMENT } from "../../../config/constants";
 import { SwapOrigin, SwapStatus } from "../../../utils/enums";
