@@ -62,7 +62,7 @@ export const SrcChainTxPropagation = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center mt-2 gap-x-2">
+              <div className="flex items-center justify-center w-full mt-2 gap-x-2">
                 <progress
                   className="w-56 progress progress-success"
                   value={numConfirmationsSoFar}
