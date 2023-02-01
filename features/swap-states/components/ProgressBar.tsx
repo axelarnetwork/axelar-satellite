@@ -23,8 +23,11 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
         </div>
         {level < maxLevels && (
           <progress
-            className="min-w-[20px] w-full h-1 progress progress-primary"
-            value={currentLevel < level ? 0 : 1}
+            className={clsx(
+              "min-w-[20px] w-full h-1 progress progress-primary",
+              level >= currentLevel && "opacity-30"
+            )}
+            value={1}
           />
         )}
       </>
