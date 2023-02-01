@@ -205,7 +205,7 @@ const useGetKeplerBalance = () => {
     if (srcChain.module !== "axelarnet" || !keplrConnected) return;
     setIsLoading(true);
     updateBalance().finally(() => setIsLoading(false));
-  }, [srcChain.module, swapStatus, asset, keplrConnected]);
+  }, [srcChain, swapStatus, asset, keplrConnected]);
 
   async function updateBalance() {
     const cosmosChains = getCosmosChains(allAssets);
