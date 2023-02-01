@@ -65,7 +65,6 @@ export const SrcChainTxExecution = () => {
                 </div>
               </div>
               <WalletTxBtn />
-              {/* {renderWalletSection()} */}
             </div>
           </div>
         </div>
