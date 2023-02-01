@@ -63,8 +63,8 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   arbitrum: {
     pairs: ["axlUSDC/USDC"],
-    dex: "Curve",
-    url: "https://curve.fi/#/arbitrum/pools/factory-v2-64/swap",
+    dex: "SushiSwap",
+    url: "https://www.sushi.com/swap?token0=0xEB466342C4d449BC9f53A865D5Cb90586f405215&token1=0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8&chainId=42161",
   },
   moonbeam: {
     pairs: ["GLMR/axlUSDC"],
