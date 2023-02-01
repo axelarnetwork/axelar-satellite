@@ -1,19 +1,16 @@
+import React from "react";
+
 import { InputWrapper, truncate } from "components/common";
 import { TransferStats } from "components/swap/parts";
 import { ProgressBar } from "components/swap/states/parts";
-import { ENVIRONMENT } from "config/constants";
+
+import { getDestChainId, getSelectedAssetSymbol, useSwapStore } from "store";
+
 import { useDetectUnwrapTransfer } from "hooks";
-import React, { useState } from "react";
 import { SpinnerRoundFilled } from "spinners-react";
-import {
-  getDestChainId,
-  getSelectedAssetSymbol,
-  getSrcChainId,
-  useSwapStore,
-} from "store";
 import { Hash } from "types";
 import { SwapStatus } from "utils/enums";
-import { erc20ABI, useWaitForTransaction, useContractEvent } from "wagmi";
+import { erc20ABI, useContractEvent, useWaitForTransaction } from "wagmi";
 
 export const SrcChainTxPropagation = () => {
   const {

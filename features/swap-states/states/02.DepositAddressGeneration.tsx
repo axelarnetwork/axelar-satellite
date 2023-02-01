@@ -1,9 +1,12 @@
+import React from "react";
+
 import { InputWrapper } from "components/common";
 import { TransferStats } from "components/swap/parts";
 import { ProgressBar } from "components/swap/states/parts";
-import React from "react";
-import { SpinnerRoundFilled } from "spinners-react";
+
 import { useSwapStore } from "store";
+
+import { SpinnerRoundFilled } from "spinners-react";
 import { SwapStatus } from "utils/enums";
 
 export const DepositAddressGeneration = () => {

@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { ENVIRONMENT } from "config/constants";
 import { InputWrapper } from "components/common";
 import { TransferStats } from "components/swap/parts";
-import { ProgressBar } from "components/swap/states/parts";
 
 import { getSrcChainId, useSwapStore } from "store";
 

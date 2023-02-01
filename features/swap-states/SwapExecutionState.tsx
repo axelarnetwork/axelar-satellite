@@ -3,11 +3,9 @@ import React from "react";
 import {
   DepositAddressGeneration,
   Idle,
-  SrcChainTxPropagation,
   SrcChainTxExecution,
+  SrcChainTxPropagation,
 } from "features/swap-states/states";
-
-import { useSwapStore } from "store";
 
 export const SwapExecutionState = () => {
   return (

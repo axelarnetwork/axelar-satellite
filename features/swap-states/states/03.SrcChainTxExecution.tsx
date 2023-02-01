@@ -1,14 +1,18 @@
-import { InputWrapper, AddressShortener } from "components/common";
-import { TransferStats } from "components/swap/parts";
-import { ProgressBar } from "components/swap/states/parts";
 import React from "react";
 import Image from "next/image";
+
+import { AddressShortener, InputWrapper } from "components/common";
+import { TransferStats } from "components/swap/parts";
+import { ProgressBar } from "components/swap/states/parts";
+
 import { getSelectedAssetSymbol, useSwapStore } from "store";
+
+import { useGetRelayerGasFee } from "hooks";
 import { copyToClipboard } from "utils";
 import { SwapStatus } from "utils/enums";
-import { WalletTxBtn } from "../components/wallet-tx-btn";
-import { useGetRelayerGasFee } from "hooks";
 import { convertChainName } from "utils/transformers";
+
+import { WalletTxBtn } from "../components/wallet-tx-btn";
 
 export const SrcChainTxExecution = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
