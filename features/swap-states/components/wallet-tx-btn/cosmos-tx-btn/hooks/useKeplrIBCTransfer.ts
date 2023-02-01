@@ -16,6 +16,7 @@ import { evmIshSignDirect } from "hooks/kepler/evmIsh/evmIshSignDirect";
 import Long from "long";
 import toast from "react-hot-toast";
 import { curateCosmosChainId } from "utils";
+import { SwapStatus } from "utils/enums";
 import { renderGasFee } from "utils/renderGasFee";
 
 export function useKeplrIBCTransfer() {
@@ -27,6 +28,7 @@ export function useKeplrIBCTransfer() {
   const tokensToTransfer = useSwapStore((state) => state.tokensToTransfer);
 
   const setTxInfo = useSwapStore((state) => state.setTxInfo);
+  const setSwapStatus = useSwapStore((state) => state.setSwapStatus);
 
   const keplrConnected = useWalletStore((state) => state.keplrConnected);
   const keplerWallet = useGetKeplerWallet();
@@ -40,6 +42,7 @@ export function useKeplrIBCTransfer() {
     );
   }, [allAssets, srcChain]);
 
+  // TODO: need to break down and refactor this 🍝
   async function sendIbcTokensWithKeplr() {
     if (!cosmosChain?.chainId) return toast.error("Chain ID not found");
 
@@ -113,7 +116,7 @@ export function useKeplrIBCTransfer() {
               sourceTxHash: e.transactionHash,
             });
 
-            // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+            setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
           .catch((e) => {
             toast.error(e?.message as any);
@@ -142,10 +145,10 @@ export function useKeplrIBCTransfer() {
               "CosmosWalletTransfer: IBC transfer for EVM signer",
               res
             );
-
             setTxInfo({
               sourceTxHash: res.transactionHash,
             });
+            setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
           .catch((error) => console.log(error));
       } else {
@@ -167,8 +170,7 @@ export function useKeplrIBCTransfer() {
             setTxInfo({
               sourceTxHash: e.transactionHash,
             });
-
-            // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+            setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
           .catch((e: any) => {
             toast.error(e?.message as any);
