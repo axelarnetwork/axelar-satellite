@@ -8,10 +8,10 @@ export default {
   chainName: "Acrechain",
   chainIdentifier: "acrechain",
   stakeCurrency: {
-    coinDenom: "acre",
+    coinDenom: "ACRE",
     coinMinimalDenom: "aacre",
     coinDecimals: 18,
-    coinGeckoId: "unknown",
+    coinGeckoId: "arable-protocol",
   },
   bech32Config: {
     bech32PrefixAccAddr: "acre",
@@ -24,7 +24,7 @@ export default {
   bip44: { coinType: 60 },
   currencies: [
     {
-      coinDenom: "acre",
+      coinDenom: "ACRE",
       coinMinimalDenom: "aacre",
       coinDecimals: 18,
       coinGeckoId: "arable-protocol",
@@ -32,7 +32,7 @@ export default {
   ],
   feeCurrencies: [
     {
-      coinDenom: "acre",
+      coinDenom: "ACRE",
       coinMinimalDenom: "aacre",
       coinDecimals: 18,
       coinGeckoId: "arable-protocol",
