@@ -9,7 +9,8 @@ import { useKeplrIBCTransfer } from "./hooks";
 export const CosmosTxBtn = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
 
-  const { loading, sendIbcTokensWithKeplr } = useKeplrIBCTransfer();
+  const { loading: loadingKeplr, sendIbcTokensWithKeplr } =
+    useKeplrIBCTransfer();
 
   if (srcChain.module !== "axelarnet") return null;
 
@@ -18,7 +19,7 @@ export const CosmosTxBtn = () => {
       <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
       <div className="flex justify-center">
         <button
-          className={clsx("mb-5 btn btn-primary", loading && "loading")}
+          className={clsx("mb-5 btn btn-primary", loadingKeplr && "loading")}
           onClick={sendIbcTokensWithKeplr}
         >
           <span className="mr-2">Send from Keplr</span>
