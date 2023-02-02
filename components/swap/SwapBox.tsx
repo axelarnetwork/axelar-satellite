@@ -88,11 +88,8 @@ export const SwapBox = () => {
         <DestAssetSelector
           squidAssets={srcChain?.module === "evm" ? squidAssets : []}
         />
-        {/* <SwapStates /> */}
-        {/* {isSquidAsset ? <SquidSwapBtn /> : <GetAddressBtn />} */}
-        {/* <SwapStates /> */}
         <SwapExecutionState />
-        <GetAddressBtn />
+        {isSquidAsset ? <SquidSwapBtn /> : <GetAddressBtn />}
       </div>
     </div>
   );
