@@ -11,6 +11,7 @@ import { useAccount, useConnect } from "wagmi";
 import { getCosmosChains } from "../../../config/web3";
 import { useGetKeplerWallet } from "../../../hooks";
 import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
+import { logEvent } from "components/scripts";
 
 export const AddressFiller = () => {
   const { address } = useAccount();
@@ -31,6 +32,10 @@ export const AddressFiller = () => {
     if (address) {
       setDestAddress(address);
     }
+    logEvent("dest_address_fill", {
+      wallet: "metamask",
+      address,
+    });
   }
 
   function handleMetamaskConnect() {
@@ -54,6 +59,10 @@ export const AddressFiller = () => {
     const address = await keplerWallet?.getKey(chain.chainId as string);
     setDestAddress(address?.bech32Address as string);
     setKeplrConnected(true);
+    logEvent("dest_address_fill", {
+      wallet: "keplr",
+      address,
+    });
   }
 
   async function fillTerraStationDestinationAddress() {
@@ -71,6 +80,10 @@ export const AddressFiller = () => {
       }
       const address = terraWallet.wallets[0].terraAddress;
       setDestAddress(address);
+      logEvent("dest_address_fill", {
+        wallet: "terra",
+        address,
+      });
       return;
     }
   }

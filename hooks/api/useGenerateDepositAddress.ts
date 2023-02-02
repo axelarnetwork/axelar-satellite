@@ -2,6 +2,7 @@ import {
   AxelarAssetTransfer,
   AxelarQueryAPI,
 } from "@axelar-network/axelarjs-sdk";
+import { logEvent } from "components/scripts";
 
 import { constants } from "ethers";
 import { useMutation } from "react-query";
@@ -43,6 +44,11 @@ export const useGenerateDepositAddress = () =>
         destinationAddress: destAddress,
       });
 
+      logEvent("gen_deposit_address", {
+        type: "wrap",
+        depositAddress,
+      });
+
       return {
         intermediaryDepositAddress: null,
         finalDepositAddress: depositAddress,
@@ -76,6 +82,11 @@ export const useGenerateDepositAddress = () =>
         },
       });
 
+      logEvent("gen_deposit_address", {
+        type: "unwrap",
+        depositAddress: result,
+      });
+
       return {
         intermediaryDepositAddress,
         finalDepositAddress: result,
@@ -87,6 +98,11 @@ export const useGenerateDepositAddress = () =>
       toChain,
       destinationAddress: destAddress,
       asset: asset.common_key[ENVIRONMENT],
+    });
+
+    logEvent("gen_deposit_address", {
+      type: "default",
+      depositAddress,
     });
 
     return {
