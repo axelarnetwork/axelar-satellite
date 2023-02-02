@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
@@ -13,6 +13,7 @@ import { copyToClipboard } from "../../../utils";
 import { AddressShortener, InputWrapper } from "../../common";
 import { TransferStats } from "../parts";
 import { ProgressBar } from "./parts";
+import { logEvent } from "components/scripts";
 
 export const addTokenToMetamask = async (
   asset: AssetConfig,
@@ -60,6 +61,10 @@ export const ConfirmTransferState = () => {
         );
       },
     });
+
+  useEffect(() => {
+    logEvent("transfer_complete");
+  }, []);
 
   function renderTxConfirmationInfo() {
     const links = {
