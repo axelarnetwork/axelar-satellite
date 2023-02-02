@@ -1,6 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/legacy/image";
 
+import { ARBITRARY_EVM_ADDRESS, NATIVE_ASSET_IDS } from "config/constants";
+import { Blockable, InputWrapper } from "components/common";
+
+import { AddDestAssetButton } from "features/add-dest-asset-button";
+import { ReceiveTokenInfo } from "features/dest-asset-selector/ReceiveTokenInfo";
+import { SquidParamConfig } from "features/squid-param-config/SquidParamConfig";
+
 import { GetRoute } from "@0xsquid/sdk";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 
@@ -15,15 +22,9 @@ import {
 import { parseUnits } from "ethers/lib/utils.js";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { Blockable, InputWrapper } from "components/common";
-import { SquidParamConfig } from "features/squid-param-config/SquidParamConfig";
-import { ARBITRARY_EVM_ADDRESS, NATIVE_ASSET_IDS } from "config/constants";
-import { ReceiveTokenInfo } from "features/destination-asset-selector/ReceiveTokenInfo";
-import { AddDestAssetButton } from "features/add-dest-asset-button";
-
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
-export const DestinationAssetSelector = ({
+export const DestAssetSelector = ({
   squidAssets,
 }: {
   squidAssets: AssetInfo[];

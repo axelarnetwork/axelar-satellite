@@ -1,7 +1,7 @@
 import React from "react";
 
+import { DestAssetSelector } from "features/dest-asset-selector";
 import { DestChainSelector } from "features/dest-chain-selector";
-import { DestinationAssetSelector } from "features/destination-asset-selector";
 import { GetAddressBtn } from "features/gen-address-btn";
 import { SquidSwapBtn } from "features/squid-swap-btn";
 import { AssetSelector } from "features/src-asset-selector";
@@ -85,7 +85,7 @@ export const SwapBox = () => {
         </Blockable>
 
         <AssetSelector />
-        <DestinationAssetSelector
+        <DestAssetSelector
           squidAssets={srcChain?.module === "evm" ? squidAssets : []}
         />
         {/* <SwapStates /> */}
