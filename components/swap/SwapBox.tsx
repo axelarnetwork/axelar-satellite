@@ -1,10 +1,12 @@
 import React from "react";
 
-import { AssetSelector } from "features/src-asset-selector";
 import { DestChainSelector } from "features/dest-chain-selector";
+import { DestinationAssetSelector } from "features/destination-asset-selector";
 import { GetAddressBtn } from "features/gen-address-btn";
 import { SquidSwapBtn } from "features/squid-swap-btn";
+import { AssetSelector } from "features/src-asset-selector";
 import { SrcChainSelector } from "features/src-chain-selector";
+import { SwapExecutionState } from "features/swap-states";
 
 import {
   getSelectedAsssetIsWrapped,
@@ -24,7 +26,6 @@ import { Blockable } from "../common";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
 import { ChainSwapper, StopButton, SwapStates } from "./parts";
 import { TopFlows } from "./parts/TopFlows";
-import { DestinationAssetSelector } from "features/destination-asset-selector";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
@@ -87,8 +88,11 @@ export const SwapBox = () => {
         <DestinationAssetSelector
           squidAssets={srcChain?.module === "evm" ? squidAssets : []}
         />
-        <SwapStates />
-        {isSquidAsset ? <SquidSwapBtn /> : <GetAddressBtn />}
+        {/* <SwapStates /> */}
+        {/* {isSquidAsset ? <SquidSwapBtn /> : <GetAddressBtn />} */}
+        {/* <SwapStates /> */}
+        <SwapExecutionState />
+        <GetAddressBtn />
       </div>
     </div>
   );

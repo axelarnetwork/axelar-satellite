@@ -16,3 +16,5 @@ export * from "./useNormalizeChains";
 
 export * from "./useDetectUnwrapTransfer";
 export * from "./useRestrictAssets";
+
+export * from "./useGetRelayerGasFee";
