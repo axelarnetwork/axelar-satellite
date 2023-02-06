@@ -221,8 +221,6 @@ export const useInitialChainList = () => {
   async function loadInitialAssets() {
     const a = await loadAssets({ environment: ENVIRONMENT });
     const assets = injectSquidAssetsIntoAssets(a) as AssetConfigExtended[];
-    console.log("all assets", assets);
-    debugger;
     // if (!squidLoaded) {
     //   await injectSquidAssets();
     //   setSquidLoaded(true);
