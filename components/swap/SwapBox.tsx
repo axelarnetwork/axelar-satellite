@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { DestAssetSelector } from "features/dest-asset-selector";
 import { DestChainSelector } from "features/dest-chain-selector";
@@ -37,18 +37,16 @@ export const SwapBox = () => {
   const squidChains = useSquidStateStore((state) => state.squidChains);
   const isSquidAsset = useSquidStateStore((state) => state.isSquidTrade);
 
-  const squidAssets = destChain.assets
-    .filter(
-      //@ts-ignore
-      (t) => t.isSquidAsset
-    )
-    .filter(
-      (t) =>
-        t.tokenAddress?.toLowerCase() !==
-        asset?.chain_aliases[
-          destChain.chainName.toLowerCase()
-        ].tokenAddress.toLowerCase()
-    );
+  const squidAssets = useMemo(() => {
+    const destChainName = destChain.chainName.toLowerCase();
+    return destChain.assets
+      .filter((assetInfo) => assetInfo.isSquidAsset)
+      .filter(
+        (assetInfo) =>
+          assetInfo.tokenAddress?.toLowerCase() !==
+          asset?.chain_aliases[destChainName].tokenAddress.toLowerCase()
+      );
+  }, [asset?.chain_aliases, destChain.assets, destChain.chainName]);
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
