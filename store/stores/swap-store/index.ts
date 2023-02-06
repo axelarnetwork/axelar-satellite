@@ -1,6 +1,6 @@
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
-import { AssetConfigExtended } from "types";
+import { AssetConfigExtended, ChainInfoExtended } from "types";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -17,9 +17,9 @@ interface TxInfo {
 
 interface SwapState {
   allAssets: AssetConfigExtended[];
-  allChains: ChainInfo[];
-  srcChain: ChainInfo;
-  destChain: ChainInfo;
+  allChains: ChainInfoExtended[];
+  srcChain: ChainInfoExtended;
+  destChain: ChainInfoExtended;
   destAddress: string;
   selectableAssetList: AssetConfigExtended[];
   initialAsset: AssetConfigExtended | null;
@@ -62,8 +62,8 @@ const initialState: SwapState = {
   allAssets: [],
   allChains: [],
   selectableAssetList: [], // list of assets to select from
-  srcChain: {} as ChainInfo,
-  destChain: {} as ChainInfo,
+  srcChain: {} as ChainInfoExtended,
+  destChain: {} as ChainInfoExtended,
   initialAsset: null, // helper for switching between native/wrapped assets
   asset: null, // asset to transfer
   tokensToTransfer: "", // asset amount to transfer

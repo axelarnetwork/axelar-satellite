@@ -24,7 +24,11 @@ import {
   ENVIRONMENT,
   NATIVE_ASSET_IDS,
 } from "../../config/constants";
-import { AssetConfigExtended, RouteQuery } from "../../types";
+import {
+  AssetConfigExtended,
+  ChainInfoExtended,
+  RouteQuery,
+} from "../../types";
 import { addNativeAssets, loadAllChains } from "../../utils/api";
 
 export const useInitialChainList = () => {
@@ -80,7 +84,7 @@ export const useInitialChainList = () => {
   }
 
   async function injectSquidAssetsIntoChains(chains: ChainInfo[]) {
-    const newChains: ChainInfo[] = _.cloneDeep(chains);
+    const newChains: ChainInfoExtended[] = _.cloneDeep(chains);
     newChains.forEach((chain) => {
       const relevantSquidTokens = squidTokens.filter(
         (t) => t.chainName.toLowerCase() === chain.id
@@ -100,7 +104,6 @@ export const useInitialChainList = () => {
               ) && t.address === ARBITRARY_EVM_ADDRESS
           );
         }
-        // @ts-ignore
         if (asset) asset.isSquidAsset = true;
       });
       // @ts-ignore

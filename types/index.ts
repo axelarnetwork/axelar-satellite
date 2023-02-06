@@ -1,4 +1,8 @@
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+import {
+  AssetConfig,
+  AssetInfo,
+  ChainInfo,
+} from "@axelar-network/axelarjs-sdk";
 
 export type RouteQuery = {
   source: string;
@@ -27,4 +31,12 @@ export interface AssetConfigExtended extends AssetConfig {
       mintLimit: number;
     }
   >;
+}
+
+interface AssetInfoExtended extends AssetInfo {
+  isSquidAsset?: boolean;
+}
+
+export interface ChainInfoExtended extends ChainInfo {
+  assets: AssetInfoExtended[];
 }
