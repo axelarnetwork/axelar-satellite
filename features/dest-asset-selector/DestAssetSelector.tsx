@@ -14,7 +14,6 @@ import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import {
   getSelectedAsssetIsWrapped,
   getUnwrappedAssetSymbol,
-  getWrappedAssetName,
   useSquidStateStore,
   useSwapStore,
 } from "store";
@@ -41,9 +40,7 @@ export const DestAssetSelector = ({
     (state) => state.setShouldUnwrapAsset
   );
 
-  const _selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
   const unwrappedAssetSymbol = useSwapStore(getUnwrappedAssetSymbol);
-  const wrappedAssetSymbol = useSwapStore(getWrappedAssetName);
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
   const tokensToTransfer = useSwapStore((state) => state.tokensToTransfer);
   const destAddress = useSwapStore((state) => state.destAddress);
@@ -67,67 +64,6 @@ export const DestAssetSelector = ({
   );
 
   // console.log("squid assets", squidAssets, destChain);
-
-  useEffect(() => {
-    if (asset && srcChain) {
-      setShouldUnwrapAsset(false);
-      setSelectedAssetSymbol(
-        asset.chain_aliases[destChain.chainName.toLowerCase()].assetName
-      );
-      setSelectedSquidAsset(null);
-      setIsSquidTrade(false);
-      setRouteData(null);
-    }
-  }, [asset, srcChain]);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      if (
-        isSquidTrade &&
-        tokensToTransfer &&
-        selectedSquidAsset &&
-        destAddress &&
-        slippage
-      ) {
-        getRouteData(selectedSquidAsset);
-      }
-    }, 500);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [
-    tokensToTransfer,
-    selectedSquidAsset,
-    isSquidTrade,
-    destAddress,
-    slippage,
-  ]);
-
-  useOnClickOutside(ref, () => {
-    dropdownOpen && handleOnDropdownToggle();
-  });
-
-  const handleOnDropdownToggle = () => setDropdownOpen(!dropdownOpen);
-
-  const handleSelect = async (
-    shouldUnwrap: boolean,
-    assetSymbol: string | undefined
-  ) => {
-    if (!assetSymbol) return;
-    setSelectedAssetSymbol(assetSymbol);
-    setShouldUnwrapAsset(shouldUnwrap);
-    setSelectedSquidAsset(null);
-    setIsSquidTrade(false);
-    setRouteData(null);
-  };
-
-  const handleSquidSelect = async (t: AssetInfo) => {
-    setShouldUnwrapAsset(false);
-    setSelectedAssetSymbol(t.assetSymbol);
-    setSelectedSquidAsset(t);
-    setIsSquidTrade(true);
-  };
 
   const getRouteData = useCallback(
     async (t: AssetInfo) => {
@@ -158,8 +94,89 @@ export const DestAssetSelector = ({
       };
       setRouteDataAsync(params);
     },
-    [tokensToTransfer, squidChains, asset, destAddress, slippage]
+    [
+      asset,
+      srcChain.chainName,
+      srcChain.id,
+      setRouteDataLoading,
+      squidChains,
+      tokensToTransfer,
+      destAddress,
+      slippage,
+      setRouteDataAsync,
+      destChain.id,
+    ]
   );
+
+  useEffect(() => {
+    if (asset && srcChain) {
+      setShouldUnwrapAsset(false);
+      setSelectedAssetSymbol(
+        asset.chain_aliases[destChain.chainName.toLowerCase()].assetName
+      );
+      setSelectedSquidAsset(null);
+      setIsSquidTrade(false);
+      setRouteData(null);
+    }
+  }, [
+    asset,
+    destChain.chainName,
+    setIsSquidTrade,
+    setRouteData,
+    setSelectedSquidAsset,
+    setShouldUnwrapAsset,
+    srcChain,
+  ]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (
+        isSquidTrade &&
+        tokensToTransfer &&
+        selectedSquidAsset &&
+        destAddress &&
+        slippage
+      ) {
+        getRouteData(selectedSquidAsset);
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [
+    tokensToTransfer,
+    selectedSquidAsset,
+    isSquidTrade,
+    destAddress,
+    slippage,
+    getRouteData,
+  ]);
+
+  useOnClickOutside(ref, () => {
+    dropdownOpen && handleOnDropdownToggle();
+  });
+
+  const handleOnDropdownToggle = () => setDropdownOpen(!dropdownOpen);
+
+  const handleSelect = async (
+    shouldUnwrap: boolean,
+    assetSymbol: string | undefined
+  ) => {
+    if (!assetSymbol) return;
+    setSelectedAssetSymbol(assetSymbol);
+    setShouldUnwrapAsset(shouldUnwrap);
+    setSelectedSquidAsset(null);
+    setIsSquidTrade(false);
+    setRouteData(null);
+  };
+
+  const handleSquidSelect = async (t: AssetInfo) => {
+    setShouldUnwrapAsset(false);
+    setSelectedAssetSymbol(t.assetSymbol);
+    setSelectedSquidAsset(t);
+    setIsSquidTrade(true);
+  };
 
   // gets native or wrapped token logo based on user choice
   const dynamicNativeTokenLogo = shouldUnwrapAsset
@@ -168,7 +185,6 @@ export const DestAssetSelector = ({
 
   const srcIsSquidAsset = srcChain.assets.find(
     (t) => t.common_key === asset?.id
-    // @ts-ignore
   )?.isSquidAsset;
 
   function renderAssetDropdown() {
