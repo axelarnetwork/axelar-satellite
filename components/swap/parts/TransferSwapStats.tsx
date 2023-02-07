@@ -1,10 +1,13 @@
-import { useSquidStateStore, useSwapStore } from "../../../store";
 import Image from "next/legacy/image";
+
+import { AXELARSCAN_URL } from "config/constants";
+import { getWagmiChains } from "config/web3";
+
+import { useSquidStateStore, useSwapStore } from "../../../store";
+
 import { formatEther, formatUnits } from "ethers/lib/utils.js";
 
 import { StatsWrapper } from "../../common";
-import { getWagmiChains } from "config/web3";
-import { AXELARSCAN_URL } from "config/constants";
 
 const InfoIcon = (
   <svg
@@ -28,7 +31,7 @@ export const TransferSwapStats = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
 
   function renderTxConfirmLink() {
-    if (!txReceipt.transactionHash) return null;
+    if (!txReceipt?.transactionHash) return null;
     const evmRpc = getWagmiChains().find(
       (network) =>
         network.networkNameOverride === srcChain.chainName?.toLowerCase()

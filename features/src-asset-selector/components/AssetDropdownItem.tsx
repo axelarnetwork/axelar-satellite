@@ -17,7 +17,7 @@ import { AssetConfigExtended } from "types";
 interface Props {
   asset: AssetConfigExtended;
 }
-export const AssetItem: React.FC<Props> = ({ asset }) => {
+export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
   const switchAsset = useSwitchAsset();
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);

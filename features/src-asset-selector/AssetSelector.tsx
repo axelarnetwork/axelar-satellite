@@ -5,8 +5,6 @@ import { defaultAssetImg } from "config/constants";
 import { Blockable, InputWrapper } from "components/common";
 
 import { MaxButton } from "features/max-button";
-import { AssetDropdown } from "features/src-asset-selector/AssetDropdown";
-import { AssetInput } from "features/src-asset-selector/AssetInput";
 import { useAssetFilter } from "features/src-asset-selector/hooks";
 
 import { getSelectedAssetName, useSwapStore } from "store";
@@ -14,7 +12,7 @@ import { getSelectedAssetName, useSwapStore } from "store";
 import { AssetConfigExtended } from "types";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { AddSrcAssetButton } from "./components";
+import { AddSrcAssetButton, AssetDropdown, AssetInput } from "./components";
 
 export const AssetSelector = () => {
   const allAssets = useSwapStore((state) => state.allAssets);

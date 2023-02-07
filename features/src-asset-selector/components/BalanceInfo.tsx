@@ -57,11 +57,11 @@ export const BalanceInfo = () => {
   }, [
     srcChain,
     balance,
-    balance,
     isTerraConnected,
     keplrConnected,
     terraStationBalance,
     userSelectionForCosmosWallet,
+    setUserSelectionForCosmosWallet,
   ]);
 
   if (!balanceToShow || !showBalance) {

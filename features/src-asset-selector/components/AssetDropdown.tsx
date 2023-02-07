@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 
-import { AssetItem } from "features/src-asset-selector/AssetDropdownItem";
 import { useSwitchAsset } from "features/src-asset-selector/hooks";
 
 import { useSwapStore } from "store";
 
 import classNames from "classnames";
 import { AssetConfigExtended } from "types";
+
+import { AssetDropdownItem } from "./AssetDropdownItem";
 
 interface Props {
   dropdownOpen: boolean;
@@ -59,7 +60,7 @@ export const AssetDropdown: React.FC<Props> = ({
         onClick={handleOnDropdownToggle}
       >
         {filteredAssets?.map((asset) => (
-          <AssetItem key={asset.id} asset={asset} />
+          <AssetDropdownItem key={asset.id} asset={asset} />
         ))}
       </ul>
     </div>

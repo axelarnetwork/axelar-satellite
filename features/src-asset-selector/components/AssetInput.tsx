@@ -1,8 +1,8 @@
 import React from "react";
 
-import { BalanceInfo } from "features/src-asset-selector/BalanceInfo";
-
 import { useSwapStore } from "store";
+
+import { BalanceInfo } from "./BalanceInfo";
 
 export const AssetInput = () => {
   const tokensToTransfer = useSwapStore((state) => state.tokensToTransfer);
