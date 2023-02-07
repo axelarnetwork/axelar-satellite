@@ -201,7 +201,7 @@ export const EvmAssetWarningModal = () => {
             <h2 className="text-gray-900">
               If you wish to send assets to an exchange send them to your Keplr
               wallet address, then send them from that Keplr wallet to the
-              Exchange address with the required memo.
+              exchange address with the required memo.
             </h2>
           </div>
         )}
