@@ -42,7 +42,9 @@ export const SquidParamConfig = () => {
               <span>Slippage</span>
               <input
                 type="text"
-                placeholder="10"
+                placeholder="1"
+                value={slippage}
+                onChange={(e) => setSlippage(e.target.value as any)}
                 className="w-16 input input-sm input-bordered"
               />
             </div>

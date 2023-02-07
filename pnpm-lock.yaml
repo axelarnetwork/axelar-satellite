@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@0xsquid/sdk': ^1.3.5-beta.1
-  '@axelar-network/axelarjs-sdk': 0.12.0-alpha.15
+  '@axelar-network/axelarjs-sdk': 0.12.5-alpha.2
   '@cosmjs/launchpad': ^0.27.1
   '@cosmjs/proto-signing': ^0.29.5
   '@cosmjs/stargate': ^0.28.11
@@ -63,7 +63,7 @@ specifiers:
 
 dependencies:
   '@0xsquid/sdk': 1.3.5
-  '@axelar-network/axelarjs-sdk': 0.12.0-alpha.15
+  '@axelar-network/axelarjs-sdk': 0.12.5-alpha.2
   '@cosmjs/stargate': 0.28.13
   '@ethersproject/abstract-provider': 5.7.0
   '@evmos/proto': 0.1.27
@@ -158,8 +158,8 @@ packages:
     engines: {node: '>=16 <17'}
     dev: false
 
-  /@axelar-network/axelarjs-sdk/0.12.0-alpha.15:
-    resolution: {integrity: sha512-9k7BtFYRUBDUVarz0S+2YgxSQvc60LuyxAQn42pckCfPpRIfuYi9U0lPqad/eh/LUwzvc/U013hr7QHygEihfQ==}
+  /@axelar-network/axelarjs-sdk/0.12.5-alpha.2:
+    resolution: {integrity: sha512-mKm7vmeopbDuJpajIi37GGAOksVcoZjVpXIImpPZBWPvOFQkhzCx7Falg0imXKgskoO3uzxh5Gd9WSFfeVRLnQ==}
     dependencies:
       '@axelar-network/axelar-cgp-solidity': 4.3.1
       '@axelar-network/axelarjs-types': 0.27.0
@@ -173,6 +173,7 @@ packages:
       standard-http-error: 2.0.1
       string-similarity-js: 2.1.4
       uuid: 8.3.2
+      ws: 8.12.0
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -9827,7 +9828,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: true
 
   /ws/8.12.0_3cxu5zja4e2r5wmvge7mdcljwq:
     resolution: {integrity: sha512-kU62emKIdKVeEIOIKVegvqpXMSTAMLJozpHZaJNDYqBjzlSYXQGviYwN1osDLJ9av68qHd4a2oSjd7yD4pacig==}
