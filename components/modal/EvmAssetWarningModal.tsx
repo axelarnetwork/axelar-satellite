@@ -186,19 +186,25 @@ export const EvmAssetWarningModal = () => {
           .
         </div>
 
-        <div className="mt-5">
-          <h2>
-            Exchange addresses that need a memo are{" "}
-            <strong className="text-yellow-400">NOT SUPPORTED.</strong>
-          </h2>
-          <h2>
-            Please do not use Satellite to make transfers to an exchange address
-            requiring a memo or{" "}
-            <strong className="text-red-400 underline">
-              FUNDS WILL BE LOST
-            </strong>
-          </h2>
-        </div>
+        {destChain.module === "axelarnet" && (
+          <div className="block mt-5 bg-[#fab600] p-4 rounded-lg">
+            <h2 className="mt-2 text-center text-gray-900">
+              Exchange addresses that need a memo are{" "}
+              <strong>NOT SUPPORTED.</strong>
+            </h2>
+            <h2 className="text-gray-900">
+              Please do not use Satellite to make transfers to an exchange
+              address requiring a memo or{" "}
+              <strong className="underline">FUNDS WILL BE LOST.</strong>
+            </h2>
+
+            <h2 className="text-gray-900">
+              If you wish to send assets to an exchange send them to your Keplr
+              wallet address, then send them from that Keplr wallet to the
+              Exchange address with the required memo.
+            </h2>
+          </div>
+        )}
 
         <div className="flex justify-between mt-10">
           <button className="mx-5 btn btn-ghost" onClick={handleOnResetState}>
