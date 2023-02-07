@@ -16,9 +16,9 @@ import {
 export const SwapExecutionState = () => {
   return (
     <>
+      <Idle />
       <TransferStats />
       <TransferSwapStats />
-      <Idle />
       {/* waiting screen while deposit address is being generated */}
       <DepositAddressGeneration />
       <SquidStates />
