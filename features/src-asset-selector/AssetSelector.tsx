@@ -4,16 +4,17 @@ import Image from "next/legacy/image";
 import { defaultAssetImg } from "config/constants";
 import { Blockable, InputWrapper } from "components/common";
 
-import { AddAssetButton } from "features/add-src-asset-button";
+import { MaxButton } from "features/max-button";
 import { AssetDropdown } from "features/src-asset-selector/AssetDropdown";
 import { AssetInput } from "features/src-asset-selector/AssetInput";
 import { useAssetFilter } from "features/src-asset-selector/hooks";
-import { MaxButton } from "features/max-button";
 
 import { getSelectedAssetName, useSwapStore } from "store";
 
 import { AssetConfigExtended } from "types";
 import { useOnClickOutside } from "usehooks-ts";
+
+import { AddSrcAssetButton } from "./components";
 
 export const AssetSelector = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -46,7 +47,7 @@ export const AssetSelector = () => {
             <span className="capitalize">{srcChain.chainName}</span>
           </label>
           <div className="flex items-center">
-            <AddAssetButton />
+            <AddSrcAssetButton />
             <MaxButton />
           </div>
         </div>

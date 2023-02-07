@@ -10,7 +10,7 @@ import { addAssetToMetamaskWithAssetConfig } from "utils/wallet/metamask";
 import { useSwitchNetwork } from "wagmi";
 import wait from "wait";
 
-export const AddAssetButton = () => {
+export const AddSrcAssetButton = () => {
   const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
