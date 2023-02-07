@@ -4,7 +4,6 @@ import { useGetDepositAddress } from "features/gen-address-btn/hooks";
 import {
   checkAsset,
   checkDestAddressFormat,
-  checkMinTransfer,
   checkReservedAddresses,
 } from "features/gen-address-btn/utils";
 
@@ -18,11 +17,11 @@ import {
   useWalletStore,
 } from "store";
 
+import cn from "classnames";
 import { squid } from "squid.config";
 import { SwapStatus } from "utils/enums";
 import { showErrorMsgAndThrow } from "utils/error";
 import { useConnect, useNetwork, useSigner, useSwitchNetwork } from "wagmi";
-import cn from "classnames";
 
 const SquidSwapBtn = React.memo(() => {
   const { connectAsync, connectors } = useConnect();
@@ -32,12 +31,12 @@ const SquidSwapBtn = React.memo(() => {
   const { switchNetworkAsync } = useSwitchNetwork({
     chainId: srcChainId,
   });
-  const { data: signer } = useSigner({
-    onSuccess(data) {},
-  });
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
+  const { data: signer } = useSigner({
+    chainId: srcChainId,
+  });
 
   const swapStatus = useSwapStore((state) => state.swapStatus);
   const resetState = useSwapStore((state) => state.resetState);
@@ -77,6 +76,10 @@ const SquidSwapBtn = React.memo(() => {
 
     try {
       setSwapStatus(SwapStatus.WAIT_FOR_SQUID);
+      console.log({
+        signer,
+        routeData,
+      });
       const tx = await squid.executeRoute({
         signer: signer as any,
         route: routeData as RouteData,
@@ -85,6 +88,9 @@ const SquidSwapBtn = React.memo(() => {
       console.log("swap res: \n", txReceipt);
       setTxReceipt(txReceipt);
     } catch (err: any) {
+      console.log({
+        err,
+      });
       setSwapStatus(SwapStatus.IDLE);
       showErrorMsgAndThrow(
         err?.message ||

@@ -24,7 +24,7 @@ import {
 } from "../../hooks";
 import { Blockable } from "../common";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
-import { ChainSwapper, StopButton, SwapStates } from "./parts";
+import { ChainSwapper, StopButton } from "./parts";
 import { TopFlows } from "./parts/TopFlows";
 
 export const SwapBox = () => {

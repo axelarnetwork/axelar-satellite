@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
+import { InputWrapper } from "components/common";
+
 import { StatusResponse } from "@0xsquid/sdk";
 import { GMPStatus } from "@axelar-network/axelarjs-sdk";
 
 import { useSquidStateStore, useSwapStore } from "../../../store";
 
 import usePoll from "react-use-poll";
+import { SpinnerRoundFilled } from "spinners-react";
 import { squid } from "squid.config";
 import { SwapStatus } from "utils/enums";
-import { InputWrapper } from "../../common";
-import { TransferSwapStats } from "../parts";
-import { ProgressBar } from "./parts";
-import { SpinnerRoundFilled } from "spinners-react";
 
-export const WaitSquidState = () => {
-  const { setSwapStatus, srcChain, destChain } = useSwapStore((state) => state);
+import { ProgressBar } from "../components";
+
+export const SquidStates = () => {
+  const srcChain = useSwapStore((state) => state.srcChain);
+  const destChain = useSwapStore((state) => state.destChain);
+  const swapStatus = useSwapStore((state) => state.swapStatus);
+
+  const setSwapStatus = useSwapStore((state) => state.setSwapStatus);
+
   const { txReceipt, routeData, statusResponse, setStatusResponse } =
     useSquidStateStore();
+
   const [progress, setProgress] = useState(1);
   const [statusText, setStatusText] = useState(
     `Waiting for your transaction on ${srcChain.chainName}...`
@@ -46,7 +53,7 @@ export const WaitSquidState = () => {
       setProgress(prog);
       setStatusText(txt);
     }
-  }, [statusResponse]);
+  }, [destChain.chainName, setSwapStatus, statusResponse]);
 
   usePoll(
     () => {
@@ -69,14 +76,15 @@ export const WaitSquidState = () => {
     }
   );
 
+  if (swapStatus !== SwapStatus.WAIT_FOR_SQUID) return null;
+
   return (
     <>
-      <TransferSwapStats />
       <InputWrapper className="h-auto">
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">
             <div className="h-full">
-              <ProgressBar level={progress} numSteps={4} />
+              <ProgressBar currentLevel={progress} maxLevels={4} />
               <div className="h-6" />
               <div className="flex items-center justify-center h-full py-4 text-base gap-x-2">
                 <SpinnerRoundFilled

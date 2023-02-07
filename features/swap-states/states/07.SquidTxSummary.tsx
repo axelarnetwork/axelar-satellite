@@ -1,11 +1,16 @@
 import React from "react";
 import Image from "next/image";
-import { useSquidStateStore } from "../../../store";
-import { InputWrapper } from "../../common";
-import { TransferSwapStats } from "../parts";
-import { ProgressBar } from "./parts";
 
-export const SquidFinished = () => {
+import { InputWrapper } from "components/common";
+
+import { useSquidStateStore, useSwapStore } from "../../../store";
+
+import { SwapStatus } from "utils/enums";
+
+import { ProgressBar } from "../components";
+
+export const SquidTxSummary = () => {
+  const swapStatus = useSwapStore((state) => state.swapStatus);
   const statusResponse = useSquidStateStore((state) => state.statusResponse);
 
   function renderTxConfirmationInfo() {
@@ -21,21 +26,27 @@ export const SquidFinished = () => {
             rel="noreferrer"
           >
             <span>{`Visit Axelarscan for more information`}</span>
-            <Image src={"/assets/ui/link.svg"} height={16} width={16} />
+            <Image
+              src="/assets/ui/link.svg"
+              height={16}
+              width={16}
+              alt="link"
+            />
           </a>
         </div>
       </div>
     );
   }
 
+  if (swapStatus !== SwapStatus.SQUID_FINISHED) return null;
+
   return (
     <>
-      <TransferSwapStats />
       <InputWrapper className="h-auto">
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">
             <div className="relative flex flex-col h-full">
-              <ProgressBar level={4} numSteps={4} />
+              <ProgressBar currentLevel={4} maxLevels={4} />
               <div className="flex items-center justify-center h-full py-4 mt-auto text-xs gap-x-2">
                 {renderTxConfirmationInfo()}
               </div>

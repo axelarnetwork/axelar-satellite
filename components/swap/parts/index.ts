@@ -10,5 +10,4 @@ export * from "./TransferSwapStats";
 export * from "./SwapActions";
 export * from "./OriginSwapper";
 export * from "./ActionButton";
-export * from "./SwapStates";
 export * from "./StopButton";
