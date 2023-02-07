@@ -16,7 +16,7 @@ export const SquidParamConfig = () => {
 
   return (
     <div
-      className=" dropdown tooltip tooltip-warning dropdown-end"
+      className="dropdown tooltip tooltip-warning dropdown-end"
       data-tip={`Adjust Squid swap parameters`}
     >
       <label
@@ -33,27 +33,37 @@ export const SquidParamConfig = () => {
       </label>
       <ul
         tabIndex={0}
-        className="p-1 rounded-lg shadow-lg dropdown-content menu"
+        className="p-4 space-y-4 rounded-lg shadow-lg dropdown-content"
         style={{ backgroundColor: "#16212e", border: "white" }}
       >
         <li>
-          <div className="flex flex-row h-12 form-control">
-            <label className="label">
-              <span className="label-text">Slippage</span>
-            </label>
-            <label className="flex flex-row input-group input-group-xs">
+          <div className="flex items-center gap-x-5">
+            <div className="flex items-center gap-x-5">
+              <span>Slippage</span>
               <input
-                type="number"
-                placeholder="1"
-                value={slippage}
-                onChange={(e) => setSlippage(e.target.value as any)}
-                className="w-12 h-6 p-5 m-5 input input-bordered"
+                type="text"
+                placeholder="10"
+                className="w-16 input input-sm input-bordered"
               />
-              <span>%</span>
-            </label>
+            </div>
+            <span>%</span>
           </div>
         </li>
         <li>
+          <div className="flex items-center justify-between text-left gap-x-5">
+            <div>
+              <h5>GMP Express</h5>
+              <p className="text-xs text-accent">(coming soong)</p>
+            </div>
+            <input
+              type="checkbox"
+              checked={enableGMPExpress}
+              disabled
+              className="h-6 checkbox"
+            />
+          </div>
+        </li>
+        {/* <li>
           <div className="h-12 form-control">
             <label className="flex justify-between w-full cursor-pointer label">
               <span className="label-text">GMP Express (Coming soon!)</span>
@@ -67,7 +77,7 @@ export const SquidParamConfig = () => {
               </div>
             </label>
           </div>
-        </li>
+        </li> */}
       </ul>
     </div>
   );
