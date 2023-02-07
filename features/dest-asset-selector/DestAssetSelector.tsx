@@ -245,6 +245,7 @@ export const DestAssetSelector = ({
             </li>
           )}
           {srcIsSquidAsset &&
+            destChain.module === "evm" &&
             squidAssets.map((t) => (
               <li key={`squid_token_${t.tokenAddress}${t.assetSymbol}`}>
                 <button
