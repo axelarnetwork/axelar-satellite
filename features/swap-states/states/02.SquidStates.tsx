@@ -26,9 +26,7 @@ export const SquidStates = () => {
     useSquidStateStore();
 
   const [progress, setProgress] = useState(1);
-  const [statusText, setStatusText] = useState(
-    `Waiting for your transaction on ${srcChain.chainName}...`
-  );
+  const [statusText, setStatusText] = useState("");
 
   useEffect(() => {
     if (statusResponse && statusResponse.status) {
@@ -52,8 +50,11 @@ export const SquidStates = () => {
       }
       setProgress(prog);
       setStatusText(txt);
+    } else {
+      setProgress(1);
+      setStatusText(`Waiting for your transaction on ${srcChain.chainName}...`);
     }
-  }, [destChain.chainName, setSwapStatus, statusResponse]);
+  }, [destChain, setSwapStatus, statusResponse, srcChain]);
 
   usePoll(
     () => {

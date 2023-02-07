@@ -26,7 +26,7 @@ const InfoIcon = (
 );
 
 export const TransferSwapStats = () => {
-  const { routeData, selectedSquidAsset, slippage, txReceipt } =
+  const { routeData, selectedSquidAsset, slippage, txReceipt, isSquidTrade } =
     useSquidStateStore();
   const srcChain = useSwapStore((state) => state.srcChain);
 
@@ -63,6 +63,8 @@ export const TransferSwapStats = () => {
       </a>
     );
   }
+
+  if (!isSquidTrade) return null;
 
   return (
     <StatsWrapper>

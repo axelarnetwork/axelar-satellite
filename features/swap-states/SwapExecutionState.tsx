@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TransferStats } from "components/swap/parts";
+import { TransferStats, TransferSwapStats } from "components/swap/parts";
 
 import {
   DepositAddressGeneration,
@@ -17,6 +17,7 @@ export const SwapExecutionState = () => {
   return (
     <>
       <TransferStats />
+      <TransferSwapStats />
       <Idle />
       {/* waiting screen while deposit address is being generated */}
       <DepositAddressGeneration />
