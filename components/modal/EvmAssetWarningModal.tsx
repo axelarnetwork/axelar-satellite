@@ -186,6 +186,20 @@ export const EvmAssetWarningModal = () => {
           .
         </div>
 
+        <div className="mt-5">
+          <h2>
+            Exchange addresses that need a memo are{" "}
+            <strong className="text-yellow-400">NOT SUPPORTED.</strong>
+          </h2>
+          <h2>
+            Please do not use Satellite to make transfers to an exchange address
+            requiring a memo or{" "}
+            <strong className="text-red-400 underline">
+              FUNDS WILL BE LOST
+            </strong>
+          </h2>
+        </div>
+
         <div className="flex justify-between mt-10">
           <button className="mx-5 btn btn-ghost" onClick={handleOnResetState}>
             Go Back
