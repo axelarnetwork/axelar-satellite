@@ -40,6 +40,7 @@ export const ConnectButton = () => {
     <label
       className={cn("w-full btn border-0 bg-[#1b2836] shadow-lg")}
       htmlFor="web3-modal"
+      data-testid="connect-button"
     >
       <div className="flex items-center gap-3 text-xs">
         {renderConnectIndicator()}

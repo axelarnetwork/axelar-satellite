@@ -31,8 +31,6 @@ export const evmIshSignDirect = async (
     cosmosChainId: keplrChainId,
   };
 
-  debugger;
-
   const fetchSenderResults = await fetch(
     `${rest}/cosmos/auth/v1beta1/accounts/${senderAddress}?chain=${chainName}`
   ).then((res) => res.json());
@@ -66,9 +64,6 @@ export const evmIshSignDirect = async (
     accountNumber: account_number,
     pubkey: pubKeyKey,
   };
-  console.log("fetch sender results", fetchSenderResults);
-
-  debugger;
 
   const fee = {
     amount: "20",

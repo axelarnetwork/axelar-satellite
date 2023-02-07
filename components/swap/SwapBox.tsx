@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 
-import { AssetSelector } from "features/asset-selector";
+import { DestAssetSelector } from "features/dest-asset-selector";
 import { DestChainSelector } from "features/dest-chain-selector";
 import { GetAddressBtn } from "features/gen-address-btn";
+import { SquidSwapBtn } from "features/squid-swap-btn";
+import { AssetSelector } from "features/src-asset-selector";
 import { SrcChainSelector } from "features/src-chain-selector";
+import { SwapExecutionState } from "features/swap-states";
+
+import {
+  getSelectedAsssetIsWrapped,
+  useSquidStateStore,
+  useSwapStore,
+} from "../../store";
 
 import cn from "classnames";
 
@@ -15,14 +24,29 @@ import {
 } from "../../hooks";
 import { Blockable } from "../common";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
-import { ChainSwapper, StopButton, SwapStates } from "./parts";
-import { DestinationTokenSelector } from "./parts/DestinationTokenSelector";
+import { ChainSwapper, StopButton } from "./parts";
 import { TopFlows } from "./parts/TopFlows";
 
 export const SwapBox = () => {
   usePreventDuplicateChains();
   useDetectDepositConfirmation();
   useRestrictAssets();
+
+  const { destChain, asset, srcChain } = useSwapStore((state) => state);
+  const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
+  const squidChains = useSquidStateStore((state) => state.squidChains);
+  const isSquidAsset = useSquidStateStore((state) => state.isSquidTrade);
+
+  const squidAssets = useMemo(() => {
+    const destChainName = destChain.chainName.toLowerCase();
+    return destChain.assets
+      .filter((assetInfo) => assetInfo.isSquidAsset)
+      .filter(
+        (assetInfo) =>
+          assetInfo.tokenAddress?.toLowerCase() !==
+          asset?.chain_aliases[destChainName].tokenAddress.toLowerCase()
+      );
+  }, [asset?.chain_aliases, destChain.assets, destChain.chainName]);
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
@@ -59,9 +83,11 @@ export const SwapBox = () => {
         </Blockable>
 
         <AssetSelector />
-        <DestinationTokenSelector />
-        <SwapStates />
-        <GetAddressBtn />
+        <DestAssetSelector
+          squidAssets={srcChain?.module === "evm" ? squidAssets : []}
+        />
+        <SwapExecutionState />
+        {isSquidAsset ? <SquidSwapBtn /> : <GetAddressBtn />}
       </div>
     </div>
   );

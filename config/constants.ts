@@ -10,6 +10,15 @@ export const UNDER_MAINTENANCE =
 export const AXELARSCAN_URL = process.env.NEXT_PUBLIC_AXELARSCAN_URL as string;
 export const RESERVED_ADDRESSES = process.env
   .NEXT_PUBLIC_RESERVED_ADDRESSES as string;
+export const ARBITRARY_EVM_ADDRESS =
+  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+export const NATIVE_ASSET_IDS: string[] = [
+  "eth",
+  "avax",
+  "matic",
+  "bnb",
+  "ftm",
+];
 
 export const GETTING_STARTED_MODAL = "getting_started_modal";
 export const SUPPORT_MODAL = "support_modal";
@@ -21,6 +30,8 @@ export const DEFAULT_SRC_CHAIN =
 export const DEFAULT_DEST_CHAIN =
   process.env.NEXT_PUBLIC_DEFAULT_DEST_CHAIN || "axelar";
 export const DEFAULT_ASSET = process.env.NEXT_PUBLIC_DEFAULT_ASSET || "uaxl";
+
+export const NEXT_PUBLIC_SQUID_URL = process.env.NEXT_PUBLIC_SQUID_URL;
 
 export const COSMOS_PROXY_RPC_TESTNET = "https://testnet.rpc.axelar.dev";
 export const COSMOS_PROXY_RPC_MAINNET = "https://mainnet.rpc.axelar.dev";

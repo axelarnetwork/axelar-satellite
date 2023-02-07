@@ -1,4 +1,8 @@
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
+import {
+  AssetConfig,
+  AssetInfo,
+  ChainInfo,
+} from "@axelar-network/axelarjs-sdk";
 
 export type RouteQuery = {
   source: string;
@@ -13,6 +17,7 @@ export interface AssetConfigExtended extends AssetConfig {
   native_chain: string;
   wrapped_erc20: string;
   is_gas_token: boolean;
+  isSquidAsset: boolean;
   chain_aliases: Record<
     // this overwrites the AssetInfo in the sdk because the sdk does not have all the values eg: mintLimit
     string,
@@ -26,4 +31,12 @@ export interface AssetConfigExtended extends AssetConfig {
       mintLimit: number;
     }
   >;
+}
+
+interface AssetInfoExtended extends AssetInfo {
+  isSquidAsset?: boolean;
+}
+
+export interface ChainInfoExtended extends ChainInfo {
+  assets: AssetInfoExtended[];
 }

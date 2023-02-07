@@ -1,13 +1,14 @@
 import React from "react";
 
-import { useSwapStore } from "../../../store";
+import { useSquidStateStore, useSwapStore } from "../../../store";
 
 import { InputWrapper } from "../../common";
-import { AddressFiller, TransferStats } from "../parts";
+import { AddressFiller, TransferStats, TransferSwapStats } from "../parts";
 
 export const IdleState = () => {
   const destAddress = useSwapStore((state) => state.destAddress);
   const setDestAddress = useSwapStore((state) => state.setDestAddress);
+  const isSquidTrade = useSquidStateStore((state) => state.isSquidTrade);
 
   function handleOnAddressChange(address: string) {
     setDestAddress(address);
@@ -60,8 +61,8 @@ export const IdleState = () => {
 
   return (
     <>
-      <TransferStats />
       {renderAddressFiller()}
+      {!isSquidTrade ? <TransferStats /> : <TransferSwapStats />}
     </>
   );
 };

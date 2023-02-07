@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/legacy/image";
 
-import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
+import {
+  getSelectedAssetSymbol,
+  useSquidStateStore,
+  useSwapStore,
+} from "../../../store";
 
 import { AXELARSCAN_URL } from "../../../config/constants";
 import { getWagmiChains } from "../../../config/web3";
@@ -42,6 +46,7 @@ export const TransferStats = () => {
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const max = useGetMaxTransferAmount();
   const [transferFee, setTransferFee] = useState<string>("");
+  const isSquidTrade = useSquidStateStore((state) => state.isSquidTrade);
 
   useEffect(() => {
     renderGasFee(srcChain, destChain, asset).then((res) => {
@@ -259,6 +264,8 @@ export const TransferStats = () => {
 
     return null;
   }
+
+  if (isSquidTrade) return null;
 
   return (
     <StatsWrapper>

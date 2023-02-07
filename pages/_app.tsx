@@ -20,6 +20,8 @@ import "../styles/globals.css";
 import "../styles/loader.css";
 import { useEffect, useState } from "react";
 
+import { squid } from "squid.config";
+
 const queryClient = new QueryClient();
 
 function MyApp({
@@ -46,14 +48,10 @@ function MyApp({
       <Toaster position="top-right" reverseOrder={false} />
     </QueryClientProvider>
   );
+  const squidApi = squid;
 
   return typeof window !== "undefined" ? (
-    <WalletProvider
-      defaultNetwork={terraConfig.defaultNetwork}
-      walletConnectChainIds={terraConfig.walletConnectChainIds}
-    >
-      {main}
-    </WalletProvider>
+    <WalletProvider {...terraConfig}>{main}</WalletProvider>
   ) : (
     <StaticWalletProvider defaultNetwork={terraConfig.defaultNetwork}>
       {main}
