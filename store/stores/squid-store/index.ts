@@ -7,7 +7,7 @@ import {
   TokenData,
 } from "@0xsquid/sdk";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
-import { TransactionReceipt } from "@ethersproject/abstract-provider/lib/index";
+import { TransactionReceipt } from "@ethersproject/abstract-provider";
 
 import { squid } from "squid.config";
 import create from "zustand";

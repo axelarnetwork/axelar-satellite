@@ -7,6 +7,7 @@ specifiers:
   '@cosmjs/proto-signing': ^0.29.5
   '@cosmjs/stargate': ^0.28.11
   '@cosmjs/tendermint-rpc': ^0.29.5
+  '@ethersproject/abstract-provider': ^5.7.0
   '@evmos/proto': ^0.1.22
   '@evmos/provider': ^0.2.6
   '@evmos/transactions': ^0.2.8
@@ -64,6 +65,7 @@ dependencies:
   '@0xsquid/sdk': 1.3.5
   '@axelar-network/axelarjs-sdk': 0.12.0-alpha.15
   '@cosmjs/stargate': 0.28.13
+  '@ethersproject/abstract-provider': 5.7.0
   '@evmos/proto': 0.1.27
   '@evmos/provider': 0.2.8
   '@evmos/transactions': 0.2.13
