@@ -24,16 +24,9 @@ export const GoogleAnalytics = () => {
   );
 };
 
-// https://developers.google.com/analytics/devguides/collection/gtagjs/events
-export const logEvent = (
-  action: string,
-  category: string,
-  label: string,
-  value: string
-) => {
-  (window as any)?.gtag?.("event", action, {
-    event_category: category,
-    event_label: label,
-    value: value,
+export const logEvent = (event: string, data?: Record<string, any>) => {
+  (window as any)?.dataLayer?.push({
+    event,
+    ...data,
   });
 };

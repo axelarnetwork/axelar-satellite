@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/legacy/image";
+
+import { logEvent } from "components/scripts";
 
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 
@@ -59,6 +61,10 @@ export const ConfirmTransferState = () => {
         );
       },
     });
+
+  useEffect(() => {
+    logEvent("transfer_complete");
+  }, []);
 
   function renderTxConfirmationInfo() {
     const links = {

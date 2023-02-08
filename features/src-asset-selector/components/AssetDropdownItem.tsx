@@ -13,6 +13,7 @@ import { useSwapStore } from "store";
 
 import classNames from "classnames";
 import { AssetConfigExtended } from "types";
+import { logEvent } from "components/scripts";
 
 interface Props {
   asset: AssetConfigExtended;
@@ -31,13 +32,22 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
     asset.chain_aliases[destChain?.chainName?.toLowerCase()];
   const disabled = !compatibleOnSrc || !compatibleOnDest;
 
+  function handleOnClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    if (disabled) return e.stopPropagation();
+
+    logEvent("src_asset_select", {
+      assetId: asset.id,
+    });
+    switchAsset(asset);
+  }
+
   return (
     <li key={asset.id}>
       <button
         className={`relative flex flex-row justify-between block ${
           disabled ? "disabled" : ""
         }`}
-        onClick={(e) => (disabled ? e.stopPropagation() : switchAsset(asset))}
+        onClick={handleOnClick}
       >
         <div className="flex items-center gap-x-4">
           <Image
