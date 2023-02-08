@@ -1,4 +1,7 @@
 import { Environment } from "../utils/enums";
+import { loadEnv } from "./utils";
+
+loadEnv();
 
 export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
 export const SOCKET_API = process.env.NEXT_PUBLIC_SOCKET_API as string;
