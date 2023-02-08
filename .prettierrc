@@ -8,6 +8,7 @@
     "^(next/(.*)$)|^(next$)",
     "<THIRD_PARTY_MODULES>",
     "",
+    "^~/config(.*)$",
     "^~/components(.*)$",
     "",
     "^~/features(.*)$",
