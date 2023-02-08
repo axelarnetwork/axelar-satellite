@@ -250,7 +250,16 @@ export const CosmosWalletTransfer = () => {
 
           setIsTxOngoing(true);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let msg = "Unexpected error. Please let us know.";
+          if (error?.message?.toLowerCase()?.includes("request rejected")) {
+            msg = "Request rejected";
+          } else {
+            msg = `This looks like a new account that is not yet recognized on ${srcChain.chainName}. Please do a simple transfer from Keplr before using this in-app deposit feature.`;
+          }
+          toast.error(msg);
+          console.log(error);
+        });
     } else {
       result = await cosmjs
         .sendIbcTokens(

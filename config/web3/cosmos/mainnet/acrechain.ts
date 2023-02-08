@@ -1,17 +1,17 @@
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
 export default {
-  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/acrechain`,
-  rest: "https://lcd-testnet2-acre.synergynodes.com",
-  chainId: "bamboo_9051-2",
-  chainName: "Acrechain Testnet",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/acrechain`,
+  rest: "https://lcd-acre.synergynodes.com",
+  chainId: "acre_9052-1",
+  chainName: "Acrechain",
   chainIdentifier: "acrechain",
   stakeCurrency: {
-    coinDenom: "acre",
+    coinDenom: "ACRE",
     coinMinimalDenom: "aacre",
     coinDecimals: 18,
-    coinGeckoId: "unknown",
+    coinGeckoId: "arable-protocol",
   },
   bech32Config: {
     bech32PrefixAccAddr: "acre",
@@ -24,7 +24,7 @@ export default {
   bip44: { coinType: 60 },
   currencies: [
     {
-      coinDenom: "acre",
+      coinDenom: "ACRE",
       coinMinimalDenom: "aacre",
       coinDecimals: 18,
       coinGeckoId: "arable-protocol",
@@ -32,7 +32,7 @@ export default {
   ],
   feeCurrencies: [
     {
-      coinDenom: "acre",
+      coinDenom: "ACRE",
       coinMinimalDenom: "aacre",
       coinDecimals: 18,
       coinGeckoId: "arable-protocol",
@@ -44,5 +44,5 @@ export default {
     high: 1000000000000,
   },
   features: ["ibc-transfer", "ibc-go", "eth-address-gen", "eth-key-sign"],
-  chainToAxelarChannelId: "channel-0",
+  chainToAxelarChannelId: "channel-5",
 } as CosmosChain;

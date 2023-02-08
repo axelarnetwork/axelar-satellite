@@ -43,7 +43,9 @@ function MyApp({
         <Component {...pageProps} />
         <Web3Modal />
         <GlobalHooksContainer />
-        {process.env.NODE_ENV !== "development" && <GoogleAnalytics />}
+        {process.env.NEXT_PUBLIC_ENVIRONMENT === "mainnet" && (
+          <GoogleAnalytics />
+        )}
       </WagmiConfig>
       <Toaster position="top-right" reverseOrder={false} />
     </QueryClientProvider>
