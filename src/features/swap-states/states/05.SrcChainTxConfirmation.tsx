@@ -35,7 +35,9 @@ export const SrcChainTxConfirmation = () => {
     abi: erc20ABI,
     eventName: "Transfer",
     listener(...event: any) {
-      if (event[3].blockNumber < Number(txInfo.destStartBlockNumber)) return;
+      if (event[3].blockNumber < Number(txInfo.destStartBlockNumber)) {
+        return;
+      }
       console.log({
         event,
       });
@@ -50,7 +52,9 @@ export const SrcChainTxConfirmation = () => {
 
   const swapStatus = useSwapStore((state) => state.swapStatus);
 
-  if (swapStatus !== SwapStatus.WAIT_FOR_CONFIRMATION) return null;
+  if (swapStatus !== SwapStatus.WAIT_FOR_CONFIRMATION) {
+    return null;
+  }
 
   function renderConfirmations() {
     return (

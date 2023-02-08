@@ -45,13 +45,17 @@ export const DestChainSelector = () => {
           assetCommentKeys.includes(asset?.wrapped_erc20)
         );
       });
-    if (!restrictedAssetIsSelected) return setFilteredChains(newChains);
+    if (!restrictedAssetIsSelected) {
+      return setFilteredChains(newChains);
+    }
 
     // find the right policy based on asset
     const policy = ASSET_RESTRICTIONS.find((_policy) =>
       _policy.assets.includes(asset?.id || "")
     );
-    if (!policy) return;
+    if (!policy) {
+      return;
+    }
     setFilteredChains(
       newChains.filter((_chain) =>
         policy?.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
@@ -60,20 +64,28 @@ export const DestChainSelector = () => {
   }, [srcChain, destChain, dropdownOpen, searchChainInput, asset]);
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady) {
+      return;
+    }
     const source = router.query.destination as string;
     const destChainName = source?.toLowerCase() || "";
-    if (!destChainName) return;
+    if (!destChainName) {
+      return;
+    }
 
     const chain = filteredChains.find(
       (candidate) => candidate.chainName === destChainName
     );
-    if (chain) setDestChain(chain);
+    if (chain) {
+      setDestChain(chain);
+    }
   }, [router.query]);
 
   // search chain input
   useEffect(() => {
-    if (!searchChainInput) return;
+    if (!searchChainInput) {
+      return;
+    }
     console.log("allChains in DestChainSelector", allChains);
 
     const chains = allChains.filter(
@@ -105,7 +117,9 @@ export const DestChainSelector = () => {
   }
 
   function renderChainDropdown() {
-    if (!dropdownOpen) return null;
+    if (!dropdownOpen) {
+      return null;
+    }
 
     return (
       <div className="left-0 w-full h-64 p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
@@ -143,7 +157,9 @@ export const DestChainSelector = () => {
     );
   }
 
-  if (!destChain) return null;
+  if (!destChain) {
+    return null;
+  }
 
   return (
     <InputWrapper>

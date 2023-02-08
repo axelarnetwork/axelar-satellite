@@ -10,7 +10,7 @@ export const useGetMaxTransferAmount = () => {
   const [maxTransferAmount, setMaxTransferAmount] = useState("0");
 
   useEffect(() => {
-    if (!asset || !destChain || !srcChain) {
+    if (!(asset && destChain && srcChain)) {
       setMaxTransferAmount("0");
       return;
     }
@@ -24,11 +24,13 @@ export const useGetMaxTransferAmount = () => {
         denom: asset.common_key[ENVIRONMENT],
       })
       .then((res) => {
-        if (res)
+        if (res) {
           setMaxTransferAmount(
             Number(formatUnits(res, asset.decimals)).toFixed(0)?.toString()
           );
-        else setMaxTransferAmount("0");
+        } else {
+          setMaxTransferAmount("0");
+        }
       })
       .catch((e) => setMaxTransferAmount("0"));
   }, [srcChain, destChain, asset]);

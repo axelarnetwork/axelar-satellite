@@ -30,10 +30,12 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
     asset.chain_aliases[srcChain?.chainName?.toLowerCase()];
   const compatibleOnDest =
     asset.chain_aliases[destChain?.chainName?.toLowerCase()];
-  const disabled = !compatibleOnSrc || !compatibleOnDest;
+  const disabled = !(compatibleOnSrc && compatibleOnDest);
 
   function handleOnClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    if (disabled) return e.stopPropagation();
+    if (disabled) {
+      return e.stopPropagation();
+    }
 
     logEvent("src_asset_select", {
       assetId: asset.id,

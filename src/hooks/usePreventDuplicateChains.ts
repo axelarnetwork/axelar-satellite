@@ -16,7 +16,9 @@ export const usePreventDuplicateChains = () => {
   const [originDestChain, setOriginDestChain] = useState<ChainInfo>();
 
   useEffect(() => {
-    if (srcChain?.chainName === destChain?.chainName) updateChains();
+    if (srcChain?.chainName === destChain?.chainName) {
+      updateChains();
+    }
 
     // reset deposit address on chain module change
     if (
@@ -46,13 +48,19 @@ export const usePreventDuplicateChains = () => {
   }
 
   function getChangeOrigin(): "srcChain" | "destChain" | null {
-    if (originSrcChain?.chainName !== srcChain?.chainName) return "srcChain";
-    if (originDestChain?.chainName !== destChain?.chainName) return "destChain";
+    if (originSrcChain?.chainName !== srcChain?.chainName) {
+      return "srcChain";
+    }
+    if (originDestChain?.chainName !== destChain?.chainName) {
+      return "destChain";
+    }
     return null;
   }
 
   function updateCachedChains() {
-    if (!srcChain || !destChain) return;
+    if (!(srcChain && destChain)) {
+      return;
+    }
     setOriginSrcChain(srcChain);
     setOriginDestChain(destChain);
   }

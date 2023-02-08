@@ -12,7 +12,9 @@ type FAQProps = {};
 export const FAQ: FC<FAQProps> = ({}) => {
   const { modalId } = useApplicationStateStore((state) => state);
 
-  if (modalId !== FAQ_MODAL) return null;
+  if (modalId !== FAQ_MODAL) {
+    return null;
+  }
 
   return (
     <div>
@@ -47,10 +49,9 @@ const FAQLine: FC<FAQLineProps> = ({ tabIndex, title, text }) => {
   return (
     <div
       tabIndex={tabIndex}
-      className={
-        "border collapse collapse-arrow border-base-300 rounded-box bg-gray-700 cursor-pointer mb-5 " +
-        (open ? "collapse-open" : "collapse-close")
-      }
+      className={`border collapse collapse-arrow border-base-300 rounded-box bg-gray-700 cursor-pointer mb-5 ${
+        open ? "collapse-open" : "collapse-close"
+      }`}
       onClick={() => setOpen(!open)}
     >
       <div className="text-xl font-medium cursor-pointer collapse-title">

@@ -31,7 +31,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
       <progress
         className="h-1 progress progress-primary"
         value={level < 2 ? 0 : 1}
-      ></progress>
+      />
       <div
         className={cn(
           "flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc",
@@ -45,7 +45,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
       <progress
         className="h-1 progress progress-primary"
         value={level < 3 ? 0 : 1}
-      ></progress>
+      />
       <div
         className={cn(
           "flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc",
@@ -60,7 +60,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
         <progress
           className="h-1 progress progress-primary"
           value={level < 4 ? 0 : 1}
-        ></progress>
+        />
       )}
       {numSteps > 3 && (
         <div

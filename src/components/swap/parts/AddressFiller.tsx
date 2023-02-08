@@ -50,7 +50,9 @@ export const AddressFiller = () => {
     const chain = getCosmosChains(allAssets).find(
       (_chain) => _chain.chainIdentifier === destChain.chainName?.toLowerCase()
     );
-    if (!chain) return;
+    if (!chain) {
+      return;
+    }
 
     await keplerWallet?.experimentalSuggestChain(chain);
     await keplerWallet?.enable(chain.chainId as string);
@@ -68,10 +70,14 @@ export const AddressFiller = () => {
       (_chain) => _chain.chainIdentifier === destChain.chainName?.toLowerCase()
     );
     console.log("calling this TS");
-    if (!chain) return;
+    if (!chain) {
+      return;
+    }
 
     if (chain.chainIdentifier === "terra") {
-      if (!isTerraConnected) await terraWallet.connect();
+      if (!isTerraConnected) {
+        await terraWallet.connect();
+      }
       if (terraWallet?.wallets?.length < 1) {
         toast.error("Please install the Terra Station wallet extension first!");
         return;
@@ -86,7 +92,7 @@ export const AddressFiller = () => {
     }
   }
 
-  if (isEvm)
+  if (isEvm) {
     return (
       <div
         key={destChain?.module}
@@ -112,6 +118,7 @@ export const AddressFiller = () => {
         </div>
       </div>
     );
+  }
 
   return (
     <div

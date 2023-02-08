@@ -3,9 +3,10 @@ import Image from "next/image";
 
 import { InputWrapper } from "~/components/common";
 
+import { useSquidStateStore, useSwapStore } from "~/store";
+
 import { SwapStatus } from "~/utils/enums";
 
-import { useSquidStateStore, useSwapStore } from "../../../store";
 import { ProgressBar } from "../components";
 
 export const SquidTxSummary = () => {
@@ -24,7 +25,7 @@ export const SquidTxSummary = () => {
             target="_blank"
             rel="noreferrer"
           >
-            <span>{`Visit Axelarscan for more information`}</span>
+            <span>{"Visit Axelarscan for more information"}</span>
             <Image
               src="/assets/ui/link.svg"
               height={16}
@@ -37,7 +38,9 @@ export const SquidTxSummary = () => {
     );
   }
 
-  if (swapStatus !== SwapStatus.SQUID_FINISHED) return null;
+  if (swapStatus !== SwapStatus.SQUID_FINISHED) {
+    return null;
+  }
 
   return (
     <>

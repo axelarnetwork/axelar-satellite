@@ -43,7 +43,9 @@ export const useInitialChainList = () => {
   const router = useRouter();
 
   const loadData = useCallback(async () => {
-    if (squidTokens?.length === 0) return;
+    if (squidTokens?.length === 0) {
+      return;
+    }
     const assets = await loadInitialAssets();
     const chains = await loadInitialChains();
 
@@ -55,8 +57,12 @@ export const useInitialChainList = () => {
   }, [squidTokens]);
 
   useEffect(() => {
-    if (!router.isReady) return;
-    if (!rehydrateAssets) return;
+    if (!router.isReady) {
+      return;
+    }
+    if (!rehydrateAssets) {
+      return;
+    }
 
     loadData();
   }, [router.isReady, rehydrateAssets, loadData, squidTokens]);
@@ -97,7 +103,9 @@ export const useInitialChainList = () => {
               ) && t.address === ARBITRARY_EVM_ADDRESS
           );
         }
-        if (asset) asset.isSquidAsset = true;
+        if (asset) {
+          asset.isSquidAsset = true;
+        }
       });
       // @ts-ignore
       chain.squidAssets = [relevantSquidTokens];
@@ -226,7 +234,9 @@ export const useInitialChainList = () => {
       const _asset = assets.find((asset) =>
         asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
       );
-      if (!_asset) return;
+      if (!_asset) {
+        return;
+      }
       setAsset(_asset);
       return {
         assetDenom: DEFAULT_ASSET,
@@ -242,7 +252,9 @@ export const useInitialChainList = () => {
       const _asset = assets.find((asset) =>
         asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
       );
-      if (!_asset) return;
+      if (!_asset) {
+        return;
+      }
       setAsset(_asset);
     }
 

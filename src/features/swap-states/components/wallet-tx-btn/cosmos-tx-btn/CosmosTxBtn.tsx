@@ -9,7 +9,9 @@ import { useKeplrIBCTransfer } from "./hooks";
 export const CosmosTxBtn = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
 
-  if (srcChain.module !== "axelarnet") return null;
+  if (srcChain.module !== "axelarnet") {
+    return null;
+  }
 
   return (
     <>

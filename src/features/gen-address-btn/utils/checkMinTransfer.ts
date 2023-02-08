@@ -16,8 +16,9 @@ export async function checkMinTransfer(
     new BigNumber(minDeposit)
   );
 
-  if (amountTooSmall)
+  if (amountTooSmall) {
     showErrorMsgAndThrow(
       `${amount} ${asset?.id} is insufficient. Please transfer at least ${minDeposit} ${asset?.id}`
     );
+  }
 }

@@ -33,10 +33,12 @@ export const SrcChainTxPropagation = () => {
         ? 96
         : (srcChain.confirmLevel as number)
     ),
-    enabled: !!(txInfo && txInfo.sourceTxHash),
+    enabled: !!txInfo?.sourceTxHash,
   });
 
-  if (swapStatus !== SwapStatus.WAIT_FOR_SRC_TX_PROPAGATION) return null;
+  if (swapStatus !== SwapStatus.WAIT_FOR_SRC_TX_PROPAGATION) {
+    return null;
+  }
 
   if (
     ENVIRONMENT === "mainnet" &&

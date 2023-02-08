@@ -5,15 +5,19 @@ export const truncate = function (
   strLen: number,
   separator?: string
 ) {
-  if (!fullStr) return "";
-  if (fullStr.length <= strLen) return fullStr;
+  if (!fullStr) {
+    return "";
+  }
+  if (fullStr.length <= strLen) {
+    return fullStr;
+  }
 
   separator = separator || "...";
 
-  var sepLen = separator.length,
-    charsToShow = strLen - sepLen,
-    frontChars = Math.ceil(charsToShow / 2),
-    backChars = Math.floor(charsToShow / 2);
+  var sepLen = separator.length;
+  var charsToShow = strLen - sepLen;
+  var frontChars = Math.ceil(charsToShow / 2);
+  var backChars = Math.floor(charsToShow / 2);
 
   return (
     fullStr.substring(0, frontChars) +

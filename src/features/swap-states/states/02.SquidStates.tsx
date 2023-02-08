@@ -32,19 +32,22 @@ export const SquidStates = () => {
       let prog = 1;
       let txt = "";
       switch (statusResponse.status) {
-        case GMPStatus.SRC_GATEWAY_CALLED:
+        case GMPStatus.SRC_GATEWAY_CALLED: {
           txt = "Acknowledged. Processing your transaction.";
           prog = 2;
           break;
-        case GMPStatus.DEST_EXECUTING:
+        }
+        case GMPStatus.DEST_EXECUTING: {
           txt = `Awaiting final execution on ${destChain.chainName}.`;
           prog = 3;
           break;
-        case GMPStatus.DEST_EXECUTED:
+        }
+        case GMPStatus.DEST_EXECUTED: {
           txt = "Swap complete!";
           prog = 4;
           setSwapStatus(SwapStatus.SQUID_FINISHED);
           break;
+        }
         default:
       }
       setProgress(prog);
@@ -57,9 +60,12 @@ export const SquidStates = () => {
 
   usePoll(
     () => {
-      if (!(txReceipt && routeData)) return;
-      if (statusResponse && statusResponse.status === GMPStatus.DEST_EXECUTED)
+      if (!(txReceipt && routeData)) {
         return;
+      }
+      if (statusResponse && statusResponse.status === GMPStatus.DEST_EXECUTED) {
+        return;
+      }
 
       const getStatusParams = {
         transactionId: txReceipt.transactionHash,
@@ -76,7 +82,9 @@ export const SquidStates = () => {
     }
   );
 
-  if (swapStatus !== SwapStatus.WAIT_FOR_SQUID) return null;
+  if (swapStatus !== SwapStatus.WAIT_FOR_SQUID) {
+    return null;
+  }
 
   return (
     <>

@@ -21,11 +21,17 @@ export const MetamaskFill = () => {
       const connector = connectors.find((c) => c.name === "MetaMask");
       connect({ connector });
     }
-    if (!wagmiConnected) return connectMetamask();
-    if (address) setDestAddress(address);
+    if (!wagmiConnected) {
+      return connectMetamask();
+    }
+    if (address) {
+      setDestAddress(address);
+    }
   }, [wagmiConnected, address, setDestAddress, connect, connectors]);
 
-  if (destChain.module !== "evm") return null;
+  if (destChain.module !== "evm") {
+    return null;
+  }
 
   return (
     <div

@@ -43,7 +43,9 @@ const GetAddressBtn = React.memo(() => {
       showErrorMsgAndThrow("Cannot send to this address");
     await checkMinTransfer(tokensToTransfer, srcChain, destChain, asset);
 
-    if (!asset) return;
+    if (!asset) {
+      return;
+    }
     // generate deposit address
     await getDepositAddress({
       fromChain: srcChain.id,
@@ -55,8 +57,9 @@ const GetAddressBtn = React.memo(() => {
     })
       .then(({ finalDepositAddress, intermediaryDepositAddress }) => {
         setDepositAddress(finalDepositAddress);
-        if (intermediaryDepositAddress)
+        if (intermediaryDepositAddress) {
           setIntermediaryDepositAddress(intermediaryDepositAddress);
+        }
 
         setSwapStatus(SwapStatus.WAIT_FOR_DEPOSIT);
       })
@@ -70,10 +73,12 @@ const GetAddressBtn = React.memo(() => {
   }
 
   useEffect(() => {
-    if (loading) setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
+    if (loading) {
+      setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
+    }
   }, [loading, setSwapStatus]);
 
-  if ([SwapStatus.FINISHED, SwapStatus.SQUID_FINISHED].includes(swapStatus))
+  if ([SwapStatus.FINISHED, SwapStatus.SQUID_FINISHED].includes(swapStatus)) {
     return (
       <button className="w-full btn btn-primary" onClick={resetState}>
         <div className="flex items-center gap-3">
@@ -81,19 +86,21 @@ const GetAddressBtn = React.memo(() => {
         </div>
       </button>
     );
+  }
 
-  if (swapStatus !== SwapStatus.IDLE)
+  if (swapStatus !== SwapStatus.IDLE) {
     return (
       <div className="flex justify-center">
         <div className="relative w-8 h-8">
           <div className="loader">
-            <div className="inner one"></div>
-            <div className="inner two"></div>
-            <div className="inner three"></div>
+            <div className="inner one" />
+            <div className="inner two" />
+            <div className="inner three" />
           </div>
         </div>
       </div>
     );
+  }
 
   return (
     <button

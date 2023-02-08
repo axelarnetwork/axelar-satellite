@@ -18,7 +18,9 @@ export const ConnectButton = () => {
   }, [wagmiConnected, keplrConnected, isTerraConnected]);
 
   function renderConnectIndicator() {
-    if (anyWalletConnected) return <ConnectIndicator />;
+    if (anyWalletConnected) {
+      return <ConnectIndicator />;
+    }
     return (
       <>
         <div className="relative">

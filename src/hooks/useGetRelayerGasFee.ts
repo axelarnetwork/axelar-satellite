@@ -12,7 +12,9 @@ export function useGetRelayerGasFee() {
   const [fee, setFee] = useState<string>("0");
 
   const loadFee = useCallback(async () => {
-    if (!(srcChain && destChain && asset)) return;
+    if (!(srcChain && destChain && asset)) {
+      return;
+    }
     const fee = await renderGasFee(srcChain, destChain, asset);
     setFee(fee);
   }, [asset, destChain, srcChain]);

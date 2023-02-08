@@ -71,7 +71,9 @@ const SquidSwapBtn = React.memo(() => {
     reservedAddresses.includes(destAddress) &&
       showErrorMsgAndThrow("Cannot send to this address");
 
-    if (!(asset && routeData)) return;
+    if (!(asset && routeData)) {
+      return;
+    }
 
     try {
       setSwapStatus(SwapStatus.WAIT_FOR_SQUID);
@@ -99,10 +101,12 @@ const SquidSwapBtn = React.memo(() => {
   }
 
   useEffect(() => {
-    if (loading) setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
+    if (loading) {
+      setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
+    }
   }, [loading, setSwapStatus]);
 
-  if ([SwapStatus.FINISHED, SwapStatus.SQUID_FINISHED].includes(swapStatus))
+  if ([SwapStatus.FINISHED, SwapStatus.SQUID_FINISHED].includes(swapStatus)) {
     return (
       <button
         className="w-full btn btn-primary"
@@ -116,8 +120,9 @@ const SquidSwapBtn = React.memo(() => {
         </div>
       </button>
     );
+  }
 
-  if (swapStatus !== SwapStatus.IDLE)
+  if (swapStatus !== SwapStatus.IDLE) {
     return (
       <div className="flex justify-center">
         <div className="relative w-8 h-8">
@@ -129,6 +134,7 @@ const SquidSwapBtn = React.memo(() => {
         </div>
       </div>
     );
+  }
 
   return (
     <button

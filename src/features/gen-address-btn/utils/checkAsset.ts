@@ -5,8 +5,11 @@ export function checkAsset(
   asset: AssetConfigExtended | null,
   tokensToTransfer: string
 ) {
-  if (!asset) showErrorMsgAndThrow("Asset can't be empty");
+  if (!asset) {
+    showErrorMsgAndThrow("Asset can't be empty");
+  }
 
-  if (!Number(tokensToTransfer))
+  if (!Number(tokensToTransfer)) {
     showErrorMsgAndThrow("Please enter the amount of tokens to transfer");
+  }
 }

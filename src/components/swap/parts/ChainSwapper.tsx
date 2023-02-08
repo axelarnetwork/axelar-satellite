@@ -22,7 +22,9 @@ export const ChainSwapper = () => {
    * the native asset is selected vs the wrapped version
    */
   useEffect(() => {
-    if (!initialAsset) setInitialAsset(asset);
+    if (!initialAsset) {
+      setInitialAsset(asset);
+    }
   }, [asset, initialAsset, setInitialAsset]);
 
   const updateQueryParamsAndSwitch = async () => {
@@ -37,7 +39,9 @@ export const ChainSwapper = () => {
       const wrappedAsset = allAssets.find(
         (_asset) => _asset.id === asset.wrapped_erc20
       );
-      if (!wrappedAsset) return;
+      if (!wrappedAsset) {
+        return;
+      }
       setAsset(wrappedAsset);
     }
 

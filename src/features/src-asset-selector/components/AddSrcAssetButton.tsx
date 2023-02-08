@@ -18,14 +18,18 @@ export const AddSrcAssetButton = () => {
   const { switchNetworkAsync } = useSwitchNetwork();
 
   const handleOnAddTokenOnSrcChain = useCallback(() => {
-    if (!asset) return;
+    if (!asset) {
+      return;
+    }
 
     const wagmiChains = getWagmiChains();
     const chainId = wagmiChains.find(
       (_chain) =>
         _chain.networkNameOverride === srcChain.chainName?.toLowerCase()
     )?.id;
-    if (!chainId) return;
+    if (!chainId) {
+      return;
+    }
 
     // switch to chain
     switchNetworkAsync?.(chainId)
@@ -37,14 +41,18 @@ export const AddSrcAssetButton = () => {
   }, [srcChain, asset, switchNetworkAsync]);
 
   const handleOnAddTokenOnDestChain = useCallback(() => {
-    if (!asset) return;
+    if (!asset) {
+      return;
+    }
 
     const wagmiChains = getWagmiChains();
     const chainId = wagmiChains.find(
       (_chain) =>
         _chain.networkNameOverride === destChain.chainName?.toLowerCase()
     )?.id;
-    if (!chainId) return;
+    if (!chainId) {
+      return;
+    }
 
     // switch to chain
     switchNetworkAsync?.(chainId)
@@ -55,14 +63,19 @@ export const AddSrcAssetButton = () => {
     // add token
   }, [destChain, asset, switchNetworkAsync]);
 
-  if (!wagmiConnected) return null;
-  if (srcChain.module !== "evm" && destChain.module !== "evm") return null;
+  if (!wagmiConnected) {
+    return null;
+  }
+  if (srcChain.module !== "evm" && destChain.module !== "evm") {
+    return null;
+  }
   if (
     srcChain.module === "evm" &&
     asset?.is_gas_token &&
     destChain.module !== "evm"
-  )
+  ) {
     return null;
+  }
 
   return (
     <div

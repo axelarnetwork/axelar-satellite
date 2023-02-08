@@ -16,9 +16,13 @@ export async function renderGasFee(
     .getTransferFee(srcChain?.id, destChain?.id, id as string, 0)
     .then((res) => formatUnits(res.fee?.amount as string, asset?.decimals))
     .catch((e) => null);
-  if (feeQuery) return feeQuery;
+  if (feeQuery) {
+    return feeQuery;
+  }
 
-  if (!(srcChain && destChain)) return "";
+  if (!(srcChain && destChain)) {
+    return "";
+  }
 
   const sourceChainName = srcChain.chainName?.toLowerCase();
   const destChainName = destChain.chainName?.toLowerCase();
@@ -26,6 +30,8 @@ export async function renderGasFee(
   const sourceFee = asset?.chain_aliases[sourceChainName]?.minDepositAmt;
   const destFee = asset?.chain_aliases[destChainName]?.minDepositAmt;
 
-  if (!(sourceFee && destFee)) return "0";
+  if (!(sourceFee && destFee)) {
+    return "0";
+  }
   return Big(sourceFee).add(Big(destFee)).toString();
 }

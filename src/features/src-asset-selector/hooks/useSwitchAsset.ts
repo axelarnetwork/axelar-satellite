@@ -22,7 +22,9 @@ export const useSwitchAsset = () => {
       const compatibleChain = allAssets.find(
         (_asset) => _asset.id === asset.id
       );
-      if (!compatibleChain) return;
+      if (!compatibleChain) {
+        return;
+      }
       const compatibleChainNames = Object.keys(compatibleChain?.chain_aliases);
 
       let nextCompatibleChainName = compatibleChainNames.find(
@@ -42,7 +44,9 @@ export const useSwitchAsset = () => {
           _chain.chainName.toLowerCase() ===
           nextCompatibleChainName?.toLowerCase()
       );
-      if (nextCompatibleChain) setDestChain(nextCompatibleChain);
+      if (nextCompatibleChain) {
+        setDestChain(nextCompatibleChain);
+      }
     }
 
     // cache the initial asset

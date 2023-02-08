@@ -13,7 +13,9 @@ export const useRestrictAssets = () => {
   const restrictedAssetIsSelected = useSwapStore(getRestrictedAssetIsSelected);
 
   useEffect(() => {
-    if (restrictedAssetIsSelected) restrictDestChain();
+    if (restrictedAssetIsSelected) {
+      restrictDestChain();
+    }
     // eslint-disable-next-line
   }, [restrictedAssetIsSelected, srcChain, destChain]);
 
@@ -28,7 +30,9 @@ export const useRestrictAssets = () => {
         const chain = allChains.find((_chain) =>
           rule.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
         );
-        if (chain) return setDestChain(chain);
+        if (chain) {
+          return setDestChain(chain);
+        }
       }
     }
   }

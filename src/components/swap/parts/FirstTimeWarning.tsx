@@ -10,8 +10,12 @@ export const FirstTimeWarning = () => {
 
   useEffect(() => setHasMounted(true), []);
 
-  if (!hasMounted) return null;
-  if (!showFirstTimeWarning) return null;
+  if (!hasMounted) {
+    return null;
+  }
+  if (!showFirstTimeWarning) {
+    return null;
+  }
 
   return (
     <div className="fixed z-50 w-full max-w-screen-md bottom-10 left-10">

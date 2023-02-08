@@ -70,7 +70,7 @@ export const ConfirmTransferState = () => {
     };
     if (transferType === "deposit-address") {
       links.href = `${AXELARSCAN_URL}/transfer/${txInfo.sourceTxHash}`;
-      links.text = `Visit Axelarscan for more information`;
+      links.text = "Visit Axelarscan for more information";
     } else {
       let blockScannerName;
       if (destChain.module === "evm") {

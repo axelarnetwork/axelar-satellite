@@ -21,8 +21,12 @@ import { testnetChains as evmTestnetChains } from "./evm/testnet";
 // });
 
 export const getWagmiChains = () => {
-  if (ENVIRONMENT === Environment.TESTNET) return evmTestnetChains;
-  if (ENVIRONMENT === Environment.MAINNET) return evmMainnetChains;
+  if (ENVIRONMENT === Environment.TESTNET) {
+    return evmTestnetChains;
+  }
+  if (ENVIRONMENT === Environment.MAINNET) {
+    return evmMainnetChains;
+  }
 
   toast.error(`Environment "${ENVIRONMENT}" not supported`);
 
@@ -31,9 +35,11 @@ export const getWagmiChains = () => {
 
 export const getCosmosChains = (allAssets: AssetConfig[]) => {
   let chains: CosmosChain[] = [];
-  if (ENVIRONMENT === Environment.TESTNET) chains = cosmosTestnetChains;
-  else if (ENVIRONMENT === Environment.MAINNET) chains = cosmosMainnetChains;
-  else {
+  if (ENVIRONMENT === Environment.TESTNET) {
+    chains = cosmosTestnetChains;
+  } else if (ENVIRONMENT === Environment.MAINNET) {
+    chains = cosmosMainnetChains;
+  } else {
     toast.error(`Environment "${ENVIRONMENT}" not supported`);
     return [];
   }

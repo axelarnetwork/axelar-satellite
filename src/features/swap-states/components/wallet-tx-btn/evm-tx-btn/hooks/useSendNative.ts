@@ -37,7 +37,7 @@ export function useSendNative() {
     request: {
       to: depositAddress,
       value: utils.parseUnits(
-        !!tokensToTransfer ? tokensToTransfer : "0",
+        tokensToTransfer ? tokensToTransfer : "0",
         asset?.decimals
       ),
     },
@@ -57,7 +57,9 @@ export function useSendNative() {
 
   // on tx success save tx metadata in store for further use
   useEffect(() => {
-    if (!isSuccess || !data) return;
+    if (!(isSuccess && data)) {
+      return;
+    }
     setTxInfo({
       sourceTxHash: data.hash,
       destStartBlockNumber: blockNumber,
@@ -68,7 +70,9 @@ export function useSendNative() {
   // detect tx error
   useEffect(() => {
     // error types don't match, maybe update to wagmi will fix
-    if (!error) return;
+    if (!error) {
+      return;
+    }
     const _error: any = error;
     if (_error.code === "ACTION_REJECTED") {
       toast.error("Transaction cancelled");

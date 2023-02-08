@@ -53,7 +53,9 @@ export const TokenSelector = () => {
       const chain =
         srcChain.chainName?.toLowerCase() === newNetwork ? srcChain : destChain;
       setTimeout(() => {
-        if (!asset) return;
+        if (!asset) {
+          return;
+        }
         addTokenToMetamask(asset, chain);
       }, 2000);
     },
@@ -85,15 +87,21 @@ export const TokenSelector = () => {
   }, [userSelectionForCosmosWallet]);
 
   useEffect(() => {
-    if (!router.isReady || selectableAssetList.length === 0) return;
-    if (asset) return;
+    if (!router.isReady || selectableAssetList.length === 0) {
+      return;
+    }
+    if (asset) {
+      return;
+    }
     const assetDenom = router.query.asset_denom as string;
     const foundAsset = selectableAssetList.find(
       (asset) => asset.common_key[ENVIRONMENT] === assetDenom
     );
 
     // FIXME: weird behaviour
-    if (!foundAsset) {
+    if (foundAsset) {
+      setAsset(asset);
+    } else {
       const fallbackAsset = selectableAssetList[0];
       if (fallbackAsset) {
         setAsset(fallbackAsset);
@@ -104,13 +112,13 @@ export const TokenSelector = () => {
         //   },
         // });
       }
-    } else {
-      setAsset(asset);
     }
   }, [router.query, selectableAssetList, router.isReady, asset]);
 
   useEffect(() => {
-    if (!searchAssetInput) return setFilteredAssets(selectableAssetList);
+    if (!searchAssetInput) {
+      return setFilteredAssets(selectableAssetList);
+    }
 
     const chains = selectableAssetList.filter((asset) =>
       asset.common_key[ENVIRONMENT]?.toLowerCase().includes(searchAssetInput)
@@ -119,7 +127,9 @@ export const TokenSelector = () => {
   }, [searchAssetInput, selectableAssetList]);
 
   useEffect(() => {
-    if (!asset) return;
+    if (!asset) {
+      return;
+    }
     // router.push({
     //   query: {
     //     ...router.query,
@@ -143,8 +153,9 @@ export const TokenSelector = () => {
       })
       .filter((asset) => {
         const srcChainName = srcChain.chainName?.toLowerCase();
-        if (asset.is_gas_token && asset.native_chain !== srcChainName)
+        if (asset.is_gas_token && asset.native_chain !== srcChainName) {
           return false;
+        }
         return true;
       });
 
@@ -167,8 +178,9 @@ export const TokenSelector = () => {
       return;
     }
 
-    if (isEVM) setBalanceToShow(balance);
-    else if (isTerra) {
+    if (isEVM) {
+      setBalanceToShow(balance);
+    } else if (isTerra) {
       setUserSelectionForCosmosWallet("terraStation");
       setBalanceToShow(terraStationBalance as string);
     } else if (isAxelarnet) {
@@ -189,9 +201,11 @@ export const TokenSelector = () => {
   useEffect(() => {
     if (
       srcChain?.chainName?.toLowerCase() === "terra" &&
-      userSelectionForCosmosWallet == "terraStation"
+      userSelectionForCosmosWallet === "terraStation"
     ) {
-      if (!isTerraInitializingOrConnected) connectTerraWallet();
+      if (!isTerraInitializingOrConnected) {
+        connectTerraWallet();
+      }
       return;
     }
   }, [
@@ -230,18 +244,27 @@ export const TokenSelector = () => {
 
   function handleOnMaxButtonClick() {
     const bal = balanceToShow;
-    if (max && +max !== 0 && +bal > +max) setTokensToTransfer(max);
-    else if (Number(bal)) setTokensToTransfer(bal);
+    if (max && +max !== 0 && +bal > +max) {
+      setTokensToTransfer(max);
+    } else if (Number(bal)) {
+      setTokensToTransfer(bal);
+    }
   }
 
   function renderBalanceInfo() {
-    if (!balanceToShow || !showBalance) {
+    if (!(balanceToShow && showBalance)) {
       let textToShow;
-      if (srcChain.module === "evm") textToShow = "Metamask";
-      else if (srcChain?.chainName?.toLowerCase() === "terra") {
-        if (userSelectionForCosmosWallet === "keplr") textToShow = "Keplr";
-        else textToShow = "Terra Station";
-      } else textToShow = "Keplr";
+      if (srcChain.module === "evm") {
+        textToShow = "Metamask";
+      } else if (srcChain?.chainName?.toLowerCase() === "terra") {
+        if (userSelectionForCosmosWallet === "keplr") {
+          textToShow = "Keplr";
+        } else {
+          textToShow = "Terra Station";
+        }
+      } else {
+        textToShow = "Keplr";
+      }
       return (
         <label
           htmlFor="web3-modal"
@@ -252,7 +275,7 @@ export const TokenSelector = () => {
       );
     }
 
-    if (srcChain?.chainName?.toLowerCase() !== "terra")
+    if (srcChain?.chainName?.toLowerCase() !== "terra") {
       return (
         <div className="space-y-1">
           <div className="flex justify-end space-x-2">
@@ -272,12 +295,13 @@ export const TokenSelector = () => {
           {/* <UnwrapToNativeChainCheckbox /> */}
         </div>
       );
+    }
 
     /**src chain is terra, user selected terra station but is not connected to it */
     if (
       userSelectionForCosmosWallet === "terraStation" &&
       !isTerraInitializingOrConnected
-    )
+    ) {
       return (
         <label
           htmlFor="web3-modal"
@@ -286,9 +310,10 @@ export const TokenSelector = () => {
           Connect Terra Station to see balance
         </label>
       );
+    }
 
     /**src chain is terra, user selected Keplr but is not connected to it */
-    if (userSelectionForCosmosWallet === "keplr" && !keplrConnected)
+    if (userSelectionForCosmosWallet === "keplr" && !keplrConnected) {
       return (
         <label
           htmlFor="web3-modal"
@@ -297,6 +322,7 @@ export const TokenSelector = () => {
           Connect Keplr to see balance
         </label>
       );
+    }
 
     const switchTSAndKeplr = () => {
       const isOnTS = userSelectionForCosmosWallet === "terraStation";
@@ -306,7 +332,9 @@ export const TokenSelector = () => {
         setUserSelectionForCosmosWallet("keplr");
       };
       const switchTS = async () => {
-        if (!isTerraConnected) connectTerraStation();
+        if (!isTerraConnected) {
+          connectTerraStation();
+        }
         setUserSelectionForCosmosWallet("terraStation");
       };
       return (
@@ -319,7 +347,7 @@ export const TokenSelector = () => {
           </span>
           <Image
             loading="eager"
-            src={`/assets/ui/forward-arrow-link.svg`}
+            src={"/assets/ui/forward-arrow-link.svg"}
             layout="intrinsic"
             width={10}
             height={10}
@@ -359,7 +387,9 @@ export const TokenSelector = () => {
   }
 
   function renderTokenInput() {
-    if (!srcChain) return null;
+    if (!srcChain) {
+      return null;
+    }
     return (
       <div className="text-end">
         <input
@@ -375,7 +405,9 @@ export const TokenSelector = () => {
   }
 
   function renderAssetDropdown() {
-    if (!dropdownOpen || !srcChain) return null;
+    if (!(dropdownOpen && srcChain)) {
+      return null;
+    }
 
     return (
       <div className="left-0 w-full h-64 p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
@@ -419,13 +451,19 @@ export const TokenSelector = () => {
   }
 
   function renderAssetName() {
-    if (!asset || !srcChain) return "Select an asset";
+    if (!(asset && srcChain)) {
+      return "Select an asset";
+    }
     return asset.chain_aliases[srcChain.chainName?.toLowerCase()]?.assetName;
   }
 
   function addTokenToMetamaskButton() {
-    if (srcChain?.module !== "evm" && destChain?.module !== "evm") return null;
-    if (!wagmiConnected) return null;
+    if (srcChain?.module !== "evm" && destChain?.module !== "evm") {
+      return null;
+    }
+    if (!wagmiConnected) {
+      return null;
+    }
 
     const proprtions = 20;
     const image = 20;

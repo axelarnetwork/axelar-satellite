@@ -37,29 +37,39 @@ export const useDetectDepositConfirmation = () => {
   });
 
   function checkPayloadForDepositConfirmation(data: any) {
-    if (data.Type !== "depositConfirmation") return;
-    if (data.Attributes.depositAddress !== depositAddress) return;
+    if (data.Type !== "depositConfirmation") {
+      return;
+    }
+    if (data.Attributes.depositAddress !== depositAddress) {
+      return;
+    }
     return true;
   }
   function checkPayloadForTokenSent(data: any) {
     console.log("token sent data", data);
 
-    if (data.Type !== "axelar.evm.v1beta1.TokenSent") return;
+    if (data.Type !== "axelar.evm.v1beta1.TokenSent") {
+      return;
+    }
     if (
       data.Attributes.sender?.toLowerCase() !==
       depositAddress?.toLocaleLowerCase()
-    )
+    ) {
       return;
+    }
     if (
       data.Attributes.destination_address?.toLocaleLowerCase() !==
       destAddress?.toLocaleLowerCase()
-    )
+    ) {
       return;
+    }
     return true;
   }
 
   useEffect(() => {
-    if (!depositAddress) return;
+    if (!depositAddress) {
+      return;
+    }
 
     const sentNative =
       asset?.is_gas_token &&
@@ -85,8 +95,9 @@ export const useDetectDepositConfirmation = () => {
         destChain,
         depositAddress
       );
-    } else
+    } else {
       roomId = buildDepositConfirmationRoomId(srcChain.module, depositAddress);
+    }
 
     console.log("room ID joined", roomId);
 
@@ -96,7 +107,9 @@ export const useDetectDepositConfirmation = () => {
       console.log("data in bridge event", data);
       const depositConfirmationOk = checkPayloadForDepositConfirmation(data);
       const tokenSentOk = checkPayloadForTokenSent(data);
-      if (!depositConfirmationOk && !tokenSentOk) return;
+      if (!(depositConfirmationOk || tokenSentOk)) {
+        return;
+      }
 
       if (destChain.module === "evm") {
         setTxInfo({

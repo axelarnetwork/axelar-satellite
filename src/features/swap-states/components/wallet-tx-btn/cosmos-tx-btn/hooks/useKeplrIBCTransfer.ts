@@ -50,13 +50,17 @@ export function useKeplrIBCTransfer() {
       await connectToKeplr(allAssets);
       setKeplrConnected(true);
     }
-    if (!cosmosChain?.chainId) return toast.error("Chain ID not found");
+    if (!cosmosChain?.chainId) {
+      return toast.error("Chain ID not found");
+    }
 
     const chainId = curateCosmosChainId(cosmosChain.chainId);
     const chain = getCosmosChains(allAssets).find(
       (_chain) => _chain.chainId === chainId
     );
-    if (!chain) return;
+    if (!chain) {
+      return;
+    }
     await keplerWallet?.experimentalSuggestChain(chain);
     await keplerWallet?.enable(chainId as string);
 
@@ -80,10 +84,11 @@ export function useKeplrIBCTransfer() {
       assetData?.minDepositAmt
     );
 
-    if (!minAmountOk)
+    if (!minAmountOk) {
       return toast.error(
         `Token amount to transfer should be bigger than ${minDeposit}`
       );
+    }
 
     const sendCoin = {
       denom: assetData?.ibcDenom as string,
@@ -193,8 +198,9 @@ export function useKeplrIBCTransfer() {
   // FIXME: this is a duplicate funciton
   async function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
-    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
+    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit))) {
       return { minDeposit, minAmountOk: false };
+    }
     return {
       minDeposit,
       minAmountOk: true,

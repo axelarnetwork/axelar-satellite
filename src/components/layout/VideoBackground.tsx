@@ -9,15 +9,17 @@ export const VideoBackground = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (swapStatus !== SwapStatus.IDLE) videoRef.current?.play();
+    if (swapStatus !== SwapStatus.IDLE) {
+      videoRef.current?.play();
+    }
   }, [swapStatus]);
 
   return (
     <video
       ref={videoRef}
       className="fixed top-0 left-0 object-cover w-screen h-screen aspect-video -z-10"
-      muted
-      loop
+      muted={true}
+      loop={true}
       id="myVideo"
       poster="https://axelar-mainnet.s3.us-east-2.amazonaws.com/video-poster.png"
     >

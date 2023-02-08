@@ -45,8 +45,12 @@ export const EvmAssetWarningModal = () => {
     if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) {
       return;
     }
-    if (!(srcChain && destChain)) return;
-    if (![srcChain?.module, destChain?.module].includes("evm")) return;
+    if (!(srcChain && destChain)) {
+      return;
+    }
+    if (![srcChain?.module, destChain?.module].includes("evm")) {
+      return;
+    }
 
     setShowAssetWarning(true);
   }, [setShowAssetWarning, swapStatus]);

@@ -83,8 +83,9 @@ export const CosmosWalletTransfer = () => {
   async function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
     console.log("min Deposit", minDeposit);
-    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
+    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit))) {
       return { minDeposit, minAmountOk: false };
+    }
     return {
       minDeposit,
       minAmountOk: true,
@@ -96,7 +97,9 @@ export const CosmosWalletTransfer = () => {
     const chain = getCosmosChains(allAssets).find(
       (chain) => chain.chainIdentifier === "axelar"
     );
-    if (!chain) return;
+    if (!chain) {
+      return;
+    }
     try {
       await keplr?.enable(chain.chainId);
     } catch (e) {
@@ -116,7 +119,9 @@ export const CosmosWalletTransfer = () => {
       chain.chainId
     )) as OfflineSigner;
     const [account] = await _signer.getAccounts();
-    if (keplrConnected) toast.error("Wallet already connected");
+    if (keplrConnected) {
+      toast.error("Wallet already connected");
+    }
     setKeplrConnected(true);
     return true;
   }
@@ -133,14 +138,18 @@ export const CosmosWalletTransfer = () => {
     const cosmosChain = cosmosChains.find(
       (chain) => chain.chainIdentifier === chainIdentifier
     );
-    if (!cosmosChain?.chainId) return toast.error("Chain id not found");
+    if (!cosmosChain?.chainId) {
+      return toast.error("Chain id not found");
+    }
 
     const chainId = curateCosmosChainId(cosmosChain.chainId);
 
     const chain = getCosmosChains(allAssets).find(
       (_chain) => _chain.chainId === chainId
     );
-    if (!chain) return;
+    if (!chain) {
+      return;
+    }
     await keplerWallet?.experimentalSuggestChain(chain);
     await keplerWallet?.enable(chainId as string);
 
@@ -159,10 +168,11 @@ export const CosmosWalletTransfer = () => {
       currentAsset?.minDepositAmt
     );
 
-    if (!minAmountOk)
+    if (!minAmountOk) {
       return toast.error(
         `Token amount to transfer should be bigger than ${minDeposit}`
       );
+    }
 
     const sendCoin = {
       denom: currentAsset?.ibcDenom as string,
@@ -195,10 +205,10 @@ export const CosmosWalletTransfer = () => {
     )?.chainToAxelarChannelId as string;
 
     const timeoutHeight: Height = {
-        revisionHeight: Long.fromNumber(10),
-        revisionNumber: Long.fromNumber(10),
-      },
-      timeoutTimestamp = 0;
+      revisionHeight: Long.fromNumber(10),
+      revisionNumber: Long.fromNumber(10),
+    };
+    const timeoutTimestamp = 0;
 
     let result;
 
@@ -306,22 +316,27 @@ export const CosmosWalletTransfer = () => {
       currentAsset?.minDepositAmt
     );
 
-    if (!minAmountOk)
+    if (!minAmountOk) {
       return toast.error(
         `Token amount to transfer should be bigger than ${minDeposit}`
       );
+    }
     const sourcePort = "transfer";
     const senderAddress =
       terraWallets && terraWallets.length >= 1
         ? terraWallets[0]?.terraAddress
         : "";
-    if (!senderAddress) throw new Error("no sender specified");
+    if (!senderAddress) {
+      throw new Error("no sender specified");
+    }
 
     const denom = asset?.chain_aliases["terra"].ibcDenom;
     const [_action, _channel, _denom] = currentAsset?.fullDenomPath?.split(
       "/"
     ) as string[];
-    if (!denom) throw new Error("asset not found: " + _denom);
+    if (!denom) {
+      throw new Error(`asset not found: ${_denom}`);
+    }
     const fee = new Fee(parseInt(TERRA_IBC_GAS_LIMIT), "30000uluna");
     const transferMsg: MsgTransfer = new MsgTransfer(
       sourcePort,
@@ -349,7 +364,9 @@ export const CosmosWalletTransfer = () => {
         return null;
       });
 
-    if (!signTx) return;
+    if (!signTx) {
+      return;
+    }
     try {
       console.log("CosmosWalletTransfer: Terra Station IBC transfer");
       const tx = await lcdClient.tx.broadcastSync(signTx.result);
@@ -433,7 +450,9 @@ export const CosmosWalletTransfer = () => {
               if (userSelectedTS) {
                 await handleOnTerraStationIBCTransfer();
               } else {
-                if (!isTerraConnected) await connectTerraWallet();
+                if (!isTerraConnected) {
+                  await connectTerraWallet();
+                }
                 setUserSelectionForCosmosWallet("terraStation");
                 // await handleOnTerraStationIBCTransfer();
               }

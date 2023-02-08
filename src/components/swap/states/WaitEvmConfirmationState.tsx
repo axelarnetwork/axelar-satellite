@@ -38,7 +38,9 @@ export const WaitEvmConfirmationState = () => {
     abi: erc20ABI,
     eventName: "Transfer",
     listener(...event: any) {
-      if (event[3].blockNumber < Number(txInfo.destStartBlockNumber)) return;
+      if (event[3].blockNumber < Number(txInfo.destStartBlockNumber)) {
+        return;
+      }
       if (event[1] === destAddress) {
         setTxInfo({
           destTxHash: event[3]?.transactionHash,

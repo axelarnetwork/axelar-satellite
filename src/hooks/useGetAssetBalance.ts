@@ -40,9 +40,15 @@ export const useGetAssetBalance = () => {
    */
   const { balance: evmBalance, isLoading: evmIsLoading } = useGetEvmBalance();
   useEffect(() => {
-    if (!wagmiConnected) return;
-    if (srcChain.module !== "evm") return;
-    if (evmBalance) setBalance(evmBalance);
+    if (!wagmiConnected) {
+      return;
+    }
+    if (srcChain.module !== "evm") {
+      return;
+    }
+    if (evmBalance) {
+      setBalance(evmBalance);
+    }
     setLoading(evmIsLoading);
   }, [evmBalance, srcChain.module, evmIsLoading]);
 
@@ -52,8 +58,12 @@ export const useGetAssetBalance = () => {
   const { balance: keplrBalance, isLoading: keplrBalanceIsLoading } =
     useGetKeplerBalance();
   useEffect(() => {
-    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
-    if (keplrBalance) setBalance(keplrBalance);
+    if (srcChain.module !== "axelarnet" || !keplrConnected) {
+      return;
+    }
+    if (keplrBalance) {
+      setBalance(keplrBalance);
+    }
     setLoading(keplrBalanceIsLoading);
   }, [keplrBalance, srcChain.module, keplrBalanceIsLoading]);
 
@@ -63,9 +73,13 @@ export const useGetAssetBalance = () => {
       setTerraStationBalance(null);
       return;
     }
-    if (!isTerraConnected || !wallets[0]?.terraAddress) return;
+    if (!(isTerraConnected && wallets[0]?.terraAddress)) {
+      return;
+    }
     const denom = asset?.chain_aliases["terra"].ibcDenom as string;
-    if (!denom) return;
+    if (!denom) {
+      return;
+    }
 
     terraLcdClient.bank
       .balance(wallets[0].terraAddress)
@@ -141,7 +155,9 @@ const useGetEvmBalance = () => {
    * DETECT IF A NATIVE ASSET IS SELECTED ON THE SOURCE CHAIN
    */
   useEffect(() => {
-    if (!wagmiConnected) return;
+    if (!wagmiConnected) {
+      return;
+    }
     const isNativeAsset =
       asset?.is_gas_token &&
       asset.native_chain === srcChain.chainName?.toLowerCase();
@@ -149,7 +165,9 @@ const useGetEvmBalance = () => {
   }, [srcChain, asset, wagmiConnected]);
 
   const updateBalance = useCallback(() => {
-    if (!wagmiConnected) return;
+    if (!wagmiConnected) {
+      return;
+    }
 
     if (isNativeBalance) {
       const value = new BigNumber(nativeBalance?.formatted || "0").toFixed(4);
@@ -171,10 +189,18 @@ const useGetEvmBalance = () => {
    * UPDATE BALANCE ON EVERY SWAP STATE CHANGE
    */
   useEffect(() => {
-    if (srcChain.module !== "evm") return;
-    if (!wagmiConnected) return;
-    if (isNativeBalance) refetchNativeBalance().then(() => updateBalance());
-    if (!isNativeBalance) refetchErc20Balance().then(() => updateBalance());
+    if (srcChain.module !== "evm") {
+      return;
+    }
+    if (!wagmiConnected) {
+      return;
+    }
+    if (isNativeBalance) {
+      refetchNativeBalance().then(() => updateBalance());
+    }
+    if (!isNativeBalance) {
+      refetchErc20Balance().then(() => updateBalance());
+    }
   }, [
     swapStatus,
     srcChainId,
@@ -208,7 +234,9 @@ const useGetKeplerBalance = () => {
   const [balance, setBalance] = useState("0");
 
   useEffect(() => {
-    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
+    if (srcChain.module !== "axelarnet" || !keplrConnected) {
+      return;
+    }
     setIsLoading(true);
     updateBalance().finally(() => setIsLoading(false));
   }, [srcChain, swapStatus, asset, keplrConnected]);
@@ -225,7 +253,9 @@ const useGetKeplerBalance = () => {
         srcChain.chainName?.toLowerCase()
     );
 
-    if (!fullChainConfig || !derivedDenom) return;
+    if (!(fullChainConfig && derivedDenom)) {
+      return;
+    }
 
     try {
       const res = await queryBalance(

@@ -35,12 +35,12 @@ export const evmIshSignDirect = async (
   ).then((res) => res.json());
   const { account } = fetchSenderResults;
   const { base_account } = account;
-  let address: string,
-    pub_key: any,
-    account_number,
-    sequence: number,
-    pubKeyType,
-    pubKeyKey;
+  let address: string;
+  let pub_key: any;
+  let account_number;
+  let sequence: number;
+  let pubKeyType;
+  let pubKeyKey;
   if (base_account) {
     address = base_account.address;
     pub_key = base_account.pub_key;
@@ -72,7 +72,6 @@ export const evmIshSignDirect = async (
     denom: keplrConfig.feeCurrencies[0].coinMinimalDenom,
     gas: "200000",
   };
-  const memo = "";
   const params: MessageIBCMsgTransfer = {
     sourcePort: "transfer",
     sourceChannel: chainToAxelarChannelId,
@@ -83,7 +82,7 @@ export const evmIshSignDirect = async (
     revisionHeight: 10,
     timeoutTimestamp: "0",
   };
-  const msg = createTxIBCMsgTransfer(chain, sender, fee, memo, params);
+  const msg = createTxIBCMsgTransfer(chain, sender, fee, "", params);
 
   let sign = await window?.keplr?.signDirect(
     chain.cosmosChainId,

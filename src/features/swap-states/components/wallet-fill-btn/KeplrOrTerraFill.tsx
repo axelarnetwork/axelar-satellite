@@ -19,18 +19,25 @@ export const KeplrOrTerraFill = () => {
   const terraStation = useTerraWallet();
 
   const handleOnKeplFill = useCallback(async () => {
-    if (!keplr)
+    if (!keplr) {
       return toast.error("Please install the Keplr wallet extension first!");
+    }
 
     async function connectKeplr() {
-      if (!destCosmosChain) return;
+      if (!destCosmosChain) {
+        return;
+      }
       await keplr?.experimentalSuggestChain(destCosmosChain);
       await keplr?.enable(destCosmosChain.chainId as string);
       setKeplrConnected(true);
     }
-    if (!keplrConnected) return connectKeplr();
+    if (!keplrConnected) {
+      return connectKeplr();
+    }
 
-    if (!destCosmosChain) return;
+    if (!destCosmosChain) {
+      return;
+    }
     const address = await keplr?.getKey(destCosmosChain.chainId);
     setDestAddress(address?.bech32Address as string);
   }, [
@@ -60,8 +67,9 @@ export const KeplrOrTerraFill = () => {
     destChain.module !== "axelarnet" ||
     (destChain.module === "axelarnet" &&
       destChain.chainName.toLowerCase() !== "terra")
-  )
+  ) {
     return null;
+  }
 
   return (
     <div className="bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full w-28 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse">

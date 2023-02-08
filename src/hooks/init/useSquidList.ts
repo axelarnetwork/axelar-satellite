@@ -24,7 +24,11 @@ export const useSquidList = () => {
         };
       });
     // console.log("squid tokens", tokensWithExtendedChainData);
-    if (squidTokens.length === 0) setSquidTokens(tokensWithExtendedChainData);
-    if (squidChains.length === 0) setSquidChains(squid.chains);
+    if (squidTokens.length === 0) {
+      setSquidTokens(tokensWithExtendedChainData);
+    }
+    if (squidChains.length === 0) {
+      setSquidChains(squid.chains);
+    }
   };
 };

@@ -8,7 +8,9 @@ type TOSProps = {};
 export const TOS: FC<TOSProps> = ({}) => {
   const { modalId } = useApplicationStateStore((state) => state);
 
-  if (modalId !== TOS_MODAL) return null;
+  if (modalId !== TOS_MODAL) {
+    return null;
+  }
 
   return (
     <div>

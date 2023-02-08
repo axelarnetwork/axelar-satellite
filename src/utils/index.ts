@@ -5,7 +5,9 @@ import { ENVIRONMENT } from "../config/constants";
 import { Environment } from "./enums";
 
 export function copyToClipboard(value: string) {
-  if (!value) return;
+  if (!value) {
+    return;
+  }
   navigator.clipboard.writeText(value);
   toast.success("Copied to Clipboard!");
 }
@@ -100,11 +102,13 @@ function mapCosmosMainnetChains(chainId: string) {
 }
 
 export function curateCosmosChainId(chainId: string) {
-  if (ENVIRONMENT === Environment.TESTNET)
+  if (ENVIRONMENT === Environment.TESTNET) {
     return mapCosmosTestnetChains(chainId);
+  }
 
-  if (ENVIRONMENT === Environment.MAINNET)
+  if (ENVIRONMENT === Environment.MAINNET) {
     return mapCosmosMainnetChains(chainId);
+  }
 }
 
 export * from "./roundNumberTo";

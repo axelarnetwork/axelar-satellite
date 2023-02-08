@@ -16,7 +16,7 @@ export default class ParticleSystem {
   update(deltaTime = 0) {
     this.particles.forEach((particle) => {
       particle.update();
-      this.updateHandler && this.updateHandler(particle);
+      this.updateHandler?.(particle);
     });
   }
 

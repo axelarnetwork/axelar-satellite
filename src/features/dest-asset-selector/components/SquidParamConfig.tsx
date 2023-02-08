@@ -12,12 +12,14 @@ export const SquidParamConfig = () => {
     enableGMPExpress,
   } = useSquidStateStore((state) => state);
 
-  if (!isSquidTrade) return null;
+  if (!isSquidTrade) {
+    return null;
+  }
 
   return (
     <div
       className="dropdown tooltip tooltip-warning dropdown-end"
-      data-tip={`Adjust Squid swap parameters`}
+      data-tip={"Adjust Squid swap parameters"}
     >
       <label
         tabIndex={0}
@@ -60,7 +62,7 @@ export const SquidParamConfig = () => {
             <input
               type="checkbox"
               checked={enableGMPExpress}
-              disabled
+              disabled={true}
               className="h-6 checkbox"
             />
           </div>

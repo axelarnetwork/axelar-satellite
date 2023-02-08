@@ -17,7 +17,9 @@ export const useSwitchSrcChain = () => {
 
   return (chain: ChainInfo) => {
     const selectedChain = allChains.find((_chain) => _chain.id === chain.id);
-    if (!selectedChain) return;
+    if (!selectedChain) {
+      return;
+    }
     const selectedChainHasAsset = selectedChain?.assets?.find(
       (_asset) => _asset.common_key === asset?.id
     );
@@ -31,7 +33,9 @@ export const useSwitchSrcChain = () => {
         !!_asset.chain_aliases[selectedChain?.chainName.toLocaleLowerCase()] &&
         !!_asset.chain_aliases[destChain?.chainName.toLocaleLowerCase()]
     );
-    if (!compatibleAsset) return;
+    if (!compatibleAsset) {
+      return;
+    }
     setAsset(compatibleAsset);
     setSrcChain(chain);
   };

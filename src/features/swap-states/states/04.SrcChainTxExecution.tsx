@@ -21,7 +21,9 @@ export const SrcChainTxExecution = () => {
 
   const relayerFee = useGetRelayerGasFee();
 
-  if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) return null;
+  if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) {
+    return null;
+  }
 
   return (
     <>

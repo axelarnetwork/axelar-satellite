@@ -35,8 +35,12 @@ export const useGatewayQuery = () => {
 
   useEffect(() => {
     (async () => {
-      if (!api) return;
-      if (destChain.module !== "evm") return;
+      if (!api) {
+        return;
+      }
+      if (destChain.module !== "evm") {
+        return;
+      }
       const chain = destChain?.chainName?.toLowerCase();
       const gatewayAddress = await (
         await api?.evm?.GatewayAddress({ chain })

@@ -21,7 +21,9 @@ const Home: NextPage = () => {
   const [storeIsReady, setStoreIsReady] = useState(false);
 
   useEffect(() => {
-    if (allAssets.length > 0 && allChains.length > 0) setStoreIsReady(true);
+    if (allAssets.length > 0 && allChains.length > 0) {
+      setStoreIsReady(true);
+    }
   }, [allAssets, allChains]);
 
   useEffect(() => drawBackground(), []);
@@ -31,7 +33,9 @@ const Home: NextPage = () => {
   // useSquidList();
 
   function renderContent() {
-    if (UNDER_MAINTENANCE) return <UnderMaintenance />;
+    if (UNDER_MAINTENANCE) {
+      return <UnderMaintenance />;
+    }
 
     return (
       <>

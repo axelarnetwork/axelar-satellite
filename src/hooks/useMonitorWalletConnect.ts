@@ -8,7 +8,11 @@ export const useMonitorWalletConnect = () => {
   const { setWagmiConnected } = useWalletStore();
 
   useEffect(() => {
-    if (isConnected) setWagmiConnected(true);
-    if (!isConnected) setWagmiConnected(false);
+    if (isConnected) {
+      setWagmiConnected(true);
+    }
+    if (!isConnected) {
+      setWagmiConnected(false);
+    }
   }, [isConnected]);
 };

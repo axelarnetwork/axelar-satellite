@@ -59,7 +59,9 @@ export const SwapBox = () => {
         >
           {env !== "mainnet" && (
             <div
-              className={`font-bold text-white bg-red-500 border-0 badge badge-primary`}
+              className={
+                "font-bold text-white bg-red-500 border-0 badge badge-primary"
+              }
             >
               {env.toUpperCase()}
             </div>

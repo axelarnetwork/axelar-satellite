@@ -47,8 +47,9 @@ export const BalanceInfo = () => {
       return;
     }
 
-    if (isEVM) setBalanceToShow(balance);
-    else if (isTerra) {
+    if (isEVM) {
+      setBalanceToShow(balance);
+    } else if (isTerra) {
       setUserSelectionForCosmosWallet("terraStation");
       setBalanceToShow(terraStationBalance as string);
     } else if (isAxelarnet) {
@@ -64,13 +65,19 @@ export const BalanceInfo = () => {
     setUserSelectionForCosmosWallet,
   ]);
 
-  if (!balanceToShow || !showBalance) {
+  if (!(balanceToShow && showBalance)) {
     let textToShow;
-    if (srcChain.module === "evm") textToShow = "Metamask";
-    else if (srcChain?.chainName?.toLowerCase() === "terra") {
-      if (userSelectionForCosmosWallet === "keplr") textToShow = "Keplr";
-      else textToShow = "Terra Station";
-    } else textToShow = "Keplr";
+    if (srcChain.module === "evm") {
+      textToShow = "Metamask";
+    } else if (srcChain?.chainName?.toLowerCase() === "terra") {
+      if (userSelectionForCosmosWallet === "keplr") {
+        textToShow = "Keplr";
+      } else {
+        textToShow = "Terra Station";
+      }
+    } else {
+      textToShow = "Keplr";
+    }
     return (
       <label
         htmlFor="web3-modal"
@@ -81,7 +88,7 @@ export const BalanceInfo = () => {
     );
   }
 
-  if (srcChain?.chainName?.toLowerCase() !== "terra")
+  if (srcChain?.chainName?.toLowerCase() !== "terra") {
     return (
       <div className="space-y-1">
         <div className="flex justify-end space-x-2">
@@ -101,12 +108,13 @@ export const BalanceInfo = () => {
         {/* <UnwrapToNativeChainCheckbox /> */}
       </div>
     );
+  }
 
   /**src chain is terra, user selected terra station but is not connected to it */
   if (
     userSelectionForCosmosWallet === "terraStation" &&
     !isTerraInitializingOrConnected
-  )
+  ) {
     return (
       <label
         htmlFor="web3-modal"
@@ -115,9 +123,10 @@ export const BalanceInfo = () => {
         Connect Terra Station to see balance
       </label>
     );
+  }
 
   /**src chain is terra, user selected Keplr but is not connected to it */
-  if (userSelectionForCosmosWallet === "keplr" && !keplrConnected)
+  if (userSelectionForCosmosWallet === "keplr" && !keplrConnected) {
     return (
       <label
         htmlFor="web3-modal"
@@ -126,6 +135,7 @@ export const BalanceInfo = () => {
         Connect Keplr to see balance
       </label>
     );
+  }
 
   const switchTSAndKeplr = () => {
     const isOnTS = userSelectionForCosmosWallet === "terraStation";
@@ -135,7 +145,9 @@ export const BalanceInfo = () => {
       setUserSelectionForCosmosWallet("keplr");
     };
     const switchTS = async () => {
-      if (!isTerraConnected) connectTerraStation();
+      if (!isTerraConnected) {
+        connectTerraStation();
+      }
       setUserSelectionForCosmosWallet("terraStation");
     };
     return (
@@ -148,7 +160,7 @@ export const BalanceInfo = () => {
         </span>
         <Image
           loading="eager"
-          src={`/assets/ui/forward-arrow-link.svg`}
+          src={"/assets/ui/forward-arrow-link.svg"}
           layout="intrinsic"
           width={10}
           height={10}

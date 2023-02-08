@@ -19,7 +19,7 @@ const InfoIcon = (
       strokeLinejoin="round"
       strokeWidth="2"
       d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-    ></path>
+    />
   </svg>
 );
 
@@ -29,7 +29,9 @@ export const TransferSwapStats = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
 
   function renderTxConfirmLink() {
-    if (!txReceipt?.transactionHash) return null;
+    if (!txReceipt?.transactionHash) {
+      return null;
+    }
     const evmRpc = getWagmiChains().find(
       (network) =>
         network.networkNameOverride === srcChain.chainName?.toLowerCase()
@@ -62,7 +64,9 @@ export const TransferSwapStats = () => {
     );
   }
 
-  if (!isSquidTrade) return null;
+  if (!isSquidTrade) {
+    return null;
+  }
 
   return (
     <StatsWrapper>
@@ -162,6 +166,6 @@ export const Row = ({
 
 export const LoadingRow = () => (
   <div className="max-w-sm animate-pulse">
-    <div className="w-24 h-1 bg-gray-500 rounded-full "></div>
+    <div className="w-24 h-1 bg-gray-500 rounded-full " />
   </div>
 );

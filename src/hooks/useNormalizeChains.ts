@@ -38,8 +38,12 @@ export const useNormalizeChains = () => {
    * UPDATE DEST CHAIN IF ASSET IS NULL
    */
   useEffect(() => {
-    if (allChains.length === 0 || allAssets.length === 0) return;
-    if (!srcChain?.chainName || !destChain?.chainName) return;
+    if (allChains.length === 0 || allAssets.length === 0) {
+      return;
+    }
+    if (!(srcChain?.chainName && destChain?.chainName)) {
+      return;
+    }
     const timeout = setTimeout(() => {
       if (asset === null) {
         findFirstCompatibleChain();

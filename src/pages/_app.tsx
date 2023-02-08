@@ -33,7 +33,9 @@ function MyApp({
     getChainOptions().then((config) => setTerraConfig(config));
   }, []);
 
-  if (!terraConfig) return null;
+  if (!terraConfig) {
+    return null;
+  }
 
   const main = (
     <QueryClientProvider client={queryClient}>

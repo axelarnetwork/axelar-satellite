@@ -68,7 +68,9 @@ export const DestAssetSelector = ({
 
   const getRouteData = useCallback(
     async (t: AssetInfo) => {
-      if (!asset) return;
+      if (!asset) {
+        return;
+      }
       const fromToken = asset.is_gas_token
         ? ARBITRARY_EVM_ADDRESS
         : asset.chain_aliases[srcChain.chainName.toLowerCase()].tokenAddress;
@@ -164,7 +166,9 @@ export const DestAssetSelector = ({
     shouldUnwrap: boolean,
     assetSymbol: string | undefined
   ) => {
-    if (!assetSymbol) return;
+    if (!assetSymbol) {
+      return;
+    }
     setSelectedAssetSymbol(assetSymbol);
     setShouldUnwrapAsset(shouldUnwrap);
     setSelectedSquidAsset(null);
@@ -189,7 +193,9 @@ export const DestAssetSelector = ({
   )?.isSquidAsset;
 
   function renderAssetDropdown() {
-    if (!dropdownOpen || !srcChain) return null;
+    if (!(dropdownOpen && srcChain)) {
+      return null;
+    }
 
     return (
       <div className="left-0 w-full p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
@@ -277,11 +283,15 @@ export const DestAssetSelector = ({
     );
   }
 
-  if (!asset) return null;
+  if (!asset) {
+    return null;
+  }
 
   const selectedWrapped = destChain?.module === "evm" && selectedAssetIsWrapped;
   const hasSquidAssets = squidAssets?.length > 0;
-  if (!selectedWrapped && !hasSquidAssets) return null;
+  if (!(selectedWrapped || hasSquidAssets)) {
+    return null;
+  }
 
   return (
     <InputWrapper>

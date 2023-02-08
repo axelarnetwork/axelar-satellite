@@ -10,18 +10,20 @@ export function checkDestAddressFormat(
   const destModule = destChain.module;
   if (destModule === "evm") {
     const addressOk = validateEvmAddress(destAddress);
-    if (!addressOk)
+    if (!addressOk) {
       showErrorMsgAndThrow(`Address ${destAddress} is not a valid EVM address`);
+    }
   } else if (destModule === "axelarnet") {
     const addressOk = validateCosmosAddress(
       destAddress,
       destChain.addressPrefix
     );
-    if (!addressOk)
+    if (!addressOk) {
       showErrorMsgAndThrow(
         `Address ${destAddress.substring(0, 10)}... is not a valid ${
           destChain.chainSymbol
         } address`
       );
+    }
   }
 }

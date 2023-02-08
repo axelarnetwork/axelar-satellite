@@ -10,7 +10,9 @@ type SupportProps = {};
 export const Support: FC<SupportProps> = ({}) => {
   const { modalId } = useApplicationStateStore((state) => state);
 
-  if (modalId !== SUPPORT_MODAL) return null;
+  if (modalId !== SUPPORT_MODAL) {
+    return null;
+  }
 
   return (
     <div>
@@ -18,19 +20,22 @@ export const Support: FC<SupportProps> = ({}) => {
       {Link({
         url: "https://transaction-confirmation.axelar.dev",
         linkTitle: "Transaction Stuck?",
-        linkDescription: `Try this Deposit Recovery Tool to confirm your deposit transasction on the Axelar network.`,
+        linkDescription:
+          "Try this Deposit Recovery Tool to confirm your deposit transasction on the Axelar network.",
       })}
       {Link({
         url: `https://${
           process.env.NEXT_PUBLIC_ENVIRONMENT !== "mainnet" ? "testnet." : ""
         }axelarscan.io`,
         linkTitle: "Transaction History",
-        linkDescription: `Search Axelarscan for any transactions you made through Satellite. You can search by sending, receiving, or deposit addresses.`,
+        linkDescription:
+          "Search Axelarscan for any transactions you made through Satellite. You can search by sending, receiving, or deposit addresses.",
       })}
       {Link({
         url: "https://axelar.zendesk.com/hc/en-us/requests/new",
         linkTitle: "File A Ticket",
-        linkDescription: `For general help, submit your questions/feedback via Zendesk. Any and all thoughts welcome!`,
+        linkDescription:
+          "For general help, submit your questions/feedback via Zendesk. Any and all thoughts welcome!",
       })}
       {GetSocials()}
       <div className="modal-action">

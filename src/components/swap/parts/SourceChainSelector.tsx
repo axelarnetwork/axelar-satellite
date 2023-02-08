@@ -46,10 +46,14 @@ export const SourceChainSelector = () => {
   }, [srcChain, destChain, dropdownOpen, searchChainInput]);
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady) {
+      return;
+    }
     const source = router.query.source as string;
     const srcChainName = source?.toLowerCase() || "";
-    if (!srcChainName) return;
+    if (!srcChainName) {
+      return;
+    }
 
     const chain = filteredChains.find(
       (candidate) => candidate.chainName === srcChainName
@@ -60,7 +64,9 @@ export const SourceChainSelector = () => {
   }, [router.query]);
 
   useEffect(() => {
-    if (!searchChainInput) return;
+    if (!searchChainInput) {
+      return;
+    }
 
     const chains = allChains.filter(
       (chain) =>
@@ -86,7 +92,9 @@ export const SourceChainSelector = () => {
      * Handle the case where the current asset is not compatible on selected source chain
      */
     const selectedChain = allChains.find((_chain) => _chain.id === chain.id);
-    if (!selectedChain) return;
+    if (!selectedChain) {
+      return;
+    }
     const selectedChainHasAsset = selectedChain?.assets?.find(
       (_asset) => _asset.common_key === asset?.id
     );
@@ -100,13 +108,17 @@ export const SourceChainSelector = () => {
         !!_asset.chain_aliases[selectedChain?.chainName.toLocaleLowerCase()] &&
         !!_asset.chain_aliases[destChain?.chainName.toLocaleLowerCase()]
     );
-    if (!compatibleAsset) return;
+    if (!compatibleAsset) {
+      return;
+    }
     setAsset(compatibleAsset);
     setSrcChain(chain);
   }
 
   function renderChainDropdown() {
-    if (!dropdownOpen) return null;
+    if (!dropdownOpen) {
+      return null;
+    }
 
     return (
       <div className="left-0 w-full h-64 p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
@@ -144,7 +156,7 @@ export const SourceChainSelector = () => {
     );
   }
 
-  if (srcChain)
+  if (srcChain) {
     return (
       <div ref={ref}>
         <label className="block text-xs">From</label>
@@ -182,6 +194,7 @@ export const SourceChainSelector = () => {
         </div>
       </div>
     );
+  }
 
   return null;
 };

@@ -17,11 +17,15 @@ export const useSwitchDestChain = () => {
 
   return (chain: ChainInfo) => {
     const selectedChain = allChains.find((_chain) => _chain.id === chain.id);
-    if (!selectedChain) return;
+    if (!selectedChain) {
+      return;
+    }
     const selectedChainHasAsset = selectedChain?.assets?.find(
       (_asset) => _asset.common_key === asset?.id
     );
-    if (selectedChainHasAsset) return setDestChain(chain);
+    if (selectedChainHasAsset) {
+      return setDestChain(chain);
+    }
 
     // if asset incompatible find fist compatible asset
     const compatibleAsset = allAssets.find(
@@ -29,7 +33,9 @@ export const useSwitchDestChain = () => {
         !!_asset.chain_aliases[selectedChain?.chainName.toLocaleLowerCase()] &&
         !!_asset.chain_aliases[srcChain?.chainName.toLocaleLowerCase()]
     );
-    if (!compatibleAsset) return;
+    if (!compatibleAsset) {
+      return;
+    }
     setAsset(compatibleAsset);
     setDestChain(chain);
   };

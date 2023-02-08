@@ -7,7 +7,9 @@ export const useHasKeplerWallet = () => {
   const [hasWallet, setHasWallet] = useState(false);
 
   useEffect(() => {
-    if (!wagmiConnected) return;
+    if (!wagmiConnected) {
+      return;
+    }
     const keplr = window?.keplr;
     setHasWallet(!!keplr);
   }, [wagmiConnected]);

@@ -10,7 +10,9 @@ export const StopButton = () => {
     resetState();
   }
 
-  if (swapStatus === SwapStatus.IDLE) return null;
+  if (swapStatus === SwapStatus.IDLE) {
+    return null;
+  }
 
   return (
     <div

@@ -15,8 +15,9 @@ export const KeplrTxBtn = () => {
   if (
     srcChain.module !== "axelarnet" ||
     srcChain.chainName.toLowerCase() === "terra"
-  )
+  ) {
     return null;
+  }
 
   return (
     <div>

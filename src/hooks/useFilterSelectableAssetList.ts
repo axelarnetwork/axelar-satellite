@@ -9,14 +9,20 @@ export function useFilterSelectableAssetList() {
     useSwapStore((state) => state);
 
   useEffect(() => {
-    if (srcChain && destChain) filterAssetList();
+    if (srcChain && destChain) {
+      filterAssetList();
+    }
   }, [srcChain, destChain, asset]);
 
   function filterAssetList() {
-    if (!srcChain || !destChain) return;
+    if (!(srcChain && destChain)) {
+      return;
+    }
     const sourceAssets = srcChain.assets as AssetInfo[];
     const destAssets = destChain.assets as AssetInfo[];
-    if (!sourceAssets || !destAssets) return;
+    if (!(sourceAssets && destAssets)) {
+      return;
+    }
 
     const selectableAssets = allAssets.filter((asset) => {
       const sourceHasAsset = sourceAssets.find(
@@ -34,7 +40,9 @@ export function useFilterSelectableAssetList() {
     });
 
     const selectableAssetsWithNative = selectableAssets.filter((_asset) => {
-      if (!_asset?.is_gas_token) return true;
+      if (!_asset?.is_gas_token) {
+        return true;
+      }
       // if (_asset.native_chain !== srcChain.chainIdentifier[ENVIRONMENT])
       //   return false;
       return true;

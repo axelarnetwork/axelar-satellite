@@ -86,7 +86,7 @@ export const EvmWalletTransfer = () => {
         ? 96
         : (srcChain.confirmLevel as number)
     ),
-    enabled: !!(txInfo && txInfo.sourceTxHash),
+    enabled: !!txInfo?.sourceTxHash,
   });
 
   /**
@@ -105,7 +105,7 @@ export const EvmWalletTransfer = () => {
     args: [
       depositAddress as Hash,
       utils.parseUnits(
-        !!tokensToTransfer ? tokensToTransfer : "0",
+        tokensToTransfer ? tokensToTransfer : "0",
         asset?.decimals
       ),
     ],
@@ -133,7 +133,7 @@ export const EvmWalletTransfer = () => {
     request: {
       to: depositAddress,
       value: utils.parseUnits(
-        !!tokensToTransfer ? tokensToTransfer : "0",
+        tokensToTransfer ? tokensToTransfer : "0",
         asset?.decimals
       ),
     },
@@ -151,7 +151,9 @@ export const EvmWalletTransfer = () => {
 
   useEffect(() => {
     console.log("send native data result", sendNativeDataResult);
-    if (!sendNativeDataResult?.hash) return;
+    if (!sendNativeDataResult?.hash) {
+      return;
+    }
     setTxInfo({
       sourceTxHash: sendNativeDataResult?.hash,
       destStartBlockNumber: blockNumber,
@@ -172,8 +174,9 @@ export const EvmWalletTransfer = () => {
   async function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
     console.log("min Deposit", minDeposit);
-    if (new BigNumber(amount || 0).lte(new BigNumber(minDeposit)))
+    if (new BigNumber(amount || 0).lte(new BigNumber(minDeposit))) {
       return { minDeposit, minAmountOk: false };
+    }
     return {
       minDeposit,
       minAmountOk: true,
@@ -186,7 +189,9 @@ export const EvmWalletTransfer = () => {
   }
 
   async function handleOnTokensTransfer() {
-    if (!wagmiConnected) await handleOnMetamaskSwitch();
+    if (!wagmiConnected) {
+      await handleOnMetamaskSwitch();
+    }
     await switchNetworkAsync?.();
     // token amount should not be null
     const { minAmountOk, minDeposit } = await checkMinAmount(
@@ -194,12 +199,13 @@ export const EvmWalletTransfer = () => {
       currentAsset?.minDepositAmt
     );
 
-    if (!minAmountOk)
+    if (!minAmountOk) {
       return toast.error(
         `Token amount to transfer should be bigger than ${minDeposit} ${
           asset?.chain_aliases[srcChain.chainName?.toLowerCase()].assetSymbol
         }`
       );
+    }
 
     // check if user has enough gas
     // const nativeBalance = accountBalance?.value.toString() as string;
@@ -294,7 +300,7 @@ export const EvmWalletTransfer = () => {
               className="w-56 progress progress-success"
               value={numConfirmationsSoFar}
               max={96}
-            ></progress>
+            />
           </div>
         </div>
       );
@@ -318,7 +324,7 @@ export const EvmWalletTransfer = () => {
             className="w-56 progress progress-success"
             value={numConfirmationsSoFar}
             max={srcChain.confirmLevel}
-          ></progress>
+          />
         </div>
       </div>
     );

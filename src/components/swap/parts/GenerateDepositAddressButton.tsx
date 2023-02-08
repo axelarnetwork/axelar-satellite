@@ -41,8 +41,9 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
 
   async function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
-    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
+    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit))) {
       return { minDeposit, minAmountOk: false };
+    }
     return {
       minDeposit,
       minAmountOk: true,
@@ -50,27 +51,37 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
   }
 
   async function handleOnGenerateDepositAddress() {
-    if ((srcChain as any).id === "terra")
+    if ((srcChain as any).id === "terra") {
       return toast.error(
         "Only the transfers to Terra Classic are allowed for uluna and uusd"
       );
-    if (!asset) return toast.error("Asset can't be empty");
-    if (!Number(tokensToTransfer))
+    }
+    if (!asset) {
+      return toast.error("Asset can't be empty");
+    }
+    if (!Number(tokensToTransfer)) {
       return toast.error("Please enter the amount of tokens to transfer");
+    }
 
-    if (!checkDestAddressFormat()) return;
+    if (!checkDestAddressFormat()) {
+      return;
+    }
     const { minAmountOk, minDeposit } = await checkMinAmount(tokensToTransfer);
 
-    if (!minAmountOk)
+    if (!minAmountOk) {
       return toast.error(
         `Token amount to transfer should be bigger than ${minDeposit} ${selectedAssetSymbol}`
       );
-    if (!destAddress) return toast.error("Destination address can't be empty");
+    }
+    if (!destAddress) {
+      return toast.error("Destination address can't be empty");
+    }
     if (
       RESERVED_ADDRESSES?.includes(destAddress) ||
       reservedAddresses.includes(destAddress)
-    )
+    ) {
       return toast.error("Cannot send to this address");
+    }
 
     genDepositAddress({
       fromChain: srcChain.chainIdentifier[ENVIRONMENT],
@@ -118,7 +129,9 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     );
   }
 
-  if (loading) return renderLoadingButton();
+  if (loading) {
+    return renderLoadingButton();
+  }
 
   return (
     <div

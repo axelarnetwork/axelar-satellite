@@ -25,21 +25,29 @@ export const useDetectDestTransferConfirmation = () => {
 
   function checkPayload(data: any) {
     if (destChain && destChain.chainName?.toLowerCase() === "axelar") {
-      if (data.Type !== `axelar.axelarnet.v1beta1.AxelarTransferCompleted`)
+      if (data.Type !== "axelar.axelarnet.v1beta1.AxelarTransferCompleted") {
         return;
+      }
       //TODO: receipient is intentionally misspelled because that is the property that is received from the emitted event
-      if (!(data.Attributes.receipient as string)?.includes(destAddress))
+      if (!(data.Attributes.receipient as string)?.includes(destAddress)) {
         return;
+      }
     } else {
-      if (data.Type !== "fungible_token_packet") return;
-      if (data.Attributes.receiver !== destAddress) return;
+      if (data.Type !== "fungible_token_packet") {
+        return;
+      }
+      if (data.Attributes.receiver !== destAddress) {
+        return;
+      }
     }
 
     return true;
   }
 
   useEffect(() => {
-    if (swapStatus !== SwapStatus.WAIT_FOR_CONFIRMATION) return;
+    if (swapStatus !== SwapStatus.WAIT_FOR_CONFIRMATION) {
+      return;
+    }
 
     let denom;
 
@@ -57,7 +65,9 @@ export const useDetectDestTransferConfirmation = () => {
       //we check separately
       const { fullDenomPath } =
         asset.chain_aliases[destChain.chainName?.toLowerCase()];
-      if (!fullDenomPath) throw `chain config for ${asset.id} not defined`;
+      if (!fullDenomPath) {
+        throw `chain config for ${asset.id} not defined`;
+      }
       denom =
         fullDenomPath.split("/").length > 1
           ? fullDenomPath?.split("/")[2]
@@ -77,7 +87,9 @@ export const useDetectDestTransferConfirmation = () => {
 
     socket.on("bridge-event", (data) => {
       const ok = checkPayload(data);
-      if (ok) setSwapStatus(SwapStatus.FINISHED);
+      if (ok) {
+        setSwapStatus(SwapStatus.FINISHED);
+      }
     });
 
     return () => {

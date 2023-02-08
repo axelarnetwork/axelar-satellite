@@ -60,7 +60,9 @@ export const TopFlows = () => {
     }
   }, [menuOpened]);
 
-  if (![SwapStatus.IDLE].includes(swapStatus)) return null;
+  if (![SwapStatus.IDLE].includes(swapStatus)) {
+    return null;
+  }
 
   function handleOnFlow0() {
     const polygon = allChains.find((chain) =>
@@ -151,7 +153,7 @@ export const TopFlows = () => {
         >
           <div className="flex">
             <Image
-              src={`/assets/chains/polygon.logo.svg`}
+              src={"/assets/chains/polygon.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -159,7 +161,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/uausdc.logo.svg`}
+              src={"/assets/tokens/uausdc.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -167,7 +169,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/chains/osmosis.logo.svg`}
+              src={"/assets/chains/osmosis.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -181,7 +183,7 @@ export const TopFlows = () => {
         >
           <div className="flex">
             <Image
-              src={`/assets/chains/ethereum.logo.svg`}
+              src={"/assets/chains/ethereum.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -189,7 +191,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/uausdc.logo.svg`}
+              src={"/assets/tokens/uausdc.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -197,7 +199,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/chains/osmosis.logo.svg`}
+              src={"/assets/chains/osmosis.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -211,7 +213,7 @@ export const TopFlows = () => {
         >
           <div className="flex">
             <Image
-              src={`/assets/chains/ethereum.logo.svg`}
+              src={"/assets/chains/ethereum.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -219,7 +221,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/uaxl.logo.svg`}
+              src={"/assets/tokens/uaxl.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -227,7 +229,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/chains/axelar.logo.svg`}
+              src={"/assets/chains/axelar.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -242,7 +244,7 @@ export const TopFlows = () => {
         >
           <div className="flex">
             <Image
-              src={`/assets/chains/ethereum.logo.svg`}
+              src={"/assets/chains/ethereum.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -250,7 +252,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/tokens/weth-wei.logo.svg`}
+              src={"/assets/tokens/weth-wei.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}
@@ -258,7 +260,7 @@ export const TopFlows = () => {
             />
             <Arrow />
             <Image
-              src={`/assets/chains/osmosis.logo.svg`}
+              src={"/assets/chains/osmosis.logo.svg"}
               layout="intrinsic"
               width={35}
               height={35}

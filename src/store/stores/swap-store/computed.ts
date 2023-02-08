@@ -8,7 +8,9 @@ import { AssetConfigExtended } from "~/types";
 
 // TODO: should be named getWagmiSrcChainId
 export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
-  if (!state.srcChain) return undefined;
+  if (!state.srcChain) {
+    return undefined;
+  }
   const chains = getWagmiChains();
   const chain = chains.find(
     (_chain) =>
@@ -25,13 +27,17 @@ export const getDestCosmosChain = memoize(
       (_chain) =>
         _chain.chainIdentifier === state.destChain.chainName?.toLowerCase()
     );
-    if (!chain) return null;
+    if (!chain) {
+      return null;
+    }
     return chain as KeplrChainInfo;
   }
 );
 
 export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
-  if (!state.destChain) return null;
+  if (!state.destChain) {
+    return null;
+  }
   const chains = getWagmiChains();
   const chain = chains.find(
     (_chain) =>
@@ -43,7 +49,9 @@ export const getDestChainId = memoize((state: { destChain: ChainInfo }) => {
 
 export const getSrcTokenAddress = memoize(
   (state: { srcChain: ChainInfo; asset: AssetConfigExtended | null }) => {
-    if (!state.asset || !state.srcChain) return null;
+    if (!(state.asset && state.srcChain)) {
+      return null;
+    }
     const srcChain = state.srcChain;
     const assetCommonKey = state.asset.common_key[ENVIRONMENT];
 
@@ -74,9 +82,13 @@ export const getReservedAddresses = memoize(
 export const getSelectedAssetSymbol = memoize(
   (state: { asset: AssetConfigExtended | null; srcChain: ChainInfo }) => {
     const chainName = state?.srcChain?.chainName?.toLowerCase();
-    if (!chainName) return "";
+    if (!chainName) {
+      return "";
+    }
     const assetInfo = state?.asset?.chain_aliases[chainName];
-    if (!assetInfo) return "";
+    if (!assetInfo) {
+      return "";
+    }
 
     return assetInfo?.assetSymbol || "";
   }
@@ -92,11 +104,11 @@ export const getTransferType = memoize(
     const { asset, srcChain, shouldUnwrapAsset, destChain } = state;
 
     let transferType: "deposit-address" | "wrap" | "unwrap" = "deposit-address";
-    if (!asset) return transferType;
+    if (!asset) {
+      return transferType;
+    }
     const assetIsWrappedVersionOfNativeAssetOnDestChain =
-      state &&
-      state.destChain &&
-      state.destChain.nativeAsset &&
+      state?.destChain?.nativeAsset &&
       state.destChain.nativeAsset.length > 0 &&
       state.destChain?.nativeAsset.indexOf(asset.id) >= 0;
 
@@ -122,9 +134,13 @@ export const getTransferType = memoize(
 export const getSelectedAssetName = memoize(
   (state: { asset: AssetConfigExtended | null; srcChain: ChainInfo }) => {
     const chainName = state?.srcChain?.chainName?.toLowerCase();
-    if (!chainName) return "";
+    if (!chainName) {
+      return "";
+    }
     const assetInfo = state?.asset?.chain_aliases[chainName];
-    if (!assetInfo) return "";
+    if (!assetInfo) {
+      return "";
+    }
 
     return assetInfo?.assetName || "";
   }
@@ -139,9 +155,13 @@ export const isAXLToken = memoize(
 export const getSelectedAssetNameDestChain = memoize(
   (state: { asset: AssetConfigExtended | null; destChain: ChainInfo }) => {
     const chainName = state?.destChain?.chainName?.toLowerCase();
-    if (!chainName) return "";
+    if (!chainName) {
+      return "";
+    }
     const assetInfo = state?.asset?.chain_aliases[chainName];
-    if (!assetInfo) return "";
+    if (!assetInfo) {
+      return "";
+    }
 
     return assetInfo?.assetName || "";
   }
@@ -150,9 +170,13 @@ export const getSelectedAssetNameDestChain = memoize(
 export const getSelectedAssetSymbolDestinationChain = memoize(
   (state: { asset: AssetConfigExtended | null; destChain: ChainInfo }) => {
     const chainName = state?.destChain?.chainName?.toLowerCase();
-    if (!chainName) return "";
+    if (!chainName) {
+      return "";
+    }
     const assetInfo = state?.asset?.chain_aliases[chainName];
-    if (!assetInfo) return "";
+    if (!assetInfo) {
+      return "";
+    }
 
     return assetInfo?.assetSymbol || "";
   }
@@ -164,15 +188,15 @@ export const getSelectedAsssetIsWrapped = memoize(
     destChain: ChainInfo;
     srcChain: ChainInfo;
   }): boolean => {
-    if (!state.asset) return false;
+    if (!state.asset) {
+      return false;
+    }
     const destChainName = state.destChain?.chainName?.toLowerCase();
     const isGasToken = state.asset.is_gas_token; // e.g. is this pure avax/eth/ftm/etc
     const isGlmr = state.asset.id.includes("glmr");
     const destChainIsNativeChain = state.asset.native_chain === destChainName;
     const assetIsWrappedVersionOfNativeAssetOnDestChain =
-      state &&
-      state.destChain &&
-      state.destChain.nativeAsset &&
+      state?.destChain?.nativeAsset &&
       state.destChain.nativeAsset.length > 0 &&
       state.destChain?.nativeAsset.indexOf(state.asset.id) >= 0;
     return (
@@ -221,8 +245,7 @@ export const getWrappedAssetName = memoize(
       // the nativeAsset list in the chain config for the destination chain includes the denom for the wrapped asset
       // this avoids selection of wrapped assets on chains that are not wrapped native (e.g. USDC on Ethereum)
       const assetIsWrappedVersionOfNativeAssetOnDestChain =
-        destChain &&
-        destChain.nativeAsset &&
+        destChain?.nativeAsset &&
         destChain.nativeAsset.length > 0 &&
         destChain?.nativeAsset.indexOf(_asset.id) >= 0;
 
@@ -247,7 +270,9 @@ export const getRestrictedAssetIsSelected = memoize(
     const restrictedAssets = ASSET_RESTRICTIONS.map(
       (rule) => rule.assets
     ).flat();
-    if (restrictedAssets.includes(state.asset?.id || "")) return true;
+    if (restrictedAssets.includes(state.asset?.id || "")) {
+      return true;
+    }
 
     return false;
   }

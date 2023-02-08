@@ -38,8 +38,9 @@ export function useTerraTransfer() {
   // FIXME: duplicate
   async function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
-    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit)))
+    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit))) {
       return { minDeposit, minAmountOk: false };
+    }
     return {
       minDeposit,
       minAmountOk: true,
@@ -59,10 +60,11 @@ export function useTerraTransfer() {
       assetData?.minDepositAmt
     );
 
-    if (!minAmountOk)
+    if (!minAmountOk) {
       return toast.error(
         `Token amount to transfer should be bigger than ${minDeposit}`
       );
+    }
 
     console.log(1);
     const sourcePort = "transfer";
@@ -70,7 +72,9 @@ export function useTerraTransfer() {
       terraWallets && terraWallets.length >= 1
         ? terraWallets[0]?.terraAddress
         : "";
-    if (!senderAddress) throw new Error("no sender specified");
+    if (!senderAddress) {
+      throw new Error("no sender specified");
+    }
 
     const denom = asset?.chain_aliases["terra"].ibcDenom;
     const [_action, _channel, _denom] = assetData?.fullDenomPath?.split(
@@ -78,7 +82,9 @@ export function useTerraTransfer() {
     ) as string[];
 
     console.log(2);
-    if (!denom) throw new Error("asset not found: " + _denom);
+    if (!denom) {
+      throw new Error(`asset not found: ${_denom}`);
+    }
     const fee = new Fee(parseInt(TERRA_IBC_GAS_LIMIT), "30000uluna");
     const transferMsg: MsgTransfer = new MsgTransfer(
       sourcePort,
@@ -114,7 +120,9 @@ export function useTerraTransfer() {
 
     console.log(4);
 
-    if (!signTx) return;
+    if (!signTx) {
+      return;
+    }
     setLoading(true);
     try {
       console.log("CosmosWalletTransfer: Terra Station IBC transfer");

@@ -14,7 +14,9 @@ export const KeplrAndTerraTxBtn = () => {
 
   const { loading: loadingTerra, sendTokensWithTerra } = useTerraTransfer();
 
-  if (srcChain.chainName.toLowerCase() !== "terra") return null;
+  if (srcChain.chainName.toLowerCase() !== "terra") {
+    return null;
+  }
 
   return (
     <div>

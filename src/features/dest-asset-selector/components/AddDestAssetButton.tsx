@@ -26,14 +26,18 @@ export const AddDestAssetButton = () => {
   const { switchNetworkAsync } = useSwitchNetwork();
 
   const handleOnAddTokenOnDestChain = useCallback(() => {
-    if (!asset) return;
+    if (!asset) {
+      return;
+    }
 
     const wagmiChains = getWagmiChains();
     const chainId = wagmiChains.find(
       (_chain) =>
         _chain.networkNameOverride === destChain.chainName?.toLowerCase()
     )?.id;
-    if (!chainId) return;
+    if (!chainId) {
+      return;
+    }
 
     // switch to chain
     switchNetworkAsync?.(chainId)
@@ -48,15 +52,20 @@ export const AddDestAssetButton = () => {
     // add token
   }, [destChain, asset, switchNetworkAsync, isSquidTrade, selectedSquidAsset]);
 
-  if (!wagmiConnected) return null;
-  if (destChain.module !== "evm") return null;
+  if (!wagmiConnected) {
+    return null;
+  }
+  if (destChain.module !== "evm") {
+    return null;
+  }
   if (
     selectedSquidAsset &&
     NATIVE_ASSET_IDS.includes(
       selectedSquidAsset.assetSymbol?.toLowerCase() as string
     )
-  )
+  ) {
     return null;
+  }
 
   return (
     <div

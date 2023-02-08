@@ -4,7 +4,9 @@ export const useIsTerraInstalled = () => {
   const [isTerraInstalled, setIsTerraInstalled] = useState(false);
 
   useEffect(() => {
-    if (!window) return;
+    if (!window) {
+      return;
+    }
     setIsTerraInstalled(window.isTerraExtensionAvailable);
   }, []);
 

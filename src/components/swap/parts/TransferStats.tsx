@@ -27,7 +27,7 @@ const InfoIcon = (
       strokeLinejoin="round"
       strokeWidth="2"
       d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-    ></path>
+    />
   </svg>
 );
 
@@ -54,12 +54,17 @@ export const TransferStats = () => {
   }, [srcChain, destChain, asset]);
 
   function renderWaitTime() {
-    if (!srcChain) return "";
+    if (!srcChain) {
+      return "";
+    }
 
-    if (srcChain.module === "axelarnet") return "~2 minutes";
+    if (srcChain.module === "axelarnet") {
+      return "~2 minutes";
+    }
 
-    if (["ethereum", "polygon"].includes(srcChain?.chainName?.toLowerCase()))
+    if (["ethereum", "polygon"].includes(srcChain?.chainName?.toLowerCase())) {
       return "~15 minutes";
+    }
 
     return "~3 minutes";
   }
@@ -87,8 +92,12 @@ export const TransferStats = () => {
   }
 
   function renderDepositAddress() {
-    if (swapStatus === SwapStatus.IDLE) return null;
-    if (!depositAddress) return null;
+    if (swapStatus === SwapStatus.IDLE) {
+      return null;
+    }
+    if (!depositAddress) {
+      return null;
+    }
     return (
       <li className="flex justify-between">
         <span
@@ -119,8 +128,12 @@ export const TransferStats = () => {
   }
 
   function renderIntermediateDepositAddress() {
-    if (swapStatus === SwapStatus.IDLE) return null;
-    if (!intermediaryDepositAddress) return null;
+    if (swapStatus === SwapStatus.IDLE) {
+      return null;
+    }
+    if (!intermediaryDepositAddress) {
+      return null;
+    }
     return (
       <li className="flex justify-between">
         <span
@@ -139,7 +152,7 @@ export const TransferStats = () => {
               strokeLinejoin="round"
               strokeWidth="2"
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
+            />
           </svg>
           <span>:</span>
         </span>
@@ -163,7 +176,9 @@ export const TransferStats = () => {
   }
 
   function renderDestinationAddress() {
-    if (swapStatus === SwapStatus.IDLE) return null;
+    if (swapStatus === SwapStatus.IDLE) {
+      return null;
+    }
     return (
       <li className="flex justify-between">
         <span>Destination Address:</span>
@@ -186,7 +201,9 @@ export const TransferStats = () => {
   }
 
   function renderDepositConfirmationLink() {
-    if (!txInfo.sourceTxHash) return null;
+    if (!txInfo.sourceTxHash) {
+      return null;
+    }
     const evmRpc = getWagmiChains().find(
       (network) =>
         network.networkNameOverride === srcChain.chainName?.toLowerCase()
@@ -228,8 +245,11 @@ export const TransferStats = () => {
       const pool = USDC_POOLS[chainName];
       const pair = pool?.pairs[0];
 
-      const tooltipText = `axlUSDC is Axelar’s bridged version of Ethereum USDC. For every axlUSDC, there is one USDC locked on Ethereum. When bridging to other chains, please use the liquidity pool linked here to swap for native USDC. When you bridge axlUSDC back to Ethereum, native USDC is unlocked`;
-      if (!pair) return null;
+      const tooltipText =
+        "axlUSDC is Axelar’s bridged version of Ethereum USDC. For every axlUSDC, there is one USDC locked on Ethereum. When bridging to other chains, please use the liquidity pool linked here to swap for native USDC. When you bridge axlUSDC back to Ethereum, native USDC is unlocked";
+      if (!pair) {
+        return null;
+      }
 
       return (
         <div className="w-full cursor-pointer ">
@@ -264,7 +284,9 @@ export const TransferStats = () => {
     return null;
   }
 
-  if (isSquidTrade) return null;
+  if (isSquidTrade) {
+    return null;
+  }
 
   return (
     <StatsWrapper>

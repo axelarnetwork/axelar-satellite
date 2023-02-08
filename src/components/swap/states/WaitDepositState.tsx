@@ -21,14 +21,18 @@ export const WaitDepositState = () => {
   const [relayerGasFee, setRelayerGasFee] = useState<string>("");
 
   useEffect(() => {
-    if (!srcChain || !destChain || !asset) return;
+    if (!(srcChain && destChain && asset)) {
+      return;
+    }
     renderGasFee(srcChain, destChain, asset).then((res) =>
       setRelayerGasFee(res)
     );
   }, [srcChain, destChain, asset]);
 
   function renderTransferInfo() {
-    if (!relayerGasFee) return;
+    if (!relayerGasFee) {
+      return;
+    }
     return (
       <div>
         <div>

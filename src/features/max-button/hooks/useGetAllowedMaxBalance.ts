@@ -70,8 +70,9 @@ export function useGetAllowedMaxBalance() {
   const computeRealMaxBalance = useCallback(
     async (balance: ethers.BigNumber) => {
       // if erc20 return token balance
-      if (!asset?.is_gas_token)
+      if (!asset?.is_gas_token) {
         return formatUnits(tokenBalance || "0", asset?.decimals || 18);
+      }
 
       // if native asset return native token balance minus tx fee
       const gas = await estimateGas();
@@ -86,8 +87,12 @@ export function useGetAllowedMaxBalance() {
   );
 
   useEffect(() => {
-    if (srcChain.module !== "evm") return;
-    if (!provider || !balance) return;
+    if (srcChain.module !== "evm") {
+      return;
+    }
+    if (!(provider && balance)) {
+      return;
+    }
     computeRealMaxBalance(balance.value).then((balanceMinusFee) =>
       setMaxBalance(balanceMinusFee)
     );
@@ -100,14 +105,18 @@ export function useGetAllowedMaxBalance() {
         derivedDenom,
         fullChainConfig.rpc
       );
-      if (!res?.amount) return;
+      if (!res?.amount) {
+        return;
+      }
       setMaxBalance(formatUnits(res.amount, asset?.decimals));
     },
     [asset?.decimals]
   );
 
   useEffect(() => {
-    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
+    if (srcChain.module !== "axelarnet" || !keplrConnected) {
+      return;
+    }
 
     const cosmosChains = getCosmosChains(allAssets);
 
@@ -119,7 +128,9 @@ export function useGetAllowedMaxBalance() {
     const derivedDenom =
       asset?.chain_aliases[srcChain.chainName.toLowerCase()].ibcDenom;
 
-    if (!fullChainConfig || !derivedDenom) return;
+    if (!(fullChainConfig && derivedDenom)) {
+      return;
+    }
 
     getKplrBalance(fullChainConfig, derivedDenom);
   }, [srcChain, getKplrBalance, asset, allAssets, keplrConnected]);

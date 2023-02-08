@@ -12,11 +12,14 @@ export const useNormalizeUrlPaths = () => {
    */
   useEffect(() => {
     if (
-      !srcChain?.chainName ||
-      !destChain?.chainName ||
-      !asset?.common_key[ENVIRONMENT]
-    )
+      !(
+        srcChain?.chainName &&
+        destChain?.chainName &&
+        asset?.common_key[ENVIRONMENT]
+      )
+    ) {
       return;
+    }
     updateRoutes(
       srcChain.chainName?.toLowerCase(),
       destChain.chainName?.toLowerCase(),

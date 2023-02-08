@@ -30,7 +30,9 @@ export const AssetDropdown: React.FC<Props> = ({
 
   // clean dropdown input on dropdown close
   useEffect(() => {
-    if (!dropdownOpen) setSearchAssetInput("");
+    if (!dropdownOpen) {
+      setSearchAssetInput("");
+    }
   }, [dropdownOpen, setSearchAssetInput]);
 
   return (

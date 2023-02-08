@@ -28,29 +28,35 @@ export const EvmTxBtn = () => {
 
   function handleOnClick() {
     // switch network if user is not on correct network
-    if (chain?.id !== srcChainId) return switchNetwork?.();
+    if (chain?.id !== srcChainId) {
+      return switchNetwork?.();
+    }
 
     // check that token provided in the asset input are greated than relayer fees
     const minAmountOk = new BigNumber(tokensToTransfer || "0").gt(
       new BigNumber(relayerGasFee)
     );
-    if (!minAmountOk)
+    if (!minAmountOk) {
       return toast.error(
         `Token amount to transfer should be bigger than ${relayerGasFee} ${assetName}`
       );
+    }
 
     // wrap tokens
     if (
       asset?.is_gas_token &&
       asset.native_chain === srcChain.chainName.toLowerCase()
-    )
+    ) {
       return sendNative?.();
+    }
 
     // normal tokens transfer
     sendErc20?.();
   }
 
-  if (srcChain.module !== "evm") return null;
+  if (srcChain.module !== "evm") {
+    return null;
+  }
 
   return (
     <div>

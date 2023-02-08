@@ -25,7 +25,9 @@ export const ChainsDropdown: React.FC<Props> = ({
 
   // clean dropdown input on dropdown close
   useEffect(() => {
-    if (!dropdownOpen) setSearchChainInput("");
+    if (!dropdownOpen) {
+      setSearchChainInput("");
+    }
   }, [dropdownOpen, setSearchChainInput]);
 
   return (

@@ -12,7 +12,9 @@ import { ProgressBar } from "../components";
 export const DepositAddressGeneration = () => {
   const swapStatus = useSwapStore((state) => state.swapStatus);
 
-  if (swapStatus !== SwapStatus.GEN_DEPOSIT_ADDRESS) return null;
+  if (swapStatus !== SwapStatus.GEN_DEPOSIT_ADDRESS) {
+    return null;
+  }
 
   return (
     <>

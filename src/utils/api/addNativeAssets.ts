@@ -13,7 +13,9 @@ export function addNativeAssets(
       (asset) => asset.native_chain === chainName
     );
 
-    if (!nativeAssetConfig) continue;
+    if (!nativeAssetConfig) {
+      continue;
+    }
 
     const nativeAsset: AssetInfo = {
       ...nativeAssetConfig.chain_aliases[chainName],

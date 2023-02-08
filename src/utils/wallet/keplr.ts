@@ -10,7 +10,9 @@ import { CosmosChain } from "../../config/web3/cosmos/interface";
 
 export const connectChainId = async (chain: CosmosChain): Promise<void> => {
   const { keplr } = window;
-  if (!keplr) return;
+  if (!keplr) {
+    return;
+  }
   try {
     await keplr.enable(chain.chainId);
   } catch (e) {
@@ -45,7 +47,7 @@ export const queryBalance = async (
     QueryBalanceRequest.encode({ address, denom }).finish()
   );
   const data = await client.queryUnverified(
-    `/cosmos.bank.v1beta1.Query/Balance`,
+    "/cosmos.bank.v1beta1.Query/Balance",
     requestData
   );
   const response = QueryBalanceResponse.decode(data);

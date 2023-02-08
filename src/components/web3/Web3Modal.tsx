@@ -46,26 +46,36 @@ export const Web3Modal = () => {
 
   // close modal upon successful metamask connection
   useEffect(() => {
-    if (wagmiConnected) closeModal();
+    if (wagmiConnected) {
+      closeModal();
+    }
   }, [wagmiConnected]);
 
   // close modal upon successful kepler connection
   useEffect(() => {
-    if (keplrConnected) closeModal();
+    if (keplrConnected) {
+      closeModal();
+    }
   }, [keplrConnected]);
 
   // close modal upon successful terra station connection
   useEffect(() => {
-    if (isTerraConnected) closeModal();
+    if (isTerraConnected) {
+      closeModal();
+    }
   }, [isTerraConnected]);
 
   // notify user that he already has a connected account but it's not the active one
   useEffect(() => {
-    if (error) toast.error("Wallet already connected");
+    if (error) {
+      toast.error("Wallet already connected");
+    }
   }, [error]);
 
   function closeModal() {
-    if (modalRef?.current?.checked) modalRef.current.checked = false;
+    if (modalRef?.current?.checked) {
+      modalRef.current.checked = false;
+    }
   }
 
   function handleOnMetamaskSwitch() {
@@ -87,7 +97,9 @@ export const Web3Modal = () => {
       axelar.chainId
     )) as OfflineSigner;
     const [account] = await _signer.getAccounts();
-    if (keplrConnected) toast.error("Wallet already connected");
+    if (keplrConnected) {
+      toast.error("Wallet already connected");
+    }
     setKeplrConnected(true);
     setUserSelectionForCosmosWallet("keplr");
   }
@@ -149,7 +161,9 @@ export const Web3Modal = () => {
             className={`relative flex btn btn-neutral ${
               isTerraInstalled ? "" : "tooltip"
             }`}
-            data-tip={`Click to install the extension. Refresh Satellite once installed.`}
+            data-tip={
+              "Click to install the extension. Refresh Satellite once installed."
+            }
             onClick={handleOnTerraStationConnect}
           >
             <span>Terra Station</span>
