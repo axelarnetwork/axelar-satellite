@@ -10,7 +10,7 @@ import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { TransactionReceipt } from "@ethersproject/abstract-provider";
 
 import { squid } from "squid.config";
-import create from "zustand";
+import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 export interface TokensWithExtendedChainData extends TokenData {
