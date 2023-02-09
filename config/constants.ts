@@ -58,11 +58,14 @@ type AssetRestriction = {
   restrictDestChainsTo: string[];
   hideSrcChains: string[];
 };
-const chainPolicies =
-  '[{"assets":["uluna", "uusd"],"restrictDestChainsTo":["terra classic"], "hideSrcChains": ["terra"]}]';
-export const ASSET_RESTRICTIONS: AssetRestriction[] = chainPolicies
-  ? JSON.parse(chainPolicies)
-  : [];
+const chainPolicies = [
+  {
+    assets: ["uluna", "uusd"],
+    restrictDestChainsTo: ["terra classic"],
+    hideSrcChains: ["terra"],
+  },
+];
+export const ASSET_RESTRICTIONS: AssetRestriction[] = chainPolicies;
 
 export const defaultChainImg = "/assets/chains/default.logo.svg";
 export const defaultAssetImg = "/assets/chains/default.logo.svg";
