@@ -58,7 +58,7 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   binance: {
     pairs: ["axlUSDC/BUSD"],
-    dex: "Ellipsis",
+    dex: "Wombat Exchange",
     url: "https://app.wombat.exchange/swap?from=axlUSDC&to=BUSD",
   },
   arbitrum: {
