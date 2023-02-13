@@ -8,8 +8,6 @@ import {
 import _ from "lodash";
 import toast from "react-hot-toast";
 
-import { useSquidStateStore, useSwapStore } from "~/store";
-
 import {
   ARBITRARY_EVM_ADDRESS,
   DEFAULT_ASSET,
@@ -19,6 +17,9 @@ import {
   ENVIRONMENT,
   NATIVE_ASSET_IDS,
 } from "~/config/constants";
+
+import { useSquidStateStore, useSwapStore } from "~/store";
+
 import { AssetConfigExtended, ChainInfoExtended, RouteQuery } from "~/types";
 import { loadAllChains } from "~/utils/api";
 
@@ -44,8 +45,10 @@ export const useInitialChainList = () => {
 
   const loadData = useCallback(async () => {
     if (squidTokens?.length === 0) {
+      console.log("skipping while squid data not yet loaded");
       return;
     }
+    console.log("loading initial data");
     const assets = await loadInitialAssets();
     const chains = await loadInitialChains();
 
