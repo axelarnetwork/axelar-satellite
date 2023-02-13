@@ -10,10 +10,10 @@ export const useSquidList = () => {
     useSquidStateStore();
 
   useEffect(() => {
-    getTokens();
+    getSquidTokens();
   }, []);
 
-  const getTokens = () => {
+  const getSquidTokens = () => {
     // console.log("squid chains", squid.chains);
     const tokensWithExtendedChainData: TokensWithExtendedChainData[] =
       squid.tokens.map((t) => {
@@ -31,4 +31,6 @@ export const useSquidList = () => {
       setSquidChains(squid.chains);
     }
   };
+
+  return { getSquidTokens };
 };

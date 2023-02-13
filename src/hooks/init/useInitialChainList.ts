@@ -37,7 +37,7 @@ export const useInitialChainList = () => {
     setDestAddress,
   } = useSwapStore();
 
-  useSquidList();
+  const { getSquidTokens } = useSquidList();
   const { squidChains, squidTokens, squidLoaded, setSquidLoaded } =
     useSquidStateStore();
 
@@ -46,6 +46,7 @@ export const useInitialChainList = () => {
   const loadData = useCallback(async () => {
     if (squidTokens?.length === 0) {
       console.log("skipping while squid data not yet loaded");
+      getSquidTokens();
       return;
     }
     console.log("loading initial data");
