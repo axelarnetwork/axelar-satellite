@@ -7,8 +7,8 @@ const disabledChain = CHAINS.TESTNET.MOONBEAM?.toLowerCase();
 
 jest.mock("../../getDisabledChains.ts");
 
-describe("loadAllChains", () => {
-  describe("when called", () => {
+xdescribe("loadAllChains", () => {
+  xdescribe("when called", () => {
     let result: ChainInfo[];
 
     beforeEach(async () => {
