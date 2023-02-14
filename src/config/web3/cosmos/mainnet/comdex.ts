@@ -3,7 +3,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const comdex: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/comdex`,
   rest: "https://rest.comdex.one",
   chainId: "comdex-1",
@@ -43,4 +43,4 @@ export default {
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainToAxelarChannelId: "channel-34",
   explorer: "https://www.mintscan.io/comdex/account/",
-} as CosmosChain;
+};

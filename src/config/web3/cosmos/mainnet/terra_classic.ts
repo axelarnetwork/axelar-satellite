@@ -3,7 +3,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const terraClassic: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/terra-classic`,
   rest: "https://api-terra-ia.cosmosia.notional.ventures",
   chainId: "columbus-5",
@@ -39,4 +39,4 @@ export default {
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
   explorer: "https://finder.terra.money/mainnet/address/",
   chainToAxelarChannelId: "channel-19",
-} as CosmosChain;
+};

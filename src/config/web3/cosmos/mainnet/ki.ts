@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const ki: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/ki`,
   rest: "https://api-mainnet.blockchain.ki",
   chainId: "kichain-2",
@@ -44,4 +44,4 @@ export default {
   chainIdentifier: "ki",
   chainToAxelarChannelId: "channel-19",
   explorer: "https://www.mintscan.io/ki-chain/account/",
-} as CosmosChain;
+};

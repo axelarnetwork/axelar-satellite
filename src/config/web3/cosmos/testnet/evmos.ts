@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const evmos: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/evmos`,
   rest: "https://rest.bd.evmos.dev:1317",
   chainId: "evmos_9000-4",
@@ -47,4 +47,5 @@ export default {
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "evmos",
   chainToAxelarChannelId: "channel-22",
-} as CosmosChain;
+  explorer: "https://testnet.mintscan.io/evmos-testnet",
+};

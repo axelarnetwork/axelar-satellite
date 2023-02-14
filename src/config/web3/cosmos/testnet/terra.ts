@@ -3,7 +3,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const terra: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/terra`,
   rest: "https://pisco-lcd.terra.dev",
   chainId: "pisco-1",
@@ -30,4 +30,5 @@ export default {
   gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
   features: ["ibc-transfer"],
   chainToAxelarChannelId: "channel-22",
-} as CosmosChain;
+  explorer: "https://finder.terra.money/pisco-1",
+};

@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const fetch: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/fetch`,
   rest: "https://rest-fetchhub.fetch.ai:443",
   chainId: "fetchhub-4",
@@ -44,4 +44,4 @@ export default {
   chainIdentifier: "fetch",
   chainToAxelarChannelId: "channel-14",
   explorer: "https://www.mintscan.io/fetchai/account/",
-} as CosmosChain;
+};

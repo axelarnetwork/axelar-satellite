@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const kujira: CosmosChain = {
   chainId: "kaiyo-1",
   chainName: "Kujira",
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/kujira`,
@@ -42,4 +42,4 @@ export default {
   chainIdentifier: "kujira",
   chainToAxelarChannelId: "channel-9",
   explorer: "https://www.mintscan.io/kujira/account/",
-} as CosmosChain;
+};

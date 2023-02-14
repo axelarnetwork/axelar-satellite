@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const crescent: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/crescent`,
   rest: "https://testnet-endpoint.crescent.network/api/crescent",
   chainId: "mooncat-1-1",
@@ -48,4 +48,5 @@ export default {
   },
   features: ["ibc-transfer"],
   chainToAxelarChannelId: "channel-3",
-} as CosmosChain;
+  explorer: "https://testnet-explorer.crescent.network",
+};

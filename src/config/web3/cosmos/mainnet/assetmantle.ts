@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const assetmantle: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/assetmantle`,
   rest: "https://rest.assetmantle.one",
   chainId: "mantle-1",
@@ -44,4 +44,4 @@ export default {
   chainIdentifier: "assetmantle",
   chainToAxelarChannelId: "channel-10",
   explorer: "https://explorer.assetmantle.one/wallet/",
-} as CosmosChain;
+};

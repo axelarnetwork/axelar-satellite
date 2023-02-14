@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const burnt: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/burnt`,
   rest: "https://api.carbon-2.burnt.com/9909089ac2fa57a8f5661976ad0bcb3f0629372e5afa131e2e29e737588e505f",
   chainId: "carbon-2",
@@ -45,4 +45,5 @@ export default {
   },
   features: ["stargate", "no-legacy-stdTx", "cosmwasm", "ibc-transfer"],
   chainToAxelarChannelId: "channel-1",
-} as CosmosChain;
+  explorer: "", // TODO: add explorer
+};

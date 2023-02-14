@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const kujira: CosmosChain = {
   chainId: "harpoon-4",
   chainName: "Kujira Testnet",
   chainIdentifier: "kujira",
@@ -41,4 +41,5 @@ export default {
   coinType: 118,
   gasPriceStep: { low: 0.01, average: 0.025, high: 0.03 },
   chainToAxelarChannelId: "channel-8",
-} as CosmosChain;
+  explorer: "", // TODO add explorer
+};

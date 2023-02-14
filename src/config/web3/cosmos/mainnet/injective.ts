@@ -3,7 +3,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const injective: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/injective`,
   rest: "https://lcd.injective.network",
   chainId: "injective-1",
@@ -45,4 +45,4 @@ export default {
   chainIdentifier: "injective",
   chainToAxelarChannelId: "channel-84",
   explorer: "https://www.mintscan.io/injective/account/",
-} as CosmosChain;
+};

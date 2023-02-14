@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const aura: CosmosChain = {
   chainId: "euphoria-2",
   chainName: "Aura Testnet",
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/aura`,
@@ -44,8 +44,7 @@ export default {
   },
   features: ["no-legacy-stdTx"],
   walletUrlForStaking: "https://euphoria.aurascan.io/validators",
-  logo: "https://i.imgur.com/zi0mTYb.png",
   explorer: "https://euphoria.aurascan.io/",
   chainIdentifier: "aura",
   chainToAxelarChannelId: "channel-5",
-} as CosmosChain;
+};

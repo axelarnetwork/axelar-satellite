@@ -1,7 +1,9 @@
+import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const acrechain: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/acrechain`,
   rest: "https://lcd-acre.synergynodes.com",
   chainId: "acre_9052-1",
@@ -13,14 +15,7 @@ export default {
     coinDecimals: 18,
     coinGeckoId: "arable-protocol",
   },
-  bech32Config: {
-    bech32PrefixAccAddr: "acre",
-    bech32PrefixAccPub: "acrepub",
-    bech32PrefixValAddr: "acrevaloper",
-    bech32PrefixValPub: "acrevaloperpub",
-    bech32PrefixConsAddr: "acrevalcons",
-    bech32PrefixConsPub: "acrevalconspub",
-  },
+  bech32Config: Bech32Address.defaultBech32Config("acre"),
   bip44: { coinType: 60 },
   currencies: [
     {
@@ -45,4 +40,5 @@ export default {
   },
   features: ["ibc-transfer", "ibc-go", "eth-address-gen", "eth-key-sign"],
   chainToAxelarChannelId: "channel-5",
-} as CosmosChain;
+  explorer: "https://acrescan.com/",
+};
