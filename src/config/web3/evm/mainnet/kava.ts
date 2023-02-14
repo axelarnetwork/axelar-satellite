@@ -1,6 +1,6 @@
 import { ChainExtension } from "../interface";
 
-const CONFIG: ChainExtension = {
+export const kava: ChainExtension = {
   id: 2222,
   name: "Kava EVM",
   network: "kava",
@@ -21,5 +21,3 @@ const CONFIG: ChainExtension = {
   },
   testnet: false,
 };
-
-export default CONFIG;

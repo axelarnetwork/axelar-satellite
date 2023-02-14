@@ -1,6 +1,6 @@
 import { ChainExtension } from "../interface";
 
-const CONFIG: ChainExtension = {
+export const polygon: ChainExtension = {
   id: 137,
   name: "Polygon",
   network: "polygon",
@@ -18,5 +18,3 @@ const CONFIG: ChainExtension = {
   },
   testnet: false,
 };
-
-export default CONFIG;

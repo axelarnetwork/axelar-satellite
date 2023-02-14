@@ -1,6 +1,6 @@
 import { ChainExtension } from "../interface";
 
-const CONFIG: ChainExtension = {
+export const celo: ChainExtension = {
   id: 42_220,
   name: "Celo",
   network: "celo",
@@ -21,5 +21,3 @@ const CONFIG: ChainExtension = {
   },
   testnet: false,
 };
-
-export default CONFIG;

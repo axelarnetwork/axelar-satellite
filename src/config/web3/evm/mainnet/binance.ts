@@ -1,6 +1,6 @@
 import { ChainExtension } from "../interface";
 
-const CONFIG: ChainExtension = {
+export const binance: ChainExtension = {
   id: 56,
   name: "Binance Smart Chain",
   network: "binance",
@@ -21,5 +21,3 @@ const CONFIG: ChainExtension = {
   },
   testnet: false,
 };
-
-export default CONFIG;

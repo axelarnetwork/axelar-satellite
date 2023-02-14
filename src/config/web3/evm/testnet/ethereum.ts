@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+export const ethereum: ChainExtension = {
   id: 5,
   name: "Goerli Testnet",
   network: "goerli",

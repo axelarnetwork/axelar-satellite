@@ -1,6 +1,6 @@
 import { ChainExtension } from "../interface";
 
-const CONFIG: ChainExtension = {
+export const avalanche: ChainExtension = {
   id: 43_114,
   name: "Avalanche",
   network: "avalanche",
@@ -18,5 +18,3 @@ const CONFIG: ChainExtension = {
   },
   testnet: false,
 };
-
-export default CONFIG;

@@ -1,4 +1,6 @@
-export const binance = {
+import { ChainExtension } from "../interface";
+
+export const binance: ChainExtension = {
   id: 97,
   name: "Binance Smart Chain - Testnet",
   network: "binance",

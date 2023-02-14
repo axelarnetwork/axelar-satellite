@@ -1,6 +1,6 @@
 import { ChainExtension } from "../interface";
 
-const CONFIG: ChainExtension = {
+export const arbitrum: ChainExtension = {
   id: 42_161,
   name: "Arbitrum",
   network: "arbitrum",
@@ -21,5 +21,3 @@ const CONFIG: ChainExtension = {
   },
   testnet: false,
 };
-
-export default CONFIG;

@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+export const aurora: ChainExtension = {
   id: 131_316_555,
   name: "Aurora Testnet",
   network: "aurora",
