@@ -4,19 +4,12 @@ import { useQuery } from "react-query";
 
 import { TokensWithExtendedChainData, useSquidStateStore } from "~/store";
 
-import { squid } from "~/squid.config";
+import { getSquidSDK } from "~/squid.config";
 
 export const useSquidSDKQuery = () => {
-  return useQuery(
-    "squid",
-    async () => {
-      await squid.init();
-      return squid;
-    },
-    {
-      staleTime: Infinity,
-    }
-  );
+  return useQuery("squid", getSquidSDK, {
+    staleTime: Infinity,
+  });
 };
 
 export const useSquidList = () => {

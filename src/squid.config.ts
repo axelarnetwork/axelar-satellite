@@ -8,3 +8,14 @@ export const squid: Squid = new Squid({
 });
 
 squid.init().catch((e) => console.error("failed to init squid"));
+
+export const getSquidSDK = () =>
+  new Promise<Squid>((resolve, reject) => {
+    if (squid.initialized) {
+      resolve(squid);
+    }
+    squid
+      .init()
+      .then(() => resolve(squid))
+      .catch((e) => reject(e));
+  });
