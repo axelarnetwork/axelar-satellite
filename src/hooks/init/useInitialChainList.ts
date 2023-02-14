@@ -23,8 +23,6 @@ import { useSquidStateStore, useSwapStore } from "~/store";
 import { AssetConfigExtended, ChainInfoExtended, RouteQuery } from "~/types";
 import { loadAllChains } from "~/utils/api";
 
-import { useSquidList } from "./useSquidList";
-
 export const useInitialChainList = () => {
   const {
     setAllChains,
@@ -37,28 +35,28 @@ export const useInitialChainList = () => {
     setDestAddress,
   } = useSwapStore();
 
-  const { getSquidTokens } = useSquidList();
-  const { squidChains, squidTokens, squidLoaded, setSquidLoaded } =
-    useSquidStateStore();
+  const { squidTokens, setSquidLoaded } = useSquidStateStore();
 
   const router = useRouter();
 
-  const loadData = useCallback(async () => {
-    if (squidTokens?.length === 0) {
-      console.log("skipping while squid data not yet loaded");
-      getSquidTokens();
-      return;
-    }
-    console.log("loading initial data");
-    const assets = await loadInitialAssets();
-    const chains = await loadInitialChains();
+  const loadData = useCallback(
+    async () => {
+      console.log("loading initial data");
+      const assets = await loadInitialAssets();
+      const chains = await loadInitialChains();
 
-    setDestAddress((router.query?.destination_address as string) || "");
+      setDestAddress((router.query?.destination_address as string) || "");
 
-    updateRoutes(chains.srcChainName, chains.destChainName, assets?.assetDenom);
-    setRehydrateAssets(false);
-    // eslint-disable-next-line
-  }, [squidTokens]);
+      updateRoutes(
+        chains.srcChainName,
+        chains.destChainName,
+        assets?.assetDenom
+      );
+      setRehydrateAssets(false);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   useEffect(() => {
     if (!router.isReady) {
@@ -114,7 +112,6 @@ export const useInitialChainList = () => {
       // @ts-ignore
       chain.squidAssets = [relevantSquidTokens];
     });
-    // console.log("new chains", newChains);
 
     setSquidLoaded(true);
     return newChains;
@@ -128,10 +125,10 @@ export const useInitialChainList = () => {
       throw error;
     });
     const uniqueChains = await injectSquidAssetsIntoChains(
-      chains.map((_chain) => {
-        _chain.assets = _.uniqBy(_chain.assets, (_asset) => _asset.assetSymbol);
-        return _chain;
-      })
+      chains.map((chain) => ({
+        ...chain,
+        assets: _.uniqBy(chain.assets, (asset) => asset.assetSymbol),
+      }))
     );
 
     setAllChains(uniqueChains);

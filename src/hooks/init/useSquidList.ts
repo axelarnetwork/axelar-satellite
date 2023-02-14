@@ -1,20 +1,39 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { ChainName } from "@0xsquid/sdk";
+import { useQuery } from "react-query";
 
 import { TokensWithExtendedChainData, useSquidStateStore } from "~/store";
 
 import { squid } from "~/squid.config";
 
+export const useSquidSDKQuery = () => {
+  return useQuery(
+    "squid",
+    async () => {
+      await squid.init();
+      return squid;
+    },
+    {
+      staleTime: Infinity,
+    }
+  );
+};
+
 export const useSquidList = () => {
-  const { setSquidTokens, setSquidChains, squidChains, squidTokens } =
-    useSquidStateStore();
+  const {
+    setSquidTokens,
+    setSquidChains,
+    squidChains,
+    squidTokens,
+    squidLoaded,
+  } = useSquidStateStore();
 
-  useEffect(() => {
-    getSquidTokens();
-  }, []);
+  const { data: squid } = useSquidSDKQuery();
 
-  const getSquidTokens = () => {
-    // console.log("squid chains", squid.chains);
+  const getSquidTokens = useCallback(() => {
+    if (!squid) {
+      return;
+    }
     const tokensWithExtendedChainData: TokensWithExtendedChainData[] =
       squid.tokens.map((t) => {
         const chain = squid.chains.find((c) => c.chainId === t.chainId);
@@ -23,14 +42,26 @@ export const useSquidList = () => {
           chainName: chain?.chainName as ChainName,
         };
       });
-    // console.log("squid tokens", tokensWithExtendedChainData);
+
     if (squidTokens.length === 0) {
       setSquidTokens(tokensWithExtendedChainData);
     }
     if (squidChains.length === 0) {
       setSquidChains(squid.chains);
     }
-  };
+  }, [
+    squid,
+    setSquidChains,
+    setSquidTokens,
+    squidChains.length,
+    squidTokens.length,
+  ]);
+
+  useEffect(() => {
+    if (squid?.initialized && !squidLoaded) {
+      getSquidTokens();
+    }
+  }, [getSquidTokens, squid?.initialized, squidLoaded]);
 
   return { getSquidTokens };
 };
