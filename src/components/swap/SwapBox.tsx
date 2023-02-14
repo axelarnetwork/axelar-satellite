@@ -15,11 +15,7 @@ import {
   usePreventDuplicateChains,
   useRestrictAssets,
 } from "../../hooks";
-import {
-  getSelectedAsssetIsWrapped,
-  useSquidStateStore,
-  useSwapStore,
-} from "../../store";
+import { useSquidStateStore, useSwapStore } from "../../store";
 import { Blockable } from "../common";
 import { EvmAssetWarningModal, ModalWindow } from "../modal";
 import { ChainSwapper, StopButton } from "./parts";
@@ -31,12 +27,11 @@ export const SwapBox = () => {
   useRestrictAssets();
 
   const { destChain, asset, srcChain } = useSwapStore((state) => state);
-  const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
-  const squidChains = useSquidStateStore((state) => state.squidChains);
   const isSquidAsset = useSquidStateStore((state) => state.isSquidTrade);
 
   const squidAssets = useMemo(() => {
     const destChainName = destChain.chainName.toLowerCase();
+
     return destChain.assets
       .filter((assetInfo) => assetInfo.isSquidAsset)
       .filter(

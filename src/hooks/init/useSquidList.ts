@@ -56,5 +56,7 @@ export const useSquidList = () => {
     }
   }, [getSquidTokens, squid?.initialized, squidLoaded]);
 
-  return { getSquidTokens };
+  return {
+    getSquidTokens,
+  };
 };

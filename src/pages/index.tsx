@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 
+import { ENVIRONMENT, UNDER_MAINTENANCE } from "~/config/constants";
 import { Layout, UnderMaintenance, VideoBackground } from "~/components/layout";
 import { PageSEO } from "~/components/seo";
 import { SwapBox } from "~/components/swap";
@@ -8,7 +9,6 @@ import { FirstTimeWarning } from "~/components/swap/parts/FirstTimeWarning";
 
 import { useSwapStore } from "~/store";
 
-import { ENVIRONMENT, UNDER_MAINTENANCE } from "~/config/constants";
 import { siteMetadata } from "~/data";
 import { useNormalizeChains, useNormalizeUrlPaths } from "~/hooks";
 import { useInitialChainList } from "~/hooks/init";
@@ -30,7 +30,6 @@ const Home: NextPage = () => {
   useInitialChainList();
   useNormalizeUrlPaths();
   useNormalizeChains();
-  // useSquidList();
 
   function renderContent() {
     if (UNDER_MAINTENANCE) {
