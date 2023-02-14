@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+const CONFIG: ChainExtension = {
   id: 1284,
   name: "Moonbeam",
   network: "moonbeam",
@@ -16,3 +18,5 @@ export default {
   },
   testnet: false,
 };
+
+export default CONFIG;

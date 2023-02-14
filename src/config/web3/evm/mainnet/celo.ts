@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+const CONFIG: ChainExtension = {
   id: 42_220,
   name: "Celo",
   network: "celo",
@@ -19,3 +21,5 @@ export default {
   },
   testnet: false,
 };
+
+export default CONFIG;

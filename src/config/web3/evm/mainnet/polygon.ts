@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+const CONFIG: ChainExtension = {
   id: 137,
   name: "Polygon",
   network: "polygon",
@@ -16,3 +18,5 @@ export default {
   },
   testnet: false,
 };
+
+export default CONFIG;
