@@ -43,7 +43,9 @@ export const useSquidList = () => {
     if (squidChains.length === 0 && squid.chains.length > 0) {
       setSquidChains(squid.chains);
     }
-    setSquidLoaded(squidTokens.length > 0 && squidChains.length > 0);
+    setSquidLoaded(
+      tokensWithExtendedChainData.length > 0 && squidChains.length > 0
+    );
   }, [
     squid,
     squidTokens.length,
