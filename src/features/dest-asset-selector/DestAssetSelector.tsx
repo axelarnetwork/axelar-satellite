@@ -290,11 +290,7 @@ export const DestAssetSelector = ({
     return null;
   }
 
-  const selectedWrapped = destChain?.module === "evm" && selectedAssetIsWrapped;
-  const hasSquidAssets = squidAssets?.length > 0;
-  if (!(selectedWrapped || hasSquidAssets)) {
-    return null;
-  }
+  if (destChain.module !== "evm") return null;
 
   return (
     <InputWrapper>
