@@ -133,7 +133,7 @@ export const useInitialChainList = () => {
       });
 
       // only add squid assets if there are any
-      if (relevantSquidTokens.length) {
+      if (relevantSquidTokens.length && !("squidAssets" in chain)) {
         // @ts-ignore
         chain.squidAssets = [relevantSquidTokens];
       }

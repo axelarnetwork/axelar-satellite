@@ -5,6 +5,7 @@ import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { parseUnits } from "ethers/lib/utils.js";
 import { useOnClickOutside } from "usehooks-ts";
 
+import { ARBITRARY_EVM_ADDRESS, NATIVE_ASSET_IDS } from "~/config/constants";
 import { Blockable, InputWrapper } from "~/components/common";
 
 import {
@@ -13,8 +14,6 @@ import {
   useSquidStateStore,
   useSwapStore,
 } from "~/store";
-
-import { ARBITRARY_EVM_ADDRESS, NATIVE_ASSET_IDS } from "~/config/constants";
 
 import {
   AddDestAssetButton,
@@ -199,7 +198,11 @@ export const DestAssetSelector = ({
 
     return (
       <div className="left-0 w-full p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
-        <ul tabIndex={0} onClick={handleOnDropdownToggle}>
+        <ul
+          tabIndex={0}
+          onClick={handleOnDropdownToggle}
+          onKeyDown={handleOnDropdownToggle}
+        >
           <li key={"selected_src_asset"}>
             <button
               onClick={() =>
@@ -309,7 +312,7 @@ export const DestAssetSelector = ({
         <div className="flex justify-between mt-2">
           <Blockable>
             <div className="static flex justify-between w-full mt-1 dropdown dropdown-open">
-              <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
+              <button tabIndex={0} onClick={() => setDropdownOpen(true)}>
                 <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
                   <Image
                     loading="eager"
@@ -337,7 +340,7 @@ export const DestAssetSelector = ({
                     />
                   </div>
                 </div>
-              </div>
+              </button>
 
               {renderAssetDropdown()}
             </div>
