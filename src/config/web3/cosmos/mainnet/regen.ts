@@ -3,7 +3,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const regen: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/regen`,
   rest: "https://rest-regen.ecostake.com",
   chainId: "regen-1",
@@ -45,4 +45,4 @@ export default {
   chainIdentifier: "regen",
   chainToAxelarChannelId: "channel-48",
   explorer: "https://www.mintscan.io/regen/account/",
-} as CosmosChain;
+};

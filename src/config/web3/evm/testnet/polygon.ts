@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+export const polygon: ChainExtension = {
   id: 80001,
   name: "Polygon Testnet",
   network: "polygon",

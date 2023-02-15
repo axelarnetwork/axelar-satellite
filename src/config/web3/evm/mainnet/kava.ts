@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+export const kava: ChainExtension = {
   id: 2222,
   name: "Kava EVM",
   network: "kava",

@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+export const celo: ChainExtension = {
   id: 42_220,
   name: "Celo",
   network: "celo",

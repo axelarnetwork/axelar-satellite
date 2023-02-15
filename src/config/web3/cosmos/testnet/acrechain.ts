@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const acrechain: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/acrechain`,
   rest: "https://lcd-testnet2-acre.synergynodes.com",
   chainId: "bamboo_9051-2",
@@ -45,4 +45,5 @@ export default {
   },
   features: ["ibc-transfer", "ibc-go", "eth-address-gen", "eth-key-sign"],
   chainToAxelarChannelId: "channel-0",
-} as CosmosChain;
+  explorer: "https://acrescan.com/",
+};

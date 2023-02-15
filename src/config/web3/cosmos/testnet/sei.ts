@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const sei: CosmosChain = {
   chainId: "atlantic-1",
   chainName: "Sei Testnet",
   chainIdentifier: "sei",
@@ -27,4 +27,5 @@ export default {
   },
   coinType: 118,
   chainToAxelarChannelId: "channel-29",
-} as CosmosChain;
+  explorer: "", // TODO: add explorer
+};

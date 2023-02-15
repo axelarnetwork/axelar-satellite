@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const cosmoshub: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/cosmoshub`,
   rest: "https://vega-rest.interchain.io",
   chainId: "vega-testnet",
@@ -43,4 +43,5 @@ export default {
   coinType: 118,
   features: ["ibc-transfer", "ibc-go"],
   chainToAxelarChannelId: "channel-238",
-} as CosmosChain;
+  explorer: "https://testnet.mintscan.io/cosmoshub-testnet",
+};

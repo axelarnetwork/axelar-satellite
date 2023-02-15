@@ -1,4 +1,6 @@
-export const celo = {
+import { ChainExtension } from "../interface";
+
+export const celo: ChainExtension = {
   id: 44787,
   name: "Celo Alfajores Testnet",
   network: "celo",

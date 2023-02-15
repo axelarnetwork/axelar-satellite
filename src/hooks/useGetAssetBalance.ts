@@ -39,33 +39,42 @@ export const useGetAssetBalance = () => {
    * EVM BALANCE LOGIC
    */
   const { balance: evmBalance, isLoading: evmIsLoading } = useGetEvmBalance();
-  useEffect(() => {
-    if (!wagmiConnected) {
-      return;
-    }
-    if (srcChain.module !== "evm") {
-      return;
-    }
-    if (evmBalance) {
-      setBalance(evmBalance);
-    }
-    setLoading(evmIsLoading);
-  }, [evmBalance, srcChain.module, evmIsLoading]);
+
+  useEffect(
+    () => {
+      if (!wagmiConnected) {
+        return;
+      }
+      if (srcChain.module !== "evm") {
+        return;
+      }
+      if (evmBalance) {
+        setBalance(evmBalance);
+      }
+      setLoading(evmIsLoading);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [evmBalance, srcChain.module, evmIsLoading]
+  );
 
   /**
    * KEPLR BALANCE LOGIC
    */
   const { balance: keplrBalance, isLoading: keplrBalanceIsLoading } =
     useGetKeplerBalance();
-  useEffect(() => {
-    if (srcChain.module !== "axelarnet" || !keplrConnected) {
-      return;
-    }
-    if (keplrBalance) {
-      setBalance(keplrBalance);
-    }
-    setLoading(keplrBalanceIsLoading);
-  }, [keplrBalance, srcChain.module, keplrBalanceIsLoading]);
+  useEffect(
+    () => {
+      if (srcChain.module !== "axelarnet" || !keplrConnected) {
+        return;
+      }
+      if (keplrBalance) {
+        setBalance(keplrBalance);
+      }
+      setLoading(keplrBalanceIsLoading);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [keplrBalance, srcChain.module, keplrBalanceIsLoading]
+  );
 
   // TODO: put in its own hook & provide tests
   useEffect(() => {
@@ -233,13 +242,17 @@ const useGetKeplerBalance = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState("0");
 
-  useEffect(() => {
-    if (srcChain.module !== "axelarnet" || !keplrConnected) {
-      return;
-    }
-    setIsLoading(true);
-    updateBalance().finally(() => setIsLoading(false));
-  }, [srcChain, swapStatus, asset, keplrConnected]);
+  useEffect(
+    () => {
+      if (srcChain.module !== "axelarnet" || !keplrConnected) {
+        return;
+      }
+      setIsLoading(true);
+      updateBalance().finally(() => setIsLoading(false));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [srcChain, swapStatus, asset, keplrConnected]
+  );
 
   async function updateBalance() {
     const cosmosChains = getCosmosChains(allAssets);
@@ -265,7 +278,7 @@ const useGetKeplerBalance = () => {
       );
       const balance = formatUnits(res?.amount as string, asset.decimals) || "0";
       setBalance(balance);
-    } catch (e: any) {
+    } catch (e) {
       setBalance("0");
       let msg;
       if (e?.toString()?.includes("Ledger is not compatible")) {

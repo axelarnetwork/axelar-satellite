@@ -3,7 +3,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const axelar: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/axelar`,
   rest: "https://axelar-testnet-lcd.axelar-dev.workers.dev",
   chainId: "axelar-testnet-lisbon-3",
@@ -33,4 +33,5 @@ export default {
   gasPriceStep: { low: 0.007, average: 0.007, high: 0.01 },
   features: ["ibc-transfer"],
   chainToAxelarChannelId: "",
-} as CosmosChain;
+  explorer: "https://axelarscan.io/",
+};

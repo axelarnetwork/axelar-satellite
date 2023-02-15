@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+export const avalanche: ChainExtension = {
   id: 43_114,
   name: "Avalanche",
   network: "avalanche",

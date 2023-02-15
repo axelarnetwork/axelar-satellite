@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+export const arbitrum: ChainExtension = {
   id: 42_161,
   name: "Arbitrum",
   network: "arbitrum",

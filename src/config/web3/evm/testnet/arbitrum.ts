@@ -1,4 +1,6 @@
-export const arbitrum = {
+import { ChainExtension } from "../interface";
+
+export const arbitrum: ChainExtension = {
   id: 421_613,
   name: "Arbitrum Goerli Testnet",
   network: "ethereum",

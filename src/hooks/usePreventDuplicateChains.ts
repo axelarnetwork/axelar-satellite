@@ -15,22 +15,26 @@ export const usePreventDuplicateChains = () => {
   const [originSrcChain, setOriginSrcChain] = useState<ChainInfo>();
   const [originDestChain, setOriginDestChain] = useState<ChainInfo>();
 
-  useEffect(() => {
-    if (srcChain?.chainName === destChain?.chainName) {
-      updateChains();
-    }
+  useEffect(
+    () => {
+      if (srcChain?.chainName === destChain?.chainName) {
+        updateChains();
+      }
 
-    // reset deposit address on chain module change
-    if (
-      originDestChain &&
-      originSrcChain &&
-      originDestChain?.module !== destChain?.module
-    ) {
-      setDestAddress("");
-    }
+      // reset deposit address on chain module change
+      if (
+        originDestChain &&
+        originSrcChain &&
+        originDestChain?.module !== destChain?.module
+      ) {
+        setDestAddress("");
+      }
 
-    updateCachedChains();
-  }, [srcChain, destChain]);
+      updateCachedChains();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [srcChain, destChain]
+  );
 
   function updateChains() {
     const sourceChain = getChangeOrigin();

@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+export const fantom: ChainExtension = {
   id: 4002,
   name: "Fantom Testnet",
   network: "fantom",

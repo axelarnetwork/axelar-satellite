@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const comdex: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/comdex`,
   rest: "https://test2-rest.comdex.one",
   chainId: "comdex-test2",
@@ -47,4 +47,5 @@ export default {
   },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainToAxelarChannelId: "channel-2",
-} as CosmosChain;
+  explorer: "https://test2-explorer.comdex.one/wallet/",
+};

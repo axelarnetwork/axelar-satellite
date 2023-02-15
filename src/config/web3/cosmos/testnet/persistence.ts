@@ -3,7 +3,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const persistence: CosmosChain = {
   chainId: "test-core-1",
   chainName: "Persistence Testnet",
   chainIdentifier: "persistence",
@@ -37,4 +37,5 @@ export default {
   },
   coinType: 118,
   chainToAxelarChannelId: "channel-108",
-} as CosmosChain;
+  explorer: "", // TODO: add explorer
+};

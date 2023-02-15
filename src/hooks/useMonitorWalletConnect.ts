@@ -14,5 +14,6 @@ export const useMonitorWalletConnect = () => {
     if (!isConnected) {
       setWagmiConnected(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected]);
 };

@@ -3,7 +3,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const fetch: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/fetch`,
   rest: "https://rest-dorado.fetch.ai",
   chainId: "dorado-1",
@@ -43,4 +43,5 @@ export default {
   },
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
   chainToAxelarChannelId: "channel-6",
-} as CosmosChain;
+  explorer: "", // TODO: add explorer
+};

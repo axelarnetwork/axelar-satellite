@@ -1,4 +1,6 @@
-export default {
+import { ChainExtension } from "../interface";
+
+export const moonbeam: ChainExtension = {
   id: 1287,
   name: "Moonbase Alpha",
   network: "moonbeam",

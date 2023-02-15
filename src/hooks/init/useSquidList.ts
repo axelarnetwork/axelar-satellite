@@ -1,20 +1,33 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { ChainName } from "@0xsquid/sdk";
+import { useQuery } from "react-query";
 
 import { TokensWithExtendedChainData, useSquidStateStore } from "~/store";
 
-import { squid } from "~/squid.config";
+import { getSquidSDK } from "~/squid.config";
+
+export const useSquidSDKQuery = () => {
+  return useQuery(["squid-sdk"], getSquidSDK, {
+    staleTime: Infinity,
+  });
+};
 
 export const useSquidList = () => {
-  const { setSquidTokens, setSquidChains, squidChains, squidTokens } =
-    useSquidStateStore();
+  const {
+    setSquidTokens,
+    setSquidChains,
+    setSquidLoaded,
+    squidChains,
+    squidTokens,
+    squidLoaded,
+  } = useSquidStateStore();
 
-  useEffect(() => {
-    getSquidTokens();
-  }, []);
+  const { data: squid } = useSquidSDKQuery();
 
-  const getSquidTokens = () => {
-    // console.log("squid chains", squid.chains);
+  const getSquidTokens = useCallback(() => {
+    if (!squid) {
+      return;
+    }
     const tokensWithExtendedChainData: TokensWithExtendedChainData[] =
       squid.tokens.map((t) => {
         const chain = squid.chains.find((c) => c.chainId === t.chainId);
@@ -23,14 +36,36 @@ export const useSquidList = () => {
           chainName: chain?.chainName as ChainName,
         };
       });
-    // console.log("squid tokens", tokensWithExtendedChainData);
-    if (squidTokens.length === 0) {
+
+    if (squidTokens.length === 0 && tokensWithExtendedChainData.length > 0) {
       setSquidTokens(tokensWithExtendedChainData);
     }
-    if (squidChains.length === 0) {
+    if (squidChains.length === 0 && squid.chains.length > 0) {
       setSquidChains(squid.chains);
     }
-  };
+    setSquidLoaded(
+      tokensWithExtendedChainData.length > 0 && squidChains.length > 0
+    );
+  }, [
+    squid,
+    squidTokens.length,
+    squidChains.length,
+    setSquidLoaded,
+    setSquidTokens,
+    setSquidChains,
+  ]);
 
-  return { getSquidTokens };
+  useEffect(() => {
+    if (squid?.initialized && !squidLoaded) {
+      getSquidTokens();
+    }
+  }, [getSquidTokens, squid?.initialized, squidLoaded]);
+
+  return useMemo(
+    () => ({
+      getSquidTokens,
+      squidTokens,
+    }),
+    [getSquidTokens, squidTokens]
+  );
 };
