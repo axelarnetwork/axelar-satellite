@@ -1,6 +1,10 @@
 import React, { useMemo } from "react";
 import cn from "classnames";
 
+import { ENVIRONMENT as env } from "~/config/constants";
+import { Blockable } from "~/components/common";
+import { EvmAssetWarningModal, ModalWindow } from "~/components/modal";
+
 import { DestAssetSelector } from "~/features/dest-asset-selector";
 import { DestChainSelector } from "~/features/dest-chain-selector";
 import { GetAddressBtn } from "~/features/gen-address-btn";
@@ -9,15 +13,14 @@ import { AssetSelector } from "~/features/src-asset-selector";
 import { SrcChainSelector } from "~/features/src-chain-selector";
 import { SwapExecutionState } from "~/features/swap-states";
 
-import { ENVIRONMENT as env } from "../../config/constants";
+import { useSquidStateStore, useSwapStore } from "~/store";
+
 import {
   useDetectDepositConfirmation,
   usePreventDuplicateChains,
   useRestrictAssets,
-} from "../../hooks";
-import { useSquidStateStore, useSwapStore } from "../../store";
-import { Blockable } from "../common";
-import { EvmAssetWarningModal, ModalWindow } from "../modal";
+} from "~/hooks";
+
 import { ChainSwapper, StopButton } from "./parts";
 import { TopFlows } from "./parts/TopFlows";
 
