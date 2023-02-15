@@ -4,6 +4,8 @@ import {
   ChainInfo,
 } from "@axelar-network/axelarjs-sdk";
 
+import { TokensWithExtendedChainData } from "~/store";
+
 export type RouteQuery = {
   source: string;
   destination: string;
@@ -39,4 +41,5 @@ interface AssetInfoExtended extends AssetInfo {
 
 export interface ChainInfoExtended extends ChainInfo {
   assets: AssetInfoExtended[];
+  squidAssets?: TokensWithExtendedChainData[];
 }
