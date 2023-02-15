@@ -1,8 +1,13 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
-import { ChainInfo, loadAssets } from "@axelar-network/axelarjs-sdk";
+import {
+  ChainInfo,
+  LoadAssetConfig,
+  loadAssets,
+} from "@axelar-network/axelarjs-sdk";
 import _ from "lodash";
 import toast from "react-hot-toast";
+import { useQuery } from "react-query";
 
 import {
   ARBITRARY_EVM_ADDRESS,
@@ -20,6 +25,16 @@ import { AssetConfigExtended, ChainInfoExtended, RouteQuery } from "~/types";
 import { loadAllChains } from "~/utils/api";
 
 import { useSquidList } from "./useSquidList";
+
+function useAxelarAssetsQuery(config: LoadAssetConfig) {
+  return useQuery(
+    ["axelarAssets", config.environment],
+    () => loadAssets(config),
+    {
+      staleTime: Infinity,
+    }
+  );
+}
 
 /**
  * Curried predicate to find a valid chain
@@ -56,8 +71,11 @@ export const useInitialChainList = () => {
     setDestAddress,
   } = useSwapStore();
 
-  const { squidTokens, setSquidLoaded } = useSquidStateStore();
-  useSquidList();
+  const { squidTokens } = useSquidList();
+
+  const { data: axelarAssets } = useAxelarAssetsQuery({
+    environment: ENVIRONMENT,
+  });
 
   const router = useRouter();
 
@@ -138,8 +156,6 @@ export const useInitialChainList = () => {
         chain.squidAssets = [relevantSquidTokens];
       }
     });
-
-    setSquidLoaded(true);
 
     return newChains;
   }
