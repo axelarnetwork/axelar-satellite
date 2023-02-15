@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ChainInfo, loadAssets } from "@axelar-network/axelarjs-sdk";
-import _, { chain } from "lodash";
+import _ from "lodash";
 import toast from "react-hot-toast";
 
 import {
@@ -21,7 +21,12 @@ import { loadAllChains } from "~/utils/api";
 
 import { useSquidList } from "./useSquidList";
 
-const isValidChain = (chainName: string, chain: ChainInfo) => {
+/**
+ * Curried predicate to find a valid chain
+ *
+ * @param chainName
+ */
+const isValidChain = (chainName: string) => (chain: ChainInfo) => {
   return (
     chain.chainName?.toLowerCase() === chainName &&
     !DISABLED_CHAIN_NAMES?.toLowerCase()
@@ -30,9 +35,14 @@ const isValidChain = (chainName: string, chain: ChainInfo) => {
   );
 };
 
-const hasChainName = (chainName: string, chain: ChainInfo) => {
-  return chain.chainName?.toLowerCase() === chainName;
-};
+/**
+ * Curried predicate to find a chain by chain name
+ *
+ * @param chainName
+ * @returns
+ */
+const byChainName = (chainName: string) => (chain: ChainInfo) =>
+  chain.chainName?.toLowerCase() === chainName;
 
 export const useInitialChainList = () => {
   const {
@@ -157,11 +167,9 @@ export const useInitialChainList = () => {
       destination = DEFAULT_DEST_CHAIN;
     }
 
-    let srcChainFound = uniqueChains.find(isValidChain.bind(null, source));
+    let srcChainFound = uniqueChains.find(isValidChain(source));
 
-    let destChainFound = uniqueChains.find(
-      isValidChain.bind(null, destination)
-    );
+    let destChainFound = uniqueChains.find(isValidChain(destination));
 
     /**
      * Handle edge case where srcChain === destChain after default chain setup
@@ -171,22 +179,20 @@ export const useInitialChainList = () => {
       srcChainFound?.chainName?.toLowerCase() === "moobeam" &&
       !destChainFound
     ) {
-      destChainFound = uniqueChains.find(hasChainName.bind(null, "avalanche"));
+      destChainFound = uniqueChains.find(byChainName("avalanche"));
     }
 
     if (
       destChainFound?.chainName?.toLowerCase() === "avalanche" &&
       !srcChainFound
     ) {
-      srcChainFound = uniqueChains.find(hasChainName.bind(null, "moonbeam"));
+      srcChainFound = uniqueChains.find(byChainName("moonbeam"));
     }
 
     if (srcChainFound) {
       setSrcChain(srcChainFound);
     } else {
-      const srcChain = uniqueChains.find(
-        hasChainName.bind(null, DEFAULT_SRC_CHAIN)
-      );
+      const srcChain = uniqueChains.find(byChainName(DEFAULT_SRC_CHAIN));
 
       setSrcChain(srcChain as ChainInfo);
     }
@@ -194,9 +200,7 @@ export const useInitialChainList = () => {
     if (destChainFound) {
       setDestChain(destChainFound);
     } else {
-      const destChain = uniqueChains.find(
-        hasChainName.bind(null, DEFAULT_DEST_CHAIN)
-      );
+      const destChain = uniqueChains.find(byChainName(DEFAULT_DEST_CHAIN));
 
       setDestChain(destChain as ChainInfo);
     }
@@ -231,19 +235,22 @@ export const useInitialChainList = () => {
       };
     }
 
-    const assetFound = assets.find((asset) =>
-      asset?.common_key[ENVIRONMENT].includes(asset_denom)
+    const assetFound = assets.find(({ common_key }) =>
+      common_key[ENVIRONMENT].includes(asset_denom)
     );
+
     if (assetFound) {
       setAsset(assetFound);
     } else {
-      const _asset = assets.find((asset) =>
-        asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
+      const asset = assets.find(({ common_key }) =>
+        common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
       );
-      if (!_asset) {
+
+      if (!asset) {
         return;
       }
-      setAsset(_asset);
+
+      setAsset(asset);
     }
 
     return {
