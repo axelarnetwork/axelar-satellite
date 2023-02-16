@@ -3,11 +3,14 @@ import Image from "next/legacy/image";
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwitchNetwork } from "wagmi";
 
+import { AXELARSCAN_URL, ENVIRONMENT } from "~/config/constants";
+import { getCosmosChains, getWagmiChains } from "~/config/web3";
 import { logEvent } from "~/components/scripts";
 
-import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
-import { getCosmosChains, getWagmiChains } from "../../../config/web3";
-import { getTransferType, useSwapStore } from "../../../store";
+import { getTransferType, useSwapStore } from "~/store";
+
+import { makeAccessibleKeysHandler } from "~/utils/react";
+
 import { InputWrapper } from "../../common";
 import { TransferStats } from "../parts";
 import { ProgressBar } from "./parts";
@@ -25,12 +28,14 @@ export const addTokenToMetamask = async (
     } = chain_aliases[chain.chainName?.toLowerCase()];
     const nativeAssetSymbol = chain_aliases[native_chain].assetSymbol;
 
-    return await (window as any).ethereum.request({
+    return await window.ethereum?.request({
+      // @ts-ignore
       method: "wallet_watchAsset",
       params: {
+        // @ts-ignore
         type: "ERC20",
         options: {
-          address,
+          address: String(address),
           symbol: common_key[ENVIRONMENT] === "uaxl" ? assetName : symbol,
           decimals,
           image: nativeAssetSymbol
@@ -45,19 +50,17 @@ export const addTokenToMetamask = async (
 };
 
 export const ConfirmTransferState = () => {
-  const { depositAddress, destAddress, txInfo, asset, destChain } =
-    useSwapStore();
+  const { destAddress, txInfo, asset, destChain } = useSwapStore();
   const transferType = useSwapStore(getTransferType);
-  const { chains, error, isLoading, pendingChainId, switchNetwork } =
-    useSwitchNetwork({
-      onSuccess(data) {
-        console.log("Success", data);
-        setTimeout(
-          () => addTokenToMetamask(asset as AssetConfig, destChain),
-          2000
-        );
-      },
-    });
+  const { switchNetwork } = useSwitchNetwork({
+    onSuccess(data) {
+      console.log("Success", data);
+      setTimeout(
+        () => addTokenToMetamask(asset as AssetConfig, destChain),
+        2000
+      );
+    },
+  });
 
   useEffect(() => {
     logEvent("transfer_complete");
@@ -115,7 +118,7 @@ export const ConfirmTransferState = () => {
         {destChain.module === "evm" && (
           <div
             className="flex items-center justify-center hover:underline hover:cursor-pointer gap-x-2"
-            onClick={() => {
+            {...makeAccessibleKeysHandler(() => {
               switchNetwork?.(
                 getWagmiChains().find(
                   (chain) =>
@@ -123,7 +126,7 @@ export const ConfirmTransferState = () => {
                     destChain.chainName?.toLowerCase()
                 )?.id
               );
-            }}
+            })}
           >
             <span className="font-light text-gray-200">
               Add token to Metamask ({destChain.chainName})

@@ -1,6 +1,5 @@
 import { useContractEvent } from "wagmi";
 
-import { ENVIRONMENT } from "../config/constants";
 import { getDestChainId, useSwapStore } from "../store";
 import { SwapStatus } from "../utils/enums";
 

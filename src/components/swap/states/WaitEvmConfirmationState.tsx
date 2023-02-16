@@ -2,13 +2,11 @@ import React from "react";
 import { SpinnerRoundFilled } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
 
-import { useDetectUnwrapTransfer } from "../../../hooks";
-import {
-  getDestChainId,
-  getSelectedAssetSymbol,
-  useSwapStore,
-} from "../../../store";
-import { SwapStatus } from "../../../utils/enums";
+import { getDestChainId, getSelectedAssetSymbol, useSwapStore } from "~/store";
+
+import { useDetectUnwrapTransfer } from "~/hooks";
+import { SwapStatus } from "~/utils/enums";
+
 import { InputWrapper, truncate } from "../../common";
 import { TransferStats } from "../parts";
 import { ProgressBar } from "./parts";

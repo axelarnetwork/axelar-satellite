@@ -8,11 +8,11 @@ import { utils } from "ethers";
 import Long from "long";
 import toast from "react-hot-toast";
 
+import { getCosmosChains } from "~/config/web3";
 import { connectToKeplr } from "~/components/web3/utils/handleOnKeplrConnect";
 
 import { useSwapStore, useWalletStore } from "~/store";
 
-import { getCosmosChains } from "~/config/web3";
 import { useGetKeplerWallet } from "~/hooks";
 import { evmIshSignDirect } from "~/hooks/kepler/evmIsh/evmIshSignDirect";
 import { curateCosmosChainId } from "~/utils";
@@ -114,12 +114,10 @@ export function useKeplrIBCTransfer() {
     };
     const timeoutTimestamp = 0;
 
-    let result: any;
-
     try {
       setLoading(true);
       if (srcChain.chainName?.toLowerCase() === "axelar") {
-        result = await cosmjs
+        await cosmjs
           .sendTokens(sourceAddress, depositAddress, [sendCoin], fee)
           .then((e) => {
             console.log("CosmosWalletTransfer: send tokens");
@@ -129,8 +127,8 @@ export function useKeplrIBCTransfer() {
 
             setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
-          .catch((e) => {
-            toast.error(e?.message as any);
+          .catch((e: Error) => {
+            toast.error(e?.message);
             console.log(e);
           });
       } else if (
@@ -151,19 +149,19 @@ export function useKeplrIBCTransfer() {
           depositAddress,
           srcChain
         )
-          .then((res: any) => {
+          .then((res) => {
             console.log(
               "CosmosWalletTransfer: IBC transfer for EVM signer",
               res
             );
             setTxInfo({
-              sourceTxHash: res.transactionHash,
+              sourceTxHash: res?.transactionHash,
             });
             setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
           .catch((error) => console.log(error));
       } else {
-        result = await cosmjs
+        await cosmjs
           .sendIbcTokens(
             sourceAddress,
             depositAddress,
@@ -183,8 +181,8 @@ export function useKeplrIBCTransfer() {
             });
             setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
-          .catch((e: any) => {
-            toast.error(e?.message as any);
+          .catch((e: Error) => {
+            toast.error(e?.message);
             console.log(e);
           });
       }

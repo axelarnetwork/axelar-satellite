@@ -1,13 +1,15 @@
 import { FC } from "react";
 import Image from "next/legacy/image";
 
-import { SUPPORT_MODAL } from "../../../config/constants";
-import { useApplicationStateStore } from "../../../store";
+import { SUPPORT_MODAL } from "~/config/constants";
+
+import { useApplicationStateStore } from "~/store";
+
 import { Link } from "../../common/GetLink";
 
 type SupportProps = {};
 
-export const Support: FC<SupportProps> = ({}) => {
+export const Support: FC<SupportProps> = () => {
   const { modalId } = useApplicationStateStore((state) => state);
 
   if (modalId !== SUPPORT_MODAL) {

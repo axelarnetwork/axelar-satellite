@@ -4,9 +4,11 @@ import { useRouter } from "next/router";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { ASSET_RESTRICTIONS } from "../../../config/constants";
-import { getSelectedAssetSymbol, useSwapStore } from "../../../store";
-import { convertChainName } from "../../../utils/transformers";
+import { ASSET_RESTRICTIONS } from "~/config/constants";
+
+import { getSelectedAssetSymbol, useSwapStore } from "~/store";
+
+import { convertChainName } from "~/utils/transformers";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 

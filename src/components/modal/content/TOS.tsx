@@ -1,11 +1,12 @@
 import { FC } from "react";
 
-import { TOS_MODAL } from "../../../config/constants";
-import { useApplicationStateStore } from "../../../store";
+import { TOS_MODAL } from "~/config/constants";
+
+import { useApplicationStateStore } from "~/store";
 
 type TOSProps = {};
 
-export const TOS: FC<TOSProps> = ({}) => {
+export const TOS: FC<TOSProps> = () => {
   const { modalId } = useApplicationStateStore((state) => state);
 
   if (modalId !== TOS_MODAL) {

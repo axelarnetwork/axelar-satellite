@@ -3,21 +3,23 @@ import Image from "next/legacy/image";
 import cn from "classnames";
 import { useAccount } from "wagmi";
 
-import { tokenContractDocs } from "../../config/constants";
-import { useGetAssetBalance } from "../../hooks";
+import { tokenContractDocs } from "~/config/constants";
+import { AddressShortener } from "~/components/common";
+
 import {
   getSelectedAssetName,
   getSelectedAssetNameDestChain,
   getSelectedAssetSymbol,
-  getSelectedAssetSymbolDestinationChain,
   getSelectedAsssetIsWrapped,
   getUnwrappedAssetSymbol,
   isAXLToken,
   useSwapStore,
-} from "../../store";
-import { copyToClipboard } from "../../utils";
-import { SwapStatus } from "../../utils/enums";
-import { AddressShortener } from "../common";
+} from "~/store";
+
+import { useGetAssetBalance } from "~/hooks";
+import { copyToClipboard } from "~/utils";
+import { SwapStatus } from "~/utils/enums";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 export const EvmAssetWarningModal = () => {
   const { asset, destChain, resetState, srcChain, swapStatus } = useSwapStore(
@@ -27,9 +29,6 @@ export const EvmAssetWarningModal = () => {
   const unwrappedAssetSymbol = useSwapStore(getUnwrappedAssetSymbol);
   const { shouldUnwrapAsset } = useSwapStore((state) => state);
   const selectedAssetIsWrappedNative = useSwapStore(getSelectedAsssetIsWrapped);
-  const selectedAssetSymbolOnDestinationChain = useSwapStore(
-    getSelectedAssetSymbolDestinationChain
-  );
   const selectedAssetNameSrcChain = useSwapStore(getSelectedAssetName);
   const selectedAssetNameOnDestinationChain = useSwapStore(
     getSelectedAssetNameDestChain
@@ -41,19 +40,23 @@ export const EvmAssetWarningModal = () => {
 
   const [showAssetWarning, setShowAssetWarning] = useState(false);
 
-  useEffect(() => {
-    if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) {
-      return;
-    }
-    if (!(srcChain && destChain)) {
-      return;
-    }
-    if (![srcChain?.module, destChain?.module].includes("evm")) {
-      return;
-    }
+  useEffect(
+    () => {
+      if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) {
+        return;
+      }
+      if (!(srcChain && destChain)) {
+        return;
+      }
+      if (![srcChain?.module, destChain?.module].includes("evm")) {
+        return;
+      }
 
-    setShowAssetWarning(true);
-  }, [setShowAssetWarning, swapStatus]);
+      setShowAssetWarning(true);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setShowAssetWarning, swapStatus]
+  );
 
   function handleOnResetState() {
     setShowAssetWarning(false);
@@ -103,8 +106,9 @@ export const EvmAssetWarningModal = () => {
                     <div className="flex items-center justify-center font-bold gap-x-2">
                       <AddressShortener value={tokenAddress} />
                       <div
-                        className="cursor-pointer"
-                        onClick={() => copyToClipboard(tokenAddress)}
+                        {...makeAccessibleKeysHandler(
+                          copyToClipboard.bind(null, tokenAddress)
+                        )}
                       >
                         <Image
                           src={"/assets/ui/copy.svg"}
@@ -130,8 +134,9 @@ export const EvmAssetWarningModal = () => {
                     <div className="flex items-center justify-center font-bold gap-x-2">
                       <AddressShortener value={address} />
                       <div
-                        className="cursor-pointer"
-                        onClick={() => copyToClipboard(address as string)}
+                        {...makeAccessibleKeysHandler(
+                          copyToClipboard.bind(null, address)
+                        )}
                       >
                         <Image
                           src={"/assets/ui/copy.svg"}

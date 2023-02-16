@@ -4,7 +4,6 @@ import { useSwapStore } from "~/store";
 
 import { KeplrAndTerraTxBtn } from "./KeplrAndTerraTxBtn";
 import { KeplrTxBtn } from "./KeplrTxBtn";
-import { useKeplrIBCTransfer } from "./hooks";
 
 export const CosmosTxBtn = () => {
   const srcChain = useSwapStore((state) => state.srcChain);

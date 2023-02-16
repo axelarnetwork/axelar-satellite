@@ -10,8 +10,8 @@ import {
 } from "@evmos/transactions";
 import Long from "long";
 
-import { getCosmosChains } from "../../../config/web3";
-import { CosmosChain } from "../../../config/web3/cosmos/interface";
+import { getCosmosChains } from "~/config/web3";
+import { CosmosChain } from "~/config/web3/cosmos/interface";
 
 export const evmIshSignDirect = async (
   amount: string,

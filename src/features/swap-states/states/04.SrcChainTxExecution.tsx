@@ -8,6 +8,7 @@ import { getSelectedAssetSymbol, useSwapStore } from "~/store";
 import { useGetRelayerGasFee } from "~/hooks";
 import { copyToClipboard } from "~/utils";
 import { SwapStatus } from "~/utils/enums";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 import { convertChainName } from "~/utils/transformers";
 
 import { ProgressBar, WalletTxBtn } from "../components";
@@ -54,7 +55,9 @@ export const SrcChainTxExecution = () => {
                     <AddressShortener value={depositAddress} />
                     <div
                       className="cursor-pointer"
-                      onClick={() => copyToClipboard(depositAddress)}
+                      {...makeAccessibleKeysHandler(
+                        copyToClipboard.bind(null, depositAddress)
+                      )}
                     >
                       <Image
                         src="/assets/ui/copy.svg"

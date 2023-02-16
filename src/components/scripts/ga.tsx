@@ -24,9 +24,11 @@ export const GoogleAnalytics = () => {
   );
 };
 
-export const logEvent = (event: string, data?: Record<string, any>) => {
-  (window as any)?.dataLayer?.push({
-    event,
-    ...data,
-  });
+export const logEvent = (event: string, data?: Record<string, unknown>) => {
+  if ("dataLayer" in window && Array.isArray(window.dataLayer)) {
+    window.dataLayer.push({
+      event,
+      ...data,
+    });
+  }
 };

@@ -1,7 +1,8 @@
 import React from "react";
 
-import { getUnwrappedAssetSymbol, useSwapStore } from "../../../store";
-import { SwapStatus } from "../../../utils/enums";
+import { getUnwrappedAssetSymbol, useSwapStore } from "~/store";
+
+import { SwapStatus } from "~/utils/enums";
 
 export const UnwrapToNativeChainCheckbox = () => {
   const unwrappedAssetName = useSwapStore(getUnwrappedAssetSymbol);

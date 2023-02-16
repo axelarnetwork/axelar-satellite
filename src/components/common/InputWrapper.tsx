@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from "react";
+import React, { CSSProperties, PropsWithChildren } from "react";
 import cn from "classnames";
 
 type InputWrapperProps = PropsWithChildren & {
   className?: string;
-  style?: any;
+  style?: CSSProperties;
 };
 export const InputWrapper: React.FC<InputWrapperProps> = ({
   children,

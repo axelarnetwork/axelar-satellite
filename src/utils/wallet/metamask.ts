@@ -15,9 +15,11 @@ export const addAssetToMetamaskWithAssetConfig = async (
     } = chain_aliases[chain.chainName?.toLowerCase()];
     const nativeAssetSymbol = chain_aliases[native_chain].assetSymbol;
 
-    return await (window as any).ethereum.request({
+    return await window.ethereum?.request({
+      // @ts-ignore
       method: "wallet_watchAsset",
       params: {
+        // @ts-ignore
         type: "ERC20",
         options: {
           address,
@@ -46,9 +48,11 @@ export const addTokenToMetamaskWithAssetInfo = async (asset: AssetInfo) => {
       assetSymbol,
     } = asset;
 
-    return await (window as any).ethereum.request({
+    return await window.ethereum?.request({
+      // @ts-ignore
       method: "wallet_watchAsset",
       params: {
+        // @ts-ignore
         type: "ERC20",
         options: {
           address,

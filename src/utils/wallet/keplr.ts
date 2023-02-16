@@ -6,7 +6,7 @@ import {
   QueryBalanceResponse,
 } from "cosmjs-types/cosmos/bank/v1beta1/query";
 
-import { CosmosChain } from "../../config/web3/cosmos/interface";
+import { CosmosChain } from "~/config/web3/cosmos/interface";
 
 export const connectChainId = async (chain: CosmosChain): Promise<void> => {
   const { keplr } = window;
@@ -24,7 +24,7 @@ export const connectChainId = async (chain: CosmosChain): Promise<void> => {
     try {
       await keplr.experimentalSuggestChain(chain);
       await keplr.enable(chain.chainId);
-    } catch (e2: any) {
+    } catch (e2) {
       console.log("and yet there is a problem in trying to do that too", e2);
     }
   }
@@ -42,15 +42,17 @@ export const queryBalance = async (
   rpc: string
 ) => {
   const tmClient = await Tendermint34Client.connect(rpc);
-  const client = QueryClient.withExtensions(tmClient as any);
+  const client = QueryClient.withExtensions(tmClient);
   const requestData = Uint8Array.from(
     QueryBalanceRequest.encode({ address, denom }).finish()
   );
-  const data = await client.queryUnverified(
+  const { value: data } = await client.queryAbci(
     "/cosmos.bank.v1beta1.Query/Balance",
     requestData
   );
+
   const response = QueryBalanceResponse.decode(data);
+
   tmClient.disconnect();
   return response.balance;
 };
@@ -65,7 +67,7 @@ export const getSigningClient = async (
 };
 
 export const getAddress = async (chain: CosmosChain): Promise<string> => {
-  const _signer = await getSigner(chain);
-  const [account] = await _signer.getAccounts();
+  const signer = await getSigner(chain);
+  const [account] = await signer.getAccounts();
   return account.address;
 };

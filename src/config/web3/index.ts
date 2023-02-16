@@ -2,7 +2,8 @@ import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import _ from "lodash";
 import toast from "react-hot-toast";
 
-import { Environment } from "../../utils/enums";
+import { Environment } from "~/utils/enums";
+
 import { ENVIRONMENT } from "../constants";
 import { CosmosChain } from "./cosmos/interface";
 import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";

@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { io } from "socket.io-client";
 
 import { ENVIRONMENT, SOCKET_API } from "../config/constants";

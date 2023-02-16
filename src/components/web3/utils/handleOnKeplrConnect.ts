@@ -1,7 +1,7 @@
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 
-import { getCosmosChains } from "../../../config/web3";
-import { CosmosChain } from "../../../config/web3/cosmos/interface";
+import { getCosmosChains } from "~/config/web3";
+import { CosmosChain } from "~/config/web3/cosmos/interface";
 
 export const connectToKeplr = async (allAssets: AssetConfig[]) => {
   const { keplr } = window;

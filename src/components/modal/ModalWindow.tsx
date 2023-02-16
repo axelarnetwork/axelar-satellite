@@ -1,7 +1,9 @@
 import { FC } from "react";
 
-import { FAQ_MODAL, TOS_MODAL } from "../../config/constants";
-import { useApplicationStateStore } from "../../store";
+import { FAQ_MODAL, TOS_MODAL } from "~/config/constants";
+
+import { useApplicationStateStore } from "~/store";
+
 import { FAQ } from "./content/FAQ";
 import { GettingStarted } from "./content/GettingStarted";
 import { Support } from "./content/Support";
@@ -9,7 +11,7 @@ import { TOS } from "./content/TOS";
 
 type ModalWindowProps = {};
 
-export const ModalWindow: FC<ModalWindowProps> = ({}) => {
+export const ModalWindow: FC<ModalWindowProps> = () => {
   const { modalId } = useApplicationStateStore((state) => state);
 
   return (

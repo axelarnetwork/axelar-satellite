@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { getDestCosmosChain, useSwapStore, useWalletStore } from "~/store";
 
 import { useGetKeplerWallet } from "~/hooks";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 export const KeplrFill = () => {
   const destChain = useSwapStore((state) => state.destChain);
@@ -56,7 +57,7 @@ export const KeplrFill = () => {
   return (
     <div
       className="bg-gradient-to-b group from-[#9BDBFF] to-[#DA70FF] h-full w-28 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
-      onClick={handleOnClick}
+      {...makeAccessibleKeysHandler(handleOnClick)}
     >
       <div className="flex justify-around items-center h-full w-full bg-gradient-to-b from-[#21374b] to-[#292d4b] rounded-lg p-3">
         <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF]">

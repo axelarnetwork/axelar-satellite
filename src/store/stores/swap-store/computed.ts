@@ -4,6 +4,7 @@ import memoize from "proxy-memoize";
 
 import { ASSET_RESTRICTIONS, ENVIRONMENT } from "~/config/constants";
 import { getCosmosChains, getWagmiChains } from "~/config/web3";
+
 import { AssetConfigExtended } from "~/types";
 
 // TODO: should be named getWagmiSrcChainId
@@ -267,9 +268,7 @@ export const getWrappedAssetName = memoize(
 
 export const getRestrictedAssetIsSelected = memoize(
   (state: { asset: AssetConfigExtended | null }) => {
-    const restrictedAssets = ASSET_RESTRICTIONS.map(
-      (rule) => rule.assets
-    ).flat();
+    const restrictedAssets = ASSET_RESTRICTIONS.flatMap((rule) => rule.assets);
     if (restrictedAssets.includes(state.asset?.id || "")) {
       return true;
     }

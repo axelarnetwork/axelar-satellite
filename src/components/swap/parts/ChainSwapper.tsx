@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/legacy/image";
 
-import { useSwapStore } from "../../../store";
+import { useSwapStore } from "~/store";
 
 export const ChainSwapper = () => {
   const srcChain = useSwapStore((state) => state.srcChain);

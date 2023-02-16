@@ -1,14 +1,16 @@
 import React from "react";
 import Image from "next/legacy/image";
 
-import { useApplicationStateStore } from "~/store";
-
 import {
   FAQ_MODAL,
   GETTING_STARTED_MODAL,
   SUPPORT_MODAL,
   TOS_MODAL,
 } from "~/config/constants";
+
+import { useApplicationStateStore } from "~/store";
+
+import { withAccessibleKeysHandler, withKeysHandler } from "~/utils/react";
 
 import { ConnectButton } from "../swap/parts";
 
@@ -42,6 +44,66 @@ const SatelliteLogo = () => {
   );
 };
 
+const NAV_ITEMS = [
+  {
+    id: GETTING_STARTED_MODAL,
+    label: "Getting Started",
+  },
+  {
+    id: SUPPORT_MODAL,
+    label: "Support",
+  },
+  {
+    id: FAQ_MODAL,
+    label: "FAQ",
+  },
+  {
+    id: "pools",
+    label: "Pools",
+    type: "link",
+    href: "https://axelar.network/blog/liquidity-pools-for-bridged-assets-via-axelar",
+  },
+  {
+    id: TOS_MODAL,
+    label: "Terms of Use",
+  },
+];
+
+type NavItemProps = (typeof NAV_ITEMS)[number] & {
+  onModalIdChange: (id: string) => void;
+};
+
+const NavItem: React.FC<NavItemProps> = (props) => {
+  if (props.type === "link") {
+    return (
+      <a
+        key={props.id}
+        href={props.href}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        className="btn btn-link modal-button"
+      >
+        {props.label}
+      </a>
+    );
+  }
+
+  const handler = props.onModalIdChange.bind(null, props.id);
+
+  return (
+    <label
+      role="button"
+      key={props.id}
+      htmlFor={props.id}
+      className="btn btn-link modal-button"
+      onClick={handler}
+      onKeyDown={withAccessibleKeysHandler(handler)}
+    >
+      {props.label}
+    </label>
+  );
+};
+
 export const Navbar = () => {
   const { setModalId } = useApplicationStateStore();
 
@@ -53,51 +115,9 @@ export const Navbar = () => {
 
           <div className="flex items-center w-full ml-10">
             <div className="hidden space-x-2 lg:block">
-              <label
-                htmlFor={GETTING_STARTED_MODAL}
-                className="btn btn-link modal-button"
-                onClick={() => {
-                  setModalId(GETTING_STARTED_MODAL);
-                }}
-              >
-                Getting Started
-              </label>
-              <label
-                htmlFor={SUPPORT_MODAL}
-                className="btn btn-link modal-button"
-                onClick={() => {
-                  setModalId(SUPPORT_MODAL);
-                }}
-              >
-                Support
-              </label>
-              <label
-                htmlFor={FAQ_MODAL}
-                className="btn btn-link modal-button"
-                onClick={() => {
-                  setModalId(FAQ_MODAL);
-                }}
-              >
-                FAQ
-              </label>
-              <button className="btn btn-link modal-button">
-                <a
-                  href="https://axelar.network/blog/liquidity-pools-for-bridged-assets-via-axelar"
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                >
-                  Pools
-                </a>
-              </button>
-              <label
-                htmlFor={TOS_MODAL}
-                className="btn btn-link modal-button"
-                onClick={() => {
-                  setModalId(TOS_MODAL);
-                }}
-              >
-                Terms of Use
-              </label>
+              {NAV_ITEMS.map((item) => (
+                <NavItem key={item.id} {...item} onModalIdChange={setModalId} />
+              ))}
             </div>
             <div className="ml-auto justify-self-end">
               <ConnectButton />

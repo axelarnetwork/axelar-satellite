@@ -5,11 +5,10 @@ import {
 import { constants } from "ethers";
 import { useMutation } from "react-query";
 
+import { ENVIRONMENT } from "~/config/constants";
 import { logEvent } from "~/components/scripts";
 
 import { AssetConfigExtended } from "~/types";
-
-import { ENVIRONMENT } from "../../config/constants";
 
 const { HashZero } = constants;
 
