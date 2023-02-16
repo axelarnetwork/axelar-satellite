@@ -258,7 +258,7 @@ const useGetKeplerBalance = () => {
     const cosmosChains = getCosmosChains(allAssets);
 
     const derivedDenom =
-      asset?.chain_aliases[srcChain.chainName.toLowerCase()].ibcDenom;
+      asset?.chain_aliases[srcChain.chainName.toLowerCase()]?.ibcDenom;
 
     const fullChainConfig = cosmosChains.find(
       (chainConfig) =>

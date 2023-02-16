@@ -112,7 +112,7 @@ export const DestAssetSelector = ({
     if (asset && srcChain) {
       setShouldUnwrapAsset(false);
       setSelectedAssetSymbol(
-        asset.chain_aliases[destChain.chainName.toLowerCase()].assetName
+        asset.chain_aliases[destChain.chainName.toLowerCase()]?.assetName
       );
       setSelectedSquidAsset(null);
       setIsSquidTrade(false);

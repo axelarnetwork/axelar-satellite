@@ -128,7 +128,7 @@ export function useGetAllowedMaxBalance() {
         srcChain.chainName?.toLowerCase()
     );
     const derivedDenom =
-      asset?.chain_aliases[srcChain.chainName.toLowerCase()].ibcDenom;
+      asset?.chain_aliases[srcChain.chainName.toLowerCase()]?.ibcDenom;
 
     if (!(fullChainConfig && derivedDenom)) {
       return;
