@@ -18,9 +18,8 @@ import {
   useWalletStore,
 } from "~/store";
 
+import { Hash } from "~/types";
 import { getAddress, queryBalance } from "~/utils/wallet/keplr";
-
-import { Hash } from "../../../types";
 
 const { utils } = ethers;
 const { formatUnits } = utils;
@@ -88,17 +87,21 @@ export function useGetAllowedMaxBalance() {
     [provider, asset?.decimals, asset?.is_gas_token, tokenBalance, estimateGas]
   );
 
-  useEffect(() => {
-    if (srcChain.module !== "evm") {
-      return;
-    }
-    if (!(provider && balance)) {
-      return;
-    }
-    computeRealMaxBalance(balance.value).then((balanceMinusFee) =>
-      setMaxBalance(balanceMinusFee)
-    );
-  }, [provider, balance, computeRealMaxBalance]);
+  useEffect(
+    () => {
+      if (srcChain.module !== "evm") {
+        return;
+      }
+      if (!(provider && balance)) {
+        return;
+      }
+      computeRealMaxBalance(balance.value).then((balanceMinusFee) =>
+        setMaxBalance(balanceMinusFee)
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [provider, balance, computeRealMaxBalance]
+  );
 
   const getKplrBalance = useCallback(
     async (fullChainConfig: CosmosChain, derivedDenom: string) => {

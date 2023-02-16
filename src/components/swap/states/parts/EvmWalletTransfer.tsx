@@ -109,7 +109,7 @@ export const EvmWalletTransfer = () => {
         asset?.decimals
       ),
     ],
-    onError(err: any) {
+    onError(err) {
       toast.error(
         `Can't estimate gas limit for transaction. Please verify that you are not trying to transfer more assets than what you have. Transaction might fail if you proceed.`
       );
@@ -137,7 +137,7 @@ export const EvmWalletTransfer = () => {
         asset?.decimals
       ),
     },
-    onError(err: any) {
+    onError(err) {
       toast.error(
         `Can't estimate gas limit for transaction. Please verify that you are not trying to transfer more native assets than what you have. Transaction might fail if you proceed.`
       );
@@ -149,27 +149,35 @@ export const EvmWalletTransfer = () => {
     isLoading: sendTxIsLoading,
   } = useSendTransaction(sendTxConfig);
 
-  useEffect(() => {
-    console.log("send native data result", sendNativeDataResult);
-    if (!sendNativeDataResult?.hash) {
-      return;
-    }
-    setTxInfo({
-      sourceTxHash: sendNativeDataResult?.hash,
-      destStartBlockNumber: blockNumber,
-    });
-    setIsTxOngoing(true);
-  }, [sendNativeDataResult]);
+  useEffect(
+    () => {
+      console.log("send native data result", sendNativeDataResult);
+      if (!sendNativeDataResult?.hash) {
+        return;
+      }
+      setTxInfo({
+        sourceTxHash: sendNativeDataResult?.hash,
+        destStartBlockNumber: blockNumber,
+      });
+      setIsTxOngoing(true);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [sendNativeDataResult]
+  );
 
-  useEffect(() => {
-    const assetCommonKey = asset?.common_key[ENVIRONMENT];
-    const assetData = srcChain.assets?.find(
-      (asset) => asset.common_key === assetCommonKey
-    );
+  useEffect(
+    () => {
+      const assetCommonKey = asset?.common_key[ENVIRONMENT];
+      const assetData = srcChain.assets?.find(
+        (asset) => asset.common_key === assetCommonKey
+      );
 
-    setCurrentAsset(assetData);
-    setTokenAddress(assetData?.tokenAddress as string);
-  }, [asset]);
+      setCurrentAsset(assetData);
+      setTokenAddress(assetData?.tokenAddress as string);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [asset]
+  );
 
   async function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
