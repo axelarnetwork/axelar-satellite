@@ -43,7 +43,7 @@
     "usehooks-ts": "^2.5.4",
     "wagmi": "^0.8.6",
     "wait": "^0.4.2",
-    "zustand": "^4.1.3",
+    "zustand": "^4.3.3",
     "zustand-persist": "^0.4.0"
   },
   "devDependencies": {
