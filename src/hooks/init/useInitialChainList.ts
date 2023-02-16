@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ChainInfo, loadAssets } from "@axelar-network/axelarjs-sdk";
 import _ from "lodash";
