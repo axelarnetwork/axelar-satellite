@@ -10,14 +10,16 @@ import {
 
 import { getCosmosChains } from "~/config/web3";
 import { CosmosChain } from "~/config/web3/cosmos/interface";
-import { getAddress, queryBalance } from "~/utils/wallet/keplr";
 
 import {
   getSrcChainId,
   getSrcTokenAddress,
   useSwapStore,
   useWalletStore,
-} from "../../../store";
+} from "~/store";
+
+import { getAddress, queryBalance } from "~/utils/wallet/keplr";
+
 import { Hash } from "../../../types";
 
 const { utils } = ethers;

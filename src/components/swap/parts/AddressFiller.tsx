@@ -4,27 +4,27 @@ import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import toast from "react-hot-toast";
 import { useAccount, useConnect } from "wagmi";
 
+import { getCosmosChains } from "~/config/web3";
 import { logEvent } from "~/components/scripts";
 
-import { getCosmosChains } from "../../../config/web3";
-import { useGetKeplerWallet } from "../../../hooks";
-import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
-import { useSwapStore, useWalletStore } from "../../../store";
+import { useSwapStore, useWalletStore } from "~/store";
+
+import { useGetKeplerWallet } from "~/hooks";
+import { useIsTerraConnected } from "~/hooks/terra/useIsTerraConnected";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 export const AddressFiller = () => {
   const { address } = useAccount();
   const { allAssets, setDestAddress } = useSwapStore((state) => state);
   const { connect, connectors } = useConnect();
-  const { wagmiConnected, keplrConnected, setKeplrConnected } = useWalletStore(
+  const { wagmiConnected, setKeplrConnected } = useWalletStore(
     (state) => state
   );
   const { destChain } = useSwapStore((state) => state);
   const isEvm = destChain?.module === "evm";
   const keplerWallet = useGetKeplerWallet();
   const terraWallet = useTerraWallet();
-  const { isTerraConnected, isTerraInitializingOrConnected } =
-    useIsTerraConnected();
-  const { userSelectionForCosmosWallet } = useWalletStore();
+  const { isTerraConnected } = useIsTerraConnected();
 
   function fillEvmDestinationAddress() {
     if (address) {
@@ -97,9 +97,9 @@ export const AddressFiller = () => {
       <div
         key={destChain?.module}
         className="bg-gradient-to-b from-[#E8821E] to-[#F89C35] h-full w-28 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse"
-        onClick={
+        {...makeAccessibleKeysHandler(
           wagmiConnected ? fillEvmDestinationAddress : handleMetamaskConnect
-        }
+        )}
       >
         <div className="flex justify-around items-center h-full w-full bg-[#291e14] rounded-lg p-3">
           <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#E8821E] to-[#F89C35]">
@@ -126,11 +126,11 @@ export const AddressFiller = () => {
       className={`bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF] h-full ${
         destChain?.chainName?.toLowerCase() === "terra" ? "w-36" : "w-28"
       } p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse`}
-      onClick={
+      {...makeAccessibleKeysHandler(
         destChain?.chainName?.toLowerCase() === "terra"
           ? () => {}
           : fillCosmosDestinationAddress
-      }
+      )}
     >
       <div className="flex justify-around items-center h-full w-full bg-gradient-to-b from-[#21374b] to-[#292d4b] rounded-lg p-3">
         <div className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b from-[#9BDBFF] to-[#DA70FF]">
@@ -139,7 +139,7 @@ export const AddressFiller = () => {
 
         <div
           className="relative flex items-center h-full"
-          onClick={fillCosmosDestinationAddress}
+          {...makeAccessibleKeysHandler(fillCosmosDestinationAddress)}
         >
           <Image
             layout="intrinsic"
@@ -154,7 +154,7 @@ export const AddressFiller = () => {
             <span className="text-xs">or</span>
             <div
               className="relative flex items-center h-full ml-1"
-              onClick={fillTerraStationDestinationAddress}
+              {...makeAccessibleKeysHandler(fillTerraStationDestinationAddress)}
             >
               <Image
                 layout="intrinsic"

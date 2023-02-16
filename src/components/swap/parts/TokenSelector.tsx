@@ -6,26 +6,24 @@ import { SpinnerDotted } from "spinners-react";
 import { useOnClickOutside } from "usehooks-ts";
 import { useSwitchNetwork } from "wagmi";
 
-import { AssetConfigExtended } from "~/types";
+import { ENVIRONMENT } from "~/config/constants";
+import { getWagmiChains } from "~/config/web3";
 
-import { ENVIRONMENT } from "../../../config/constants";
-import { getWagmiChains } from "../../../config/web3";
+import { getSelectedAssetName, useSwapStore, useWalletStore } from "~/store";
+
+import { useGetAssetBalance, useGetMaxTransferAmount } from "~/hooks";
+import { useConnectTerraStation } from "~/hooks/terra/useConnectTerraStation";
+import { useIsTerraConnected } from "~/hooks/terra/useIsTerraConnected";
+import { AssetConfigExtended } from "~/types";
+import { SwapOrigin } from "~/utils/enums";
+import { roundNumberTo } from "~/utils/roundNumberTo";
+
 import { MaxButton } from "../../../features/max-button";
-import { useGetAssetBalance, useGetMaxTransferAmount } from "../../../hooks";
-import { useConnectTerraStation } from "../../../hooks/terra/useConnectTerraStation";
-import { useIsTerraConnected } from "../../../hooks/terra/useIsTerraConnected";
-import {
-  getSelectedAssetName,
-  useSwapStore,
-  useWalletStore,
-} from "../../../store";
-import { SwapOrigin } from "../../../utils/enums";
-import { roundNumberTo } from "../../../utils/roundNumberTo";
 import { Blockable } from "../../common";
 import { connectToKeplr } from "../../web3/utils/handleOnKeplrConnect";
 import { addTokenToMetamask } from "../states";
 import { Arrow } from "./TopFlows";
-// import { NativeAssetConfig } from "../../../config/web3/evm/native-assets";
+// import { NativeAssetConfig } from "~/config/web3/evm/native-assets";
 import { UnwrapToNativeChainCheckbox } from "./UnwrapToNativeChainCheckbox";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";

@@ -11,3 +11,11 @@ export const withAccessibleKeysHandler = withKeysHandler.bind(null, [
   "Enter",
   " ",
 ]);
+
+export const makeAccessibleKeysHandler = (fn: () => void) => {
+  const handler = withAccessibleKeysHandler(fn);
+  return {
+    onKeyDown: handler,
+    onClick: fn,
+  };
+};

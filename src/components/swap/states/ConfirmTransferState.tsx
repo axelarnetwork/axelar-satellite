@@ -3,11 +3,12 @@ import Image from "next/legacy/image";
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwitchNetwork } from "wagmi";
 
+import { AXELARSCAN_URL, ENVIRONMENT } from "~/config/constants";
+import { getCosmosChains, getWagmiChains } from "~/config/web3";
 import { logEvent } from "~/components/scripts";
 
-import { AXELARSCAN_URL, ENVIRONMENT } from "../../../config/constants";
-import { getCosmosChains, getWagmiChains } from "../../../config/web3";
-import { getTransferType, useSwapStore } from "../../../store";
+import { getTransferType, useSwapStore } from "~/store";
+
 import { InputWrapper } from "../../common";
 import { TransferStats } from "../parts";
 import { ProgressBar } from "./parts";

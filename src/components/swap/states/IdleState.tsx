@@ -1,6 +1,7 @@
 import React from "react";
 
-import { useSquidStateStore, useSwapStore } from "../../../store";
+import { useSquidStateStore, useSwapStore } from "~/store";
+
 import { InputWrapper } from "../../common";
 import { AddressFiller, TransferStats, TransferSwapStats } from "../parts";
 

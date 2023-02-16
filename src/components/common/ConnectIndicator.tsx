@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/legacy/image";
 
-import { useIsTerraConnected } from "../../hooks/terra/useIsTerraConnected";
-import { useWalletStore } from "../../store";
+import { useWalletStore } from "~/store";
+
+import { useIsTerraConnected } from "~/hooks/terra/useIsTerraConnected";
 
 export const ConnectIndicator = () => {
   const { wagmiConnected, keplrConnected } = useWalletStore();

@@ -4,7 +4,8 @@ import {
   useWallet as useTerraWallet,
 } from "@terra-money/wallet-provider";
 
-import { useWalletStore } from "../../store";
+import { useWalletStore } from "~/store";
+
 import { useIsTerraInstalled } from "./useIsTerraInstalled";
 
 export const useConnectTerraStation = () => {

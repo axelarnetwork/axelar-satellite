@@ -4,7 +4,8 @@ import { formatEther, formatUnits } from "ethers/lib/utils.js";
 import { AXELARSCAN_URL } from "~/config/constants";
 import { getWagmiChains } from "~/config/web3";
 
-import { useSquidStateStore, useSwapStore } from "../../../store";
+import { useSquidStateStore, useSwapStore } from "~/store";
+
 import { StatsWrapper } from "../../common";
 
 const InfoIcon = (

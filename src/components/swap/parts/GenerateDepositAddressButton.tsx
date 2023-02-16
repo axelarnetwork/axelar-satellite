@@ -3,19 +3,18 @@ import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import BigNumber from "bignumber.js";
 import toast from "react-hot-toast";
 
-import { ENVIRONMENT, RESERVED_ADDRESSES } from "../../../config/constants";
+import { ENVIRONMENT, RESERVED_ADDRESSES } from "~/config/constants";
+
 import {
   getReservedAddresses,
   getSelectedAssetSymbol,
   getTransferType,
   useSwapStore,
-} from "../../../store";
-import {
-  validateCosmosAddress,
-  validateEvmAddress,
-} from "../../../utils/address";
-import { SwapStatus } from "../../../utils/enums";
-import { renderGasFee } from "../../../utils/renderGasFee";
+} from "~/store";
+
+import { validateCosmosAddress, validateEvmAddress } from "~/utils/address";
+import { SwapStatus } from "~/utils/enums";
+import { renderGasFee } from "~/utils/renderGasFee";
 
 type Props = {
   loading: boolean;

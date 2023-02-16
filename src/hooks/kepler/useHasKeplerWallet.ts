@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { useWalletStore } from "../../store";
+import { useWalletStore } from "~/store";
 
 export const useHasKeplerWallet = () => {
   const { wagmiConnected } = useWalletStore();

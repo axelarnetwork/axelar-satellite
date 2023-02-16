@@ -3,7 +3,7 @@ import cn from "classnames";
 
 import { useSwapStore } from "~/store";
 
-import { SwapStatus } from "../../utils/enums";
+import { SwapStatus } from "~/utils/enums";
 
 export const Blockable: React.FC<PropsWithChildren> = (props) => {
   const { swapStatus } = useSwapStore((state) => state);
