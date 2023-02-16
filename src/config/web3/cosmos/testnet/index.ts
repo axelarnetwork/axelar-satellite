@@ -9,6 +9,7 @@ import { crescent } from "./crescent";
 import { evmos } from "./evmos";
 import { fetch } from "./fetch";
 import { kujira } from "./kujira";
+import { odin } from "./odin";
 import { osmosis } from "./osmosis";
 import { persistence } from "./persistence";
 import { sei } from "./sei";
@@ -31,4 +32,5 @@ export const testnetChains: CosmosChain[] = [
   xpla,
   burnt,
   acrechain,
+  odin,
 ];

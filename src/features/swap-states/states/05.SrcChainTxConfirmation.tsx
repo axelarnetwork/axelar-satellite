@@ -6,7 +6,10 @@ import { InputWrapper, truncate } from "~/components/common";
 
 import { getDestChainId, getSelectedAssetSymbol, useSwapStore } from "~/store";
 
-import { useDetectUnwrapTransfer } from "~/hooks";
+import {
+  useDetectDestTransferConfirmation,
+  useDetectUnwrapTransfer,
+} from "~/hooks";
 import { SwapStatus } from "~/utils/enums";
 
 import { ProgressBar } from "../components";
@@ -29,6 +32,7 @@ export const SrcChainTxConfirmation = () => {
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   useDetectUnwrapTransfer();
+  useDetectDestTransferConfirmation();
   useContractEvent({
     chainId: destChainId as number,
     address: tokenAddress as string,
