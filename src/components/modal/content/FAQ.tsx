@@ -1,15 +1,14 @@
-import { FC, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 
-import {
-  FAQ_MODAL,
-  docsLinks,
-  tokenContractDocs,
-} from "../../../config/constants";
-import { useApplicationStateStore } from "../../../store";
+import { FAQ_MODAL, docsLinks, tokenContractDocs } from "~/config/constants";
+
+import { useApplicationStateStore } from "~/store";
+
+import { withKeysHandler } from "~/utils/react";
 
 type FAQProps = {};
 
-export const FAQ: FC<FAQProps> = ({}) => {
+export const FAQ: FC<FAQProps> = () => {
   const { modalId } = useApplicationStateStore((state) => state);
 
   if (modalId !== FAQ_MODAL) {
@@ -41,18 +40,20 @@ export const FAQ: FC<FAQProps> = ({}) => {
 type FAQLineProps = {
   tabIndex: number;
   title: string;
-  text: any;
+  text: ReactNode;
 };
 
 const FAQLine: FC<FAQLineProps> = ({ tabIndex, title, text }) => {
   const [open, setOpen] = useState(false);
   return (
     <div
+      role="button"
       tabIndex={tabIndex}
       className={`border collapse collapse-arrow border-base-300 rounded-box bg-gray-700 cursor-pointer mb-5 ${
         open ? "collapse-open" : "collapse-close"
       }`}
-      onClick={() => setOpen(!open)}
+      onClick={setOpen.bind(null, !open)}
+      onKeyDown={withKeysHandler(["Enter", " "], setOpen.bind(null, !open))}
     >
       <div className="text-xl font-medium cursor-pointer collapse-title">
         {title}
