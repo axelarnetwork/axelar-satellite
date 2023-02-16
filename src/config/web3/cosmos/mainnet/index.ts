@@ -1,6 +1,5 @@
-import { acrechain } from "~/config/web3/cosmos/mainnet/acrechain";
-
 import { CosmosChain } from "../interface";
+import { acrechain } from "./acrechain";
 import { agoric } from "./agoric";
 import { assetmantle } from "./assetmantle";
 import { axelar } from "./axelar";

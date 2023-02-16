@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/legacy/image";
 import classNames from "classnames";
 
+import { defaultAssetImg } from "~/config/constants";
 import { logEvent } from "~/components/scripts";
 
 import { useSwitchAsset } from "~/features/src-asset-selector/hooks";
@@ -12,7 +13,6 @@ import {
 
 import { useSwapStore } from "~/store";
 
-import { defaultAssetImg } from "~/config/constants";
 import { AssetConfigExtended } from "~/types";
 
 interface Props {

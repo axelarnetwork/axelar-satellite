@@ -58,8 +58,8 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   binance: {
     pairs: ["axlUSDC/BUSD"],
-    dex: "Ellipsis",
-    url: "https://ellipsis.finance/pool/0x6731D8ce7C52FEc9136cf3b7d122C032C46fF58f",
+    dex: "PancakeSwap",
+    url: "https://pancakeswap.finance/swap?inputCurrency=0x4268B8F0B87b6Eae5d897996E6b845ddbD99Adf3&outputCurrency=0x55d398326f99059fF775485246999027B3197955",
   },
   arbitrum: {
     pairs: ["axlUSDC/USDC"],
