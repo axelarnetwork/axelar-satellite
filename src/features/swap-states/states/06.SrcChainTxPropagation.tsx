@@ -101,7 +101,7 @@ export const SrcChainTxPropagation = () => {
                   Axelar...
                 </span>
               </div>
-              <div className="flex items-center mt-2 gap-x-2">
+              <div className="flex items-center justify-center mt-2 gap-x-2">
                 <progress
                   className="w-56 progress progress-success"
                   value={numConfirmationsSoFar}
