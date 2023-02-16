@@ -19,20 +19,23 @@ import Long from "long";
 import toast from "react-hot-toast";
 import { SpinnerRoundFilled } from "spinners-react";
 
-import { TERRA_IBC_GAS_LIMIT } from ".";
-import { ENVIRONMENT } from "../../../../config/constants";
-import { getCosmosChains } from "../../../../config/web3";
+import { ENVIRONMENT } from "~/config/constants";
+import { getCosmosChains } from "~/config/web3";
+import { connectToKeplr } from "~/components/web3/utils/handleOnKeplrConnect";
+
+import { useSwapStore, useWalletStore } from "~/store";
+
 import {
   useDetectDepositConfirmation,
   useGetKeplerWallet,
   useHasKeplerWallet,
-} from "../../../../hooks";
-import { evmIshSignDirect } from "../../../../hooks/kepler/evmIsh/evmIshSignDirect";
-import { useIsTerraConnected } from "../../../../hooks/terra/useIsTerraConnected";
-import { useSwapStore, useWalletStore } from "../../../../store";
-import { curateCosmosChainId } from "../../../../utils";
-import { renderGasFee } from "../../../../utils/renderGasFee";
-import { connectToKeplr } from "../../../web3/utils/handleOnKeplrConnect";
+} from "~/hooks";
+import { evmIshSignDirect } from "~/hooks/kepler/evmIsh/evmIshSignDirect";
+import { useIsTerraConnected } from "~/hooks/terra/useIsTerraConnected";
+import { curateCosmosChainId } from "~/utils";
+import { renderGasFee } from "~/utils/renderGasFee";
+
+import { TERRA_IBC_GAS_LIMIT } from ".";
 
 export const CosmosWalletTransfer = () => {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -70,15 +73,19 @@ export const CosmosWalletTransfer = () => {
 
   useDetectDepositConfirmation();
 
-  useEffect(() => {
-    const assetCommonKey = asset?.common_key[ENVIRONMENT];
-    const assetData = srcChain.assets?.find(
-      (asset) => asset.common_key === assetCommonKey
-    );
+  useEffect(
+    () => {
+      const assetCommonKey = asset?.common_key[ENVIRONMENT];
+      const assetData = srcChain.assets?.find(
+        (asset) => asset.common_key === assetCommonKey
+      );
 
-    setCurrentAsset(assetData);
-    setTokenAddress(assetData?.tokenAddress as string);
-  }, [asset]);
+      setCurrentAsset(assetData);
+      setTokenAddress(assetData?.tokenAddress as string);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [asset]
+  );
 
   async function checkMinAmount(amount: string, minAmount?: number) {
     const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
@@ -111,7 +118,7 @@ export const CosmosWalletTransfer = () => {
       try {
         await keplr?.experimentalSuggestChain(chain);
         await keplr?.enable(chain.chainId);
-      } catch (e2: any) {
+      } catch (e2) {
         console.log("and yet there is a problem in trying to do that too", e2);
       }
     }
@@ -225,11 +232,11 @@ export const CosmosWalletTransfer = () => {
             // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
           .catch((e) => {
-            toast.error(e?.message as any);
+            toast.error(e?.message);
             console.log(e);
           });
-      } catch (e: any) {
-        toast.error(e?.message as any);
+      } catch (e) {
+        toast.error((e as Error)?.message);
         console.log(e);
       }
     } else if (
@@ -248,11 +255,11 @@ export const CosmosWalletTransfer = () => {
         depositAddress,
         srcChain
       )
-        .then((res: any) => {
+        .then((res) => {
           console.log("CosmosWalletTransfer: IBC transfer for EVM signer", res);
 
           setTxInfo({
-            sourceTxHash: res.transactionHash,
+            sourceTxHash: res?.transactionHash,
           });
 
           setIsTxOngoing(true);
@@ -290,8 +297,8 @@ export const CosmosWalletTransfer = () => {
           setIsTxOngoing(true);
           // setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
         })
-        .catch((e: any) => {
-          toast.error(e?.message as any);
+        .catch((e) => {
+          toast.error(e?.message);
           console.log(e);
         });
     }
@@ -310,16 +317,17 @@ export const CosmosWalletTransfer = () => {
     setTxIsLoading(false);
   }
 
-  async function handleOnTerraStationIBCTransfer(): Promise<any> {
+  async function handleOnTerraStationIBCTransfer() {
     const { minAmountOk, minDeposit } = await checkMinAmount(
       tokensToTransfer,
       currentAsset?.minDepositAmt
     );
 
     if (!minAmountOk) {
-      return toast.error(
+      toast.error(
         `Token amount to transfer should be bigger than ${minDeposit}`
       );
+      return;
     }
     const sourcePort = "transfer";
     const senderAddress =
@@ -375,8 +383,8 @@ export const CosmosWalletTransfer = () => {
         sourceTxHash: tx.txhash,
       });
       setIsTxOngoing(true);
-    } catch (e: any) {
-      toast.error(e?.message as any);
+    } catch (e) {
+      toast.error((e as Error)?.message);
       console.log("error", e);
     }
   }

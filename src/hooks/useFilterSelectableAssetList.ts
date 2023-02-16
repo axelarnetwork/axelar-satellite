@@ -8,11 +8,15 @@ export function useFilterSelectableAssetList() {
   const { srcChain, destChain, setAssetList, setAsset, asset, allAssets } =
     useSwapStore((state) => state);
 
-  useEffect(() => {
-    if (srcChain && destChain) {
-      filterAssetList();
-    }
-  }, [srcChain, destChain, asset]);
+  useEffect(
+    () => {
+      if (srcChain && destChain) {
+        filterAssetList();
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [srcChain, destChain, asset]
+  );
 
   function filterAssetList() {
     if (!(srcChain && destChain)) {

@@ -9,6 +9,7 @@ import { InputWrapper } from "~/components/common";
 
 import { getRestrictedAssetIsSelected, useSwapStore } from "~/store";
 
+import { makeAccessibleKeysHandler } from "~/utils/react";
 import { convertChainName } from "~/utils/transformers";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
@@ -26,71 +27,83 @@ export const DestChainSelector = () => {
   const router = useRouter();
 
   // avoid same chain selection
-  useEffect(() => {
-    const newChains = allChains
-      .filter(
-        (chain) =>
-          chain.chainName !== srcChain.chainName &&
-          chain.chainName !== destChain.chainName
-      )
-      .filter((chain) => {
-        const assetCommentKeys = chain.assets?.map((a) => a.common_key);
-        return (
-          assetCommentKeys.includes(asset?.id) ||
-          assetCommentKeys.includes(asset?.wrapped_erc20)
-        );
-      });
-    if (!restrictedAssetIsSelected) {
-      return setFilteredChains(newChains);
-    }
+  useEffect(
+    () => {
+      const newChains = allChains
+        .filter(
+          (chain) =>
+            chain.chainName !== srcChain.chainName &&
+            chain.chainName !== destChain.chainName
+        )
+        .filter((chain) => {
+          const assetCommentKeys = chain.assets?.map((a) => a.common_key);
+          return (
+            assetCommentKeys.includes(asset?.id) ||
+            assetCommentKeys.includes(asset?.wrapped_erc20)
+          );
+        });
+      if (!restrictedAssetIsSelected) {
+        return setFilteredChains(newChains);
+      }
 
-    // find the right policy based on asset
-    const policy = ASSET_RESTRICTIONS.find((_policy) =>
-      _policy.assets.includes(asset?.id || "")
-    );
-    if (!policy) {
-      return;
-    }
-    setFilteredChains(
-      newChains.filter((_chain) =>
-        policy?.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
-      )
-    );
-  }, [srcChain, destChain, dropdownOpen, searchChainInput, asset]);
+      // find the right policy based on asset
+      const policy = ASSET_RESTRICTIONS.find((_policy) =>
+        _policy.assets.includes(asset?.id || "")
+      );
+      if (!policy) {
+        return;
+      }
+      setFilteredChains(
+        newChains.filter((_chain) =>
+          policy?.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
+        )
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [srcChain, destChain, dropdownOpen, searchChainInput, asset]
+  );
 
-  useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-    const source = router.query.destination as string;
-    const destChainName = source?.toLowerCase() || "";
-    if (!destChainName) {
-      return;
-    }
+  useEffect(
+    () => {
+      if (!router.isReady) {
+        return;
+      }
+      const source = router.query.destination as string;
+      const destChainName = source?.toLowerCase() || "";
+      if (!destChainName) {
+        return;
+      }
 
-    const chain = filteredChains.find(
-      (candidate) => candidate.chainName === destChainName
-    );
-    if (chain) {
-      setDestChain(chain);
-    }
-  }, [router.query]);
+      const chain = filteredChains.find(
+        (candidate) => candidate.chainName === destChainName
+      );
+      if (chain) {
+        setDestChain(chain);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [router.query]
+  );
 
   // search chain input
-  useEffect(() => {
-    if (!searchChainInput) {
-      return;
-    }
-    console.log("allChains in DestChainSelector", allChains);
+  useEffect(
+    () => {
+      if (!searchChainInput) {
+        return;
+      }
+      console.log("allChains in DestChainSelector", allChains);
 
-    const chains = allChains.filter(
-      (chain) =>
-        chain.chainName?.toLowerCase().includes(searchChainInput) &&
-        chain.chainName !== srcChain.chainName &&
-        chain.chainName !== destChain.chainName
-    );
-    setFilteredChains(chains);
-  }, [allChains, searchChainInput]);
+      const chains = allChains.filter(
+        (chain) =>
+          chain.chainName?.toLowerCase().includes(searchChainInput) &&
+          chain.chainName !== srcChain.chainName &&
+          chain.chainName !== destChain.chainName
+      );
+      setFilteredChains(chains);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [allChains, searchChainInput]
+  );
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -165,7 +178,10 @@ export const DestChainSelector = () => {
       <div ref={ref}>
         <label className="block text-xs">To</label>
         <div className="static mt-1 dropdown dropdown-open">
-          <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
+          <div
+            tabIndex={0}
+            {...makeAccessibleKeysHandler(setDropdownOpen.bind(null, true))}
+          >
             <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
               <Image
                 loading="eager"

@@ -15,7 +15,7 @@ import { useGetAssetBalance, useGetMaxTransferAmount } from "~/hooks";
 import { useConnectTerraStation } from "~/hooks/terra/useConnectTerraStation";
 import { useIsTerraConnected } from "~/hooks/terra/useIsTerraConnected";
 import { AssetConfigExtended } from "~/types";
-import { SwapOrigin } from "~/utils/enums";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 import { roundNumberTo } from "~/utils/roundNumberTo";
 
 import { MaxButton } from "../../../features/max-button";
@@ -23,8 +23,8 @@ import { Blockable } from "../../common";
 import { connectToKeplr } from "../../web3/utils/handleOnKeplrConnect";
 import { addTokenToMetamask } from "../states";
 import { Arrow } from "./TopFlows";
+
 // import { NativeAssetConfig } from "~/config/web3/evm/native-assets";
-import { UnwrapToNativeChainCheckbox } from "./UnwrapToNativeChainCheckbox";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
@@ -39,7 +39,6 @@ export const TokenSelector = () => {
     setAsset,
     srcChain,
     destChain,
-    swapOrigin,
     tokensToTransfer,
     setTokensToTransfer,
   } = useSwapStore((state) => state);
@@ -80,38 +79,46 @@ export const TokenSelector = () => {
   const [balanceToShow, setBalanceToShow] = useState("");
   const ref = useRef(null);
 
-  useEffect(() => {
-    setTokensToTransfer("");
-  }, [userSelectionForCosmosWallet]);
+  useEffect(
+    () => {
+      setTokensToTransfer("");
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [userSelectionForCosmosWallet]
+  );
 
-  useEffect(() => {
-    if (!router.isReady || selectableAssetList.length === 0) {
-      return;
-    }
-    if (asset) {
-      return;
-    }
-    const assetDenom = router.query.asset_denom as string;
-    const foundAsset = selectableAssetList.find(
-      (asset) => asset.common_key[ENVIRONMENT] === assetDenom
-    );
-
-    // FIXME: weird behaviour
-    if (foundAsset) {
-      setAsset(asset);
-    } else {
-      const fallbackAsset = selectableAssetList[0];
-      if (fallbackAsset) {
-        setAsset(fallbackAsset);
-        // router.push({
-        //   query: {
-        //     ...router.query,
-        //     asset_denom: fallbackAsset.common_key[ENVIRONMENT],
-        //   },
-        // });
+  useEffect(
+    () => {
+      if (!router.isReady || selectableAssetList.length === 0) {
+        return;
       }
-    }
-  }, [router.query, selectableAssetList, router.isReady, asset]);
+      if (asset) {
+        return;
+      }
+      const assetDenom = router.query.asset_denom as string;
+      const foundAsset = selectableAssetList.find(
+        (asset) => asset.common_key[ENVIRONMENT] === assetDenom
+      );
+
+      // FIXME: weird behaviour
+      if (foundAsset) {
+        setAsset(asset);
+      } else {
+        const fallbackAsset = selectableAssetList[0];
+        if (fallbackAsset) {
+          setAsset(fallbackAsset);
+          // router.push({
+          //   query: {
+          //     ...router.query,
+          //     asset_denom: fallbackAsset.common_key[ENVIRONMENT],
+          //   },
+          // });
+        }
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [router.query, selectableAssetList, router.isReady, asset]
+  );
 
   useEffect(() => {
     if (!searchAssetInput) {
@@ -160,59 +167,67 @@ export const TokenSelector = () => {
     setFilteredAssets(list || selectableAssetList);
   }, [selectableAssetList, srcChain]);
 
-  useEffect(() => {
-    const isEVM = !!(srcChain?.module === "evm" && wagmiConnected);
-    const isAxelarnet = srcChain?.module === "axelarnet" && keplrConnected;
-    const isTerra =
-      srcChain?.chainName?.toLowerCase() === "terra" &&
-      isTerraConnected &&
-      userSelectionForCosmosWallet === "terraStation";
+  useEffect(
+    () => {
+      const isEVM = !!(srcChain?.module === "evm" && wagmiConnected);
+      const isAxelarnet = srcChain?.module === "axelarnet" && keplrConnected;
+      const isTerra =
+        srcChain?.chainName?.toLowerCase() === "terra" &&
+        isTerraConnected &&
+        userSelectionForCosmosWallet === "terraStation";
 
-    const shouldshowBalance = isEVM || isAxelarnet || isTerra;
-    setShowBalance(shouldshowBalance);
+      const shouldshowBalance = isEVM || isAxelarnet || isTerra;
+      setShowBalance(shouldshowBalance);
 
-    if (!shouldshowBalance) {
-      setBalanceToShow("");
-      return;
-    }
+      if (!shouldshowBalance) {
+        setBalanceToShow("");
+        return;
+      }
 
-    if (isEVM) {
-      setBalanceToShow(balance);
-    } else if (isTerra) {
-      setUserSelectionForCosmosWallet("terraStation");
-      setBalanceToShow(terraStationBalance as string);
-    } else if (isAxelarnet) {
-      setBalanceToShow(balance);
-    }
-  }, [
-    srcChain,
-    balance,
-    balance,
-    wagmiConnected,
-    isTerraConnected,
-    keplrConnected,
-    terraStationBalance,
-    userSelectionForCosmosWallet,
-  ]);
+      if (isEVM) {
+        setBalanceToShow(balance);
+      } else if (isTerra) {
+        setUserSelectionForCosmosWallet("terraStation");
+        setBalanceToShow(terraStationBalance as string);
+      } else if (isAxelarnet) {
+        setBalanceToShow(balance);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      srcChain,
+      balance,
+      balance,
+      wagmiConnected,
+      isTerraConnected,
+      keplrConnected,
+      terraStationBalance,
+      userSelectionForCosmosWallet,
+    ]
+  );
 
   // update asset balance from useGetAssetBalance hook if srcChain or asset changes
-  useEffect(() => {
-    if (
-      srcChain?.chainName?.toLowerCase() === "terra" &&
-      userSelectionForCosmosWallet === "terraStation"
-    ) {
-      if (!isTerraInitializingOrConnected) {
-        connectTerraWallet();
+  useEffect(
+    () => {
+      if (
+        srcChain?.chainName?.toLowerCase() === "terra" &&
+        userSelectionForCosmosWallet === "terraStation"
+      ) {
+        if (!isTerraInitializingOrConnected) {
+          connectTerraWallet();
+        }
+        return;
       }
-      return;
-    }
-  }, [
-    asset,
-    srcChain,
-    keplrConnected,
-    userSelectionForCosmosWallet,
-    isTerraInitializingOrConnected,
-  ]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      asset,
+      srcChain,
+      keplrConnected,
+      userSelectionForCosmosWallet,
+      isTerraInitializingOrConnected,
+    ]
+  );
 
   /**
    * DROPDOWN TOGGLE LOGIC
@@ -338,7 +353,7 @@ export const TokenSelector = () => {
       return (
         <span
           className="h-6 text-xs text-gray-500 cursor-pointer hover:underline"
-          onClick={isOnTS ? switchKeplr : switchTS}
+          {...makeAccessibleKeysHandler(isOnTS ? switchKeplr : switchTS)}
         >
           <span className="mr-1 text-xs text-gray-500">
             Switch to {isOnTS ? "Keplr" : "Terra Station"}
@@ -416,7 +431,7 @@ export const TokenSelector = () => {
             onChange={(e) => setSearchAssetInput(e.target.value)}
           />
         </div>
-        <ul tabIndex={0} onClick={handleOnDropdownToggle}>
+        <ul tabIndex={0} {...makeAccessibleKeysHandler(handleOnDropdownToggle)}>
           {filteredAssets?.map((asset) => {
             return (
               <li key={asset.id}>
@@ -486,7 +501,7 @@ export const TokenSelector = () => {
         >
           {srcChain?.module === "evm" && (
             <li
-              onClick={() => {
+              {...makeAccessibleKeysHandler(() => {
                 switchNetwork?.(
                   getWagmiChains().find(
                     (chain) =>
@@ -494,7 +509,7 @@ export const TokenSelector = () => {
                       srcChain.chainName?.toLowerCase()
                   )?.id
                 );
-              }}
+              })}
             >
               <span>
                 <Image
@@ -525,7 +540,7 @@ export const TokenSelector = () => {
           )}
           {destChain?.module === "evm" && (
             <li
-              onClick={() => {
+              {...makeAccessibleKeysHandler(() => {
                 switchNetwork?.(
                   getWagmiChains().find(
                     (chain) =>
@@ -533,7 +548,7 @@ export const TokenSelector = () => {
                       destChain.chainName?.toLowerCase()
                   )?.id
                 );
-              }}
+              })}
             >
               <span>
                 <Image
@@ -586,7 +601,10 @@ export const TokenSelector = () => {
       <div className="flex justify-between mt-2">
         <Blockable>
           <div className="static flex mt-1 dropdown dropdown-open">
-            <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
+            <div
+              tabIndex={0}
+              {...makeAccessibleKeysHandler(setDropdownOpen.bind(null, true))}
+            >
               <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
                 <Image
                   loading="eager"

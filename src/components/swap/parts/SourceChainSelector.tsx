@@ -8,6 +8,7 @@ import { ASSET_RESTRICTIONS } from "~/config/constants";
 
 import { getSelectedAssetSymbol, useSwapStore } from "~/store";
 
+import { makeAccessibleKeysHandler } from "~/utils/react";
 import { convertChainName } from "~/utils/transformers";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
@@ -31,55 +32,67 @@ export const SourceChainSelector = () => {
   const router = useRouter();
 
   // avoid same chain selection
-  useEffect(() => {
-    const newChains = allChains.filter(
-      (chain) =>
-        chain.chainName !== destChain.chainName &&
-        chain.chainName !== srcChain.chainName &&
-        // TODO: fix correctly
-        !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes((chain as any).id)
-    );
-    // .filter((chain) =>
-    //   chain.assets
-    //     ?.map((a) => a.assetSymbol?.toLowerCase())
-    //     .includes(selectedAssetSymbol?.toLowerCase())
-    // );
-    setFilteredChains(newChains);
-  }, [srcChain, destChain, dropdownOpen, searchChainInput]);
+  useEffect(
+    () => {
+      const newChains = allChains.filter(
+        (chain) =>
+          chain.chainName !== destChain.chainName &&
+          chain.chainName !== srcChain.chainName &&
+          // TODO: fix correctly
+          !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes((chain as any).id)
+      );
+      // .filter((chain) =>
+      //   chain.assets
+      //     ?.map((a) => a.assetSymbol?.toLowerCase())
+      //     .includes(selectedAssetSymbol?.toLowerCase())
+      // );
+      setFilteredChains(newChains);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [srcChain, destChain, dropdownOpen, searchChainInput]
+  );
 
-  useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-    const source = router.query.source as string;
-    const srcChainName = source?.toLowerCase() || "";
-    if (!srcChainName) {
-      return;
-    }
+  useEffect(
+    () => {
+      if (!router.isReady) {
+        return;
+      }
+      const source = router.query.source as string;
+      const srcChainName = source?.toLowerCase() || "";
+      if (!srcChainName) {
+        return;
+      }
 
-    const chain = filteredChains.find(
-      (candidate) => candidate.chainName === srcChainName
-    );
-    if (chain) {
-      setSrcChain(chain);
-    }
-  }, [router.query]);
+      const chain = filteredChains.find(
+        (candidate) => candidate.chainName === srcChainName
+      );
+      if (chain) {
+        setSrcChain(chain);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [router.query]
+  );
 
-  useEffect(() => {
-    if (!searchChainInput) {
-      return;
-    }
+  useEffect(
+    () => {
+      if (!searchChainInput) {
+        return;
+      }
 
-    const chains = allChains.filter(
-      (chain) =>
-        chain.chainName?.toLowerCase().includes(searchChainInput) &&
-        chain.chainName !== destChain.chainName &&
-        chain.chainName !== srcChain.chainName &&
-        // TODO: fix correctly
-        !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes((chain as any).id)
-    );
-    setFilteredChains(chains);
-  }, [allChains, searchChainInput]);
+      const chains = allChains.filter(
+        (chain) =>
+          chain.chainName?.toLowerCase().includes(searchChainInput) &&
+          chain.chainName !== destChain.chainName &&
+          chain.chainName !== srcChain.chainName &&
+          // TODO: fix correctly
+          !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes((chain as any).id)
+      );
+      setFilteredChains(chains);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [allChains, searchChainInput]
+  );
 
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
@@ -131,7 +144,7 @@ export const SourceChainSelector = () => {
             onChange={(e) => setSearchChainInput(e.target.value)}
           />
         </div>
-        <ul tabIndex={0} onClick={handleOnDropdownToggle}>
+        <ul tabIndex={0} {...makeAccessibleKeysHandler(handleOnDropdownToggle)}>
           {filteredChains.map((chain) => {
             return (
               <li key={chain.chainSymbol}>
@@ -163,7 +176,10 @@ export const SourceChainSelector = () => {
       <div ref={ref}>
         <label className="block text-xs">From</label>
         <div className="static mt-1 dropdown dropdown-open">
-          <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
+          <div
+            tabIndex={0}
+            {...makeAccessibleKeysHandler(setDropdownOpen.bind(null, true))}
+          >
             <div className="flex items-center space-x-2 text-lg font-medium cursor-pointer">
               <Image
                 loading="eager"

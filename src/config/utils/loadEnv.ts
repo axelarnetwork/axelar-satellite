@@ -5,7 +5,7 @@ export function loadEnv() {
   const network: string | undefined = process.env.NEXT_PUBLIC_ENVIRONMENT;
 
   switch (network) {
-    case "mainnet":
+    case "mainnet": {
       process.env.NEXT_PUBLIC_SOCKET_API =
         "https://nest-server-mainnet.axelar.dev";
       process.env.NEXT_PUBLIC_RESERVED_ADDRESSES =
@@ -13,12 +13,14 @@ export function loadEnv() {
       process.env.NEXT_PUBLIC_SQUID_URL = "https://api.0xsquid.com";
       process.env.NEXT_PUBLIC_AXELARSCAN_URL = "https://axelarscan.io";
       break;
-    case "testnet":
+    }
+    case "testnet": {
       process.env.NEXT_PUBLIC_SOCKET_API =
         "https://nest-server-testnet.axelar.dev";
       process.env.NEXT_PUBLIC_SQUID_URL = "https://testnet.api.0xsquid.com";
       process.env.NEXT_PUBLIC_AXELARSCAN_URL = "https://testnet.axelarscan.io";
       break;
+    }
     default:
       throw new Error(`Network ${network} unsupported`);
   }

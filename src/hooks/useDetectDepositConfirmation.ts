@@ -66,67 +66,74 @@ export const useDetectDepositConfirmation = () => {
     return true;
   }
 
-  useEffect(() => {
-    if (!depositAddress) {
-      return;
-    }
-
-    const sentNative =
-      asset?.is_gas_token &&
-      asset?.native_chain === srcChain.chainName?.toLowerCase();
-
-    let roomId;
-
-    if (sentNative) {
-      const { fullDenomPath } =
-        asset?.chain_aliases?.[destChain?.chainName?.toLowerCase()] || {};
-      if (!fullDenomPath) {
-        toast.error(`chain config for ${asset.id} not defined`);
-        return;
-      }
-      const denom =
-        fullDenomPath.split("/").length > 1
-          ? fullDenomPath?.split("/")[2]
-          : fullDenomPath?.split("/")[0];
-      roomId = buildTokenSentRoomId(
-        srcChain,
-        denom,
-        destAddress?.toLowerCase(),
-        destChain,
-        depositAddress
-      );
-    } else {
-      roomId = buildDepositConfirmationRoomId(srcChain.module, depositAddress);
-    }
-
-    console.log("room ID joined", roomId);
-
-    socket.emit("room:join", roomId);
-
-    socket.on("bridge-event", (data) => {
-      console.log("data in bridge event", data);
-      const depositConfirmationOk = checkPayloadForDepositConfirmation(data);
-      const tokenSentOk = checkPayloadForTokenSent(data);
-      if (!(depositConfirmationOk || tokenSentOk)) {
+  useEffect(
+    () => {
+      if (!depositAddress) {
         return;
       }
 
-      if (destChain.module === "evm") {
-        setTxInfo({
-          sourceTxHash: data?.transactionHash || txInfo?.sourceTxHash || "",
-          destStartBlockNumber: blockNumber || 1,
-        });
+      const sentNative =
+        asset?.is_gas_token &&
+        asset?.native_chain === srcChain.chainName?.toLowerCase();
+
+      let roomId;
+
+      if (sentNative) {
+        const { fullDenomPath } =
+          asset?.chain_aliases?.[destChain?.chainName?.toLowerCase()] || {};
+        if (!fullDenomPath) {
+          toast.error(`chain config for ${asset.id} not defined`);
+          return;
+        }
+        const denom =
+          fullDenomPath.split("/").length > 1
+            ? fullDenomPath?.split("/")[2]
+            : fullDenomPath?.split("/")[0];
+        roomId = buildTokenSentRoomId(
+          srcChain,
+          denom,
+          destAddress?.toLowerCase(),
+          destChain,
+          depositAddress
+        );
       } else {
-        setTxInfo({
-          sourceTxHash: data?.transactionHash || txInfo?.sourceTxHash || "",
-        });
+        roomId = buildDepositConfirmationRoomId(
+          srcChain.module,
+          depositAddress
+        );
       }
 
-      setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
-    });
+      console.log("room ID joined", roomId);
 
-    return () => {
-      socket.off("bridge-event");
-    };
-  }, [depositAddress, txInfo]);
+      socket.emit("room:join", roomId);
+
+      socket.on("bridge-event", (data) => {
+        console.log("data in bridge event", data);
+        const depositConfirmationOk = checkPayloadForDepositConfirmation(data);
+        const tokenSentOk = checkPayloadForTokenSent(data);
+        if (!(depositConfirmationOk || tokenSentOk)) {
+          return;
+        }
+
+        if (destChain.module === "evm") {
+          setTxInfo({
+            sourceTxHash: data?.transactionHash || txInfo?.sourceTxHash || "",
+            destStartBlockNumber: blockNumber || 1,
+          });
+        } else {
+          setTxInfo({
+            sourceTxHash: data?.transactionHash || txInfo?.sourceTxHash || "",
+          });
+        }
+
+        setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
+      });
+
+      return () => {
+        socket.off("bridge-event");
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [depositAddress, txInfo]
+  );
 };

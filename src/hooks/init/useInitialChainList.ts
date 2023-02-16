@@ -76,6 +76,7 @@ export const useInitialChainList = () => {
       // rehydrateAssets as long as there are no squid tokens
       setRehydrateAssets(!squidTokens.length);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
