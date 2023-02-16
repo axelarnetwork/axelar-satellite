@@ -36,36 +36,33 @@ export const evmIshSignDirect = async (
   const { account } = fetchSenderResults;
   const { base_account } = account;
   let address: string;
-  let pub_key: any;
+  let pub_key: Record<string, string>;
   let account_number;
   let sequence: number;
-  let pubKeyType;
+  // let pubKeyType: string | null;
   let pubKeyKey;
   if (base_account) {
     address = base_account.address;
     pub_key = base_account.pub_key;
     account_number = base_account.account_number;
     sequence = base_account.sequence;
-    pubKeyType = pub_key ? pub_key["@type"] : null;
+    // pubKeyType = pub_key ? pub_key["@type"] : null;
     pubKeyKey = pub_key?.key;
   } else {
     address = account.address;
     pub_key = account.pub_key;
     account_number = account.account_number;
     sequence = account.sequence;
-    pubKeyType = pub_key ? pub_key["@type"] : null;
+    // pubKeyType = pub_key ? pub_key["@type"] : null;
     pubKeyKey = pub_key?.key;
   }
 
-  const sender: any = {
+  const sender = {
     accountAddress: address,
     sequence: sequence,
     accountNumber: account_number,
+    pubkey: pubKeyKey,
   };
-
-  if (pubKeyKey) {
-    sender.pubkey = pubKeyKey;
-  }
 
   const fee = {
     amount: "20",

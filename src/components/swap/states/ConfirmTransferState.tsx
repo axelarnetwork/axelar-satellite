@@ -5,13 +5,13 @@ import { useSwitchNetwork } from "wagmi";
 
 import { AXELARSCAN_URL, ENVIRONMENT } from "~/config/constants";
 import { getCosmosChains, getWagmiChains } from "~/config/web3";
+import { InputWrapper } from "~/components/common";
 import { logEvent } from "~/components/scripts";
 
 import { getTransferType, useSwapStore } from "~/store";
 
 import { makeAccessibleKeysHandler } from "~/utils/react";
 
-import { InputWrapper } from "../../common";
 import { TransferStats } from "../parts";
 import { ProgressBar } from "./parts";
 
@@ -61,6 +61,10 @@ export const ConfirmTransferState = () => {
       );
     },
   });
+
+  useEffect(() => {
+    logEvent("transfer_complete");
+  }, []);
 
   useEffect(() => {
     logEvent("transfer_complete");
