@@ -1,13 +1,8 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
-import {
-  ChainInfo,
-  LoadAssetConfig,
-  loadAssets,
-} from "@axelar-network/axelarjs-sdk";
+import { ChainInfo, loadAssets } from "@axelar-network/axelarjs-sdk";
 import _ from "lodash";
 import toast from "react-hot-toast";
-import { useQuery } from "react-query";
 
 import {
   ARBITRARY_EVM_ADDRESS,
@@ -19,22 +14,12 @@ import {
   NATIVE_ASSET_IDS,
 } from "~/config/constants";
 
-import { useSquidStateStore, useSwapStore } from "~/store";
+import { TokensWithExtendedChainData, useSwapStore } from "~/store";
 
 import { AssetConfigExtended, ChainInfoExtended, RouteQuery } from "~/types";
 import { loadAllChains } from "~/utils/api";
 
 import { useSquidList } from "./useSquidList";
-
-function useAxelarAssetsQuery(config: LoadAssetConfig) {
-  return useQuery(
-    ["axelarAssets", config.environment],
-    () => loadAssets(config),
-    {
-      staleTime: Infinity,
-    }
-  );
-}
 
 /**
  * Curried predicate to find a valid chain
@@ -73,17 +58,13 @@ export const useInitialChainList = () => {
 
   const { squidTokens } = useSquidList();
 
-  const { data: axelarAssets } = useAxelarAssetsQuery({
-    environment: ENVIRONMENT,
-  });
-
   const router = useRouter();
 
   const loadData = useCallback(
-    async () => {
-      console.log("loading initial data");
+    async (squidTokens: TokensWithExtendedChainData[]) => {
       const assets = await loadInitialAssets();
-      const chains = await loadInitialChains();
+
+      const chains = await loadInitialChains(squidTokens);
 
       setDestAddress((router.query?.destination_address as string) || "");
 
@@ -92,21 +73,22 @@ export const useInitialChainList = () => {
         chains.destChainName,
         assets?.assetDenom
       );
-      setRehydrateAssets(false);
+      // rehydrateAssets as long as there are no squid tokens
+      setRehydrateAssets(!squidTokens.length);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [squidTokens]
+    []
   );
 
   useEffect(() => {
     if (!router.isReady) {
       return;
     }
+
     if (!rehydrateAssets) {
       return;
     }
 
-    loadData();
+    loadData(squidTokens);
   }, [router.isReady, rehydrateAssets, loadData, squidTokens]);
 
   function updateRoutes(
@@ -124,8 +106,12 @@ export const useInitialChainList = () => {
     });
   }
 
-  async function injectSquidAssetsIntoChains(chains: ChainInfo[]) {
+  function injectSquidAssetsIntoChains(
+    chains: ChainInfo[],
+    squidTokens: TokensWithExtendedChainData[]
+  ) {
     const newChains: ChainInfoExtended[] = _.cloneDeep(chains);
+
     newChains.forEach((chain) => {
       const relevantSquidTokens = squidTokens.filter(
         (t) => t.chainName.toLowerCase() === chain.id
@@ -151,16 +137,15 @@ export const useInitialChainList = () => {
       });
 
       // only add squid assets if there are any
-      if (relevantSquidTokens.length && !("squidAssets" in chain)) {
-        // @ts-ignore
-        chain.squidAssets = [relevantSquidTokens];
+      if (relevantSquidTokens.length) {
+        chain.squidAssets = relevantSquidTokens;
       }
     });
 
     return newChains;
   }
 
-  async function loadInitialChains() {
+  async function loadInitialChains(squidTokens: TokensWithExtendedChainData[]) {
     const chains = await loadAllChains(ENVIRONMENT).catch((error) => {
       toast.error(
         "Error fetching chain configuration. Please refresh the page."
@@ -168,14 +153,18 @@ export const useInitialChainList = () => {
       throw error;
     });
 
-    const uniqueChains = await injectSquidAssetsIntoChains(
-      chains.map((chain) => ({
-        ...chain,
-        assets: _.uniqBy(chain.assets, (asset) => asset.assetSymbol),
-      }))
+    const chainsWithUniqueAssets = chains.map((chain) => ({
+      ...chain,
+      assets: _.uniqBy(chain.assets, (asset) => asset.assetSymbol),
+    }));
+
+    const uniqueChains = injectSquidAssetsIntoChains(
+      chainsWithUniqueAssets,
+      squidTokens
     );
 
     setAllChains(uniqueChains);
+
     let { source, destination } = router.query as RouteQuery;
     // handle same srcChain === destChain. eg: moonbeam - moonbeam
     if (source === destination) {

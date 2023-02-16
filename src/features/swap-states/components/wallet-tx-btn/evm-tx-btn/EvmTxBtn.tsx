@@ -63,12 +63,11 @@ export const EvmTxBtn = () => {
       <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
       <div className="flex justify-center">
         <button
-          className={clsx(
-            "mb-5 btn",
-            chain?.id === srcChainId && "btn-primary",
-            chain?.id !== srcChainId && "btn-outline",
-            (loadingErc20Tx || loadingNativeTx) && "loading"
-          )}
+          className={clsx("mb-5 btn", {
+            "btn-primary": chain?.id === srcChainId,
+            "btn-outline": chain?.id !== srcChainId,
+            loading: loadingErc20Tx || loadingNativeTx,
+          })}
           onClick={handleOnClick}
         >
           <span className="mr-2">

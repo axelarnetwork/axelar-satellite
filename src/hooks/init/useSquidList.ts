@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { ChainName } from "@0xsquid/sdk";
+import { ChainData, ChainName } from "@0xsquid/sdk";
 import { useQuery } from "react-query";
 
 import { TokensWithExtendedChainData, useSquidStateStore } from "~/store";
@@ -7,9 +7,21 @@ import { TokensWithExtendedChainData, useSquidStateStore } from "~/store";
 import { getSquidSDK } from "~/squid.config";
 
 export const useSquidSDKQuery = () => {
-  return useQuery(["squid-sdk"], getSquidSDK, {
+  const query = useQuery(["squid-sdk"], getSquidSDK, {
     staleTime: Infinity,
   });
+  return {
+    ...query,
+    computed: useMemo(
+      () => ({
+        // indexed and memoized for O(1) lookup
+        chainsById: (query.data?.chains ?? []).reduce<
+          Record<string, ChainData>
+        >((acc, chain) => ({ ...acc, [chain.chainId]: chain }), {}),
+      }),
+      [query.data]
+    ),
+  };
 };
 
 export const useSquidList = () => {
@@ -22,32 +34,35 @@ export const useSquidList = () => {
     squidLoaded,
   } = useSquidStateStore();
 
-  const { data: squid } = useSquidSDKQuery();
+  const { data: squid, computed } = useSquidSDKQuery();
 
   const getSquidTokens = useCallback(() => {
-    if (!squid) {
+    if (!(squid && computed.chainsById)) {
       return;
     }
+
     const tokensWithExtendedChainData: TokensWithExtendedChainData[] =
       squid.tokens.map((t) => {
-        const chain = squid.chains.find((c) => c.chainId === t.chainId);
+        const chain = computed.chainsById[t.chainId];
         return {
           ...t,
           chainName: chain?.chainName as ChainName,
         };
       });
 
-    if (squidTokens.length === 0 && tokensWithExtendedChainData.length > 0) {
+    if (!squidTokens.length && tokensWithExtendedChainData.length) {
+      console.log("setting squid tokens", tokensWithExtendedChainData.length);
       setSquidTokens(tokensWithExtendedChainData);
     }
-    if (squidChains.length === 0 && squid.chains.length > 0) {
+    if (!squidChains.length && squid.chains.length) {
       setSquidChains(squid.chains);
     }
     setSquidLoaded(
-      tokensWithExtendedChainData.length > 0 && squidChains.length > 0
+      tokensWithExtendedChainData.length > 0 && squid.chains.length > 0
     );
   }, [
     squid,
+    computed.chainsById,
     squidTokens.length,
     squidChains.length,
     setSquidLoaded,

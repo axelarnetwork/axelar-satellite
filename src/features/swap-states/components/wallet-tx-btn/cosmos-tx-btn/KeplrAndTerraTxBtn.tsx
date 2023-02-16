@@ -26,7 +26,9 @@ export const KeplrAndTerraTxBtn = () => {
       <div className="flex justify-center">
         <div className="mb-4 btn-group">
           <button
-            className={clsx("btn", loadingKeplr && "loading")}
+            className={clsx("btn", {
+              loading: loadingKeplr,
+            })}
             style={{
               borderColor: "#1c2937",
             }}
@@ -43,7 +45,9 @@ export const KeplrAndTerraTxBtn = () => {
             </div>
           </button>
           <button
-            className={clsx("btn", loadingTerra && "loading")}
+            className={clsx("btn", {
+              loading: loadingTerra,
+            })}
             style={{
               borderColor: "#1c2937",
             }}

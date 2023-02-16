@@ -6,8 +6,7 @@ import { useWalletStore } from "../../store";
 
 export const ConnectIndicator = () => {
   const { wagmiConnected, keplrConnected } = useWalletStore();
-  const { isTerraConnected, isTerraInitializingOrConnected } =
-    useIsTerraConnected();
+  const { isTerraConnected } = useIsTerraConnected();
 
   return (
     <div className="flex items-center flex-column">

@@ -63,8 +63,6 @@ export const DestAssetSelector = ({
       _asset.is_gas_token
   );
 
-  // console.log("squid assets", squidAssets, destChain);
-
   const getRouteData = useCallback(
     async (t: AssetInfo) => {
       if (!asset) {
@@ -289,8 +287,6 @@ export const DestAssetSelector = ({
   if (!asset) {
     return null;
   }
-
-  if (destChain.module !== "evm") return null;
 
   return (
     <InputWrapper>

@@ -7,15 +7,18 @@ export const squid: Squid = new Squid({
   baseUrl: NEXT_PUBLIC_SQUID_URL, // for mainnet use "https://api.0xsquid.com"
 });
 
-squid.init().catch((e) => console.error("failed to init squid"));
-
-export const getSquidSDK = () =>
-  new Promise<Squid>((resolve, reject) => {
+export const getSquidSDK = () => {
+  console.log("getSquidSDK", { squid: squid.tokens.length });
+  return new Promise<Squid>((resolve, reject) => {
     if (squid.initialized) {
       resolve(squid);
     }
     squid
       .init()
-      .then(() => resolve(squid))
+      .then(() => {
+        console.info("[squid initialized]", squid.tokens.length);
+        resolve(squid);
+      })
       .catch((e) => reject(e));
   });
+};

@@ -4,23 +4,18 @@ import { useRouter } from "next/router";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useOnClickOutside } from "usehooks-ts";
 
+import { ASSET_RESTRICTIONS } from "~/config/constants";
 import { InputWrapper } from "~/components/common";
 
-import { ASSET_RESTRICTIONS, ENVIRONMENT } from "../../../config/constants";
-import {
-  getRestrictedAssetIsSelected,
-  getSelectedAssetSymbol,
-  useSwapStore,
-} from "../../../store";
-import { extractDenom } from "../../../utils/extractDenom";
-import { convertChainName } from "../../../utils/transformers";
+import { getRestrictedAssetIsSelected, useSwapStore } from "~/store";
+
+import { convertChainName } from "~/utils/transformers";
 
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
 export const DestChainSelector = () => {
   const [searchChainInput, setSearchChainInput] = useState<string>();
-  const { srcChain, allChains, setAllChains, asset } = useSwapStore();
-  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
+  const { srcChain, allChains, asset } = useSwapStore();
   const restrictedAssetIsSelected = useSwapStore(getRestrictedAssetIsSelected);
 
   const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
@@ -130,7 +125,11 @@ export const DestChainSelector = () => {
             onChange={(e) => setSearchChainInput(e.target.value)}
           />
         </div>
-        <ul tabIndex={0} onClick={handleOnDropdownToggle}>
+        <ul
+          tabIndex={0}
+          onClick={handleOnDropdownToggle}
+          onKeyDown={handleOnDropdownToggle}
+        >
           {filteredChains.map((chain) => {
             return (
               <li key={chain.chainSymbol}>
