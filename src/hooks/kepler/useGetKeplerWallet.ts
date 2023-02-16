@@ -7,7 +7,7 @@ export const useGetKeplerWallet = () => {
   useEffect(() => {
     const _keplr = window?.keplr;
     setKepler(_keplr);
-  }, [window?.keplr]);
+  }, []);
 
   return kepler;
 };
