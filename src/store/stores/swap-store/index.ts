@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 import { ENVIRONMENT } from "~/config/constants";
+
 import { AssetConfigExtended, ChainInfoExtended } from "~/types";
 import { SwapOrigin, SwapStatus } from "~/utils/enums";
 
@@ -31,6 +32,7 @@ interface SwapState {
   txInfo: TxInfo;
   rehydrateAssets: boolean;
   shouldUnwrapAsset: boolean;
+  hasInjectedSquidAssets: boolean;
 }
 
 interface SwapStore extends SwapState {
@@ -78,6 +80,7 @@ const initialState: SwapState = {
   },
   rehydrateAssets: true,
   shouldUnwrapAsset: false,
+  hasInjectedSquidAssets: false,
 };
 
 export const useSwapStore = create<SwapStore>()(

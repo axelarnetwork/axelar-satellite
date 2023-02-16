@@ -28,6 +28,7 @@ export const useSquidList = () => {
     if (!squid) {
       return;
     }
+
     const tokensWithExtendedChainData: TokensWithExtendedChainData[] =
       squid.tokens.map((t) => {
         const chain = squid.chains.find((c) => c.chainId === t.chainId);
@@ -37,18 +38,19 @@ export const useSquidList = () => {
         };
       });
 
-    if (squidTokens.length === 0 && tokensWithExtendedChainData.length > 0) {
+    if (!squidTokens.length && tokensWithExtendedChainData.length) {
+      console.log("setting squid tokens", tokensWithExtendedChainData.length);
       setSquidTokens(tokensWithExtendedChainData);
     }
-    if (squidChains.length === 0 && squid.chains.length > 0) {
+    if (!squidChains.length && squid.chains.length) {
       setSquidChains(squid.chains);
     }
     setSquidLoaded(
-      tokensWithExtendedChainData.length > 0 && squidChains.length > 0
+      tokensWithExtendedChainData.length > 0 && squid.chains.length > 0
     );
   }, [
     squid,
-    squidTokens.length,
+    squidTokens,
     squidChains.length,
     setSquidLoaded,
     setSquidTokens,
