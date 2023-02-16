@@ -4,10 +4,11 @@ import { OfflineSigner } from "@cosmjs/proto-signing";
 import toast from "react-hot-toast";
 import { useConnect } from "wagmi";
 
+import { getCosmosChains } from "~/config/web3";
+import { CosmosChain } from "~/config/web3/cosmos/interface";
+
 import { useSwapStore, useWalletStore } from "~/store";
 
-import { getCosmosChains } from "../../config/web3";
-import { CosmosChain } from "../../config/web3/cosmos/interface";
 import { useConnectTerraStation } from "../../hooks/terra/useConnectTerraStation";
 import { useIsTerraConnected } from "../../hooks/terra/useIsTerraConnected";
 import { useIsTerraInstalled } from "../../hooks/terra/useIsTerraInstalled";

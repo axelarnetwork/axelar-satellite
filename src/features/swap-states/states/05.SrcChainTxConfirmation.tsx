@@ -34,16 +34,21 @@ export const SrcChainTxConfirmation = () => {
     address: tokenAddress as string,
     abi: erc20ABI,
     eventName: "Transfer",
-    listener(...event: any) {
-      if (event[3].blockNumber < Number(txInfo.destStartBlockNumber)) {
+    listener(fromAddress, toAddress, amount, event) {
+      if (event.blockNumber < Number(txInfo.destStartBlockNumber)) {
         return;
       }
       console.log({
-        event,
+        "Transfer(fromAddress, toAddress, amount, event)": {
+          fromAddress,
+          toAddress,
+          amount,
+          event,
+        },
       });
-      if (event[1] === destAddress) {
+      if (toAddress === destAddress) {
         setTxInfo({
-          destTxHash: event[3]?.transactionHash,
+          destTxHash: event?.transactionHash,
         });
         setSwapStatus(SwapStatus.FINISHED);
       }

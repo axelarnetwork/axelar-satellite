@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { SpinnerRoundFilled } from "spinners-react";
 import { useWaitForTransaction } from "wagmi";
 
+import { ENVIRONMENT } from "~/config/constants";
 import { InputWrapper } from "~/components/common";
 
 import { getSrcChainId, useSwapStore } from "~/store";
 
-import { ENVIRONMENT } from "~/config/constants";
 import { Hash } from "~/types";
 import { SwapStatus } from "~/utils/enums";
 

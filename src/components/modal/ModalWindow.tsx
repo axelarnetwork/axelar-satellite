@@ -1,8 +1,9 @@
 import { FC } from "react";
 
+import { FAQ_MODAL, TOS_MODAL } from "~/config/constants";
+
 import { useApplicationStateStore } from "~/store";
 
-import { FAQ_MODAL, TOS_MODAL } from "../../config/constants";
 import { FAQ } from "./content/FAQ";
 import { GettingStarted } from "./content/GettingStarted";
 import { Support } from "./content/Support";

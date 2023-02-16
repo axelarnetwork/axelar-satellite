@@ -8,7 +8,7 @@ import {
   AxelarQueryClientType,
 } from "@axelar-network/axelarjs-sdk/dist/src/libs/AxelarQueryClient";
 
-import { getCosmosChains } from "../../config/web3";
+import { getCosmosChains } from "~/config/web3";
 
 export const useAxelarRPCQuery = () => {
   const [api, setApi] = useState<AxelarQueryClientType>();

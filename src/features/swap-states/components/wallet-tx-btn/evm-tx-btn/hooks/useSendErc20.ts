@@ -58,7 +58,7 @@ export function useSendErc20() {
         asset?.decimals
       ),
     ],
-    onError(err: any) {
+    onError() {
       toast.error(
         `Can't estimate gas limit for transaction. Please verify that you are not trying to transfer more assets than what you have. Transaction might fail if you proceed.`
       );
@@ -87,7 +87,7 @@ export function useSendErc20() {
     if (!error) {
       return;
     }
-    const _error: any = error;
+    const _error = error as Error & { code?: string };
     if (_error.code === "ACTION_REJECTED") {
       toast.error("Transaction cancelled");
       return;

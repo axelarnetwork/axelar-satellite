@@ -5,7 +5,7 @@ import { getDisabledChains } from ".";
 export async function loadAllChains(environment: string) {
   // load chains
   const rawChains = await loadChains({
-    environment: environment as any,
+    environment: environment as Environment,
   });
 
   // filter out disabled chains

@@ -3,6 +3,7 @@ import Image from "next/legacy/image";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useOnClickOutside } from "usehooks-ts";
 
+import { defaultChainImg } from "~/config/constants";
 import { InputWrapper } from "~/components/common";
 
 import { ChainsDropdown } from "~/features/src-chain-selector/ChainsDropdown";
@@ -10,7 +11,7 @@ import { useChainFilter } from "~/features/src-chain-selector/hooks";
 
 import { useSwapStore } from "~/store";
 
-import { defaultChainImg } from "~/config/constants";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 import { convertChainName } from "~/utils/transformers";
 
 // TODO: abstract the state into a zustand sourceChainStore
@@ -52,7 +53,7 @@ export const SrcChainSelector = () => {
           <div
             className="w-full"
             tabIndex={0}
-            onClick={() => setDropdownOpen(true)}
+            {...makeAccessibleKeysHandler(setDropdownOpen.bind(null, true))}
           >
             <div className="flex items-center justify-between space-x-2 text-lg font-medium cursor-pointer">
               <div className="flex items-center gap-x-2">

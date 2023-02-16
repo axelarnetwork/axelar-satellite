@@ -132,8 +132,8 @@ export function useTerraTransfer() {
         sourceTxHash: tx.txhash,
       });
       setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
-    } catch (e: any) {
-      toast.error(e?.message as any);
+    } catch (e) {
+      toast.error((e as Error)?.message);
       console.log("error", e);
     } finally {
       setLoading(false);
