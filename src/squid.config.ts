@@ -8,7 +8,6 @@ export const squid: Squid = new Squid({
 });
 
 export const getSquidSDK = () => {
-  console.log("getSquidSDK", { squid: squid.tokens.length });
   return new Promise<Squid>((resolve, reject) => {
     if (squid.initialized) {
       resolve(squid);
@@ -16,7 +15,10 @@ export const getSquidSDK = () => {
     squid
       .init()
       .then(() => {
-        console.info("[squid initialized]", squid.tokens.length);
+        console.info("[squid initialized]", {
+          tokens: squid.tokens.length,
+          chains: squid.chains.length,
+        });
         resolve(squid);
       })
       .catch((e) => reject(e));

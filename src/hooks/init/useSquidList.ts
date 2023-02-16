@@ -51,7 +51,6 @@ export const useSquidList = () => {
       });
 
     if (!squidTokens.length && tokensWithExtendedChainData.length) {
-      console.log("setting squid tokens", tokensWithExtendedChainData.length);
       setSquidTokens(tokensWithExtendedChainData);
     }
     if (!squidChains.length && squid.chains.length) {
