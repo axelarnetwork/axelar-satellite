@@ -15,6 +15,7 @@ export const withAccessibleKeysHandler = withKeysHandler.bind(null, [
 export const makeAccessibleKeysHandler = (fn: () => void) => {
   const handler = withAccessibleKeysHandler(fn);
   return {
+    role: "button",
     onKeyDown: handler,
     onClick: fn,
   };

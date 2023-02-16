@@ -4,14 +4,16 @@ import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwitchNetwork } from "wagmi";
 import wait from "wait";
 
-import { useSquidStateStore, useSwapStore, useWalletStore } from "~/store";
-
 import {
   NATIVE_ASSET_IDS,
   defaultAssetImg,
   defaultChainImg,
 } from "~/config/constants";
 import { getWagmiChains } from "~/config/web3";
+
+import { useSquidStateStore, useSwapStore, useWalletStore } from "~/store";
+
+import { makeAccessibleKeysHandler } from "~/utils/react";
 import {
   addAssetToMetamaskWithAssetConfig,
   addTokenToMetamaskWithAssetInfo,
@@ -97,7 +99,7 @@ export const AddDestAssetButton = () => {
         style={{ backgroundColor: "#16212e" }}
       >
         {destChain?.module === "evm" && (
-          <li onClick={handleOnAddTokenOnDestChain}>
+          <li {...makeAccessibleKeysHandler(handleOnAddTokenOnDestChain)}>
             <span>
               <Image
                 loading="eager"

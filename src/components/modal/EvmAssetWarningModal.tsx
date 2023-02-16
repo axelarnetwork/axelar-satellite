@@ -106,7 +106,6 @@ export const EvmAssetWarningModal = () => {
                     <div className="flex items-center justify-center font-bold gap-x-2">
                       <AddressShortener value={tokenAddress} />
                       <div
-                        className="cursor-pointer"
                         {...makeAccessibleKeysHandler(
                           copyToClipboard.bind(null, tokenAddress)
                         )}
@@ -135,7 +134,6 @@ export const EvmAssetWarningModal = () => {
                     <div className="flex items-center justify-center font-bold gap-x-2">
                       <AddressShortener value={address} />
                       <div
-                        className="cursor-pointer"
                         {...makeAccessibleKeysHandler(
                           copyToClipboard.bind(null, address)
                         )}

@@ -3,10 +3,12 @@ import Image from "next/legacy/image";
 import { useSwitchNetwork } from "wagmi";
 import wait from "wait";
 
-import { useSwapStore, useWalletStore } from "~/store";
-
 import { defaultAssetImg, defaultChainImg } from "~/config/constants";
 import { getWagmiChains } from "~/config/web3";
+
+import { useSwapStore, useWalletStore } from "~/store";
+
+import { makeAccessibleKeysHandler } from "~/utils/react";
 import { addAssetToMetamaskWithAssetConfig } from "~/utils/wallet/metamask";
 
 export const AddSrcAssetButton = () => {
@@ -105,7 +107,7 @@ export const AddSrcAssetButton = () => {
         style={{ backgroundColor: "#16212e" }}
       >
         {srcChain?.module === "evm" && !asset?.is_gas_token && (
-          <li onClick={handleOnAddTokenOnSrcChain}>
+          <li {...makeAccessibleKeysHandler(handleOnAddTokenOnSrcChain)}>
             <span>
               <Image
                 loading="eager"

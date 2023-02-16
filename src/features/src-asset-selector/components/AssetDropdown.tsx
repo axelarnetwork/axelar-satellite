@@ -6,6 +6,7 @@ import { useSwitchAsset } from "~/features/src-asset-selector/hooks";
 import { useSwapStore } from "~/store";
 
 import { AssetConfigExtended } from "~/types";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 import { AssetDropdownItem } from "./AssetDropdownItem";
 
@@ -24,10 +25,6 @@ export const AssetDropdown: React.FC<Props> = ({
   setSearchAssetInput,
   handleOnDropdownToggle,
 }) => {
-  const srcChain = useSwapStore((state) => state.srcChain);
-
-  const switchAsset = useSwitchAsset();
-
   // clean dropdown input on dropdown close
   useEffect(() => {
     if (!dropdownOpen) {
@@ -59,7 +56,7 @@ export const AssetDropdown: React.FC<Props> = ({
         className="overflow-auto"
         style={{ height: 300 }}
         tabIndex={0}
-        onClick={handleOnDropdownToggle}
+        {...makeAccessibleKeysHandler(handleOnDropdownToggle)}
       >
         {filteredAssets?.map((asset) => (
           <AssetDropdownItem key={asset.id} asset={asset} />

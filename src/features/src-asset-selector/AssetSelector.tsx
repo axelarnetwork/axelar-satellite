@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import Image from "next/legacy/image";
 import { useOnClickOutside } from "usehooks-ts";
 
+import { defaultAssetImg } from "~/config/constants";
 import { Blockable, InputWrapper } from "~/components/common";
 
 import { MaxButton } from "~/features/max-button";
@@ -9,8 +10,8 @@ import { useAssetFilter } from "~/features/src-asset-selector/hooks";
 
 import { getSelectedAssetName, useSwapStore } from "~/store";
 
-import { defaultAssetImg } from "~/config/constants";
 import { AssetConfigExtended } from "~/types";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 import { AddSrcAssetButton, AssetDropdown, AssetInput } from "./components";
 
@@ -52,7 +53,10 @@ export const AssetSelector = () => {
         <div className="flex justify-between mt-2">
           <Blockable>
             <div className="static flex mt-1 dropdown dropdown-open">
-              <div tabIndex={0} onClick={() => setDropdownOpen(true)}>
+              <div
+                tabIndex={0}
+                {...makeAccessibleKeysHandler(setDropdownOpen.bind(null, true))}
+              >
                 <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
                   <Image
                     loading="eager"

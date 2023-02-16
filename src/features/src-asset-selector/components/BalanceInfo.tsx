@@ -9,6 +9,7 @@ import { useSwapStore, useWalletStore } from "~/store";
 import { useGetAssetBalance } from "~/hooks";
 import { useConnectTerraStation, useIsTerraConnected } from "~/hooks/terra";
 import { roundNumberTo } from "~/utils";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 export const BalanceInfo = () => {
   const [showBalance, setShowBalance] = useState(false);
@@ -153,7 +154,7 @@ export const BalanceInfo = () => {
     return (
       <span
         className="h-6 text-xs text-gray-500 cursor-pointer hover:underline"
-        onClick={isOnTS ? switchKeplr : switchTS}
+        {...makeAccessibleKeysHandler(isOnTS ? switchKeplr : switchTS)}
       >
         <span className="mr-1 text-xs text-gray-500">
           Switch to {isOnTS ? "Keplr" : "Terra Station"}

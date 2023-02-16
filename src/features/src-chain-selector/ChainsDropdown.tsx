@@ -3,9 +3,11 @@ import Image from "next/legacy/image";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import classNames from "classnames";
 
+import { defaultChainImg } from "~/config/constants";
+
 import { useSwitchSrcChain } from "~/features/src-chain-selector/hooks";
 
-import { defaultChainImg } from "~/config/constants";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 interface Props {
   dropdownOpen: boolean;
@@ -54,7 +56,7 @@ export const ChainsDropdown: React.FC<Props> = ({
         className="overflow-auto"
         style={{ height: 300 }}
         tabIndex={0}
-        onClick={handleOnDropdownToggle}
+        {...makeAccessibleKeysHandler(handleOnDropdownToggle)}
       >
         {filteredChains.map((chain, i) => {
           const chainName = chain.chainName?.toLowerCase();
