@@ -24,7 +24,9 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
           <progress
             className={clsx(
               "min-w-[20px] w-full h-1 progress progress-primary",
-              level >= currentLevel && "opacity-30"
+              {
+                "opacity-30": level > currentLevel,
+              }
             )}
             value={1}
           />
@@ -37,10 +39,12 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
     <div
       className={clsx(
         "grid items-center justify-items-center mt-2 text-xs font-medium",
-        maxLevels === 2 && "grid-cols-3",
-        maxLevels === 3 && "grid-cols-5",
-        maxLevels === 4 && "grid-cols-7",
-        maxLevels === 5 && "grid-cols-8"
+        {
+          "grid-cols-3": maxLevels === 2,
+          "grid-cols-5": maxLevels === 3,
+          "grid-cols-7": maxLevels === 4,
+          "grid-cols-8": maxLevels === 5,
+        }
       )}
     >
       {[...Array(maxLevels)].map((_, i) => renderLevel(i + 1))}

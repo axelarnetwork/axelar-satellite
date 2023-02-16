@@ -24,7 +24,9 @@ export const KeplrTxBtn = () => {
       <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
       <div className="flex justify-center">
         <button
-          className={clsx("mb-5 btn btn-primary", loadingKeplr && "loading")}
+          className={clsx("mb-5 btn btn-primary", {
+            loading: loadingKeplr,
+          })}
           onClick={sendIbcTokensWithKeplr}
         >
           <span className="mr-2">Send from Keplr</span>
