@@ -47,6 +47,8 @@
     "zustand-persist": "^0.4.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
     "@cosmjs/launchpad": "^0.27.1",
     "@cosmjs/proto-signing": "^0.29.5",
     "@cosmjs/tendermint-rpc": "^0.29.5",
