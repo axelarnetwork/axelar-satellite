@@ -1,7 +1,7 @@
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export default {
+export const acrechain: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/acrechain`,
   rest: "https://lcd-acre.synergynodes.com",
   chainId: "acre_9052-1",
