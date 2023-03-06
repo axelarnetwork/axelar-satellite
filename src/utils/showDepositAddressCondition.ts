@@ -11,6 +11,7 @@ export const showDepositAddressCondition = ({
   asset,
 }: ShowDepositAddressCondition) => {
   if (!srcChain || !asset) return false;
-  if (srcChain.id.includes("celo") && asset.id?.includes("uusdc")) return false;
+  if (srcChain.id.includes("celo") && asset.id?.includes("celo-wei"))
+    return false;
   return true;
 };
