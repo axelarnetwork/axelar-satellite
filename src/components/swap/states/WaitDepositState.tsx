@@ -62,6 +62,7 @@ export const WaitDepositState = () => {
   }
 
   const showDepositAddress = showDepositAddressCondition({ srcChain, asset });
+  console.log("srcChain and asset", srcChain, asset);
 
   return (
     <>

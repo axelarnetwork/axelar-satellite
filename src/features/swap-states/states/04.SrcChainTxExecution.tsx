@@ -9,12 +9,14 @@ import { useGetRelayerGasFee } from "~/hooks";
 import { copyToClipboard } from "~/utils";
 import { SwapStatus } from "~/utils/enums";
 import { makeAccessibleKeysHandler } from "~/utils/react";
+import { showDepositAddressCondition } from "~/utils/showDepositAddressCondition";
 import { convertChainName } from "~/utils/transformers";
 
 import { ProgressBar, WalletTxBtn } from "../components";
 
 export const SrcChainTxExecution = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
+  const asset = useSwapStore((state) => state.asset);
   const swapStatus = useSwapStore((state) => state.swapStatus);
   const depositAddress = useSwapStore((state) => state.depositAddress);
 
@@ -25,6 +27,8 @@ export const SrcChainTxExecution = () => {
   if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) {
     return null;
   }
+
+  const showDepositAddress = showDepositAddressCondition({ srcChain, asset });
 
   return (
     <>
@@ -53,19 +57,21 @@ export const SrcChainTxExecution = () => {
                   </label>
                   <div className="flex justify-center font-bold text-info gap-x-2">
                     <AddressShortener value={depositAddress} />
-                    <div
-                      className="cursor-pointer"
-                      {...makeAccessibleKeysHandler(
-                        copyToClipboard.bind(null, depositAddress)
-                      )}
-                    >
-                      <Image
-                        src="/assets/ui/copy.svg"
-                        height={16}
-                        width={16}
-                        alt="copy"
-                      />
-                    </div>
+                    {showDepositAddress && (
+                      <div
+                        className="cursor-pointer"
+                        {...makeAccessibleKeysHandler(
+                          copyToClipboard.bind(null, depositAddress)
+                        )}
+                      >
+                        <Image
+                          src="/assets/ui/copy.svg"
+                          height={16}
+                          width={16}
+                          alt="copy"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
