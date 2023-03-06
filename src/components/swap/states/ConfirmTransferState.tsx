@@ -66,10 +66,6 @@ export const ConfirmTransferState = () => {
     logEvent("transfer_complete");
   }, []);
 
-  useEffect(() => {
-    logEvent("transfer_complete");
-  }, []);
-
   function renderTxConfirmationInfo() {
     const links = {
       href: "",

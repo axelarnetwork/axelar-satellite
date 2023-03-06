@@ -57,12 +57,17 @@ export const evmIshSignDirect = async (
     pubKeyKey = pub_key?.key;
   }
 
-  const sender = {
+  const sender: any = {
     accountAddress: address,
     sequence: sequence,
     accountNumber: account_number,
-    pubkey: pubKeyKey,
   };
+  if (pubKeyKey) {
+    sender.pubkey = pubKeyKey;
+  }
+  console.log("fetch sender results", fetchSenderResults);
+
+  debugger;
 
   const fee = {
     amount: "20",
