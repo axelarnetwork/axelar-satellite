@@ -11,6 +11,7 @@ import { copyToClipboard } from "../../../utils";
 import { SwapStatus } from "../../../utils/enums";
 import { renderGasFee } from "../../../utils/renderGasFee";
 import { AddressShortener, StatsWrapper } from "../../common";
+import { showDepositAddressCondition } from "utils/showDepositAddressCondition";
 
 const InfoIcon = (
   <svg
@@ -85,6 +86,7 @@ export const TransferStats = () => {
   function renderDepositAddress() {
     if (swapStatus === SwapStatus.IDLE) return null;
     if (!depositAddress) return null;
+    const showDepositAddress = (showDepositAddressCondition({ srcChain, asset}));
     return (
       <li className="flex justify-between">
         <span
@@ -100,9 +102,9 @@ export const TransferStats = () => {
           <AddressShortener value={depositAddress} />
           <div
             className="cursor-pointer"
-            onClick={() => copyToClipboard(depositAddress)}
+            onClick={() => showDepositAddress && copyToClipboard(depositAddress)}
           >
-            <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+            {showDepositAddress && <Image src={"/assets/ui/copy.svg"} height={16} width={16} />}
           </div>
         </div>
       </li>
