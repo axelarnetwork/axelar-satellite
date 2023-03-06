@@ -30,9 +30,8 @@ export const KeplrFill = () => {
       await keplr?.enable(destCosmosChain.chainId as string);
       setKeplrConnected(true);
     }
-    if (!keplrConnected) {
-      return connectKeplr();
-    }
+
+    await connectKeplr();
 
     if (!destCosmosChain) {
       return;
