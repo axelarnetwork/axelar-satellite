@@ -172,6 +172,7 @@ export const useSquidStateStore = create<SquidStateStore>()(
         set(
           {
             enableGMPExpress: state,
+            // @ts-ignore
             routeData: newRouteData,
           },
           false,
