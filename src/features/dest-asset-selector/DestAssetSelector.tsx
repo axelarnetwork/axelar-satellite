@@ -20,6 +20,7 @@ import {
   ReceiveTokenInfo,
   SquidParamConfig,
 } from "./components";
+import { GMPEToggle } from "./components/GMPEToggle";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
@@ -298,6 +299,7 @@ export const DestAssetSelector = ({
           </label>
           <div className="flex items-center">
             <AddDestAssetButton />
+            <GMPEToggle />
             <SquidParamConfig />
           </div>
         </div>

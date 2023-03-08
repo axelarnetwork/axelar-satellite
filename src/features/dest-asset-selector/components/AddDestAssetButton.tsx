@@ -80,7 +80,7 @@ export const AddDestAssetButton = () => {
     >
       <label
         tabIndex={0}
-        className="flex items-center mr-2 btn btn-info btn-xs gap-x-2"
+        className="flex items-center btn btn-info btn-xs gap-x-2"
       >
         <span className="font-normal" style={{ fontSize: 10 }}>
           Add Asset

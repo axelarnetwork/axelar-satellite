@@ -1,16 +1,12 @@
-import React, { useCallback } from "react";
+import React from "react";
 import Image from "next/legacy/image";
 
-import { useSquidStateStore, useSwapStore, useWalletStore } from "~/store";
+import { useSquidStateStore } from "~/store";
 
 export const SquidParamConfig = () => {
-  const {
-    isSquidTrade,
-    slippage,
-    setSlippage,
-    setEnableGMPExpress,
-    enableGMPExpress,
-  } = useSquidStateStore((state) => state);
+  const { isSquidTrade, slippage, setSlippage } = useSquidStateStore(
+    (state) => state
+  );
 
   if (!isSquidTrade) {
     return null;
@@ -18,7 +14,7 @@ export const SquidParamConfig = () => {
 
   return (
     <div
-      className="dropdown tooltip tooltip-warning dropdown-end"
+      className="ml-2 dropdown tooltip tooltip-warning dropdown-end"
       data-tip={"Adjust Squid swap parameters"}
     >
       <label
@@ -53,7 +49,7 @@ export const SquidParamConfig = () => {
             <span>%</span>
           </div>
         </li>
-        <li>
+        {/* <li>
           <div className="flex items-center justify-between text-left gap-x-5">
             <div>
               <h5>GMP Express</h5>
@@ -65,21 +61,6 @@ export const SquidParamConfig = () => {
               disabled={true}
               className="h-6 checkbox"
             />
-          </div>
-        </li>
-        {/* <li>
-          <div className="h-12 form-control">
-            <label className="flex justify-between w-full cursor-pointer label">
-              <span className="label-text">GMP Express (Coming soon!)</span>
-              <div>
-                <input
-                  type="checkbox"
-                  checked={enableGMPExpress}
-                  disabled
-                  className="h-6 checkbox"
-                />
-              </div>
-            </label>
           </div>
         </li> */}
       </ul>
