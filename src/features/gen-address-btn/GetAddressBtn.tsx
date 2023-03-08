@@ -8,7 +8,12 @@ import {
   checkReservedAddresses,
 } from "~/features/gen-address-btn/utils";
 
-import { getReservedAddresses, getTransferType, useSwapStore } from "~/store";
+import {
+  getReservedAddresses,
+  getTransferType,
+  useSquidStateStore,
+  useSwapStore,
+} from "~/store";
 
 import { SwapStatus } from "~/utils/enums";
 import { showErrorMsgAndThrow } from "~/utils/error";
@@ -20,6 +25,7 @@ const GetAddressBtn = React.memo(() => {
 
   const swapStatus = useSwapStore((state) => state.swapStatus);
   const resetState = useSwapStore((state) => state.resetState);
+  const resetSquidstate = useSquidStateStore((state) => state.resetSquidState);
   const tokensToTransfer = useSwapStore((state) => state.tokensToTransfer);
   const destAddress = useSwapStore((state) => state.destAddress);
 
@@ -80,7 +86,13 @@ const GetAddressBtn = React.memo(() => {
 
   if ([SwapStatus.FINISHED, SwapStatus.SQUID_FINISHED].includes(swapStatus)) {
     return (
-      <button className="w-full btn btn-primary" onClick={resetState}>
+      <button
+        className="w-full btn btn-primary"
+        onClick={() => {
+          resetState();
+          resetSquidstate();
+        }}
+      >
         <div className="flex items-center gap-3">
           <span>Make another transfer?</span>
         </div>

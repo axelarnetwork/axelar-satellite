@@ -1,14 +1,16 @@
 import React from "react";
 
-import { useSwapStore } from "~/store";
+import { useSquidStateStore, useSwapStore } from "~/store";
 
 import { SwapStatus } from "~/utils/enums";
 
 export const StopButton = () => {
   const { swapStatus, resetState } = useSwapStore((state) => state);
+  const resetSquidState = useSquidStateStore((state) => state.resetSquidState);
 
   function handleOnClick() {
     resetState();
+    resetSquidState();
   }
 
   if (swapStatus === SwapStatus.IDLE) {
