@@ -62,7 +62,6 @@ export const WaitDepositState = () => {
   }
 
   const showDepositAddress = showDepositAddressCondition({ srcChain, asset });
-  console.log("srcChain and asset", srcChain, asset);
 
   return (
     <>
@@ -92,7 +91,6 @@ export const WaitDepositState = () => {
                           src={"/assets/ui/copy.svg"}
                           height={16}
                           width={16}
-                          alt="copy"
                         />
                       )}
                     </div>

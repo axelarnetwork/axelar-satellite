@@ -41,6 +41,8 @@ export const useSquidList = () => {
       return;
     }
 
+    console.log("squid tokens", squid.tokens);
+
     const tokensWithExtendedChainData: TokensWithExtendedChainData[] =
       squid.tokens.map((t) => {
         const chain = computed.chainsById[t.chainId];

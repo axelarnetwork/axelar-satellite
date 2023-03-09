@@ -96,12 +96,8 @@ export const TransferStats = () => {
   }
 
   function renderDepositAddress() {
-    if (swapStatus === SwapStatus.IDLE) {
-      return null;
-    }
-    if (!depositAddress) {
-      return null;
-    }
+    if (swapStatus === SwapStatus.IDLE) return null;
+    if (!depositAddress) return null;
     const showDepositAddress = showDepositAddressCondition({ srcChain, asset });
     return (
       <li className="flex justify-between">
@@ -123,12 +119,7 @@ export const TransferStats = () => {
             }
           >
             {showDepositAddress && (
-              <Image
-                src={"/assets/ui/copy.svg"}
-                height={16}
-                width={16}
-                alt="copy"
-              />
+              <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
             )}
           </div>
         </div>
