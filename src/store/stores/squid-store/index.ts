@@ -164,7 +164,7 @@ export const useSquidStateStore = create<SquidStateStore>()(
       ),
     setEnableGMPExpress: (state) => {
       const routeData = get().routeData;
-      if (routeData?.params?.enableForecall !== state) {
+      if (routeData && routeData?.params?.enableForecall !== state) {
         const newRouteData = {
           ...routeData,
           params: { ...routeData?.params, enableForecall: state },
