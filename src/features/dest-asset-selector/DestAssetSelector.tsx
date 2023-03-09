@@ -196,7 +196,7 @@ export const DestAssetSelector = ({
     }
 
     return (
-      <div className="left-0 w-full p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral">
+      <div className="left-0 w-full p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral max-h-80">
         <ul
           tabIndex={0}
           onClick={handleOnDropdownToggle}
