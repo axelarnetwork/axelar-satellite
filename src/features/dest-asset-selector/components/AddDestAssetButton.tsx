@@ -71,7 +71,7 @@ export const AddDestAssetButton = () => {
 
   return (
     <div
-      className=" dropdown tooltip tooltip-warning dropdown-end"
+      className="mb-2 dropdown tooltip tooltip-warning dropdown-end max-w-fit justify-self-end"
       data-tip={`Add ${
         selectedSquidAsset
           ? selectedSquidAsset.assetSymbol

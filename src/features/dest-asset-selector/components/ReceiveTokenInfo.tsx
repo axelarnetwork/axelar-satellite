@@ -12,7 +12,7 @@ export const ReceiveTokenInfo = () => {
   }
 
   return (
-    <div className="mt-5 space-y-1">
+    <div className="mt-8 space-y-1">
       <div className="flex self-end justify-end space-x-2">
         <span className="text-xs text-gray-500">Receive (est.):</span>
         <span className="w-auto text-xs min-w-[20px] flex justify-end text-[#86d6ff]">

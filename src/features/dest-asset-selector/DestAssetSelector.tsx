@@ -292,18 +292,20 @@ export const DestAssetSelector = ({
   return (
     <InputWrapper>
       <div ref={ref}>
-        <div className="flex items-center justify-between h-6">
+        <div className="relative flex items-center justify-between h-10">
           <label className="block text-xs">
             And receive on{" "}
             <span className="capitalize">{destChain.chainName}</span>:
           </label>
-          <div className="flex items-center">
+          <div className="absolute top-0 right-0 grid justify-items-stretch">
             <AddDestAssetButton />
-            <GMPEToggle />
-            <SquidParamConfig />
+            <div className="flex flex-row">
+              <GMPEToggle />
+              <SquidParamConfig />
+            </div>
           </div>
         </div>
-        <div className="flex justify-between mt-2">
+        <div className="flex justify-between">
           <Blockable>
             <div className="static flex justify-between w-full mt-1 dropdown dropdown-open">
               <button tabIndex={0} onClick={() => setDropdownOpen(true)}>
