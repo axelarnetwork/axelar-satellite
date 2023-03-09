@@ -34,6 +34,7 @@ export const SwapBox = () => {
 
   const squidAssets = useMemo(() => {
     const destChainName = destChain.chainName.toLowerCase();
+    console.log("dest chain assets", destChain.assets);
 
     return destChain.assets
       .filter((assetInfo) => assetInfo.isSquidAsset)

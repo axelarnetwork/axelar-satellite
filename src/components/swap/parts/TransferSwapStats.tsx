@@ -74,7 +74,7 @@ export const TransferSwapStats = () => {
       <ul className="space-y-2 text-sm">
         <Row
           text="Price Slippage"
-          tooltip="Slippage"
+          tooltip="Price Slippage Tolerance"
           data={`${slippage}%` || "NA"}
         />
         <Row
@@ -82,9 +82,10 @@ export const TransferSwapStats = () => {
           tooltip={`Gas to be paid to initiate swap on ${srcChain.chainName}`}
           data={
             (routeData &&
-              `${formatEther(
+              `${(+formatEther(
                 routeData?.estimate?.gasCosts[0]?.amount || "0"
-              )} ($${routeData?.estimate?.gasCosts[0]?.amountUSD})`) ||
+              )).toFixed(6)} ($${(+routeData?.estimate?.gasCosts[0]
+                ?.amountUSD).toFixed(2)})`) ||
             "NA"
           }
         />
@@ -99,10 +100,10 @@ export const TransferSwapStats = () => {
           data={(+(routeData?.estimate?.exchangeRate || 0)).toFixed(5) || "NA"}
         />
         <Row
-          text="Estimated Route Duration"
-          tooltip="Estimated time for transaction completion"
+          text="Average Route Duration (minutes)"
+          tooltip="Average time for transaction completion"
           data={
-            `${(
+            `~${Math.ceil(
               (routeData?.estimate?.estimatedRouteDuration as number) / 60
             ).toString()} minutes` || "NA"
           }
