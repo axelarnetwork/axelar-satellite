@@ -13,6 +13,7 @@ import { convertChainName } from "../../../utils/transformers";
 import { AddressShortener, InputWrapper } from "../../common";
 import { TransferStats } from "../parts";
 import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
+import { showDepositAddressCondition } from "utils/showDepositAddressCondition";
 
 export const WaitDepositState = () => {
   const { depositAddress, destAddress, srcChain, destChain, asset } =
@@ -59,6 +60,8 @@ export const WaitDepositState = () => {
     );
   }
 
+  const showDepositAddress = (showDepositAddressCondition({ srcChain, asset}));
+
   return (
     <>
       <TransferStats />
@@ -77,13 +80,13 @@ export const WaitDepositState = () => {
                     <AddressShortener value={depositAddress} />
                     <div
                       className="cursor-pointer"
-                      onClick={() => copyToClipboard(depositAddress)}
-                    >
+                      onClick={() => showDepositAddress && copyToClipboard(depositAddress)}
+                    > { showDepositAddress && 
                       <Image
                         src={"/assets/ui/copy.svg"}
                         height={16}
                         width={16}
-                      />
+                      />}
                     </div>
                   </div>
                 </div>
