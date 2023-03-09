@@ -7,6 +7,7 @@ export function renderIncompatibilityMsg(
   srcChain: ChainInfo,
   destChain: ChainInfo
 ) {
+  console.log("asset and source and dest", asset, srcChain, destChain);
   const incompatibleOnSrcChain =
     !asset.chain_aliases[srcChain?.chainName?.toLowerCase()];
   const incompatibleOnDestChain =

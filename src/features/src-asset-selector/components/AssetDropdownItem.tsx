@@ -26,11 +26,12 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
   const assetName =
     asset.chain_aliases[srcChain.chainName?.toLowerCase()]?.assetName;
 
-  const compatibleOnSrc =
-    asset.chain_aliases[srcChain?.chainName?.toLowerCase()];
-  const compatibleOnDest =
-    asset.chain_aliases[destChain?.chainName?.toLowerCase()];
-  const disabled = !(compatibleOnSrc && compatibleOnDest);
+  // const compatibleOnSrc =
+  // asset.chain_aliases[srcChain?.chainName?.toLowerCase()];
+  // const compatibleOnDest =
+  // asset.chain_aliases[destChain?.chainName?.toLowerCase()];
+  // const disabled = !(compatibleOnSrc && compatibleOnDest);
+  const disabled = !assetIsCompatibleBetweenChains(asset, srcChain, destChain);
 
   function handleOnClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (disabled) {
@@ -66,11 +67,7 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
           />
           <span
             className={classNames({
-              "text-slate-400": !assetIsCompatibleBetweenChains(
-                asset,
-                srcChain,
-                destChain
-              ),
+              "text-slate-400": disabled,
             })}
           >
             {assetName}

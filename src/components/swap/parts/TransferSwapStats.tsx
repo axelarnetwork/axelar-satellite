@@ -100,7 +100,7 @@ export const TransferSwapStats = () => {
           data={(+(routeData?.estimate?.exchangeRate || 0)).toFixed(5) || "NA"}
         />
         <Row
-          text="Average Route Duration (minutes)"
+          text="Average Processing Time (minutes)"
           tooltip="Average time for transaction completion"
           data={
             `~${Math.ceil(
