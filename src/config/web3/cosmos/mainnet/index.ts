@@ -3,6 +3,7 @@ import { acrechain } from "./acrechain";
 import { agoric } from "./agoric";
 import { assetmantle } from "./assetmantle";
 import { axelar } from "./axelar";
+import { carbon } from "./carbon";
 import { comdex } from "./comdex";
 import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
@@ -17,6 +18,7 @@ import { osmosis } from "./osmosis";
 import { regen } from "./regen";
 import { secret } from "./secret";
 import { stargaze } from "./stargaze";
+import { stride } from "./stride";
 import { terra } from "./terra";
 import { terraClassic } from "./terra_classic";
 import { umee } from "./umee";
@@ -45,4 +47,6 @@ export const mainnetChains: CosmosChain[] = [
   umee,
   terraClassic,
   xpla,
+  carbon,
+  stride,
 ];

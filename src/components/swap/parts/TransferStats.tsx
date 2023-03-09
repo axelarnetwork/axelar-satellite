@@ -14,6 +14,7 @@ import { useGetMaxTransferAmount } from "~/hooks/useGetMaxTransferAmount";
 import { copyToClipboard } from "~/utils";
 import { SwapStatus } from "~/utils/enums";
 import { renderGasFee } from "~/utils/renderGasFee";
+import { showDepositAddressCondition } from "~/utils/showDepositAddressCondition";
 
 import { USDC_POOLS } from "../../../data/pools";
 import { AddressShortener, StatsWrapper } from "../../common";
@@ -95,12 +96,9 @@ export const TransferStats = () => {
   }
 
   function renderDepositAddress() {
-    if (swapStatus === SwapStatus.IDLE) {
-      return null;
-    }
-    if (!depositAddress) {
-      return null;
-    }
+    if (swapStatus === SwapStatus.IDLE) return null;
+    if (!depositAddress) return null;
+    const showDepositAddress = showDepositAddressCondition({ srcChain, asset });
     return (
       <li className="flex justify-between">
         <span
@@ -116,14 +114,13 @@ export const TransferStats = () => {
           <AddressShortener value={depositAddress} />
           <div
             className="cursor-pointer"
-            onClick={() => copyToClipboard(depositAddress)}
+            onClick={() =>
+              showDepositAddress && copyToClipboard(depositAddress)
+            }
           >
-            <Image
-              src={"/assets/ui/copy.svg"}
-              height={16}
-              width={16}
-              alt="copy"
-            />
+            {showDepositAddress && (
+              <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+            )}
           </div>
         </div>
       </li>

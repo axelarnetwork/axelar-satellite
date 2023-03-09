@@ -3,7 +3,7 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
 import { CosmosChain } from "../interface";
 
-export const xpla: CosmosChain = {
+export const xpla = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/xpla`,
   rest: "https://dimension-lcd.xpla.dev",
   chainId: "dimension_37-1",
@@ -41,5 +41,4 @@ export const xpla: CosmosChain = {
   },
   features: ["ibc-transfer", "ibc-go", "eth-address-gen", "eth-key-sign"],
   chainToAxelarChannelId: "channel-0",
-  explorer: "https://explorer.xpla.dev/",
-};
+} as CosmosChain;

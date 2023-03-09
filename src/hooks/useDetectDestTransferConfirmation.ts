@@ -73,7 +73,7 @@ export const useDetectDestTransferConfirmation = () => {
             ? fullDenomPath?.split("/")[2]
             : fullDenomPath?.split("/")[0];
       } else {
-        denom = assetData?.common_key as string;
+        denom = asset?.chain_aliases["axelar"].fullDenomPath as string;
       }
 
       const roomId =

@@ -5,6 +5,7 @@ import { getSelectedAssetSymbol, useSwapStore, useWalletStore } from "~/store";
 
 import { copyToClipboard } from "~/utils";
 import { renderGasFee } from "~/utils/renderGasFee";
+import { showDepositAddressCondition } from "~/utils/showDepositAddressCondition";
 import { convertChainName } from "~/utils/transformers";
 
 import { AddressShortener, InputWrapper } from "../../common";
@@ -60,6 +61,8 @@ export const WaitDepositState = () => {
     );
   }
 
+  const showDepositAddress = showDepositAddressCondition({ srcChain, asset });
+
   return (
     <>
       <TransferStats />
@@ -78,14 +81,18 @@ export const WaitDepositState = () => {
                     <AddressShortener value={depositAddress} />
                     <div
                       className="cursor-pointer"
-                      onClick={() => copyToClipboard(depositAddress)}
+                      onClick={() =>
+                        showDepositAddress && copyToClipboard(depositAddress)
+                      }
                     >
-                      <Image
-                        src={"/assets/ui/copy.svg"}
-                        height={16}
-                        width={16}
-                        alt="copy"
-                      />
+                      {" "}
+                      {showDepositAddress && (
+                        <Image
+                          src={"/assets/ui/copy.svg"}
+                          height={16}
+                          width={16}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
