@@ -58,7 +58,7 @@ const initialState: SquidState = {
   routeDataLoading: false,
   txReceipt: null,
   statusResponse: null,
-  enableGMPExpress: false,
+  enableGMPExpress: true,
 };
 
 export const useSquidStateStore = create<SquidStateStore>()(
@@ -122,7 +122,13 @@ export const useSquidStateStore = create<SquidStateStore>()(
       ),
     setRouteDataAsync: async (params: GetRoute) => {
       try {
-        const { route: routeData } = await squid.getRoute(params);
+        const { route } = await squid.getRoute(params);
+        const gmpeEnabled = get().enableGMPExpress;
+
+        const routeData = {
+          ...route,
+          params: { ...route.params, enableForecall: gmpeEnabled },
+        };
         set({ routeData, routeDataLoading: false }, false, "setRouteDataAsync");
       } catch (e) {
         set(
@@ -156,14 +162,32 @@ export const useSquidStateStore = create<SquidStateStore>()(
         false,
         "setStatusResponse"
       ),
-    setEnableGMPExpress: (state) =>
-      set(
-        {
-          enableGMPExpress: state,
-        },
-        false,
-        "setEnableGMPExpress"
-      ),
+    setEnableGMPExpress: (state) => {
+      const routeData = get().routeData;
+      if (routeData && routeData?.params?.enableForecall !== state) {
+        const newRouteData = {
+          ...routeData,
+          params: { ...routeData?.params, enableForecall: state },
+        };
+        set(
+          {
+            enableGMPExpress: state,
+            // @ts-ignore
+            routeData: newRouteData,
+          },
+          false,
+          "setEnableGMPExpress"
+        );
+      } else {
+        set(
+          {
+            enableGMPExpress: state,
+          },
+          false,
+          "setEnableGMPExpress"
+        );
+      }
+    },
     resetSquidState: () =>
       set(
         {

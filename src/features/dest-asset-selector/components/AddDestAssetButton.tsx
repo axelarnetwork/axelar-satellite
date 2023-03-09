@@ -71,7 +71,7 @@ export const AddDestAssetButton = () => {
 
   return (
     <div
-      className=" dropdown tooltip tooltip-warning dropdown-end"
+      className="mb-2 dropdown tooltip tooltip-warning dropdown-end max-w-fit justify-self-end"
       data-tip={`Add ${
         selectedSquidAsset
           ? selectedSquidAsset.assetSymbol
@@ -80,7 +80,7 @@ export const AddDestAssetButton = () => {
     >
       <label
         tabIndex={0}
-        className="flex items-center mr-2 btn btn-info btn-xs gap-x-2"
+        className="flex items-center btn btn-info btn-xs gap-x-2"
       >
         <span className="font-normal" style={{ fontSize: 10 }}>
           Add Asset

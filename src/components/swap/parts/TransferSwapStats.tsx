@@ -83,7 +83,7 @@ export const TransferSwapStats = () => {
           data={
             (routeData &&
               `${formatEther(
-                routeData?.estimate?.gasCosts[0]?.amount as string
+                routeData?.estimate?.gasCosts[0]?.amount || "0"
               )} ($${routeData?.estimate?.gasCosts[0]?.amountUSD})`) ||
             "NA"
           }

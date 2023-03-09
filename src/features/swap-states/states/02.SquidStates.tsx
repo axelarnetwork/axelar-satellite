@@ -28,17 +28,17 @@ export const SquidStates = () => {
   const [statusText, setStatusText] = useState("");
 
   useEffect(() => {
-    if (statusResponse?.status) {
-      let prog = 1;
-      let txt = "";
+    let prog = 1;
+    let txt = `Waiting for your transaction on ${srcChain.chainName}...`;
+    if (statusResponse?.status && progress < 4) {
       switch (statusResponse.status) {
         case GMPStatus.SRC_GATEWAY_CALLED: {
-          txt = "Acknowledged. Processing your transaction.";
+          txt = `Confirmed on ${srcChain.chainName}...`;
           prog = 2;
           break;
         }
         case GMPStatus.DEST_EXECUTING: {
-          txt = `Awaiting final execution on ${destChain.chainName}.`;
+          txt = `Awaiting execution on ${destChain.chainName}...`;
           prog = 3;
           break;
         }
@@ -48,24 +48,24 @@ export const SquidStates = () => {
           setSwapStatus(SwapStatus.SQUID_FINISHED);
           break;
         }
+        case "express_executed": {
+          txt = "Swap complete!";
+          prog = 4;
+          setSwapStatus(SwapStatus.SQUID_FINISHED);
+          break;
+        }
         default:
       }
-      setProgress(prog);
-      setStatusText(txt);
-    } else {
-      setProgress(1);
-      setStatusText(`Waiting for your transaction on ${srcChain.chainName}...`);
     }
+    setProgress(prog);
+    setStatusText(txt);
   }, [destChain, setSwapStatus, statusResponse, srcChain]);
 
   usePoll(
     () => {
-      if (!(txReceipt && routeData)) {
-        return;
-      }
-      if (statusResponse && statusResponse.status === GMPStatus.DEST_EXECUTED) {
-        return;
-      }
+      if (!txReceipt) return;
+      if (!routeData) return;
+      if (progress === 4) return;
 
       const getStatusParams = {
         transactionId: txReceipt.transactionHash,
@@ -76,7 +76,7 @@ export const SquidStates = () => {
         .getStatus(getStatusParams)
         .then((status: StatusResponse) => setStatusResponse(status));
     },
-    [txReceipt, routeData],
+    [txReceipt, routeData, progress],
     {
       interval: 10000,
     }
