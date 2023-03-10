@@ -2,11 +2,9 @@ import { useMemo } from "react";
 
 import { useAssetCompatibilityBetweenChains } from "~/features/src-asset-selector/utils";
 
-import { useSquidStateStore, useSwapStore } from "~/store";
+import { useSwapStore } from "~/store";
 
 export const useAssetFilter = (input: string | undefined) => {
-  const { squidTokens } = useSquidStateStore();
-
   const allAssets = useSwapStore((state) => state.allAssets);
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
@@ -19,10 +17,7 @@ export const useAssetFilter = (input: string | undefined) => {
   return useMemo(() => {
     return allAssets
       .filter((asset) => {
-        const assetMatchesSearch = asset.id
-          .toLowerCase()
-          ?.toLowerCase()
-          .includes(input || "");
+        const assetMatchesSearch = asset.id.toLowerCase().includes(input || "");
 
         const [isCompatible] = checkCompatibility(asset);
 
