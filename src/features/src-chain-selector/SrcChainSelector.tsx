@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Image from "next/legacy/image";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { defaultChainImg } from "~/config/constants";
@@ -14,20 +13,16 @@ import { useSwapStore } from "~/store";
 import { makeAccessibleKeysHandler } from "~/utils/react";
 import { convertChainName } from "~/utils/transformers";
 
-// TODO: abstract the state into a zustand sourceChainStore
-
 export const SrcChainSelector = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const [searchChainInput, setSearchChainInput] = useState<string>("");
-  const [filteredChains, setFilteredChains] = useState<ChainInfo[]>([]);
 
   const srcChain = useSwapStore((state) => state.srcChain);
   const chainName = srcChain?.chainName?.toLowerCase();
 
-  const allChains = useSwapStore((state) => state.allChains);
+  const ref = useRef<HTMLDivElement>(null);
 
-  const ref = useRef(null);
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
   });
@@ -36,14 +31,8 @@ export const SrcChainSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }, [dropdownOpen]);
 
-  // initial load
-  useEffect(() => {
-    setFilteredChains(allChains);
-    // eslint-disable-next-line
-  }, []);
-
   // handle chain filtering
-  useChainFilter(searchChainInput, setFilteredChains);
+  const filteredChains = useChainFilter(searchChainInput);
 
   return (
     <InputWrapper>

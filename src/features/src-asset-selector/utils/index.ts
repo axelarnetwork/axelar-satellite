@@ -1,2 +1,1 @@
-export * from "./assetIsCompatibleBetweenChains";
-export * from "./renderIncompatibilityMsg";
+export * from "./useAssetCompatibilityBetweenChains";

@@ -10,23 +10,18 @@ import { useAssetFilter } from "~/features/src-asset-selector/hooks";
 
 import { getSelectedAssetName, useSwapStore } from "~/store";
 
-import { AssetConfigExtended } from "~/types";
 import { makeAccessibleKeysHandler } from "~/utils/react";
 
 import { AddSrcAssetButton, AssetDropdown, AssetInput } from "./components";
 
 export const AssetSelector = () => {
-  const allAssets = useSwapStore((state) => state.allAssets);
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchAssetInput, setSearchAssetInput] = useState<string>("");
-  const [filteredAssets, setFilteredAssets] =
-    useState<AssetConfigExtended[]>(allAssets);
   const srcChain = useSwapStore((state) => state.srcChain);
   const asset = useSwapStore((state) => state.asset);
   const selectedAssetName = useSwapStore(getSelectedAssetName);
 
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
   });
@@ -35,7 +30,7 @@ export const AssetSelector = () => {
     setDropdownOpen(!dropdownOpen);
   }, [dropdownOpen]);
 
-  useAssetFilter(searchAssetInput, setFilteredAssets);
+  const filteredAssets = useAssetFilter(searchAssetInput);
 
   return (
     <InputWrapper>
