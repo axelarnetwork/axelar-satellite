@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { ASSET_RESTRICTIONS } from "../config/constants";
 import { getRestrictedAssetIsSelected, useSwapStore } from "../store";
@@ -12,14 +12,7 @@ export const useRestrictAssets = () => {
   const setDestChain = useSwapStore((state) => state.setDestChain);
   const restrictedAssetIsSelected = useSwapStore(getRestrictedAssetIsSelected);
 
-  useEffect(() => {
-    if (restrictedAssetIsSelected) {
-      restrictDestChain();
-    }
-    // eslint-disable-next-line
-  }, [restrictedAssetIsSelected, srcChain, destChain]);
-
-  function restrictDestChain() {
+  const restrictDestChain = useCallback(() => {
     const destChainName = destChain?.chainName?.toLowerCase();
 
     for (const rule of ASSET_RESTRICTIONS) {
@@ -27,13 +20,20 @@ export const useRestrictAssets = () => {
         rule.assets.includes(asset?.id || "") &&
         !rule.restrictDestChainsTo.includes(destChainName)
       ) {
-        const chain = allChains.find((_chain) =>
-          rule.restrictDestChainsTo.includes(_chain.chainName.toLowerCase())
+        const chain = allChains.find(({ chainName }) =>
+          rule.restrictDestChainsTo.includes(chainName.toLowerCase())
         );
         if (chain) {
           return setDestChain(chain);
         }
       }
     }
-  }
+  }, [asset, destChain, allChains, setDestChain]);
+
+  useEffect(() => {
+    if (restrictedAssetIsSelected) {
+      restrictDestChain();
+    }
+    // eslint-disable-next-line
+  }, [restrictedAssetIsSelected, srcChain, destChain]);
 };
