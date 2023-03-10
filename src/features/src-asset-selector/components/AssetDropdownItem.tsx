@@ -24,8 +24,6 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
   const assetName =
     asset.chain_aliases[srcChain.chainName?.toLowerCase()]?.assetName;
 
-  console.log({ assetName, asset });
-
   const { checkCompatibility } = useAssetCompatibilityBetweenChains(
     srcChain,
     destChain
@@ -34,12 +32,6 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
   const [isCompatible, compatibilityErrorMessage] = checkCompatibility(asset);
 
   const disabled = !isCompatible;
-
-  console.log({
-    asset,
-    isSupportedOnBothChains: isCompatible,
-    compatibilityMessage: compatibilityErrorMessage,
-  });
 
   function handleOnClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (disabled) {
