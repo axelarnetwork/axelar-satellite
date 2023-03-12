@@ -39,17 +39,22 @@ export const useAssetFilter = (input: string | undefined) => {
 
         return assetMatchesSearch && assetIsSupportedByBothChains;
       })
-      .sort((firstAsset, nextAsset) => {
-        const [isNextAssetSupportedOnBothChains] =
-          checkCompatibility(nextAsset);
-
-        const [isFirstAssetSupportedOnBothChains] =
-          checkCompatibility(firstAsset);
-
-        return (
-          Number(isNextAssetSupportedOnBothChains) -
-          Number(isFirstAssetSupportedOnBothChains)
-        );
+      .map((asset) => {
+        const [isCompatible, reason] = checkCompatibility(asset);
+        return {
+          ...asset,
+          isCompatible,
+          incompatibilityReason: reason,
+        };
+      })
+      .sort((a, b) => {
+        if (a.isCompatible && !b.isCompatible) {
+          return -1;
+        }
+        if (!a.isCompatible && b.isCompatible) {
+          return 1;
+        }
+        return 0;
       });
   }, [allAssets, input, checkCompatibility, srcChain.chainName]);
 };

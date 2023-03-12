@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/legacy/image";
 import { GetRoute } from "@0xsquid/sdk";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
@@ -154,13 +160,13 @@ export const DestAssetSelector = ({
     getRouteData,
   ]);
 
+  const handleOnDropdownToggle = () => setDropdownOpen(!dropdownOpen);
+
   useOnClickOutside(ref, () => {
     dropdownOpen && handleOnDropdownToggle();
   });
 
-  const handleOnDropdownToggle = () => setDropdownOpen(!dropdownOpen);
-
-  const handleSelect = async (
+  const handleSelect = (
     shouldUnwrap: boolean,
     assetSymbol: string | undefined
   ) => {
@@ -174,7 +180,7 @@ export const DestAssetSelector = ({
     setRouteData(null);
   };
 
-  const handleSquidSelect = async (t: AssetInfo) => {
+  const handleSquidSelect = (t: AssetInfo) => {
     setShouldUnwrapAsset(false);
     setSelectedAssetSymbol(t.assetSymbol);
     setSelectedSquidAsset(t);
@@ -186,9 +192,10 @@ export const DestAssetSelector = ({
     ? nativeAsset?.id
     : asset?.id;
 
-  const srcIsSquidAsset = srcChain.assets.find(
-    (t) => t.common_key === asset?.id
-  )?.isSquidAsset;
+  const srcIsSquidAsset = useMemo(
+    () => srcChain.assets.find((t) => t.common_key === asset?.id)?.isSquidAsset,
+    [asset?.id, srcChain.assets]
+  );
 
   function renderAssetDropdown() {
     if (!(dropdownOpen && srcChain)) {

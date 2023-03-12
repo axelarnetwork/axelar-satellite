@@ -31,24 +31,24 @@ export function useAssetCompatibilityBetweenChains(
   const checkCompatibility = useCallback(
     (asset: AssetConfigExtended) => {
       const isSupportedOnSrcChain =
-        srcChain?.chainName?.toLowerCase() in asset.chain_aliases ||
-        asset.isSquidAsset;
+        srcChain?.chainName?.toLowerCase() in asset.chain_aliases;
 
       const isSupportedOnDestChain =
-        destChain?.chainName?.toLowerCase() in asset.chain_aliases ||
-        asset.isSquidAsset;
+        destChain?.chainName?.toLowerCase() in asset.chain_aliases;
 
-      const compatibilityErrorMessage = getCompatibilityErrorMessage(
-        isSupportedOnSrcChain,
-        isSupportedOnDestChain,
-        srcChain,
-        destChain
-      );
+      const isSwppingToEVM = destChain.module === "evm";
 
-      return [
-        isSupportedOnSrcChain && isSupportedOnDestChain,
-        compatibilityErrorMessage,
-      ] as const;
+      const compatibilityErrorMessage =
+        asset.isSquidAsset && isSwppingToEVM
+          ? ""
+          : getCompatibilityErrorMessage(
+              isSupportedOnSrcChain,
+              isSupportedOnDestChain,
+              srcChain,
+              destChain
+            );
+
+      return [!compatibilityErrorMessage, compatibilityErrorMessage] as const;
     },
     [srcChain, destChain]
   );
