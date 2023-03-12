@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
 import classNames from "classnames";
 
-import { useSwitchAsset } from "~/features/src-asset-selector/hooks";
-
-import { useSwapStore } from "~/store";
-
 import { AssetConfigExtended } from "~/types";
 import { makeAccessibleKeysHandler } from "~/utils/react";
 

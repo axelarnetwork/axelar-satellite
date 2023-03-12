@@ -38,7 +38,7 @@ export const DestAssetSelector = ({
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const allAssets = useSwapStore((state) => state.allAssets);
-  const asset = useSwapStore((state) => state.asset);
+  const srcAsset = useSwapStore((state) => state.asset);
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const shouldUnwrapAsset = useSwapStore((state) => state.shouldUnwrapAsset);
@@ -64,32 +64,37 @@ export const DestAssetSelector = ({
   } = useSquidStateStore();
   const [selectedAssetSymbol, setSelectedAssetSymbol] = useState<string>();
   const ref = useRef(null);
-  const nativeAsset = allAssets.find(
-    (_asset) =>
-      _asset.native_chain === destChain.chainName?.toLowerCase() &&
-      _asset.is_gas_token
+
+  const nativeAsset = useMemo(
+    () =>
+      allAssets.find(
+        (asset) =>
+          asset.native_chain === destChain.chainName?.toLowerCase() &&
+          asset.is_gas_token
+      ),
+    [allAssets, destChain.chainName]
   );
 
   const getRouteData = useCallback(
-    async (t: AssetInfo) => {
-      if (!asset) {
+    async (asset: AssetInfo) => {
+      if (!srcAsset) {
         return;
       }
-      const fromToken = asset.is_gas_token
+      const fromToken = srcAsset.is_gas_token
         ? ARBITRARY_EVM_ADDRESS
-        : asset.chain_aliases[srcChain.chainName.toLowerCase()].tokenAddress;
+        : srcAsset.chain_aliases[srcChain.chainName.toLowerCase()].tokenAddress;
       const toToken = NATIVE_ASSET_IDS.includes(
-        t.assetSymbol?.toLowerCase() as string
+        asset.assetSymbol?.toLowerCase() as string
       )
         ? ARBITRARY_EVM_ADDRESS
-        : (t?.tokenAddress as string);
+        : (asset?.tokenAddress as string);
       setRouteDataLoading(true);
       const params: GetRoute = {
         fromChain: squidChains.find(
           (c) => c.chainName.toLowerCase() === srcChain.id
         )?.chainId as string | number,
         fromToken,
-        fromAmount: parseUnits(tokensToTransfer, asset.decimals).toString(),
+        fromAmount: parseUnits(tokensToTransfer, srcAsset.decimals).toString(),
         toChain: squidChains.find(
           (c) => c.chainName.toLowerCase() === destChain.id
         )?.chainId as string | number,
@@ -102,7 +107,7 @@ export const DestAssetSelector = ({
       setRouteDataAsync(params);
     },
     [
-      asset,
+      srcAsset,
       srcChain.chainName,
       srcChain.id,
       setRouteDataLoading,
@@ -116,17 +121,17 @@ export const DestAssetSelector = ({
   );
 
   useEffect(() => {
-    if (asset && srcChain) {
+    if (srcAsset && srcChain) {
       setShouldUnwrapAsset(false);
       setSelectedAssetSymbol(
-        asset.chain_aliases[destChain.chainName.toLowerCase()]?.assetName
+        srcAsset.chain_aliases[destChain.chainName.toLowerCase()]?.assetName
       );
       setSelectedSquidAsset(null);
       setIsSquidTrade(false);
       setRouteData(null);
     }
   }, [
-    asset,
+    srcAsset,
     destChain.chainName,
     setIsSquidTrade,
     setRouteData,
@@ -180,27 +185,35 @@ export const DestAssetSelector = ({
     setRouteData(null);
   };
 
-  const handleSquidSelect = (t: AssetInfo) => {
+  const handleSquidSelect = (asset: AssetInfo) => {
     setShouldUnwrapAsset(false);
-    setSelectedAssetSymbol(t.assetSymbol);
-    setSelectedSquidAsset(t);
+    setSelectedAssetSymbol(asset.assetSymbol);
+    setSelectedSquidAsset(asset);
     setIsSquidTrade(true);
   };
 
   // gets native or wrapped token logo based on user choice
   const dynamicNativeTokenLogo = shouldUnwrapAsset
     ? nativeAsset?.id
-    : asset?.id;
+    : srcAsset?.id;
 
   const srcIsSquidAsset = useMemo(
-    () => srcChain.assets.find((t) => t.common_key === asset?.id)?.isSquidAsset,
-    [asset?.id, srcChain.assets]
+    () =>
+      srcAsset?.isSquidAsset ||
+      srcChain.assets.find((t) => t.common_key === srcAsset?.id)?.isSquidAsset,
+    [srcAsset, srcChain.assets]
   );
 
   function renderAssetDropdown() {
     if (!(dropdownOpen && srcChain)) {
       return null;
     }
+
+    const shouldRenderSquidAssets =
+      srcIsSquidAsset && destChain.module === "evm";
+
+    const assetSymbol =
+      srcAsset?.chain_aliases[destChain.chainName.toLowerCase()].assetSymbol;
 
     return (
       <div className="left-0 w-full p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral max-h-80">
@@ -210,18 +223,10 @@ export const DestAssetSelector = ({
           onKeyDown={handleOnDropdownToggle}
         >
           <li key={"selected_src_asset"}>
-            <button
-              onClick={() =>
-                handleSelect(
-                  false,
-                  asset?.chain_aliases[destChain.chainName.toLowerCase()]
-                    .assetSymbol
-                )
-              }
-            >
+            <button onClick={() => handleSelect(false, assetSymbol)}>
               <Image
                 loading="eager"
-                src={`/assets/tokens/${asset?.id}.logo.svg`}
+                src={`/assets/tokens/${srcAsset?.id}.logo.svg`}
                 layout="intrinsic"
                 width={35}
                 height={35}
@@ -233,7 +238,7 @@ export const DestAssetSelector = ({
               />
               <span>
                 {
-                  asset?.chain_aliases[destChain.chainName.toLowerCase()]
+                  srcAsset?.chain_aliases[destChain.chainName.toLowerCase()]
                     .assetSymbol
                 }
               </span>
@@ -258,14 +263,10 @@ export const DestAssetSelector = ({
               </button>
             </li>
           )}
-          {srcIsSquidAsset &&
-            destChain.module === "evm" &&
+          {shouldRenderSquidAssets &&
             squidAssets.map((t) => (
               <li key={`squid_token_${t.tokenAddress}${t.assetSymbol}`}>
-                <button
-                  onClick={() => handleSquidSelect(t)}
-                  // className="flex justify-between"
-                >
+                <button onClick={() => handleSquidSelect(t)}>
                   <Image
                     loading="eager"
                     src={`/assets/tokens/${t.common_key}.logo.svg`}
@@ -292,7 +293,7 @@ export const DestAssetSelector = ({
     );
   }
 
-  if (!asset) {
+  if (!srcAsset) {
     return null;
   }
 
