@@ -21,8 +21,18 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
 
-  const assetName =
+  const assetAliasName =
     asset.chain_aliases[srcChain.chainName?.toLowerCase()]?.assetName;
+
+  const assetName =
+    assetAliasName ?? Object.values(asset.chain_aliases)[0]?.assetName;
+
+  if (!assetAliasName && assetName) {
+    console.log(
+      `Asset alias name not found for asset under ${srcChain.chainName}. Available: `,
+      Object.keys(asset.chain_aliases).join(", ")
+    );
+  }
 
   const { checkCompatibility } = useAssetCompatibilityBetweenChains(
     srcChain,
@@ -51,18 +61,34 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
         className={clsx("relative flex flex-row justify-between", { disabled })}
       >
         <div className="flex items-center gap-x-4">
-          <Image
-            loading="eager"
-            src={`/assets/tokens/${asset.id}.logo.svg`}
-            layout="intrinsic"
-            width={35}
-            height={35}
-            onError={(e) => {
-              e.currentTarget.src = defaultAssetImg;
-              e.currentTarget.srcset = defaultAssetImg;
-            }}
-            alt={asset.id}
-          />
+          {asset.iconSrc ? (
+            <Image
+              loading="eager"
+              src={asset.iconSrc}
+              layout="intrinsic"
+              width={35}
+              height={35}
+              onError={(e) => {
+                e.currentTarget.src = defaultAssetImg;
+                e.currentTarget.srcset = defaultAssetImg;
+              }}
+              alt={asset.id}
+              className="h-[35px] w-[35px] rounded-full overflow-hidden"
+            />
+          ) : (
+            <Image
+              loading="eager"
+              src={`/assets/tokens/${asset.id}.logo.svg`}
+              layout="intrinsic"
+              width={35}
+              height={35}
+              onError={(e) => {
+                e.currentTarget.src = defaultAssetImg;
+                e.currentTarget.srcset = defaultAssetImg;
+              }}
+              alt={asset.id}
+            />
+          )}
           <span
             className={classNames({
               "text-slate-400": disabled,

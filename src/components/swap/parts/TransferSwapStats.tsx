@@ -1,5 +1,6 @@
+import { FC, PropsWithChildren } from "react";
 import Image from "next/legacy/image";
-import { formatEther, formatUnits } from "ethers/lib/utils.js";
+import { formatEther } from "ethers/lib/utils.js";
 
 import { AXELARSCAN_URL } from "~/config/constants";
 import { getWagmiChains } from "~/config/web3";
@@ -24,9 +25,42 @@ const InfoIcon = (
   </svg>
 );
 
+type RowProps = {
+  text: string;
+  tooltip: string;
+};
+
+export const Row: FC<PropsWithChildren<RowProps>> = ({
+  text,
+  tooltip,
+  children,
+}) => {
+  const { routeDataLoading } = useSquidStateStore();
+  return (
+    <li className="flex justify-between capitalize">
+      <div
+        className="flex items-center cursor-pointer tooltip tooltip-warning"
+        data-tip={routeDataLoading ? "" : tooltip}
+      >
+        <span>{text}</span>
+        {InfoIcon}
+      </div>
+
+      <span className="flex items-center font-semibold">
+        {routeDataLoading ? <LoadingRow /> : children}
+      </span>
+    </li>
+  );
+};
+
+export const LoadingRow = () => (
+  <div className="max-w-sm animate-pulse">
+    <div className="w-24 h-1 bg-gray-500 rounded-full " />
+  </div>
+);
+
 export const TransferSwapStats = () => {
-  const { routeData, selectedSquidAsset, slippage, txReceipt, isSquidTrade } =
-    useSquidStateStore();
+  const { routeData, slippage, txReceipt, isSquidTrade } = useSquidStateStore();
   const srcChain = useSwapStore((state) => state.srcChain);
 
   function renderTxConfirmLink() {
@@ -72,102 +106,45 @@ export const TransferSwapStats = () => {
   return (
     <StatsWrapper>
       <ul className="space-y-2 text-sm">
-        <Row
-          text="Price Slippage"
-          tooltip="Price Slippage Tolerance"
-          data={`${slippage}%` || "NA"}
-        />
+        <Row text="Price Slippage" tooltip="Price Slippage Tolerance">
+          {`${slippage}%` || "NA"}
+        </Row>
         <Row
           text="Gas Cost (Native / USD-equiv)"
           tooltip={`Gas to be paid to initiate swap on ${srcChain.chainName}`}
-          data={
-            (routeData &&
-              `${(+formatEther(
-                routeData?.estimate?.gasCosts[0]?.amount || "0"
-              )).toFixed(6)} ($${(+routeData?.estimate?.gasCosts[0]
-                ?.amountUSD).toFixed(2)})`) ||
-            "NA"
-          }
-        />
-        <Row
-          text="Aggregate Price Impact"
-          tooltip="Price impact"
-          data={routeData?.estimate?.aggregatePriceImpact || "NA"}
-        />
-        <Row
-          text="Exchange Rate"
-          tooltip="Exchange Rate"
-          data={(+(routeData?.estimate?.exchangeRate || 0)).toFixed(5) || "NA"}
-        />
-        <Row
-          text="Average Processing Time (minutes)"
-          tooltip="Average time for transaction completion"
-          data={
-            `~${Math.ceil(
+        >
+          {(routeData &&
+            `${(+formatEther(
+              routeData?.estimate?.gasCosts[0]?.amount || "0"
+            )).toFixed(6)} ($${(+routeData?.estimate?.gasCosts[0]
+              ?.amountUSD).toFixed(2)})`) ||
+            "NA"}
+        </Row>
+        <Row text="Aggregate Price Impact" tooltip="Price impact">
+          {routeData?.estimate?.aggregatePriceImpact || "NA"}
+        </Row>
+        <Row text="Exchange Rate" tooltip="Exchange Rate">
+          {(+(routeData?.estimate?.exchangeRate || 0)).toFixed(5) || "NA"}
+        </Row>
+        {!isNaN(Number(routeData?.estimate?.estimatedRouteDuration)) && (
+          <Row
+            text="Average Processing Time (minutes)"
+            tooltip="Average time for transaction completion"
+          >
+            {`~${Math.ceil(
               (routeData?.estimate?.estimatedRouteDuration as number) / 60
-            ).toString()} minutes` || "NA"
-          }
-        />
-        {/* <Row
-          text="Expected Amount Received"
-          tooltip=""
-          data={
-            routeData && routeData.estimate && selectedSquidAsset
-              ? `${(+parseFloat(
-                  formatUnits(
-                    routeData.estimate.toAmount,
-                    selectedSquidAsset?.decimals
-                  )
-                ).toFixed(5)).toString()} ${selectedSquidAsset?.assetName}`
-              : "NA"
-          }
-        />
-        <Row
-          text="Expected Amount Received (USD)"
-          tooltip=""
-          data={routeData?.estimate?.toAmountUSD || "NA"}
-        /> */}
+            ).toString()} minutes` || "NA"}
+          </Row>
+        )}
         {txReceipt && (
           <Row
             text={`${srcChain.chainName} Confirmation`}
             tooltip="Source chain transaction confirmation"
-            data={renderTxConfirmLink()}
-          />
+          >
+            {renderTxConfirmLink()}
+          </Row>
         )}
       </ul>
     </StatsWrapper>
   );
 };
-
-export const Row = ({
-  text,
-  tooltip,
-  data,
-}: {
-  text: string;
-  tooltip: string;
-  data: any;
-}) => {
-  const { routeDataLoading } = useSquidStateStore();
-  return (
-    <li className="flex justify-between capitalize">
-      <div
-        className="flex items-center cursor-pointer tooltip tooltip-warning"
-        data-tip={routeDataLoading ? "" : tooltip}
-      >
-        <span>{text}</span>
-        {InfoIcon}
-      </div>
-
-      <span className="flex items-center font-semibold">
-        {routeDataLoading ? <LoadingRow /> : data}
-      </span>
-    </li>
-  );
-};
-
-export const LoadingRow = () => (
-  <div className="max-w-sm animate-pulse">
-    <div className="w-24 h-1 bg-gray-500 rounded-full " />
-  </div>
-);

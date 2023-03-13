@@ -19,12 +19,9 @@ export const useAssetFilter = (input: string | undefined) => {
       .filter((asset) => {
         const assetMatchesSearch = asset.id.toLowerCase().includes(input || "");
 
-        const [isCompatible] = checkCompatibility(asset);
-
         // make sure asset is supported on src chain
         const assetIsSupportedByBothChains =
-          srcChain?.chainName?.toLowerCase() in asset.chain_aliases ||
-          isCompatible;
+          srcChain?.chainName?.toLowerCase() in asset.chain_aliases;
 
         // filter out native asset if source chain is not the asset's native chain
         if (asset.is_gas_token) {

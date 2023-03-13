@@ -62,7 +62,7 @@ export const useInitialChainList = () => {
 
   const loadData = useCallback(
     async (squidTokens: TokensWithExtendedChainData[]) => {
-      const assets = await loadInitialAssets();
+      const assets = await loadInitialAssets(squidTokens);
 
       const chains = await loadInitialChains(squidTokens);
 
@@ -219,36 +219,88 @@ export const useInitialChainList = () => {
     };
   }
 
-  async function loadInitialAssets() {
+  async function loadInitialAssets(squidTokens: TokensWithExtendedChainData[]) {
     const assets = (await loadAssets({
       environment: ENVIRONMENT,
     })) as AssetConfigExtended[];
 
-    setAllAssets(assets);
+    const allAssets = [...assets];
+
+    for (const squidToken of squidTokens) {
+      // should add to all assets if not already there
+      const asset = allAssets.find((a) =>
+        Object.values(a.chain_aliases).some(
+          (alias) =>
+            alias.assetSymbol.toLowerCase() === squidToken.symbol.toLowerCase()
+        )
+      );
+
+      const alias = {
+        assetSymbol: squidToken.symbol,
+        assetName: squidToken.name,
+        minDepositAmt: 0.1,
+        ibcDenom: squidToken.symbol,
+        fullDenomPath: squidToken.symbol,
+        tokenAddress: squidToken.address,
+        mintLimit: 0,
+      };
+
+      const chainName = squidToken.chainName.toLowerCase();
+
+      if (!asset) {
+        allAssets.push({
+          chain_aliases: {
+            [chainName]: alias,
+          },
+          common_key: {
+            [ENVIRONMENT]: squidToken.symbol,
+          },
+          isSquidAsset: true,
+          decimals: squidToken.decimals,
+          id: squidToken.symbol,
+          fully_supported: true,
+          is_gas_token: false,
+          native_chain: chainName,
+          wrapped_erc20: squidToken.symbol,
+          iconSrc: squidToken.logoURI,
+        });
+      } else if (!(chainName in asset.chain_aliases)) {
+        asset.chain_aliases[chainName] = alias;
+        if (!asset.iconSrc) {
+          asset.iconSrc = squidToken.logoURI;
+        }
+        asset.isSquidAsset = true;
+      }
+    }
+    const safeAssets = allAssets.filter(
+      (asset) => Object.keys(asset.chain_aliases).length && asset.id
+    );
+
+    setAllAssets(safeAssets);
 
     const { asset_denom } = router.query as RouteQuery;
     // if asset not provided get default asset
     if (!asset_denom) {
-      const _asset = assets.find((asset) =>
+      const asset = safeAssets.find((asset) =>
         asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
       );
-      if (!_asset) {
+      if (!asset) {
         return;
       }
-      setAsset(_asset);
+      setAsset(asset);
       return {
         assetDenom: DEFAULT_ASSET,
       };
     }
 
-    const assetFound = assets.find(({ common_key }) =>
+    const assetFound = safeAssets.find(({ common_key }) =>
       common_key[ENVIRONMENT].includes(asset_denom)
     );
 
     if (assetFound) {
       setAsset(assetFound);
     } else {
-      const asset = assets.find(({ common_key }) =>
+      const asset = safeAssets.find(({ common_key }) =>
         common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
       );
 
