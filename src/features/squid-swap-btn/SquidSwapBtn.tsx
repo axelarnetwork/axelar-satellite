@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { RouteData } from "@0xsquid/sdk";
-import cn from "classnames";
+import clsx from "clsx";
 import { useConnect, useNetwork, useSigner, useSwitchNetwork } from "wagmi";
 
 import { useGetDepositAddress } from "~/features/gen-address-btn/hooks";
@@ -138,7 +138,7 @@ const SquidSwapBtn = React.memo(() => {
 
   return (
     <button
-      className={cn("w-full text-base font-semibold capitalize btn", {
+      className={clsx("w-full text-base font-semibold capitalize btn", {
         "btn-primary": chain?.id === srcChainId,
         "btn-outline": chain?.id !== srcChainId,
       })}

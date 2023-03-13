@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/legacy/image";
-import cn from "classnames";
+import clsx from "clsx";
 import { useAccount } from "wagmi";
 
 import { tokenContractDocs } from "~/config/constants";
@@ -72,7 +72,7 @@ export const EvmAssetWarningModal = () => {
 
   return (
     <div
-      className={cn(
+      className={clsx(
         "text-center modal items-start bg-black/40 backdrop-blur-sm",
         {
           "modal-close": !showAssetWarning,

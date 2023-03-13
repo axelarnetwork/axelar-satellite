@@ -11,7 +11,7 @@ import {
   useWallet as useTerraWallet,
 } from "@terra-money/wallet-provider";
 import { BigNumber } from "bignumber.js";
-import cn from "classnames";
+import clsx from "clsx";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { Height } from "cosmjs-types/ibc/core/client/v1/client";
 import { utils } from "ethers";
@@ -394,7 +394,7 @@ export const CosmosWalletTransfer = () => {
       return (
         <div className="flex justify-center">
           <button
-            className={cn("mb-5 ml-5 btn btn-primary", {
+            className={clsx("mb-5 ml-5 btn btn-primary", {
               loading: txIsLoading,
             })}
             onClick={handleOnTokensTransfer}
@@ -419,7 +419,7 @@ export const CosmosWalletTransfer = () => {
     return (
       <div className="flex justify-center">
         <button
-          className={cn("mb-5 ml-5 btn", {
+          className={clsx("mb-5 ml-5 btn", {
             "btn-primary": !userSelectedTS,
             "btn-accent": userSelectedTS,
           })}

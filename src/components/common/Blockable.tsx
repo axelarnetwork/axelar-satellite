@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from "react";
-import cn from "classnames";
+import clsx from "clsx";
 
 import { useSwapStore } from "~/store";
 
@@ -12,12 +12,12 @@ export const Blockable: React.FC<PropsWithChildren> = (props) => {
 
   return (
     <div
-      className={cn({
+      className={clsx({
         "cursor-not-allowed opacity-75": isInactive,
       })}
     >
       <div
-        className={cn({
+        className={clsx({
           "pointer-events-none": isInactive,
         })}
       >
