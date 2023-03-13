@@ -35,7 +35,7 @@ export const SrcChainTxConfirmation = () => {
   useDetectDestTransferConfirmation();
   useContractEvent({
     chainId: destChainId as number,
-    address: tokenAddress as string,
+    address: tokenAddress as `0x${string}`,
     abi: erc20ABI,
     eventName: "Transfer",
     listener(fromAddress, toAddress, amount, event) {

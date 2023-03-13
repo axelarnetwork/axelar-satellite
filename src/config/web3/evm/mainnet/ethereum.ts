@@ -1,23 +1,8 @@
+import { mainnet as ethereumConfig } from "wagmi/chains";
+
 import { ChainExtension } from "../interface";
 
 export const ethereum: ChainExtension = {
-  id: 1,
-  name: "Ethereum",
-  network: "homestead",
+  ...ethereumConfig,
   networkNameOverride: "ethereum",
-  nativeCurrency: {
-    name: "Ether",
-    symbol: "ETH",
-    decimals: 18,
-  },
-  blockExplorers: {
-    default: {
-      name: "etherscan",
-      url: "https://etherscan.io/",
-    },
-  },
-  rpcUrls: {
-    default: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-  },
-  testnet: false,
 };

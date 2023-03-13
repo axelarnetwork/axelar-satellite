@@ -2,7 +2,7 @@ import React from "react";
 import { SpinnerRoundFilled } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
 
-import { getDestChainId, getSelectedAssetSymbol, useSwapStore } from "~/store";
+import { getDestChainId, useSwapStore } from "~/store";
 
 import { useDetectUnwrapTransfer } from "~/hooks";
 import { SwapStatus } from "~/utils/enums";
@@ -20,28 +20,28 @@ export const WaitEvmConfirmationState = () => {
     setSwapStatus,
     txInfo,
     setTxInfo,
-    depositAddress,
   } = useSwapStore((state) => state);
 
   const chainAlias = destChain.chainName?.toLowerCase();
   const tokenAddress = asset?.chain_aliases[chainAlias]?.tokenAddress;
 
   const destChainId = useSwapStore(getDestChainId);
-  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   useDetectUnwrapTransfer();
+
   useContractEvent({
     chainId: destChainId as number,
-    address: tokenAddress as string,
+    address: tokenAddress as `0x${string}`,
     abi: erc20ABI,
     eventName: "Transfer",
-    listener(...event: any) {
-      if (event[3].blockNumber < Number(txInfo.destStartBlockNumber)) {
+
+    listener(_from, to, _value, event) {
+      if (event.blockNumber < Number(txInfo.destStartBlockNumber)) {
         return;
       }
-      if (event[1] === destAddress) {
+      if (to === destAddress) {
         setTxInfo({
-          destTxHash: event[3]?.transactionHash,
+          destTxHash: event?.transactionHash,
         });
         setSwapStatus(SwapStatus.FINISHED);
       }

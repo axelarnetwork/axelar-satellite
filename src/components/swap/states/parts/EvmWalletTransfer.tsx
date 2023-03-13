@@ -66,7 +66,7 @@ export const EvmWalletTransfer = () => {
 
   const { data: tokenAmount } = useContractRead({
     enabled: !!(srcTokenAddress && srcChainId) && !!srcTokenAddress,
-    address: srcTokenAddress as string,
+    address: srcTokenAddress as `0x${string}`,
     abi: erc20ABI,
     chainId: srcChainId,
     functionName: "balanceOf",
@@ -99,7 +99,7 @@ export const EvmWalletTransfer = () => {
       !!tokensToTransfer &&
       !asset?.is_gas_token,
     chainId: srcChainId, // call transfer on source chain
-    address: tokenAddress,
+    address: tokenAddress as `0x${string}`,
     abi: erc20ABI,
     functionName: "transfer",
     args: [

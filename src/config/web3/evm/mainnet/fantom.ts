@@ -1,20 +1,8 @@
+import { fantom as fantomConfig } from "wagmi/chains";
+
 import { ChainExtension } from "../interface";
 
 export const fantom: ChainExtension = {
-  id: 250,
-  name: "Fantom",
-  network: "fantom",
+  ...fantomConfig,
   networkNameOverride: "fantom",
-  nativeCurrency: {
-    decimals: 18,
-    name: "Fantom",
-    symbol: "FTM",
-  },
-  rpcUrls: {
-    default: "https://rpc.ftm.tools",
-  },
-  blockExplorers: {
-    default: { name: "FTMScan", url: "https://ftmscan.com/" },
-  },
-  testnet: false,
 };

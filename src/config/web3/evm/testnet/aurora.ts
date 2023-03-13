@@ -17,7 +17,9 @@ export const aurora: ChainExtension = {
     },
   },
   rpcUrls: {
-    default: "https://testnet.aurora.dev",
+    default: {
+      http: ["https://testnet.aurora.dev"],
+    },
   },
   testnet: true,
 };

@@ -10,9 +10,7 @@ const { chains, provider } = configureChains(
   [...getWagmiChains()],
   [
     jsonRpcProvider({
-      rpc: (chain) => {
-        return { http: chain.rpcUrls.default };
-      },
+      rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
     }),
     publicProvider(),
   ],
@@ -35,6 +33,7 @@ export const wagmiClient = createClient({
       chains,
       options: {
         qrcode: true,
+        projectId: String(process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID),
       },
     }),
   ],
