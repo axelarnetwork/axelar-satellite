@@ -1,5 +1,5 @@
 import { AssetConfig } from "@axelar-network/axelarjs-sdk";
-import _ from "lodash";
+import { uniqBy } from "rambda";
 import toast from "react-hot-toast";
 
 import { Environment } from "~/utils/enums";
@@ -71,12 +71,12 @@ export const getCosmosChains = (allAssets: AssetConfig[]) => {
         ],
       };
     })
-    .map((_chain) => {
-      _chain.currencies = _.uniqBy(
-        _chain.currencies,
-        (currency) => currency.coinDenom
+    .map((chain) => {
+      chain.currencies = uniqBy(
+        (currency) => currency.coinDenom,
+        chain.currencies
       );
-      return _chain;
+      return chain;
     });
 
   return chains;

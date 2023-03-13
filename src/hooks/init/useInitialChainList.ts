@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ChainInfo, loadAssets } from "@axelar-network/axelarjs-sdk";
-import _ from "lodash";
+import { clone, uniqBy } from "rambda";
 import toast from "react-hot-toast";
 
 import {
@@ -111,7 +111,7 @@ export const useInitialChainList = () => {
     chains: ChainInfo[],
     squidTokens: TokensWithExtendedChainData[]
   ) {
-    const newChains: ChainInfoExtended[] = _.cloneDeep(chains);
+    const newChains: ChainInfoExtended[] = clone(chains);
 
     newChains.forEach((chain) => {
       const relevantSquidTokens = squidTokens.filter(
@@ -156,7 +156,7 @@ export const useInitialChainList = () => {
 
     const chainsWithUniqueAssets = chains.map((chain) => ({
       ...chain,
-      assets: _.uniqBy(chain.assets, (asset) => asset.assetSymbol),
+      assets: uniqBy((asset) => asset.assetSymbol, chain.assets),
     }));
 
     const uniqueChains = injectSquidAssetsIntoChains(
