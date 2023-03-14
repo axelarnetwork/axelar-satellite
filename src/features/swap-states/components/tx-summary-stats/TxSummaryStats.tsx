@@ -6,7 +6,6 @@ import { getWagmiChains } from "~/config/web3";
 
 import { useSwapStore } from "~/store";
 
-import { makeAccessibleKeysHandler } from "~/utils/react";
 import { addAssetToMetamaskWithAssetConfig } from "~/utils/wallet/metamask";
 
 import { BlockExplorerLink } from "./BlockExplorerLink";
