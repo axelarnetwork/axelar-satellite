@@ -1,23 +1,8 @@
+import { bsc as binanceConfig } from "wagmi/chains";
+
 import { ChainExtension } from "../interface";
 
 export const binance: ChainExtension = {
-  id: 56,
-  name: "Binance Smart Chain",
-  network: "binance",
+  ...binanceConfig,
   networkNameOverride: "binance",
-  nativeCurrency: {
-    name: "BNB",
-    symbol: "BNB",
-    decimals: 18,
-  },
-  blockExplorers: {
-    default: {
-      name: "binance",
-      url: "https://bscscan.com/",
-    },
-  },
-  rpcUrls: {
-    default: "https://bsc-dataseed.binance.org",
-  },
-  testnet: false,
 };

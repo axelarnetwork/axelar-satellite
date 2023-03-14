@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import cn from "classnames";
+import clsx from "clsx";
 
 import { ENVIRONMENT as env } from "~/config/constants";
 import { Blockable } from "~/components/common";
@@ -34,7 +34,6 @@ export const SwapBox = () => {
 
   const squidAssets = useMemo(() => {
     const destChainName = destChain.chainName.toLowerCase();
-    console.log("dest chain assets", destChain.assets);
 
     return destChain.assets
       .filter((assetInfo) => assetInfo.isSquidAsset)
@@ -51,7 +50,7 @@ export const SwapBox = () => {
       <EvmAssetWarningModal />
       <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
         <div
-          className={cn("relative flex mb-0 space-x-8", {
+          className={clsx("relative flex mb-0 space-x-8", {
             "justify-end": env === "mainnet",
             "justify-between": env === "testnet",
           })}

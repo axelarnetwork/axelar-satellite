@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import Image from "next/legacy/image";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-import classNames from "classnames";
+import clsx from "clsx";
+
+import { defaultChainImg } from "~/config/constants";
 
 import { useSwitchDestChain } from "~/features/dest-chain-selector/hooks";
 
-import { defaultChainImg } from "~/config/constants";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 interface Props {
   dropdownOpen: boolean;
@@ -32,7 +34,7 @@ export const ChainsDropdown: React.FC<Props> = ({
 
   return (
     <div
-      className={classNames(
+      className={clsx(
         "left-0 w-full p-2 rounded-lg shadow dropdown-content menu bg-neutral",
         {
           flex: dropdownOpen,
@@ -54,13 +56,13 @@ export const ChainsDropdown: React.FC<Props> = ({
         className="overflow-auto"
         style={{ height: 300 }}
         tabIndex={0}
-        onClick={handleOnDropdownToggle}
+        {...makeAccessibleKeysHandler(handleOnDropdownToggle)}
       >
         {filteredChains.map((chain, i) => {
           const chainName = chain.chainName?.toLowerCase();
           return (
             <li
-              className={classNames({
+              className={clsx({
                 "mt-2": i === 0,
               })}
               key={chain.chainSymbol}

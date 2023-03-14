@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/legacy/image";
-import cn from "classnames";
+import clsx from "clsx";
 
 import { useWalletStore } from "~/store";
 
@@ -40,7 +40,7 @@ export const ConnectButton = () => {
 
   return (
     <label
-      className={cn("w-full btn border-0 bg-[#1b2836] shadow-lg")}
+      className={clsx("w-full btn border-0 bg-[#1b2836] shadow-lg")}
       htmlFor="web3-modal"
       data-testid="connect-button"
     >

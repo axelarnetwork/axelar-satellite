@@ -17,7 +17,12 @@ export const kava: ChainExtension = {
     },
   },
   rpcUrls: {
-    default: "https://evm.testnet.kava.io",
+    default: {
+      http: ["https://evm.testnet.kava.io"],
+    },
+    public: {
+      http: ["https://evm.testnet.kava.io"],
+    },
   },
   testnet: true,
 };

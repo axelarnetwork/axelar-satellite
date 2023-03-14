@@ -1,5 +1,4 @@
 import React from "react";
-import { AssetConfig } from "@axelar-network/axelarjs-sdk";
 import BigNumber from "bignumber.js";
 import toast from "react-hot-toast";
 

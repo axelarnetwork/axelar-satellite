@@ -1,15 +1,12 @@
 import React from "react";
 import Image from "next/legacy/image";
-import classNames from "classnames";
+import clsx from "clsx";
 
 import { defaultAssetImg } from "~/config/constants";
 import { logEvent } from "~/components/scripts";
 
 import { useSwitchAsset } from "~/features/src-asset-selector/hooks";
-import {
-  assetIsCompatibleBetweenChains,
-  renderIncompatibilityMsg,
-} from "~/features/src-asset-selector/utils";
+import { useAssetCompatibilityBetweenChains } from "~/features/src-asset-selector/utils";
 
 import { useSwapStore } from "~/store";
 
@@ -23,15 +20,27 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
 
-  const assetName =
+  const assetAliasName =
     asset.chain_aliases[srcChain.chainName?.toLowerCase()]?.assetName;
 
-  // const compatibleOnSrc =
-  // asset.chain_aliases[srcChain?.chainName?.toLowerCase()];
-  // const compatibleOnDest =
-  // asset.chain_aliases[destChain?.chainName?.toLowerCase()];
-  // const disabled = !(compatibleOnSrc && compatibleOnDest);
-  const disabled = !assetIsCompatibleBetweenChains(asset, srcChain, destChain);
+  const assetName =
+    assetAliasName ?? Object.values(asset.chain_aliases)[0]?.assetName;
+
+  if (!assetAliasName && assetName) {
+    console.log(
+      `Asset alias name not found for asset under ${srcChain.chainName}. Available: `,
+      Object.keys(asset.chain_aliases).join(", ")
+    );
+  }
+
+  const { checkCompatibility } = useAssetCompatibilityBetweenChains(
+    srcChain,
+    destChain
+  );
+
+  const [isCompatible, compatibilityErrorMessage] = checkCompatibility(asset);
+
+  const disabled = !isCompatible;
 
   function handleOnClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (disabled) {
@@ -47,10 +56,8 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
   return (
     <li key={asset.id}>
       <button
-        className={`relative flex flex-row justify-between block ${
-          disabled ? "disabled" : ""
-        }`}
         onClick={handleOnClick}
+        className={clsx("relative flex flex-row justify-between", { disabled })}
       >
         <div className="flex items-center gap-x-4">
           <Image
@@ -66,16 +73,18 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
             alt={asset.id}
           />
           <span
-            className={classNames({
+            className={clsx({
               "text-slate-400": disabled,
             })}
           >
             {assetName}
           </span>
         </div>
-        <div className="text-xs text-slate-400 text-end">
-          {renderIncompatibilityMsg(asset, srcChain, destChain)}
-        </div>
+        {compatibilityErrorMessage && (
+          <div className="text-xs text-slate-400 text-end">
+            {compatibilityErrorMessage}
+          </div>
+        )}
       </button>
     </li>
   );

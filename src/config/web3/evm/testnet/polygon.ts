@@ -1,23 +1,8 @@
+import { polygonMumbai as polygonConfig } from "wagmi/chains";
+
 import { ChainExtension } from "../interface";
 
 export const polygon: ChainExtension = {
-  id: 80001,
-  name: "Polygon Testnet",
-  network: "polygon",
+  ...polygonConfig,
   networkNameOverride: "polygon",
-  nativeCurrency: {
-    name: "MATIC",
-    symbol: "MATIC",
-    decimals: 18,
-  },
-  blockExplorers: {
-    default: {
-      name: "polygonscan",
-      url: "https://mumbai.polygonscan.com/",
-    },
-  },
-  rpcUrls: {
-    default: "https://rpc-mumbai.maticvigil.com",
-  },
-  testnet: true,
 };

@@ -48,7 +48,7 @@ export function useSendErc20() {
     enabled:
       chain?.id === srcChainId && !!tokensToTransfer && !asset?.is_gas_token,
     chainId: srcChainId, // call transfer on source chain
-    address: tokenAddress,
+    address: tokenAddress as `0x${string}`,
     abi: erc20ABI,
     functionName: "transfer",
     args: [

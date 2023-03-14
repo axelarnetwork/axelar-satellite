@@ -1,20 +1,15 @@
-import { useEffect } from "react";
-import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-
-import { useSwapStore } from "~/store";
+import { useMemo } from "react";
 
 import { ASSET_RESTRICTIONS } from "~/config/constants";
 
-// TODO: abstract into global hook since it's used in src-chain & dest-chain selectors
-export const useChainFilter = (
-  input: string | undefined,
-  setFilteredChains: (value: ChainInfo[]) => void
-) => {
+import { useSwapStore } from "~/store";
+
+export const useChainFilter = (input: string | undefined) => {
   const allChains = useSwapStore((state) => state.allChains);
   const destChain = useSwapStore((state) => state.destChain);
   const srcChain = useSwapStore((state) => state.srcChain);
 
-  useEffect(() => {
+  return useMemo(() => {
     const chains = allChains.filter((chain) => {
       const chainMatchesSearch = chain.chainName
         ?.toLowerCase()
@@ -29,7 +24,6 @@ export const useChainFilter = (
       return chainMatchesSearch && !isDuplicateChain && !chainIsRestricted;
     });
 
-    setFilteredChains(chains);
-    // eslint-disable-next-line
+    return chains;
   }, [allChains, input, srcChain, destChain]);
 };

@@ -17,7 +17,9 @@ export const celo: ChainExtension = {
     },
   },
   rpcUrls: {
-    default: "https://alfajores-forno.celo-testnet.org",
+    default: {
+      http: ["https://alfajores-forno.celo-testnet.org"],
+    },
   },
   testnet: true,
 };

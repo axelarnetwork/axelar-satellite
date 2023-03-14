@@ -1,23 +1,8 @@
+import { fantomTestnet as fantomConfig } from "wagmi/chains";
+
 import { ChainExtension } from "../interface";
 
 export const fantom: ChainExtension = {
-  id: 4002,
-  name: "Fantom Testnet",
-  network: "fantom",
+  ...fantomConfig,
   networkNameOverride: "fantom",
-  nativeCurrency: {
-    name: "Fantom",
-    symbol: "FTM",
-    decimals: 18,
-  },
-  blockExplorers: {
-    default: {
-      name: "ftmscan",
-      url: "https://testnet.ftmscan.com/",
-    },
-  },
-  rpcUrls: {
-    default: "https://fantom-testnet-rpc.allthatnode.com",
-  },
-  testnet: true,
 };

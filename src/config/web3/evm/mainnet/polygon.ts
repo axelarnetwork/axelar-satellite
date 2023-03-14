@@ -1,20 +1,8 @@
+import { polygon as polygonConfig } from "wagmi/chains";
+
 import { ChainExtension } from "../interface";
 
 export const polygon: ChainExtension = {
-  id: 137,
-  name: "Polygon",
-  network: "polygon",
+  ...polygonConfig,
   networkNameOverride: "polygon",
-  nativeCurrency: {
-    decimals: 18,
-    name: "MATIC",
-    symbol: "MATIC",
-  },
-  rpcUrls: {
-    default: "https://polygon-rpc.com",
-  },
-  blockExplorers: {
-    default: { name: "Polygonscan", url: "https://polygonscan.com/" },
-  },
-  testnet: false,
 };

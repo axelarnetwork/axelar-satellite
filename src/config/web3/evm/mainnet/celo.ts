@@ -17,7 +17,9 @@ export const celo: ChainExtension = {
     },
   },
   rpcUrls: {
-    default: "https://forno.celo.org",
+    default: {
+      http: ["https://forno.celo.org"],
+    },
   },
   testnet: false,
 };

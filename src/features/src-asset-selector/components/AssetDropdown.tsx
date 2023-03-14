@@ -1,9 +1,5 @@
 import React, { useEffect } from "react";
-import classNames from "classnames";
-
-import { useSwitchAsset } from "~/features/src-asset-selector/hooks";
-
-import { useSwapStore } from "~/store";
+import clsx from "clsx";
 
 import { AssetConfigExtended } from "~/types";
 import { makeAccessibleKeysHandler } from "~/utils/react";
@@ -34,7 +30,7 @@ export const AssetDropdown: React.FC<Props> = ({
 
   return (
     <div
-      className={classNames(
+      className={clsx(
         "left-0 w-full p-2 rounded-lg shadow dropdown-content menu bg-neutral",
         {
           flex: dropdownOpen,

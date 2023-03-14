@@ -1,6 +1,6 @@
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { ChainInfo as KeplrChainInfo } from "@keplr-wallet/types";
-import memoize from "proxy-memoize";
+import { memoize } from "proxy-memoize";
 
 import { ASSET_RESTRICTIONS, ENVIRONMENT } from "~/config/constants";
 import { getCosmosChains, getWagmiChains } from "~/config/web3";

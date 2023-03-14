@@ -50,7 +50,7 @@ export function useGetAllowedMaxBalance() {
 
   const { data: tokenBalance } = useContractRead({
     enabled: !asset?.is_gas_token && wagmiConnected,
-    address: srcTokenAddress as string,
+    address: srcTokenAddress as `0x${string}`,
     abi: erc20ABI,
     chainId: srcChainId,
     functionName: "balanceOf",

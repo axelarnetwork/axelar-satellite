@@ -31,26 +31,6 @@ const Home: NextPage = () => {
   useNormalizeUrlPaths();
   useNormalizeChains();
 
-  function renderContent() {
-    if (UNDER_MAINTENANCE) {
-      return <UnderMaintenance />;
-    }
-
-    return (
-      <>
-        <div className="grid h-full grid-cols-1 gap-10 lg:grid-cols-1 justify-items-center lg:justify-items-stretch">
-          {ENVIRONMENT === "mainnet" && <FirstTimeWarning />}
-          <div
-            className="flex items-start justify-center"
-            style={{ paddingTop: "calc(50px + 10vh)" }}
-          >
-            {storeIsReady && <SwapBox />}
-          </div>
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       <PageSEO
@@ -62,7 +42,21 @@ const Home: NextPage = () => {
       <Layout>
         <VideoBackground />
 
-        {renderContent()}
+        {UNDER_MAINTENANCE ? (
+          <UnderMaintenance />
+        ) : (
+          <>
+            <div className="grid h-full grid-cols-1 gap-10 lg:grid-cols-1 justify-items-center lg:justify-items-stretch">
+              {ENVIRONMENT === "mainnet" && <FirstTimeWarning />}
+              <div
+                className="flex items-start justify-center"
+                style={{ paddingTop: "calc(50px + 10vh)" }}
+              >
+                {storeIsReady && <SwapBox />}
+              </div>
+            </div>
+          </>
+        )}
       </Layout>
     </>
   );

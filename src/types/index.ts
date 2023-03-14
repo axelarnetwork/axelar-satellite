@@ -33,6 +33,7 @@ export interface AssetConfigExtended extends AssetConfig {
       mintLimit: number;
     }
   >;
+  iconSrc?: string;
 }
 
 interface AssetInfoExtended extends AssetInfo {

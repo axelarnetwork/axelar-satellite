@@ -16,7 +16,7 @@ export const useSwitchSrcChain = () => {
   const setAsset = useSwapStore((state) => state.setAsset);
 
   return (chain: ChainInfo) => {
-    const selectedChain = allChains.find((_chain) => _chain.id === chain.id);
+    const selectedChain = allChains.find(({ id }) => id === chain.id);
     if (!selectedChain) {
       return;
     }

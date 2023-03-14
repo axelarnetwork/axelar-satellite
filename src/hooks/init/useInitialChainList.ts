@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ChainInfo, loadAssets } from "@axelar-network/axelarjs-sdk";
-import _ from "lodash";
+import { clone, uniqBy } from "rambda";
 import toast from "react-hot-toast";
 
 import {
@@ -62,7 +62,7 @@ export const useInitialChainList = () => {
 
   const loadData = useCallback(
     async (squidTokens: TokensWithExtendedChainData[]) => {
-      const assets = await loadInitialAssets();
+      const assets = await loadInitialAssets(squidTokens);
 
       const chains = await loadInitialChains(squidTokens);
 
@@ -111,7 +111,7 @@ export const useInitialChainList = () => {
     chains: ChainInfo[],
     squidTokens: TokensWithExtendedChainData[]
   ) {
-    const newChains: ChainInfoExtended[] = _.cloneDeep(chains);
+    const newChains: ChainInfoExtended[] = clone(chains);
 
     newChains.forEach((chain) => {
       const relevantSquidTokens = squidTokens.filter(
@@ -156,7 +156,7 @@ export const useInitialChainList = () => {
 
     const chainsWithUniqueAssets = chains.map((chain) => ({
       ...chain,
-      assets: _.uniqBy(chain.assets, (asset) => asset.assetSymbol),
+      assets: uniqBy((asset) => asset.assetSymbol, chain.assets),
     }));
 
     const uniqueChains = injectSquidAssetsIntoChains(
@@ -219,36 +219,38 @@ export const useInitialChainList = () => {
     };
   }
 
-  async function loadInitialAssets() {
+  async function loadInitialAssets(squidTokens: TokensWithExtendedChainData[]) {
     const assets = (await loadAssets({
       environment: ENVIRONMENT,
     })) as AssetConfigExtended[];
 
-    setAllAssets(assets);
+    const allAssets = [...assets];
+
+    setAllAssets(allAssets);
 
     const { asset_denom } = router.query as RouteQuery;
     // if asset not provided get default asset
     if (!asset_denom) {
-      const _asset = assets.find((asset) =>
+      const asset = allAssets.find((asset) =>
         asset?.common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
       );
-      if (!_asset) {
+      if (!asset) {
         return;
       }
-      setAsset(_asset);
+      setAsset(asset);
       return {
         assetDenom: DEFAULT_ASSET,
       };
     }
 
-    const assetFound = assets.find(({ common_key }) =>
+    const assetFound = allAssets.find(({ common_key }) =>
       common_key[ENVIRONMENT].includes(asset_denom)
     );
 
     if (assetFound) {
       setAsset(assetFound);
     } else {
-      const asset = assets.find(({ common_key }) =>
+      const asset = allAssets.find(({ common_key }) =>
         common_key[ENVIRONMENT].includes(DEFAULT_ASSET)
       );
 

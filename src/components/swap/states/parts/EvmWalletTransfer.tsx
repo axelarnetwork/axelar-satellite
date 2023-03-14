@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/legacy/image";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { BigNumber } from "bignumber.js";
-import cn from "classnames";
+import clsx from "clsx";
 import { utils } from "ethers";
 import toast from "react-hot-toast";
 import { SpinnerRoundFilled } from "spinners-react";
@@ -66,7 +66,7 @@ export const EvmWalletTransfer = () => {
 
   const { data: tokenAmount } = useContractRead({
     enabled: !!(srcTokenAddress && srcChainId) && !!srcTokenAddress,
-    address: srcTokenAddress as string,
+    address: srcTokenAddress as `0x${string}`,
     abi: erc20ABI,
     chainId: srcChainId,
     functionName: "balanceOf",
@@ -99,7 +99,7 @@ export const EvmWalletTransfer = () => {
       !!tokensToTransfer &&
       !asset?.is_gas_token,
     chainId: srcChainId, // call transfer on source chain
-    address: tokenAddress,
+    address: tokenAddress as `0x${string}`,
     abi: erc20ABI,
     functionName: "transfer",
     args: [
@@ -347,7 +347,7 @@ export const EvmWalletTransfer = () => {
           <div className="max-w-xs pb-4 mx-auto text-sm divider">OR</div>
           <div className="flex justify-center">
             <button
-              className={cn("mb-5 btn", {
+              className={clsx("mb-5 btn", {
                 loading: sendTxIsLoading || contractWriteIsLoading,
                 "btn-primary": chain?.id === srcChainId,
                 "btn-outline": chain?.id !== srcChainId,

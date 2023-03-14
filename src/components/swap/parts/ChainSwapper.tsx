@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/legacy/image";
+import clsx from "clsx";
 
 import { useSwapStore } from "~/store";
+
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 export const ChainSwapper = () => {
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -14,6 +17,8 @@ export const ChainSwapper = () => {
   const setDestChain = useSwapStore((state) => state.setDestChain);
   const setAsset = useSwapStore((state) => state.setAsset);
   const setInitialAsset = useSwapStore((state) => state.setInitialAsset);
+
+  const [flipped, setFlipped] = useState(false);
 
   /**
    * TODO: maybe move elsewhere to avoid logic scattering
@@ -30,6 +35,8 @@ export const ChainSwapper = () => {
   const updateQueryParamsAndSwitch = async () => {
     setDestChain(srcChain);
     setSrcChain(destChain);
+
+    setFlipped(!flipped);
 
     // if switching from a native token should choose the wrapped version
     if (
@@ -57,8 +64,8 @@ export const ChainSwapper = () => {
   return (
     <div className="relative z-40 flex items-center -mx-2">
       <div
-        onClick={updateQueryParamsAndSwitch}
         className="bg-gradient-to-b text-white h-10 w-10 p-[1px] rounded-xl cursor-pointer"
+        {...makeAccessibleKeysHandler(updateQueryParamsAndSwitch)}
       >
         <div className="flex justify-center items-center h-full w-full bg-[#398cc9] rounded-xl p-2.5">
           <div className="relative w-full h-full">
@@ -66,6 +73,9 @@ export const ChainSwapper = () => {
               layout="fill"
               src="/assets/ui/double-arrows.svg"
               alt="double-arrows"
+              className={clsx("transform transition-transform duration-300", {
+                "rotate-180": flipped,
+              })}
             />
           </div>
         </div>

@@ -17,7 +17,9 @@ export const moonbeam: ChainExtension = {
     },
   },
   rpcUrls: {
-    default: "https://rpc.api.moonbase.moonbeam.network",
+    default: {
+      http: ["https://rpc.api.moonbase.moonbeam.network"],
+    },
   },
   testnet: true,
 };

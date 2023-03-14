@@ -1,5 +1,5 @@
 import React from "react";
-import cn from "classnames";
+import clsx from "clsx";
 
 type ProgressBarType = {
   level: number;
@@ -11,7 +11,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
 }) => {
   return (
     <div
-      className={cn(
+      className={clsx(
         "grid items-center w-full mt-2 text-xs font-medium justify-items-center",
         {
           "grid-cols-5": numSteps === 3,
@@ -22,7 +22,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
       )}
     >
       <div
-        className={cn(
+        className={clsx(
           "flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc"
         )}
       >
@@ -33,7 +33,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
         value={level < 2 ? 0 : 1}
       />
       <div
-        className={cn(
+        className={clsx(
           "flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc",
           {
             "opacity-50": level < 2,
@@ -47,7 +47,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
         value={level < 3 ? 0 : 1}
       />
       <div
-        className={cn(
+        className={clsx(
           "flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc",
           {
             "opacity-50": level < 3,
@@ -64,7 +64,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
       )}
       {numSteps > 3 && (
         <div
-          className={cn(
+          className={clsx(
             "flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc",
             {
               "opacity-50": level < 4,

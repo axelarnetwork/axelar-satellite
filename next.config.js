@@ -11,6 +11,20 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    domains: [
+      "raw.githubusercontent.com",
+      "assets.coingecko.com",
+      "s2.coinmarketcap.com",
+      "tokens.pancakeswap.finance",
+      "assets-cdn.trustwallet.com",
+      "assets.spooky.fi",
+      "polygonscan.com",
+      "i.ibb.co",
+      "oceanprotocol.com",
+      "tokens.1inch.io",
+    ],
+  },
 };
 
 module.exports = nextConfig;

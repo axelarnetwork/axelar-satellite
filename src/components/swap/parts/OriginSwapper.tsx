@@ -1,5 +1,5 @@
 import React from "react";
-import cn from "classnames";
+import clsx from "clsx";
 
 import { useSwapStore } from "~/store";
 
@@ -21,7 +21,7 @@ export const OriginSwapper = () => {
     <div className="flex justify-center text-xs font-medium">
       <div className="relative flex items-center gap-x-3">
         <span
-          className={cn({
+          className={clsx({
             "text-white": swapOrigin === SwapOrigin.EXCHANGE,
             "text-gray-500": swapOrigin === SwapOrigin.APP,
           })}
@@ -35,7 +35,7 @@ export const OriginSwapper = () => {
           onChange={toggleSwapOrigin}
         />
         <span
-          className={cn({
+          className={clsx({
             "text-gray-500": swapOrigin === SwapOrigin.EXCHANGE,
             "text-white": swapOrigin === SwapOrigin.APP,
           })}
