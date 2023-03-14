@@ -3,6 +3,7 @@ import Image from "next/legacy/image";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useOnClickOutside } from "usehooks-ts";
 
+import { defaultChainImg } from "~/config/constants";
 import { InputWrapper } from "~/components/common";
 
 import { ChainsDropdown } from "~/features/dest-chain-selector/ChainsDropdown";
@@ -10,7 +11,6 @@ import { useChainFilter } from "~/features/dest-chain-selector/hooks";
 
 import { useSwapStore } from "~/store";
 
-import { defaultChainImg } from "~/config/constants";
 import { convertChainName } from "~/utils/transformers";
 
 // TODO: abstract the state into a zustand destChainStore
@@ -49,11 +49,7 @@ export const DestChainSelector = () => {
       <div ref={ref}>
         <label className="block text-xs">To</label>
         <div className="static w-full mt-1 dropdown dropdown-open">
-          <div
-            className="w-full"
-            tabIndex={0}
-            onClick={() => setDropdownOpen(true)}
-          >
+          <button className="w-full" onClick={() => setDropdownOpen(true)}>
             <div className="flex items-center justify-between space-x-2 text-lg font-medium cursor-pointer">
               <div className="flex items-center gap-x-2">
                 <Image
@@ -83,7 +79,7 @@ export const DestChainSelector = () => {
                 />
               </div>
             </div>
-          </div>
+          </button>
           <ChainsDropdown
             dropdownOpen={dropdownOpen}
             filteredChains={filteredChains}

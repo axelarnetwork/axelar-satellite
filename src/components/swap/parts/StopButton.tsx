@@ -18,12 +18,12 @@ export const StopButton = () => {
   }
 
   return (
-    <div
-      onClick={handleOnClick}
+    <button
       className="relative tooltip px-2 py-1 rounded-lg border border-[#00a7ff] bg-[#003556] text-[#00a7ff] text-xs cursor-pointer font-semibold"
       data-tip="Refresh and make another transfer"
+      onClick={handleOnClick}
     >
       Start Over
-    </div>
+    </button>
   );
 };

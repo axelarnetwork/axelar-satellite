@@ -1,5 +1,6 @@
 import React from "react";
 import BigNumber from "bignumber.js";
+import { pick } from "rambda";
 import toast from "react-hot-toast";
 
 import { ENVIRONMENT, RESERVED_ADDRESSES } from "~/config/constants";
@@ -31,7 +32,16 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
     asset,
     setSwapStatus,
     tokensToTransfer,
-  } = useSwapStore((state) => state);
+  } = useSwapStore(
+    pick([
+      "srcChain",
+      "destChain",
+      "destAddress",
+      "asset",
+      "setSwapStatus",
+      "tokensToTransfer",
+    ])
+  );
 
   const reservedAddresses = useSwapStore(getReservedAddresses);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
@@ -49,7 +59,7 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
   }
 
   async function handleOnGenerateDepositAddress() {
-    if ((srcChain as any).id === "terra") {
+    if (srcChain.id === "terra") {
       return toast.error(
         "Only the transfers to Terra Classic are allowed for uluna and uusd"
       );
@@ -132,13 +142,13 @@ export const GenerateDepositAddressButton: React.FC<Props> = ({
   }
 
   return (
-    <div
+    <button
       className="w-full btn btn-primary"
       onClick={handleOnGenerateDepositAddress}
     >
       <div className="flex items-center gap-3">
         <span>Generate Deposit Address</span>
       </div>
-    </div>
+    </button>
   );
 };

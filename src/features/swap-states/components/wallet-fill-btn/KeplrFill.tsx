@@ -38,13 +38,7 @@ export const KeplrFill = () => {
     }
     const address = await keplr?.getKey(destCosmosChain.chainId);
     setDestAddress(address?.bech32Address as string);
-  }, [
-    keplr,
-    keplrConnected,
-    destCosmosChain,
-    setDestAddress,
-    setKeplrConnected,
-  ]);
+  }, [keplr, destCosmosChain, setDestAddress, setKeplrConnected]);
 
   if (
     destChain.module !== "axelarnet" ||

@@ -30,7 +30,7 @@ export const useGetAssetBalance = () => {
 
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState<string>("0");
-  // const [keplrBalance, setKeplrStateBalance] = useState<string>("0");
+
   const [terraStationBalance, setTerraStationBalance] = useState<string | null>(
     "0"
   );
@@ -242,11 +242,17 @@ const useGetKeplerBalance = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState("0");
 
-  useEffect(() => {
-    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
-    setIsLoading(true);
-    updateBalance().finally(() => setIsLoading(false));
-  }, [srcChain, swapStatus, asset, keplrConnected]);
+  useEffect(
+    () => {
+      if (srcChain.module !== "axelarnet" || !keplrConnected) {
+        return;
+      }
+      setIsLoading(true);
+      updateBalance().finally(() => setIsLoading(false));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [srcChain, swapStatus, asset, keplrConnected]
+  );
 
   async function updateBalance() {
     const cosmosChains = getCosmosChains(allAssets);

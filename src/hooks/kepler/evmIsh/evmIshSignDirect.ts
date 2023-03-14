@@ -67,8 +67,6 @@ export const evmIshSignDirect = async (
   }
   console.log("fetch sender results", fetchSenderResults);
 
-  debugger;
-
   const fee = {
     amount: "20",
     denom: keplrConfig.feeCurrencies[0].coinMinimalDenom,

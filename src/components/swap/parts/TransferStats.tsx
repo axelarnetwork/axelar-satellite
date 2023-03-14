@@ -96,8 +96,12 @@ export const TransferStats = () => {
   }
 
   function renderDepositAddress() {
-    if (swapStatus === SwapStatus.IDLE) return null;
-    if (!depositAddress) return null;
+    if (swapStatus === SwapStatus.IDLE) {
+      return null;
+    }
+    if (!depositAddress) {
+      return null;
+    }
     const showDepositAddress = showDepositAddressCondition({ srcChain, asset });
     return (
       <li className="flex justify-between">
@@ -110,19 +114,19 @@ export const TransferStats = () => {
         >
           Axelar Deposit Address:
         </span>
-        <div className="flex font-bold gap-x-2">
-          <AddressShortener value={depositAddress} />
-          <div
-            className="cursor-pointer"
-            onClick={() =>
-              showDepositAddress && copyToClipboard(depositAddress)
-            }
-          >
-            {showDepositAddress && (
-              <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
-            )}
+        {showDepositAddress && (
+          <div className="flex font-bold gap-x-2">
+            <AddressShortener value={depositAddress} />
+            <button onClick={copyToClipboard.bind(null, depositAddress)}>
+              <Image
+                src={"/assets/ui/copy.svg"}
+                height={16}
+                width={16}
+                alt="copy icon"
+              />
+            </button>
           </div>
-        </div>
+        )}
       </li>
     );
   }
@@ -159,9 +163,9 @@ export const TransferStats = () => {
 
         <span className="flex font-bold gap-x-2">
           <AddressShortener value={intermediaryDepositAddress} />
-          <div
+          <button
             className="cursor-pointer"
-            onClick={() => copyToClipboard(intermediaryDepositAddress)}
+            onClick={copyToClipboard.bind(null, intermediaryDepositAddress)}
           >
             <Image
               src={"/assets/ui/copy.svg"}
@@ -169,7 +173,7 @@ export const TransferStats = () => {
               width={16}
               alt="copy"
             />
-          </div>
+          </button>
         </span>
       </li>
     );
@@ -181,21 +185,18 @@ export const TransferStats = () => {
     }
     return (
       <li className="flex justify-between">
-        <span>Destination Address:</span>
-        <span className="flex font-bold gap-x-2">
+        <label>Destination Address:</label>
+        <div className="flex font-bold gap-x-2">
           <AddressShortener value={destAddress} />
-          <div
-            className="cursor-pointer"
-            onClick={() => copyToClipboard(destAddress)}
-          >
+          <button onClick={copyToClipboard.bind(null, destAddress)}>
             <Image
               src={"/assets/ui/copy.svg"}
               height={16}
               width={16}
               alt="copy"
             />
-          </div>
-        </span>
+          </button>
+        </div>
       </li>
     );
   }
@@ -240,7 +241,7 @@ export const TransferStats = () => {
   }
 
   function renderPoolInfo() {
-    if ((asset as any)?.id === "uusdc") {
+    if (asset?.id === "uusdc") {
       const chainName = destChain?.chainName?.toLowerCase();
       const pool = USDC_POOLS[chainName];
       const pair = pool?.pairs[0];
