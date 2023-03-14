@@ -12,6 +12,7 @@ import { InputWrapper } from "~/components/common";
 import { getSrcChainId, useSquidStateStore, useSwapStore } from "~/store";
 
 import { squid } from "~/squid.config";
+import { ChainInfoExtended } from "~/types";
 import { SwapStatus } from "~/utils/enums";
 
 import { ProgressBar } from "../components";
@@ -40,39 +41,63 @@ export const SquidStates = () => {
   );
   const [statusText, setStatusText] = useState("");
 
-  useEffect(() => {
-    let prog = SquidSwapStatus.WAIT_SRC_CHAIN;
-    let txt = `Waiting for your transaction on ${srcChain.chainName}...`;
-    if (statusResponse?.status && progress < 4) {
-      console.log("02.SquidStates", statusResponse.status);
-      switch (statusResponse.status) {
+  const getPropgress = (ctx: {
+    destChain: ChainInfoExtended;
+    progress: SquidSwapStatus;
+    srcChain: ChainInfoExtended;
+    statusResponse: StatusResponse | null;
+  }) => {
+    if (ctx.statusResponse?.status && ctx.progress < 4) {
+      switch (ctx.statusResponse.status) {
         case GMPStatus.SRC_GATEWAY_CALLED: {
-          txt = `Transaction on ${srcChain.chainName} detected`;
-          prog = SquidSwapStatus.SRC_GATEWAY_CALLED;
-          break;
+          return {
+            nextProgress: SquidSwapStatus.SRC_GATEWAY_CALLED,
+            txt: `Transaction on ${ctx.srcChain.chainName} detected`,
+          };
         }
         case GMPStatus.DEST_EXECUTING: {
-          txt = `Arrived on ${destChain.chainName}. Awaiting final execution...`;
-          prog = SquidSwapStatus.DEST_EXECUTING;
-          break;
+          return {
+            nextProgress: SquidSwapStatus.DEST_EXECUTING,
+            txt: `Arrived on ${ctx.destChain.chainName}. Awaiting final execution...`,
+          };
         }
         case GMPStatus.DEST_EXECUTED: {
-          txt = "Swap complete!";
-          prog = SquidSwapStatus.DEST_EXECUTED;
-          setSwapStatus(SwapStatus.SQUID_FINISHED);
-          break;
+          return {
+            nextProgress: SquidSwapStatus.DEST_EXECUTED,
+            txt: "Swap complete!",
+            nextStatus: SwapStatus.SQUID_FINISHED,
+          };
         }
         case "express_executed": {
-          txt = "Swap complete!";
-          prog = SquidSwapStatus.DEST_EXECUTED;
-          setSwapStatus(SwapStatus.SQUID_FINISHED);
-          break;
+          return {
+            nextProgress: SquidSwapStatus.DEST_EXECUTED,
+            txt: "Swap complete!",
+            nextStatus: SwapStatus.SQUID_FINISHED,
+          };
         }
-        default:
       }
     }
-    setProgress(prog);
-    setStatusText(txt);
+
+    return {
+      prog: SquidSwapStatus.WAIT_SRC_CHAIN,
+      txt: `Waiting for your transaction on ${ctx.srcChain.chainName}...`,
+    };
+  };
+
+  useEffect(() => {
+    setProgress((progress) => {
+      const { prog, txt, nextStatus } = getPropgress({
+        destChain,
+        srcChain,
+        statusResponse,
+        progress,
+      });
+      if (nextStatus) {
+        setSwapStatus(nextStatus);
+      }
+      setStatusText(txt);
+      return prog ?? progress;
+    });
   }, [destChain, setSwapStatus, statusResponse, srcChain]);
 
   useWaitForTransaction({
