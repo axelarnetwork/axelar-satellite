@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
+import { makeAccessibleKeysHandler } from "~/utils/react";
+
 export const FirstTimeWarning = () => {
   const [hasMounted, setHasMounted] = useState(false);
   const [showFirstTimeWarning, setShowFirstTimeWarning] = useLocalStorage(
@@ -20,12 +22,12 @@ export const FirstTimeWarning = () => {
   return (
     <div className="fixed z-50 w-full max-w-screen-md bottom-10 left-10">
       <div className="relative block w-7/12 p-4 shadow-lg alert bg-base-100/50 backdrop-blur-lg">
-        <label
+        <button
           className="absolute btn btn-sm btn-circle right-2 top-2"
           onClick={() => setShowFirstTimeWarning(false)}
         >
           ✕
-        </label>
+        </button>
         <div>
           <div>
             <h3 className="mb-2 text-lg font-bold">New to Satellite?</h3>
@@ -41,7 +43,9 @@ export const FirstTimeWarning = () => {
             href="https://testnet.satellite.money"
             rel="noopener noreferrer"
             target="_blank"
-            onClick={() => setShowFirstTimeWarning(false)}
+            {...makeAccessibleKeysHandler(
+              setShowFirstTimeWarning.bind(null, false)
+            )}
           >
             Go to testnet
           </a>

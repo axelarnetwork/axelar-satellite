@@ -8,6 +8,7 @@ import { useSwapStore } from "~/store";
 
 import { AssetConfigExtended } from "~/types";
 import { SwapStatus } from "~/utils/enums";
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 export const Arrow = () => (
   <svg
@@ -47,16 +48,12 @@ export const TopFlows = () => {
     swapStatus,
   } = useSwapStore();
   const [menuOpened, setMenuOpened] = useState(false);
-  const menu = useRef(null);
+  const menu = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = document;
     if (!menuOpened) {
-      (el?.activeElement as any)?.blur();
-    } else if (
-      menuOpened &&
-      !(menu?.current as any)?.contains(el.activeElement)
-    ) {
+      (document?.activeElement as HTMLElement)?.blur();
+    } else if (menuOpened && !menu?.current?.contains(document.activeElement)) {
       setMenuOpened(false);
     }
   }, [menuOpened]);
@@ -135,22 +132,21 @@ export const TopFlows = () => {
 
   return (
     <div ref={menu} className="dropdown dropdown-end">
-      <label
-        tabIndex={0}
+      <button
         onBlur={(e) => setMenuOpened(false)}
         className="px-3 py-1 rounded-lg border border-[#00a7ff] bg-[#003556] text-[#00a7ff] text-xs cursor-pointer font-semibold"
         onClick={(e) => setMenuOpened(menuOpened)}
       >
         Top Flows
-      </label>
+      </button>
       <ul
         tabIndex={0}
         className="z-50 p-2 shadow-lg gap-y-2 dropdown-content menu bg-neutral rounded-box w-52 top-8"
         onFocus={(e) => setMenuOpened(true)}
       >
         <li
-          onClick={handleOnFlow0}
           className="border rounded-lg border-[#00b0f4]"
+          {...makeAccessibleKeysHandler(handleOnFlow0)}
         >
           <div className="flex">
             <Image
@@ -179,8 +175,8 @@ export const TopFlows = () => {
           </div>
         </li>
         <li
-          onClick={handleOnFlow1}
           className="border rounded-lg border-[#00b0f4]"
+          {...makeAccessibleKeysHandler(handleOnFlow1)}
         >
           <div className="flex">
             <Image
@@ -209,8 +205,8 @@ export const TopFlows = () => {
           </div>
         </li>
         <li
-          onClick={handleOnFlow2}
           className="border rounded-lg border-[#00b0f4]"
+          {...makeAccessibleKeysHandler(handleOnFlow2)}
         >
           <div className="flex">
             <Image
@@ -240,8 +236,8 @@ export const TopFlows = () => {
         </li>
 
         <li
-          onClick={handleOnFlow3}
           className="border rounded-lg border-[#00b0f4]"
+          {...makeAccessibleKeysHandler(handleOnFlow3)}
         >
           <div className="flex">
             <Image

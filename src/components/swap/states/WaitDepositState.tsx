@@ -79,21 +79,21 @@ export const WaitDepositState = () => {
                   </label>
                   <div className="flex justify-center font-bold text-info gap-x-2">
                     <AddressShortener value={depositAddress} />
-                    <div
-                      className="cursor-pointer"
-                      onClick={() =>
-                        showDepositAddress && copyToClipboard(depositAddress)
-                      }
-                    >
-                      {" "}
-                      {showDepositAddress && (
+                    {showDepositAddress && (
+                      <button
+                        className="cursor-pointer"
+                        onClick={() =>
+                          showDepositAddress && copyToClipboard(depositAddress)
+                        }
+                      >
                         <Image
                           src={"/assets/ui/copy.svg"}
                           height={16}
                           width={16}
+                          alt="copy icon"
                         />
-                      )}
-                    </div>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

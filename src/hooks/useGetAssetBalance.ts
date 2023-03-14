@@ -243,7 +243,9 @@ const useGetKeplerBalance = () => {
   const [balance, setBalance] = useState("0");
 
   useEffect(() => {
-    if (srcChain.module !== "axelarnet" || !keplrConnected) return;
+    if (srcChain.module !== "axelarnet" || !keplrConnected) {
+      return;
+    }
     setIsLoading(true);
     updateBalance().finally(() => setIsLoading(false));
   }, [srcChain, swapStatus, asset, keplrConnected]);

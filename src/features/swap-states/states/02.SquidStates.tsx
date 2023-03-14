@@ -93,9 +93,15 @@ export const SquidStates = () => {
 
   usePoll(
     () => {
-      if (!txReceipt) return;
-      if (!routeData) return;
-      if (progress === SquidSwapStatus.DEST_EXECUTED) return;
+      if (!txReceipt) {
+        return;
+      }
+      if (!routeData) {
+        return;
+      }
+      if (progress === SquidSwapStatus.DEST_EXECUTED) {
+        return;
+      }
 
       const getStatusParams = {
         transactionId: txReceipt.transactionHash,
@@ -117,7 +123,9 @@ export const SquidStates = () => {
   }
 
   const getStatus = () => {
-    if (progress !== SquidSwapStatus.SRC_GATEWAY_CALLED) return;
+    if (progress !== SquidSwapStatus.SRC_GATEWAY_CALLED) {
+      return;
+    }
     if (
       ENVIRONMENT === "mainnet" &&
       srcChain.chainName?.toLowerCase() === "ethereum"
