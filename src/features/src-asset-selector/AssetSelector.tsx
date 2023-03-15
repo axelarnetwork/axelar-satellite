@@ -53,18 +53,34 @@ export const AssetSelector = () => {
                 {...makeAccessibleKeysHandler(setDropdownOpen.bind(null, true))}
               >
                 <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
-                  <Image
-                    loading="eager"
-                    src={`/assets/tokens/${asset?.id}.logo.svg`}
-                    layout="intrinsic"
-                    width={30}
-                    height={30}
-                    alt="asset"
-                    onError={(e) => {
-                      e.currentTarget.src = defaultAssetImg;
-                      e.currentTarget.srcset = defaultAssetImg;
-                    }}
-                  />
+                  {asset?.iconSrc ? (
+                    <Image
+                      loading="eager"
+                      src={asset?.iconSrc}
+                      layout="intrinsic"
+                      width={30}
+                      height={30}
+                      alt="asset"
+                      onError={(e) => {
+                        e.currentTarget.src = defaultAssetImg;
+                        e.currentTarget.srcset = defaultAssetImg;
+                      }}
+                      className="rounded-full h-[30px] w-[30px] overflow-hidden"
+                    />
+                  ) : (
+                    <Image
+                      loading="eager"
+                      src={`/assets/tokens/${asset?.id}.logo.svg`}
+                      layout="intrinsic"
+                      width={30}
+                      height={30}
+                      alt="asset"
+                      onError={(e) => {
+                        e.currentTarget.src = defaultAssetImg;
+                        e.currentTarget.srcset = defaultAssetImg;
+                      }}
+                    />
+                  )}
                   <span>{selectedAssetName || "Select an Asset"}</span>
                   <div className="flex items-center">
                     <Image

@@ -1,6 +1,7 @@
 import {
   AssetConfig,
   AssetInfo,
+  AssetInfoForChain,
   ChainInfo,
 } from "@axelar-network/axelarjs-sdk";
 
@@ -14,13 +15,16 @@ export type RouteQuery = {
 
 export type Hash = `0x${string}`;
 
-export type AssetAlias = {
-  assetSymbol: string;
-  assetName: string;
-  minDepositAmt: number;
-  ibcDenom: string;
-  fullDenomPath: string;
-  tokenAddress: string;
+export type AssetAlias = Pick<
+  AssetInfoForChain,
+  | "assetSymbol"
+  | "assetName"
+  | "minDepositAmt"
+  | "tokenAddress"
+  | "ibcDenom"
+  | "fullDenomPath"
+  | "common_key"
+> & {
   mintLimit: number;
   iconSrc?: string;
 };

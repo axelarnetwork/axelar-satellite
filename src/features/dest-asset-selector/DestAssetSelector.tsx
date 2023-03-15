@@ -21,7 +21,7 @@ import {
   useSwapStore,
 } from "~/store";
 
-import { AssetConfigExtended } from "~/types";
+import { AssetAlias, AssetConfigExtended } from "~/types";
 
 import {
   AddDestAssetButton,
@@ -95,7 +95,7 @@ export const DestAssetSelector = ({
         fromChain: squidChains.find(
           (c) => c.chainName.toLowerCase() === srcChain.id
         )?.chainId as string | number,
-        fromToken,
+        fromToken: String(fromToken),
         fromAmount: parseUnits(tokensToTransfer, srcAsset.decimals).toString(),
         toChain: squidChains.find(
           (c) => c.chainName.toLowerCase() === destChain.id
@@ -187,7 +187,7 @@ export const DestAssetSelector = ({
     setRouteData(null);
   };
 
-  const handleSquidSelect = (asset: AssetInfo) => {
+  const handleSquidSelect = (asset: AssetAlias) => {
     setShouldUnwrapAsset(false);
     setSelectedAssetSymbol(asset.assetSymbol);
     setSelectedSquidAsset(asset);
@@ -346,9 +346,7 @@ export const DestAssetSelector = ({
                   {selectedSquidAsset?.iconSrc ? (
                     <Image
                       loading="eager"
-                      src={`/assets/tokens/${
-                        selectedSquidAsset?.common_key || dynamicNativeTokenLogo
-                      }.logo.svg`}
+                      src={selectedSquidAsset?.iconSrc}
                       layout="intrinsic"
                       width={30}
                       height={30}
