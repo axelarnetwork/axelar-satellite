@@ -343,20 +343,37 @@ export const DestAssetSelector = ({
             <div className="static flex justify-between w-full mt-1 dropdown dropdown-open">
               <button tabIndex={0} onClick={() => setDropdownOpen(true)}>
                 <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
-                  <Image
-                    loading="eager"
-                    src={`/assets/tokens/${
-                      selectedSquidAsset?.common_key || dynamicNativeTokenLogo
-                    }.logo.svg`}
-                    layout="intrinsic"
-                    width={30}
-                    height={30}
-                    alt="asset"
-                    onError={(e) => {
-                      e.currentTarget.src = defaultAssetImg;
-                      e.currentTarget.srcset = defaultAssetImg;
-                    }}
-                  />
+                  {selectedSquidAsset?.iconSrc ? (
+                    <Image
+                      loading="eager"
+                      src={`/assets/tokens/${
+                        selectedSquidAsset?.common_key || dynamicNativeTokenLogo
+                      }.logo.svg`}
+                      layout="intrinsic"
+                      width={30}
+                      height={30}
+                      alt="asset"
+                      onError={(e) => {
+                        e.currentTarget.src = defaultAssetImg;
+                        e.currentTarget.srcset = defaultAssetImg;
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      loading="eager"
+                      src={`/assets/tokens/${
+                        selectedSquidAsset?.common_key || dynamicNativeTokenLogo
+                      }.logo.svg`}
+                      layout="intrinsic"
+                      width={30}
+                      height={30}
+                      alt="asset"
+                      onError={(e) => {
+                        e.currentTarget.src = defaultAssetImg;
+                        e.currentTarget.srcset = defaultAssetImg;
+                      }}
+                    />
+                  )}
                   <span>{selectedAssetSymbol}</span>
                   <div className="flex items-center">
                     <Image

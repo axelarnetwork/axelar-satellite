@@ -36,7 +36,11 @@ export const SwapBox = () => {
     const destChainName = destChain.chainName.toLowerCase();
 
     return allAssets.filter(
-      (asset) => asset.isSquidAsset && destChainName in asset.chain_aliases
+      (asset) =>
+        asset.isSquidAsset &&
+        destChainName in asset.chain_aliases &&
+        // arbitrary check to make sure the asset has a valid icon, meaning it was injected
+        asset.iconSrc
     );
   }, [allAssets, destChain.chainName]);
 

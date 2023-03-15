@@ -22,6 +22,7 @@ export type AssetAlias = {
   fullDenomPath: string;
   tokenAddress: string;
   mintLimit: number;
+  iconSrc?: string;
 };
 
 export interface AssetConfigExtended extends AssetConfig {

@@ -257,6 +257,7 @@ export const useInitialChainList = () => {
         minDepositAmt: 0.1,
         fullDenomPath: token.coingeckoId,
         ibcDenom: token.coingeckoId,
+        iconSrc: token.logoURI,
       };
       const chainName = token.chainName.toLowerCase();
 
