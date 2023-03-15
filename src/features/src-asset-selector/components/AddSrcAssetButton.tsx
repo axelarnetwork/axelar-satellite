@@ -83,7 +83,7 @@ export const AddSrcAssetButton = () => {
     <div
       className=" dropdown tooltip tooltip-warning dropdown-end"
       data-tip={`Add ${
-        asset?.chain_aliases[srcChain.chainName.toLowerCase()].assetSymbol
+        asset?.chain_aliases[srcChain.chainName.toLowerCase()]?.assetSymbol
       } to Metamask`}
     >
       <label

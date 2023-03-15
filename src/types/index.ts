@@ -14,24 +14,27 @@ export type RouteQuery = {
 
 export type Hash = `0x${string}`;
 
+export type AssetAlias = {
+  assetSymbol: string;
+  assetName: string;
+  minDepositAmt: number;
+  ibcDenom: string;
+  fullDenomPath: string;
+  tokenAddress: string;
+  mintLimit: number;
+};
+
 export interface AssetConfigExtended extends AssetConfig {
   id: string;
   native_chain: string;
   wrapped_erc20: string;
   is_gas_token: boolean;
   isSquidAsset: boolean;
+  isSquidOnlyAsset?: boolean;
   chain_aliases: Record<
     // this overwrites the AssetInfo in the sdk because the sdk does not have all the values eg: mintLimit
     string,
-    {
-      assetSymbol: string;
-      assetName: string;
-      minDepositAmt: number;
-      ibcDenom: string;
-      fullDenomPath: string;
-      tokenAddress: string;
-      mintLimit: number;
-    }
+    AssetAlias
   >;
   iconSrc?: string;
 }

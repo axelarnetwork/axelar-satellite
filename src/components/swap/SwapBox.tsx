@@ -29,20 +29,16 @@ export const SwapBox = () => {
   useDetectDepositConfirmation();
   useRestrictAssets();
 
-  const { destChain, asset, srcChain } = useSwapStore((state) => state);
+  const { destChain, srcChain, allAssets } = useSwapStore((state) => state);
   const isSquidAsset = useSquidStateStore((state) => state.isSquidTrade);
 
   const squidAssets = useMemo(() => {
     const destChainName = destChain.chainName.toLowerCase();
 
-    return destChain.assets
-      .filter((assetInfo) => assetInfo.isSquidAsset)
-      .filter(
-        (assetInfo) =>
-          assetInfo.tokenAddress?.toLowerCase() !==
-          asset?.chain_aliases[destChainName].tokenAddress.toLowerCase()
-      );
-  }, [asset?.chain_aliases, destChain.assets, destChain.chainName]);
+    return allAssets.filter(
+      (asset) => asset.isSquidAsset && destChainName in asset.chain_aliases
+    );
+  }, [allAssets, destChain.chainName]);
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">

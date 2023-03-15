@@ -1,7 +1,11 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
-import { ChainInfo, loadAssets } from "@axelar-network/axelarjs-sdk";
-import { clone, uniqBy } from "rambda";
+import {
+  AssetConfig,
+  ChainInfo,
+  loadAssets,
+} from "@axelar-network/axelarjs-sdk";
+import { clone, compose, prop, toLower, uniq, uniqBy } from "rambda";
 import toast from "react-hot-toast";
 
 import {
@@ -16,7 +20,12 @@ import {
 
 import { TokensWithExtendedChainData, useSwapStore } from "~/store";
 
-import { AssetConfigExtended, ChainInfoExtended, RouteQuery } from "~/types";
+import {
+  AssetAlias,
+  AssetConfigExtended,
+  ChainInfoExtended,
+  RouteQuery,
+} from "~/types";
 import { loadAllChains } from "~/utils/api";
 
 import { useSquidList } from "./useSquidList";
@@ -111,39 +120,43 @@ export const useInitialChainList = () => {
     chains: ChainInfo[],
     squidTokens: TokensWithExtendedChainData[]
   ) {
-    const newChains: ChainInfoExtended[] = clone(chains);
-
-    newChains.forEach((chain) => {
+    return chains.map((baseChain) => {
+      const chain = baseChain as ChainInfoExtended;
       const relevantSquidTokens = squidTokens.filter(
         (t) => t.chainName.toLowerCase() === chain.id
       );
-      relevantSquidTokens.forEach((t) => {
-        let asset = chain.assets.find(
-          (a) =>
-            a.tokenAddress?.toLowerCase() === t.address.toLowerCase() &&
-            !NATIVE_ASSET_IDS.includes(a.common_key as string)
-        );
-        //maybe native asset?
-        if (!asset) {
-          asset = chain.assets.find(
+
+      if (!relevantSquidTokens.length) {
+        return chain;
+      }
+
+      for (const squidToken of relevantSquidTokens) {
+        const asset =
+          // try to find chain asset by address
+          chain.assets.find(
+            (a) =>
+              a.tokenAddress?.toLowerCase() ===
+                squidToken.address.toLowerCase() &&
+              !NATIVE_ASSET_IDS.includes(a.common_key as string)
+          ) ??
+          // try to find chain asset by symbol
+          chain.assets.find(
             (a) =>
               NATIVE_ASSET_IDS.includes(
                 a.assetSymbol?.toLowerCase() as string
-              ) && t.address === ARBITRARY_EVM_ADDRESS
+              ) && squidToken.address === ARBITRARY_EVM_ADDRESS
           );
-        }
+
         if (asset) {
           asset.isSquidAsset = true;
         }
-      });
-
-      // only add squid assets if there are any
-      if (relevantSquidTokens.length) {
-        chain.squidAssets = relevantSquidTokens;
       }
-    });
 
-    return newChains;
+      return {
+        ...chain,
+        squidAssets: relevantSquidTokens,
+      };
+    });
   }
 
   async function loadInitialChains(squidTokens: TokensWithExtendedChainData[]) {
@@ -219,12 +232,75 @@ export const useInitialChainList = () => {
     };
   }
 
-  async function loadInitialAssets(squidTokens: TokensWithExtendedChainData[]) {
-    const assets = (await loadAssets({
-      environment: ENVIRONMENT,
-    })) as AssetConfigExtended[];
+  function injectSquidAssets(
+    allAssets: AssetConfig[],
+    squidTokens: TokensWithExtendedChainData[]
+  ) {
+    const result = clone(allAssets) as AssetConfigExtended[];
 
-    const allAssets = [...assets];
+    for (const token of squidTokens) {
+      const existingAsset = result.find((asset) => {
+        const aliases = uniq(
+          Object.values(asset.chain_aliases).map(
+            compose(toLower, prop("assetSymbol"))
+          )
+        );
+
+        return aliases.includes(token.symbol.toLowerCase());
+      });
+
+      const newAlias: AssetAlias = {
+        assetName: token.name,
+        assetSymbol: token.symbol,
+        tokenAddress: token.address,
+        mintLimit: 0,
+        minDepositAmt: 0.1,
+        fullDenomPath: token.coingeckoId,
+        ibcDenom: token.coingeckoId,
+      };
+      const chainName = token.chainName.toLowerCase();
+
+      if (existingAsset) {
+        if (!existingAsset.isSquidAsset) {
+          existingAsset.isSquidAsset = true;
+        }
+
+        if (!(chainName in existingAsset.chain_aliases)) {
+          existingAsset.chain_aliases[chainName] = newAlias;
+        }
+      } else {
+        const assetId = token.coingeckoId || token.symbol.toLocaleLowerCase();
+        const newAsset: AssetConfigExtended = {
+          id: assetId,
+          common_key: {
+            [ENVIRONMENT]: assetId,
+          },
+          chain_aliases: {
+            [chainName]: newAlias,
+          },
+          isSquidAsset: true,
+          isSquidOnlyAsset: true,
+          is_gas_token: false,
+          wrapped_erc20: "",
+          fully_supported: true,
+          decimals: token.decimals,
+          iconSrc: token.logoURI,
+          native_chain: chainName,
+        };
+
+        result.push(newAsset);
+      }
+    }
+
+    return result;
+  }
+
+  async function loadInitialAssets(squidTokens: TokensWithExtendedChainData[]) {
+    const assets = await loadAssets({
+      environment: ENVIRONMENT,
+    });
+
+    const allAssets = injectSquidAssets(assets, squidTokens);
 
     setAllAssets(allAssets);
 

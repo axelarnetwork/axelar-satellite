@@ -21,6 +21,8 @@ import {
   useSwapStore,
 } from "~/store";
 
+import { AssetConfigExtended } from "~/types";
+
 import {
   AddDestAssetButton,
   ReceiveTokenInfo,
@@ -33,7 +35,7 @@ const defaultAssetImg = "/assets/tokens/default.logo.svg";
 export const DestAssetSelector = ({
   squidAssets,
 }: {
-  squidAssets: AssetInfo[];
+  squidAssets: AssetConfigExtended[];
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -212,8 +214,9 @@ export const DestAssetSelector = ({
     const shouldRenderSquidAssets =
       srcIsSquidAsset && destChain.module === "evm";
 
-    const assetSymbol =
-      srcAsset?.chain_aliases[destChain.chainName.toLowerCase()].assetSymbol;
+    const destChainName = destChain.chainName.toLowerCase();
+
+    const assetSymbol = srcAsset?.chain_aliases[destChainName]?.assetSymbol;
 
     return (
       <div className="left-0 w-full p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral max-h-80">
@@ -239,7 +242,7 @@ export const DestAssetSelector = ({
               <span>
                 {
                   srcAsset?.chain_aliases[destChain.chainName.toLowerCase()]
-                    .assetSymbol
+                    ?.assetSymbol
                 }
               </span>
             </button>
@@ -264,23 +267,45 @@ export const DestAssetSelector = ({
             </li>
           )}
           {shouldRenderSquidAssets &&
-            squidAssets.map((t) => (
-              <li key={`squid_token_${t.tokenAddress}${t.assetSymbol}`}>
-                <button onClick={() => handleSquidSelect(t)}>
-                  <Image
-                    loading="eager"
-                    src={`/assets/tokens/${t.common_key}.logo.svg`}
-                    layout="intrinsic"
-                    width={35}
-                    height={35}
-                    onError={(e) => {
-                      e.currentTarget.src = defaultAssetImg;
-                      e.currentTarget.srcset = defaultAssetImg;
-                    }}
-                    alt="asset"
-                  />
+            squidAssets.map((squidAsset) => (
+              <li key={`squid_token_${squidAsset.id}`}>
+                <button
+                  onClick={() =>
+                    handleSquidSelect(squidAsset.chain_aliases[destChainName])
+                  }
+                >
+                  {squidAsset.iconSrc ? (
+                    <Image
+                      loading="eager"
+                      src={squidAsset.iconSrc}
+                      layout="intrinsic"
+                      width={35}
+                      height={35}
+                      onError={(e) => {
+                        e.currentTarget.src = defaultAssetImg;
+                        e.currentTarget.srcset = defaultAssetImg;
+                      }}
+                      alt="asset"
+                      className="rounded-full h-[35px] w-[35px] overflow-hidden"
+                    />
+                  ) : (
+                    <Image
+                      loading="eager"
+                      src={`/assets/tokens/${squidAsset.common_key}.logo.svg`}
+                      layout="intrinsic"
+                      width={35}
+                      height={35}
+                      onError={(e) => {
+                        e.currentTarget.src = defaultAssetImg;
+                        e.currentTarget.srcset = defaultAssetImg;
+                      }}
+                      alt="asset"
+                    />
+                  )}
                   <div className="flex justify-between w-full">
-                    <span>{t.assetSymbol}</span>
+                    <span>
+                      {squidAsset.chain_aliases[destChainName]?.assetSymbol}
+                    </span>
                     <div className="text-xs text-slate-400 text-end">
                       Swap via Squid
                     </div>

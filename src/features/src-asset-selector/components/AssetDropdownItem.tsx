@@ -60,18 +60,34 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
         className={clsx("relative flex flex-row justify-between", { disabled })}
       >
         <div className="flex items-center gap-x-4">
-          <Image
-            loading="eager"
-            src={`/assets/tokens/${asset.id}.logo.svg`}
-            layout="intrinsic"
-            width={35}
-            height={35}
-            onError={(e) => {
-              e.currentTarget.src = defaultAssetImg;
-              e.currentTarget.srcset = defaultAssetImg;
-            }}
-            alt={asset.id}
-          />
+          {asset.iconSrc ? (
+            <Image
+              loading="eager"
+              src={asset.iconSrc}
+              layout="intrinsic"
+              width={35}
+              height={35}
+              onError={(e) => {
+                e.currentTarget.src = defaultAssetImg;
+                e.currentTarget.srcset = defaultAssetImg;
+              }}
+              alt={asset.id}
+              className="rounded-full h-[35px] w-[35px] overflow-hidden"
+            />
+          ) : (
+            <Image
+              loading="eager"
+              src={`/assets/tokens/${asset.id}.logo.svg`}
+              layout="intrinsic"
+              width={35}
+              height={35}
+              onError={(e) => {
+                e.currentTarget.src = defaultAssetImg;
+                e.currentTarget.srcset = defaultAssetImg;
+              }}
+              alt={asset.id}
+            />
+          )}
           <span
             className={clsx({
               "text-slate-400": disabled,
