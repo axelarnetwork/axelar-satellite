@@ -28,9 +28,8 @@ import {
   ReceiveTokenInfo,
   SquidParamConfig,
 } from "./components";
+import AssetIcon from "./components/AssetIcon";
 import { GMPEToggle } from "./components/GMPEToggle";
-
-const defaultAssetImg = "/assets/tokens/default.logo.svg";
 
 export const DestAssetSelector = ({
   squidAssets,
@@ -206,6 +205,12 @@ export const DestAssetSelector = ({
     [srcAsset, srcChain.assets]
   );
 
+  const squidTokens = useSquidStateStore((state) => state.squidTokens);
+
+  const destSquidAsset = squidTokens.find(
+    (t) => t.symbol.toLowerCase() === selectedAssetSymbol?.toLowerCase()
+  );
+
   function renderAssetDropdown() {
     if (!(dropdownOpen && srcChain)) {
       return null;
@@ -227,17 +232,10 @@ export const DestAssetSelector = ({
         >
           <li key={"selected_src_asset"}>
             <button onClick={() => handleSelect(false, assetSymbol)}>
-              <Image
-                loading="eager"
-                src={`/assets/tokens/${srcAsset?.id}.logo.svg`}
-                layout="intrinsic"
-                width={35}
-                height={35}
-                onError={(e) => {
-                  e.currentTarget.src = defaultAssetImg;
-                  e.currentTarget.srcset = defaultAssetImg;
-                }}
-                alt="asset"
+              <AssetIcon
+                assetId={srcAsset?.id}
+                iconSrc={srcAsset?.iconSrc}
+                size={35}
               />
               <span>
                 {
@@ -250,17 +248,10 @@ export const DestAssetSelector = ({
           {destChain?.module === "evm" && selectedAssetIsWrapped && (
             <li key={"native_version"}>
               <button onClick={() => handleSelect(true, unwrappedAssetSymbol)}>
-                <Image
-                  loading="eager"
-                  src={`/assets/tokens/${nativeAsset?.id}.logo.svg`}
-                  layout="intrinsic"
-                  width={35}
-                  height={35}
-                  onError={(e) => {
-                    e.currentTarget.src = defaultAssetImg;
-                    e.currentTarget.srcset = defaultAssetImg;
-                  }}
-                  alt="asset"
+                <AssetIcon
+                  size={35}
+                  assetId={nativeAsset?.id}
+                  iconSrc={nativeAsset?.iconSrc}
                 />
                 <span>{unwrappedAssetSymbol}</span>
               </button>
@@ -274,34 +265,11 @@ export const DestAssetSelector = ({
                     handleSquidSelect(squidAsset.chain_aliases[destChainName])
                   }
                 >
-                  {squidAsset.iconSrc ? (
-                    <Image
-                      loading="eager"
-                      src={squidAsset.iconSrc}
-                      layout="intrinsic"
-                      width={35}
-                      height={35}
-                      onError={(e) => {
-                        e.currentTarget.src = defaultAssetImg;
-                        e.currentTarget.srcset = defaultAssetImg;
-                      }}
-                      alt="asset"
-                      className="rounded-full h-[35px] w-[35px] overflow-hidden"
-                    />
-                  ) : (
-                    <Image
-                      loading="eager"
-                      src={`/assets/tokens/${squidAsset.common_key}.logo.svg`}
-                      layout="intrinsic"
-                      width={35}
-                      height={35}
-                      onError={(e) => {
-                        e.currentTarget.src = defaultAssetImg;
-                        e.currentTarget.srcset = defaultAssetImg;
-                      }}
-                      alt="asset"
-                    />
-                  )}
+                  <AssetIcon
+                    assetId={squidAsset.id}
+                    size={35}
+                    iconSrc={squidAsset.iconSrc}
+                  />
                   <div className="flex justify-between w-full">
                     <span>
                       {squidAsset.chain_aliases[destChainName]?.assetSymbol}
@@ -343,35 +311,15 @@ export const DestAssetSelector = ({
             <div className="static flex justify-between w-full mt-1 dropdown dropdown-open">
               <button tabIndex={0} onClick={() => setDropdownOpen(true)}>
                 <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
-                  {selectedSquidAsset?.iconSrc ? (
-                    <Image
-                      loading="eager"
-                      src={selectedSquidAsset?.iconSrc}
-                      layout="intrinsic"
-                      width={30}
-                      height={30}
-                      alt="asset"
-                      onError={(e) => {
-                        e.currentTarget.src = defaultAssetImg;
-                        e.currentTarget.srcset = defaultAssetImg;
-                      }}
-                    />
-                  ) : (
-                    <Image
-                      loading="eager"
-                      src={`/assets/tokens/${
-                        selectedSquidAsset?.common_key || dynamicNativeTokenLogo
-                      }.logo.svg`}
-                      layout="intrinsic"
-                      width={30}
-                      height={30}
-                      alt="asset"
-                      onError={(e) => {
-                        e.currentTarget.src = defaultAssetImg;
-                        e.currentTarget.srcset = defaultAssetImg;
-                      }}
-                    />
-                  )}
+                  <AssetIcon
+                    assetId={
+                      selectedSquidAsset?.common_key ?? dynamicNativeTokenLogo
+                    }
+                    iconSrc={
+                      selectedSquidAsset?.iconSrc ?? destSquidAsset?.logoURI
+                    }
+                    size={30}
+                  />
                   <span>{selectedAssetSymbol}</span>
                   <div className="flex items-center">
                     <Image

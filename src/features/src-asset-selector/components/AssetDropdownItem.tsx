@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { defaultAssetImg } from "~/config/constants";
 import { logEvent } from "~/components/scripts";
 
+import AssetIcon from "~/features/dest-asset-selector/components/AssetIcon";
 import { useSwitchAsset } from "~/features/src-asset-selector/hooks";
 import { useAssetCompatibilityBetweenChains } from "~/features/src-asset-selector/utils";
 
@@ -60,34 +61,7 @@ export const AssetDropdownItem: React.FC<Props> = ({ asset }) => {
         className={clsx("relative flex flex-row justify-between", { disabled })}
       >
         <div className="flex items-center gap-x-4">
-          {asset.iconSrc ? (
-            <Image
-              loading="eager"
-              src={asset.iconSrc}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              onError={(e) => {
-                e.currentTarget.src = defaultAssetImg;
-                e.currentTarget.srcset = defaultAssetImg;
-              }}
-              alt={asset.id}
-              className="rounded-full h-[35px] w-[35px] overflow-hidden"
-            />
-          ) : (
-            <Image
-              loading="eager"
-              src={`/assets/tokens/${asset.id}.logo.svg`}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              onError={(e) => {
-                e.currentTarget.src = defaultAssetImg;
-                e.currentTarget.srcset = defaultAssetImg;
-              }}
-              alt={asset.id}
-            />
-          )}
+          <AssetIcon assetId={asset.id} iconSrc={asset.iconSrc} size={35} />
           <span
             className={clsx({
               "text-slate-400": disabled,
