@@ -26,8 +26,6 @@ import { connectToKeplr } from "../../web3/utils/handleOnKeplrConnect";
 import { addTokenToMetamask } from "../states";
 import { Arrow } from "./TopFlows";
 
-// import { NativeAssetConfig } from "~/config/web3/evm/native-assets";
-
 const defaultChainImg = "/assets/chains/default.logo.svg";
 
 const defaultAssetImg = "/assets/tokens/default.logo.svg";
@@ -463,13 +461,6 @@ export const TokenSelector = () => {
         </ul>
       </div>
     );
-  }
-
-  function renderAssetName() {
-    if (!(asset && srcChain)) {
-      return "Select an asset";
-    }
-    return asset.chain_aliases[srcChain.chainName?.toLowerCase()]?.assetName;
   }
 
   function addTokenToMetamaskButton() {

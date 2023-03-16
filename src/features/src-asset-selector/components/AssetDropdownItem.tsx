@@ -1,8 +1,6 @@
 import React from "react";
-import Image from "next/legacy/image";
 import clsx from "clsx";
 
-import { defaultAssetImg } from "~/config/constants";
 import { logEvent } from "~/components/scripts";
 
 import AssetIcon from "~/features/dest-asset-selector/components/AssetIcon";

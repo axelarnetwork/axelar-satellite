@@ -2,7 +2,6 @@ import { useCallback, useRef, useState } from "react";
 import Image from "next/legacy/image";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { defaultAssetImg } from "~/config/constants";
 import { Blockable, InputWrapper } from "~/components/common";
 
 import { MaxButton } from "~/features/max-button";
