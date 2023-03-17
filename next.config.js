@@ -13,6 +13,7 @@ const nextConfig = {
   },
   images: {
     domains: [
+      "axelarscan.io",
       "raw.githubusercontent.com",
       "assets.coingecko.com",
       "s2.coinmarketcap.com",

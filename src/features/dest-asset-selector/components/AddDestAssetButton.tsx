@@ -75,7 +75,7 @@ export const AddDestAssetButton = () => {
       data-tip={`Add ${
         selectedSquidAsset
           ? selectedSquidAsset.assetSymbol
-          : asset?.chain_aliases[destChain.chainName.toLowerCase()].assetSymbol
+          : asset?.chain_aliases[destChain.chainName.toLowerCase()]?.assetSymbol
       } to Metamask`}
     >
       <label

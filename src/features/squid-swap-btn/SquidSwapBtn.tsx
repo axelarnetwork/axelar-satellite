@@ -77,24 +77,25 @@ const SquidSwapBtn = React.memo(() => {
 
     try {
       setSwapStatus(SwapStatus.WAIT_FOR_SQUID);
-      console.log({
-        signer,
-        routeData,
-      });
+
+      if (!signer) {
+        throw new Error("Signer not found");
+      }
+
       const tx = await squid.executeRoute({
-        signer: signer as any,
+        signer,
         route: routeData as RouteData,
       });
       const txReceipt = await tx.wait();
       console.log("swap res: \n", txReceipt);
       setTxReceipt(txReceipt);
-    } catch (err: any) {
+    } catch (err) {
       console.log({
         err,
       });
       setSwapStatus(SwapStatus.IDLE);
       showErrorMsgAndThrow(
-        err?.message ||
+        (err as Error)?.message ||
           "Could not execute route pair for asset/chain combination"
       );
     }

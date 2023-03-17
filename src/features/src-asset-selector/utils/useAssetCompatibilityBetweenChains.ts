@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 import { AssetConfigExtended } from "~/types";

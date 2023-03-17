@@ -6,12 +6,12 @@ import {
   StatusResponse,
   TokenData,
 } from "@0xsquid/sdk";
-import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { TransactionReceipt } from "@ethersproject/abstract-provider";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 import { squid } from "~/squid.config";
+import { AssetAlias } from "~/types";
 
 export interface TokensWithExtendedChainData extends TokenData {
   chainName: ChainName;
@@ -22,7 +22,7 @@ interface SquidState {
   squidChains: ChainData[];
   squidLoaded: boolean;
   isSquidTrade: boolean;
-  selectedSquidAsset: AssetInfo | null;
+  selectedSquidAsset: AssetAlias | null;
   slippage: number;
   enableGMPExpress: boolean;
   routeData: RouteData | null;
@@ -36,7 +36,7 @@ interface SquidStateStore extends SquidState {
   setSquidChains: (state: ChainData[]) => void;
   setSquidLoaded: (state: boolean) => void;
   setIsSquidTrade: (state: boolean) => void;
-  setSelectedSquidAsset: (state: AssetInfo | null) => void;
+  setSelectedSquidAsset: (state: AssetAlias | null) => void;
   setSlippage: (state: number) => void;
   setRouteData: (state: RouteData | null) => void;
   setRouteDataAsync: (params: GetRoute) => void;
@@ -96,7 +96,7 @@ export const useSquidStateStore = create<SquidStateStore>()(
         false,
         "setIsSquidTrade"
       ),
-    setSelectedSquidAsset: (state: AssetInfo | null) =>
+    setSelectedSquidAsset: (state: AssetAlias | null) =>
       set(
         {
           selectedSquidAsset: state,

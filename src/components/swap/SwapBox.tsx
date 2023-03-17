@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import clsx from "clsx";
+import { identity, pick } from "rambda";
 
 import { ENVIRONMENT as env } from "~/config/constants";
 import { Blockable } from "~/components/common";
@@ -29,20 +30,18 @@ export const SwapBox = () => {
   useDetectDepositConfirmation();
   useRestrictAssets();
 
-  const { destChain, asset, srcChain } = useSwapStore((state) => state);
-  const isSquidAsset = useSquidStateStore((state) => state.isSquidTrade);
+  const { destChain, srcChain, allAssets } = useSwapStore(identity);
+  const { isSquidTrade } = useSquidStateStore(pick(["isSquidTrade"]));
+
+  const destChainName = destChain.chainName.toLowerCase();
 
   const squidAssets = useMemo(() => {
-    const destChainName = destChain.chainName.toLowerCase();
-
-    return destChain.assets
-      .filter((assetInfo) => assetInfo.isSquidAsset)
-      .filter(
-        (assetInfo) =>
-          assetInfo.tokenAddress?.toLowerCase() !==
-          asset?.chain_aliases[destChainName].tokenAddress.toLowerCase()
-      );
-  }, [asset?.chain_aliases, destChain.assets, destChain.chainName]);
+    return allAssets.filter(
+      (asset) =>
+        (asset.isSquidAsset || asset.isSquidOnlyAsset) &&
+        destChainName in asset.chain_aliases
+    );
+  }, [allAssets, destChainName]);
 
   return (
     <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
@@ -85,7 +84,7 @@ export const SwapBox = () => {
           squidAssets={srcChain?.module === "evm" ? squidAssets : []}
         />
         <SwapExecutionState />
-        {isSquidAsset ? <SquidSwapBtn /> : <GetAddressBtn />}
+        {isSquidTrade ? <SquidSwapBtn /> : <GetAddressBtn />}
       </div>
     </div>
   );
