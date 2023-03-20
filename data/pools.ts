@@ -33,8 +33,8 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   juno: {
     pairs: ["JUNO/axlUSDC"],
-    dex: "Junoswap",
-    url: "https://junoswap.com/pools/JUNO-USDC",
+    dex: "Wynd Dex",
+    url: "https://app.wynddao.com",
   },
   kujira: {
     pairs: ["axlUSDC/KUJI"],
