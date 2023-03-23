@@ -15,16 +15,17 @@ const AssetIcon = (props: Props) => {
   return (
     <Image
       loading="eager"
-      src={props.iconSrc ?? `/assets/tokens/${props.assetId}.logo.svg`}
+      src={`/assets/tokens/${props.assetId}.logo.svg`}
       layout="intrinsic"
       width={props.size}
       height={props.size}
       onError={(e) => {
-        if (!props.defaultAssetImg) {
+        const defaultAssetImg = props.iconSrc ?? props.defaultAssetImg;
+        if (!defaultAssetImg) {
           return;
         }
-        e.currentTarget.src = props.defaultAssetImg;
-        e.currentTarget.srcset = props.defaultAssetImg;
+        e.currentTarget.src = defaultAssetImg;
+        e.currentTarget.srcset = defaultAssetImg;
       }}
       alt={props.alt}
     />
