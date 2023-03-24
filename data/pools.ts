@@ -78,7 +78,7 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   kava: {
     pairs: ["axlUSDC/axlDAI"],
-    dex: "Sushi",
-    url: "https://www.sushi.com/earn/2222:0xb379eb428a28a927a16ee7f95100ac6a5117aaa1",
+    dex: "Equilibre",
+    url: "https://equilibrefinance.com/swap?outputCurrency=0xeb466342c4d449bc9f53a865d5cb90586f405215",
   },
 };
