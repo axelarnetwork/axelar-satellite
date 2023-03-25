@@ -146,7 +146,7 @@ export const EvmAssetWarningModal = () => {
               <div className="mt-2">
                 {!asset?.is_gas_token && (
                   <div className="font-light text-gray-300">
-                    {selectedAssetNameSrcChain}'s address on{" "}
+                    {selectedAssetNameSrcChain}&apos;s address on{" "}
                     <strong className="capitalize">
                       {" "}
                       {srcChain.chainName}
@@ -186,7 +186,7 @@ export const EvmAssetWarningModal = () => {
                   : selectedAssetNameOnDestinationChain}
               </span>{" "}
               on <span className="capitalize">{destChain.chainName}</span>. If
-              your recipient doesn’t support{" "}
+              your recipient doesn&apos;t support{" "}
               <span className="font-bold">
                 {shouldUnwrapAsset &&
                 unwrappedAssetSymbol &&
@@ -220,8 +220,8 @@ export const EvmAssetWarningModal = () => {
           <div className="block p-4 mt-5 rounded-lg bg-yellow-500/50">
             <h2 className="mt-2 text-center text-neutral-200">
               Exchange addresses that need a memo are <strong>NOT</strong>{" "}
-              supported. Don't use Satellite to transfer to exchange addresses
-              requiring a memo or <strong>FUNDS WILL BE LOST.</strong>
+              supported. Don&apos;t use Satellite to transfer to exchange
+              addresses requiring a memo or <strong>FUNDS WILL BE LOST.</strong>
             </h2>
 
             <h2 className="mt-3 text-neutral-200">
