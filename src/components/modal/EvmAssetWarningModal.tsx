@@ -65,7 +65,7 @@ export const EvmAssetWarningModal = () => {
     if (![srcChain?.module, destChain?.module].includes("evm")) return;
 
     setShowAssetWarning(true);
-  }, [setShowAssetWarning, swapStatus]);
+  }, [setShowAssetWarning, swapStatus, destChain, srcChain]);
 
   function handleOnResetState() {
     setShowAssetWarning(false);
@@ -96,6 +96,7 @@ export const EvmAssetWarningModal = () => {
           src={"/assets/wallets/metamask.logo.svg"}
           height={18}
           width={18}
+          alt="Metamask"
         />
       </button>
     );
@@ -136,7 +137,12 @@ export const EvmAssetWarningModal = () => {
                     className="cursor-pointer"
                     onClick={() => copyToClipboard(depositAddress)}
                   >
-                    <Image src={"/assets/ui/copy.svg"} height={16} width={16} />
+                    <Image
+                      src={"/assets/ui/copy.svg"}
+                      height={16}
+                      width={16}
+                      alt="Copy"
+                    />
                   </span>
                 </span>
               }{" "}
