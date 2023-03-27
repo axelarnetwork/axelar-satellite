@@ -13,7 +13,7 @@ export const moonbeam: ChainExtension = {
   blockExplorers: {
     default: {
       name: "moonscan",
-      url: "https://moonbase.moonscan.io/",
+      url: "https://moonbase.moonscan.io",
     },
   },
   rpcUrls: {

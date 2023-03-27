@@ -91,15 +91,23 @@ export const SrcChainTxPropagation = () => {
                   size={20}
                   color="#00a6ff"
                 />
-                <span className="text-sm">
-                  Waiting for{" "}
-                  {Math.min(
-                    numConfirmationsSoFar,
-                    srcChain.confirmLevel as number
-                  )}
-                  /{srcChain.confirmLevel} confirmations before forwarding to
-                  Axelar...
-                </span>
+                <div className="flex flex-col text-center">
+                  {" "}
+                  <div className="text-sm">
+                    Waiting for transaction to be finalized on{" "}
+                    {srcChain.chainName.toLowerCase()?.includes("base")
+                      ? "Goerli L1"
+                      : srcChain.chainName}
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    (
+                    {Math.min(
+                      numConfirmationsSoFar,
+                      srcChain.confirmLevel as number
+                    )}
+                    /{srcChain.confirmLevel} confirmations)
+                  </div>
+                </div>
               </div>
               <div className="flex items-center justify-center mt-2 gap-x-2">
                 <progress

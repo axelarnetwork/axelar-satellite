@@ -13,7 +13,7 @@ export const celo: ChainExtension = {
   blockExplorers: {
     default: {
       name: "Celo Explorer",
-      url: "https://explorer.celo.org/mainnet/",
+      url: "https://explorer.celo.org/mainnet",
     },
   },
   rpcUrls: {

@@ -211,7 +211,7 @@ export const TransferStats = () => {
     );
     const rootUrl =
       srcChain.module === "evm"
-        ? `${evmRpc?.blockExplorers?.default.url}tx/`
+        ? `${evmRpc?.blockExplorers?.default.url}/tx/`
         : `${AXELARSCAN_URL}/transfer/`;
     return (
       <li className="flex justify-between">

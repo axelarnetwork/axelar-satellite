@@ -13,7 +13,7 @@ export const celo: ChainExtension = {
   blockExplorers: {
     default: {
       name: "Celo Explorer",
-      url: "https://alfajores-blockscout.celo-testnet.org/",
+      url: "https://alfajores-blockscout.celo-testnet.org",
     },
   },
   rpcUrls: {

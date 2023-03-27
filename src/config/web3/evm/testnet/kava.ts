@@ -13,7 +13,7 @@ export const kava: ChainExtension = {
   blockExplorers: {
     default: {
       name: "Kava EVM Explorer",
-      url: "https://explorer.evm-alpha.kava.io/",
+      url: "https://explorer.evm-alpha.kava.io",
     },
   },
   rpcUrls: {
