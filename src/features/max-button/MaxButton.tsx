@@ -4,7 +4,7 @@ import { useSwapStore } from "~/store";
 
 import { useGetAllowedMaxBalance } from "./hooks/useGetAllowedMaxBalance";
 
-export const MaxButton = () => {
+const _MaxButton = () => {
   const setTokensToTransfer = useSwapStore(
     (state) => state.setTokensToTransfer
   );
@@ -24,3 +24,4 @@ export const MaxButton = () => {
     </button>
   );
 };
+export const MaxButton = React.memo(_MaxButton);

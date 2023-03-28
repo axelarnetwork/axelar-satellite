@@ -13,30 +13,31 @@ import {
   TxSummary,
 } from "~/features/swap-states/states";
 
-import { useSwapStore } from "~/store";
+import { useSquidStateStore, useSwapStore } from "~/store";
 
 import { SwapStatus } from "~/utils/enums";
 
 export const SwapExecutionState = () => {
   const swapStatus = useSwapStore((state) => state.swapStatus);
+  const isSquidTrade = useSquidStateStore((state) => state.isSquidTrade);
   return (
     <>
       <Idle />
-      <TransferStats />
-      <TransferSwapStats />
+      {!isSquidTrade && <TransferStats />}
+      {isSquidTrade && <TransferSwapStats />}
       {/* waiting screen while deposit address is being generated */}
-      <DepositAddressGeneration />
-      <SquidStates />
+      {!isSquidTrade && <DepositAddressGeneration />}
+      {isSquidTrade && <SquidStates />}
       {/* evm/ibc execution screen with evm/cosmos tx buttons */}
-      <SrcChainTxExecution />
+      {!isSquidTrade && <SrcChainTxExecution />}
       {/* screen only for evm TODO: maybe create one specific to cosmos transfers */}
-      <SrcChainTxPropagation />
+      {!isSquidTrade && <SrcChainTxPropagation />}
       {/* shown when tx detected on src chain by axelar */}
       {swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION && (
         <SrcChainTxConfirmation />
       )}
-      <SquidTxSummary />
-      <TxSummary />
+      {isSquidTrade && <SquidTxSummary />}
+      {!isSquidTrade && <TxSummary />}
     </>
   );
 };
