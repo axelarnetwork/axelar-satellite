@@ -253,3 +253,5 @@ export const SquidStates = () => {
     </>
   );
 };
+
+export default SquidStates;

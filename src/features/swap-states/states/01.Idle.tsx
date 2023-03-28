@@ -13,9 +13,5 @@ export const Idle = () => {
     return null;
   }
 
-  return (
-    <>
-      <AddressFiller />
-    </>
-  );
+  return <AddressFiller />;
 };

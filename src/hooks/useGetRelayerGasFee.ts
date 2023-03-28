@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
 import { useSwapStore } from "~/store";
 
@@ -9,19 +9,9 @@ export function useGetRelayerGasFee() {
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
 
-  const [fee, setFee] = useState<string>("0");
-
-  const loadFee = useCallback(async () => {
-    if (!(srcChain && destChain && asset)) {
-      return;
-    }
-    const fee = await renderGasFee(srcChain, destChain, asset);
-    setFee(fee);
-  }, [asset, destChain, srcChain]);
-
-  useEffect(() => {
-    loadFee();
-  }, [loadFee]);
-
-  return fee;
+  return useQuery(
+    ["relayer-gas-fee", asset?.id, destChain.id, srcChain.id],
+    renderGasFee.bind(null, srcChain, destChain, asset),
+    { cacheTime: 10_000, staleTime: 10_000 }
+  );
 }

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/legacy/image";
 
-import { getSelectedAssetSymbol, useSwapStore, useWalletStore } from "~/store";
+import { getSelectedAssetSymbol, useSwapStore } from "~/store";
 
+import { useGetRelayerGasFee } from "~/hooks";
 import { copyToClipboard } from "~/utils";
-import { renderGasFee } from "~/utils/renderGasFee";
 import { showDepositAddressCondition } from "~/utils/showDepositAddressCondition";
 import { convertChainName } from "~/utils/transformers";
 
@@ -15,18 +15,8 @@ import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
 export const WaitDepositState = () => {
   const { depositAddress, destAddress, srcChain, destChain, asset } =
     useSwapStore((state) => state);
-  const { wagmiConnected, keplrConnected } = useWalletStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
-  const [relayerGasFee, setRelayerGasFee] = useState<string>("");
-
-  useEffect(() => {
-    if (!(srcChain && destChain && asset)) {
-      return;
-    }
-    renderGasFee(srcChain, destChain, asset).then((res) =>
-      setRelayerGasFee(res)
-    );
-  }, [srcChain, destChain, asset]);
+  const { data: relayerGasFee } = useGetRelayerGasFee();
 
   function renderTransferInfo() {
     if (!relayerGasFee) {

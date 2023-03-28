@@ -1,42 +1,53 @@
 import React from "react";
+import dynamic from "next/dynamic";
 
-import { TransferStats, TransferSwapStats } from "~/components/swap/parts";
+import { TransferStats } from "~/components/swap/parts";
 
 import {
   DepositAddressGeneration,
   Idle,
-  SquidStates,
-  SquidTxSummary,
   SrcChainTxConfirmation,
   SrcChainTxExecution,
   SrcChainTxPropagation,
   TxSummary,
 } from "~/features/swap-states/states";
 
-import { useSwapStore } from "~/store";
+import { useSquidStateStore, useSwapStore } from "~/store";
 
 import { SwapStatus } from "~/utils/enums";
 
+const SquidStates = dynamic(
+  () => import("~/features/swap-states/states/02.SquidStates")
+);
+const TransferSwapStats = dynamic(
+  () => import("~/components/swap/parts/TransferSwapStats")
+);
+
+const SquidTxSummary = dynamic(
+  () => import("~/features/swap-states/states/07.SquidTxSummary")
+);
+
 export const SwapExecutionState = () => {
   const swapStatus = useSwapStore((state) => state.swapStatus);
+  const isSquidTrade = useSquidStateStore((state) => state.isSquidTrade);
   return (
     <>
       <Idle />
-      <TransferStats />
-      <TransferSwapStats />
+      {!isSquidTrade && <TransferStats />}
+      {isSquidTrade && <TransferSwapStats />}
       {/* waiting screen while deposit address is being generated */}
-      <DepositAddressGeneration />
-      <SquidStates />
+      {!isSquidTrade && <DepositAddressGeneration />}
+      {isSquidTrade && <SquidStates />}
       {/* evm/ibc execution screen with evm/cosmos tx buttons */}
-      <SrcChainTxExecution />
+      {!isSquidTrade && <SrcChainTxExecution />}
       {/* screen only for evm TODO: maybe create one specific to cosmos transfers */}
-      <SrcChainTxPropagation />
+      {!isSquidTrade && <SrcChainTxPropagation />}
       {/* shown when tx detected on src chain by axelar */}
       {swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION && (
         <SrcChainTxConfirmation />
       )}
-      <SquidTxSummary />
-      <TxSummary />
+      {isSquidTrade && <SquidTxSummary />}
+      {!isSquidTrade && <TxSummary />}
     </>
   );
 };

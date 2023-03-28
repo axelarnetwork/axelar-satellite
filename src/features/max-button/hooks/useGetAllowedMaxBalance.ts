@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
+import { useQuery } from "react-query";
 import {
   erc20ABI,
   useAccount,
@@ -9,7 +9,6 @@ import {
 } from "wagmi";
 
 import { getCosmosChains } from "~/config/web3";
-import { CosmosChain } from "~/config/web3/cosmos/interface";
 
 import {
   getSrcChainId,
@@ -57,75 +56,12 @@ export function useGetAllowedMaxBalance() {
     args: [address as Hash],
   });
 
-  const [maxBalance, setMaxBalance] = useState<string>("0");
-
-  const estimateGas = useCallback(async () => {
-    return provider
-      .estimateGas({
-        to: depositAddress,
-        value: utils.parseEther("1.0"),
-      })
-      .then((bigNum) => bigNum.mul(5));
-  }, [provider, depositAddress]);
-
-  const computeRealMaxBalance = useCallback(
-    async (balance: ethers.BigNumber) => {
-      // if erc20 return token balance
-      if (!asset?.is_gas_token) {
-        return formatUnits(tokenBalance || "0", asset?.decimals || 18);
-      }
-
-      // if native asset return native token balance minus tx fee
-      const gas = await estimateGas();
-      const gasPrice = await provider.getGasPrice();
-      const fee = gas.mul(gasPrice);
-      return formatUnits(balance.sub(fee), asset?.decimals || 18).substring(
-        0,
-        10
-      );
-    },
-    [provider, asset?.decimals, asset?.is_gas_token, tokenBalance, estimateGas]
-  );
-
-  useEffect(
-    () => {
-      if (srcChain.module !== "evm") {
-        return;
-      }
-      if (!(provider && balance)) {
-        return;
-      }
-      computeRealMaxBalance(balance.value).then((balanceMinusFee) =>
-        setMaxBalance(balanceMinusFee)
-      );
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [provider, balance, computeRealMaxBalance]
-  );
-
-  const getKplrBalance = useCallback(
-    async (fullChainConfig: CosmosChain, derivedDenom: string) => {
-      const res = await queryBalance(
-        await getAddress(fullChainConfig),
-        derivedDenom,
-        fullChainConfig.rpc
-      );
-      if (!res?.amount) {
-        return;
-      }
-      setMaxBalance(formatUnits(res.amount, asset?.decimals));
-    },
-    [asset?.decimals]
-  );
-
-  useEffect(() => {
+  const getKeplrBalance = async () => {
     if (srcChain.module !== "axelarnet" || !keplrConnected) {
       return;
     }
 
-    const cosmosChains = getCosmosChains(allAssets);
-
-    const fullChainConfig = cosmosChains.find(
+    const fullChainConfig = getCosmosChains(allAssets).find(
       (chainConfig) =>
         chainConfig.chainIdentifier?.toLowerCase() ===
         srcChain.chainName?.toLowerCase()
@@ -137,8 +73,67 @@ export function useGetAllowedMaxBalance() {
       return;
     }
 
-    getKplrBalance(fullChainConfig, derivedDenom);
-  }, [srcChain, getKplrBalance, asset, allAssets, keplrConnected]);
+    const res = await queryBalance(
+      await getAddress(fullChainConfig),
+      derivedDenom,
+      fullChainConfig.rpc
+    );
+    if (!res?.amount) {
+      return;
+    }
+    return formatUnits(res.amount, asset?.decimals);
+  };
 
-  return maxBalance;
+  const estimateGas = async () => {
+    return provider
+      .estimateGas({
+        to: depositAddress,
+        value: utils.parseEther("1.0"),
+      })
+      .then((bigNum) => bigNum.mul(5));
+  };
+
+  const computeRealMaxBalance = async (balance: {
+    decimals: number;
+    formatted: string;
+    symbol: string;
+    value: BigNumber;
+  }) => {
+    // if erc20 return token balance
+    if (!asset?.is_gas_token) {
+      return formatUnits(tokenBalance || "0", asset?.decimals || 18);
+    }
+
+    // if native asset return native token balance minus tx fee
+    const gas = await estimateGas();
+    const gasPrice = await provider.getGasPrice();
+    const fee = gas.mul(gasPrice);
+    return formatUnits(balance.value.sub(fee), asset?.decimals || 18).substring(
+      0,
+      10
+    );
+  };
+
+  return useQuery(
+    [
+      "max-balance",
+      provider.network.chainId,
+      balance,
+      asset?.id,
+      asset?.is_gas_token,
+      tokenBalance,
+      depositAddress,
+      srcChain.id,
+      keplrConnected,
+    ],
+    () => {
+      if (srcChain.module === "evm" && provider && balance && asset) {
+        return computeRealMaxBalance(balance as any); //TODO
+      }
+      if (srcChain.module === "axelarnet") {
+        return getKeplrBalance();
+      }
+      return "0";
+    }
+  );
 }

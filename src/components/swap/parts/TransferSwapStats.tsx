@@ -148,3 +148,5 @@ export const TransferSwapStats = () => {
     </StatsWrapper>
   );
 };
+
+export default TransferSwapStats;

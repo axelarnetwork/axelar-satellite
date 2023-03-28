@@ -59,3 +59,5 @@ export const SquidTxSummary = () => {
     </>
   );
 };
+
+export default SquidTxSummary;
