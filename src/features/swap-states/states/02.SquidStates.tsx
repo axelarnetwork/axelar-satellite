@@ -25,7 +25,6 @@ enum SquidSwapStatus {
 }
 
 export const SquidStates = () => {
-  console.log("SquidStates++");
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const swapStatus = useSwapStore((state) => state.swapStatus);

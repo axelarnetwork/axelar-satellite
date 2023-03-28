@@ -313,7 +313,7 @@ export const DestAssetSelector = ({
                 <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
                   <AssetIcon
                     assetId={
-                      selectedSquidAsset?.common_key ?? dynamicNativeTokenLogo
+                      selectedSquidAsset?.ibcDenom ?? dynamicNativeTokenLogo
                     }
                     iconSrc={
                       selectedSquidAsset?.iconSrc ?? destSquidAsset?.logoURI
