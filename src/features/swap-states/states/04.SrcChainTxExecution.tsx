@@ -22,7 +22,7 @@ export const SrcChainTxExecution = () => {
 
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
-  const relayerFee = useGetRelayerGasFee();
+  const { data: relayerFee } = useGetRelayerGasFee();
 
   if (swapStatus !== SwapStatus.WAIT_FOR_DEPOSIT) {
     return null;

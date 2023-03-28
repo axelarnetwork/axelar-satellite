@@ -18,7 +18,7 @@ export const EvmTxBtn = () => {
   const tokensToTransfer = useSwapStore((state) => state.tokensToTransfer);
   const srcChainId = useSwapStore(getSrcChainId);
   const assetName = useSwapStore(getSelectedAssetName);
-  const relayerGasFee = useGetRelayerGasFee();
+  const { data: relayerGasFee } = useGetRelayerGasFee();
 
   const { loading: loadingErc20Tx, sendErc20 } = useSendErc20();
   const { loading: loadingNativeTx, sendNative } = useSendNative();
@@ -34,7 +34,7 @@ export const EvmTxBtn = () => {
 
     // check that token provided in the asset input are greated than relayer fees
     const minAmountOk = new BigNumber(tokensToTransfer || "0").gt(
-      new BigNumber(relayerGasFee)
+      new BigNumber(relayerGasFee as string)
     );
     if (!minAmountOk) {
       return toast.error(

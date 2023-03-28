@@ -66,7 +66,7 @@ export const TokenSelector = () => {
     setUserSelectionForCosmosWallet,
   } = useWalletStore();
   const selectedAssetName = useSwapStore(getSelectedAssetName);
-  const max = useGetMaxTransferAmount();
+  const { data: max } = useGetMaxTransferAmount();
   const { connect: connectTerraWallet } = useTerraWallet();
   const { isTerraConnected, isTerraInitializingOrConnected } =
     useIsTerraConnected();

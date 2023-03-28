@@ -105,6 +105,7 @@ export function useGetAllowedMaxBalance() {
 
   const getKplrBalance = useCallback(
     async (fullChainConfig: CosmosChain, derivedDenom: string) => {
+      console.log("callng from useGetAllowedMaxBalance");
       const res = await queryBalance(
         await getAddress(fullChainConfig),
         derivedDenom,

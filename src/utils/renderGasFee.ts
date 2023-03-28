@@ -3,6 +3,7 @@ import Big from "big.js";
 import { formatUnits } from "ethers/lib/utils.js";
 
 import { ENVIRONMENT } from "~/config/constants";
+
 import { AssetConfigExtended } from "~/types";
 
 export async function renderGasFee(
@@ -12,16 +13,22 @@ export async function renderGasFee(
 ) {
   const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
   const id = asset?.wrapped_erc20 ? asset.wrapped_erc20 : asset?.id;
+  if (!srcChain || !destChain || !asset) {
+    console.log("escaping out");
+  } else {
+    console.log("not escaping out", srcChain.id, destChain.id, asset.id);
+  }
+
   const feeQuery = await axelarQueryApi
     .getTransferFee(srcChain?.id, destChain?.id, id as string, 0)
     .then((res) => formatUnits(res.fee?.amount as string, asset?.decimals))
-    .catch((e) => null);
+    .catch((e) => "0");
   if (feeQuery) {
     return feeQuery;
   }
 
   if (!(srcChain && destChain)) {
-    return "";
+    return "0";
   }
 
   const sourceChainName = srcChain.chainName?.toLowerCase();

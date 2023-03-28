@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Image from "next/legacy/image";
 
 import { AXELARSCAN_URL } from "~/config/constants";
@@ -10,10 +9,10 @@ import {
   useSwapStore,
 } from "~/store";
 
+import { useGetRelayerGasFee } from "~/hooks";
 import { useGetMaxTransferAmount } from "~/hooks/useGetMaxTransferAmount";
 import { copyToClipboard } from "~/utils";
 import { SwapStatus } from "~/utils/enums";
-import { renderGasFee } from "~/utils/renderGasFee";
 import { showDepositAddressCondition } from "~/utils/showDepositAddressCondition";
 
 import { USDC_POOLS } from "../../../data/pools";
@@ -47,15 +46,10 @@ export const TransferStats = () => {
     swapStatus,
   } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
-  const max = useGetMaxTransferAmount();
-  const [transferFee, setTransferFee] = useState<string>("");
-  const isSquidTrade = useSquidStateStore((state) => state.isSquidTrade);
+  const { data: max } = useGetMaxTransferAmount();
 
-  useEffect(() => {
-    renderGasFee(srcChain, destChain, asset).then((res) => {
-      setTransferFee(res);
-    });
-  }, [srcChain, destChain, asset]);
+  const isSquidTrade = useSquidStateStore((state) => state.isSquidTrade);
+  const { data: transferFee } = useGetRelayerGasFee();
 
   function renderWaitTime() {
     if (!srcChain) {

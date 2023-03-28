@@ -32,9 +32,9 @@ export const SwapExecutionState = () => {
       {/* screen only for evm TODO: maybe create one specific to cosmos transfers */}
       <SrcChainTxPropagation />
       {/* shown when tx detected on src chain by axelar */}
-      {swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION && (
+      {/* {swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION && (
         <SrcChainTxConfirmation />
-      )}
+      )} */}
       <SquidTxSummary />
       <TxSummary />
     </>

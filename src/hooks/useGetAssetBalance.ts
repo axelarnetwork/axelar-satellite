@@ -6,7 +6,13 @@ import {
 import { BigNumber } from "bignumber.js";
 import { formatUnits } from "ethers/lib/utils";
 import toast from "react-hot-toast";
-import { erc20ABI, useAccount, useBalance, useContractRead } from "wagmi";
+import {
+  erc20ABI,
+  useAccount,
+  useBalance,
+  useContractRead,
+  useQuery,
+} from "wagmi";
 
 import { getCosmosChains } from "../config/web3";
 import {
@@ -60,7 +66,7 @@ export const useGetAssetBalance = () => {
   /**
    * KEPLR BALANCE LOGIC
    */
-  const { balance: keplrBalance, isLoading: keplrBalanceIsLoading } =
+  const { data: keplrBalance, isLoading: keplrBalanceIsLoading } =
     useGetKeplerBalance();
   useEffect(
     () => {
@@ -236,23 +242,6 @@ const useGetKeplerBalance = () => {
   const asset = useSwapStore((state) => state.asset);
   const allAssets = useSwapStore((state) => state.allAssets);
   const srcChain = useSwapStore((state) => state.srcChain);
-  const swapStatus = useSwapStore((state) => state.swapStatus);
-  const { keplrConnected } = useWalletStore();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [balance, setBalance] = useState("0");
-
-  useEffect(
-    () => {
-      if (srcChain.module !== "axelarnet" || !keplrConnected) {
-        return;
-      }
-      setIsLoading(true);
-      updateBalance().finally(() => setIsLoading(false));
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [srcChain, swapStatus, asset, keplrConnected]
-  );
 
   async function updateBalance() {
     const cosmosChains = getCosmosChains(allAssets);
@@ -267,19 +256,18 @@ const useGetKeplerBalance = () => {
     );
 
     if (!(fullChainConfig && derivedDenom)) {
-      return;
+      return "0";
     }
 
     try {
+      console.log("querying balance", asset.id, srcChain.id);
       const res = await queryBalance(
         await getAddress(fullChainConfig),
         derivedDenom,
         fullChainConfig.rpc
       );
-      const balance = formatUnits(res?.amount as string, asset.decimals) || "0";
-      setBalance(balance);
+      return formatUnits(res?.amount as string, asset.decimals) || "0";
     } catch (e) {
-      setBalance("0");
       let msg;
       if (e?.toString()?.includes("Ledger is not compatible")) {
         msg = e?.toString();
@@ -287,11 +275,12 @@ const useGetKeplerBalance = () => {
         msg = `RPC query failure for ${fullChainConfig.chainName}. Please let us know.`;
       }
       toast.error(msg);
+      return "0";
     }
   }
 
-  return {
-    isLoading,
-    balance,
-  };
+  return useQuery(["keplr-balance", asset?.id, srcChain.id], updateBalance, {
+    cacheTime: 10_000,
+    staleTime: 10_000,
+  });
 };
