@@ -4,5 +4,5 @@ import { ChainExtension } from "../interface";
 
 export const arbitrum: ChainExtension = {
   ...arbitrumConfig,
-  networkNameOverride: "rbitrum",
+  networkNameOverride: "arbitrum",
 };
