@@ -13,11 +13,6 @@ export async function renderGasFee(
 ) {
   const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
   const id = asset?.wrapped_erc20 ? asset.wrapped_erc20 : asset?.id;
-  if (!srcChain || !destChain || !asset) {
-    console.log("escaping out");
-  } else {
-    console.log("not escaping out", srcChain.id, destChain.id, asset.id);
-  }
 
   const feeQuery = await axelarQueryApi
     .getTransferFee(srcChain?.id, destChain?.id, id as string, 0)
