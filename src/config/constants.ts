@@ -5,6 +5,8 @@ loadEnv();
 
 export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
 export const SOCKET_API = process.env.NEXT_PUBLIC_SOCKET_API as string;
+export const SHOULD_ENABLE_SQUID =
+  (process.env.SHOULD_ENABLE_SQUID as string) === "true";
 export const DISABLED_CHAIN_NAMES =
   process.env.NEXT_PUBLIC_DISABLED_CHAIN_NAMES || "";
 export const UNDER_MAINTENANCE =

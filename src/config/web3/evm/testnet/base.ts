@@ -13,7 +13,7 @@ export const base: ChainExtension = {
   blockExplorers: {
     default: {
       name: "Base Scan",
-      url: "https://goerli.basescan.org/",
+      url: "https://goerli.basescan.org",
     },
   },
   rpcUrls: {

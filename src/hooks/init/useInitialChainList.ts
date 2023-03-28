@@ -16,6 +16,7 @@ import {
   DISABLED_CHAIN_NAMES,
   ENVIRONMENT,
   NATIVE_ASSET_IDS,
+  SHOULD_ENABLE_SQUID,
 } from "~/config/constants";
 
 import { TokensWithExtendedChainData, useSwapStore } from "~/store";
@@ -120,6 +121,7 @@ export const useInitialChainList = () => {
     chains: ChainInfo[],
     squidTokens: TokensWithExtendedChainData[]
   ) {
+    if (!SHOULD_ENABLE_SQUID) return chains;
     return chains.map((baseChain) => {
       const chain = baseChain as ChainInfoExtended;
       const relevantSquidTokens = squidTokens.filter(
@@ -236,6 +238,7 @@ export const useInitialChainList = () => {
     allAssets: AssetConfig[],
     squidTokens: TokensWithExtendedChainData[]
   ) {
+    if (!SHOULD_ENABLE_SQUID) return allAssets as AssetConfigExtended[];
     const result = clone(allAssets) as AssetConfigExtended[];
 
     for (const token of squidTokens) {

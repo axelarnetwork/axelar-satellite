@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@0xsquid/sdk': ^1.3.5-beta.1
-  '@axelar-network/axelarjs-sdk': 0.12.5-alpha.2
+  '@axelar-network/axelarjs-sdk': 0.12.5
   '@commitlint/cli': ^17.4.4
   '@commitlint/config-conventional': ^17.4.4
   '@cosmjs/launchpad': ^0.27.1
@@ -64,7 +64,7 @@ specifiers:
 
 dependencies:
   '@0xsquid/sdk': 1.3.5
-  '@axelar-network/axelarjs-sdk': 0.12.5-alpha.2
+  '@axelar-network/axelarjs-sdk': 0.12.5
   '@cosmjs/stargate': 0.29.5
   '@ethersproject/abstract-provider': 5.7.0
   '@evmos/proto': 0.1.27
@@ -155,15 +155,15 @@ packages:
       '@jridgewell/trace-mapping': 0.3.17
     dev: true
 
-  /@axelar-network/axelar-cgp-solidity/4.3.1:
-    resolution: {integrity: sha512-efJsTvoGITUPr50PQc8fCwzT9JOJMnchW+WnXAivXaEm/mw2bcEAYX6dCcZn4j6tgFTAVZnYqrABItQwDaStag==}
-    engines: {node: '>=16 <17'}
+  /@axelar-network/axelar-cgp-solidity/4.5.0:
+    resolution: {integrity: sha512-4F4rmHei0cmzeUR7/mW4Bap5rc/KlPV2crD9HA7HTRfl15mVcN6/3z8p+pAm9We6bOrQplNW9KBZ3HJFP3C1Gw==}
+    engines: {node: ^16.0.0 || ^18.0.0}
     dev: false
 
-  /@axelar-network/axelarjs-sdk/0.12.5-alpha.2:
-    resolution: {integrity: sha512-mKm7vmeopbDuJpajIi37GGAOksVcoZjVpXIImpPZBWPvOFQkhzCx7Falg0imXKgskoO3uzxh5Gd9WSFfeVRLnQ==}
+  /@axelar-network/axelarjs-sdk/0.12.5:
+    resolution: {integrity: sha512-6wyLQ6Cv321E2jqKxin/Wu4za8FbhAjpD8afmuJ/dkfw2qt1MFlbogT0AYrbD4bgPWuJIRQsA41A3ObWPG2Xfw==}
     dependencies:
-      '@axelar-network/axelar-cgp-solidity': 4.3.1
+      '@axelar-network/axelar-cgp-solidity': 4.5.0
       '@axelar-network/axelarjs-types': 0.27.0
       '@cosmjs/stargate': 0.28.13
       '@types/uuid': 8.3.4

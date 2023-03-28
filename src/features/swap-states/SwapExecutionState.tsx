@@ -13,7 +13,12 @@ import {
   TxSummary,
 } from "~/features/swap-states/states";
 
+import { useSwapStore } from "~/store";
+
+import { SwapStatus } from "~/utils/enums";
+
 export const SwapExecutionState = () => {
+  const swapStatus = useSwapStore((state) => state.swapStatus);
   return (
     <>
       <Idle />
@@ -27,7 +32,9 @@ export const SwapExecutionState = () => {
       {/* screen only for evm TODO: maybe create one specific to cosmos transfers */}
       <SrcChainTxPropagation />
       {/* shown when tx detected on src chain by axelar */}
-      <SrcChainTxConfirmation />
+      {swapStatus === SwapStatus.WAIT_FOR_CONFIRMATION && (
+        <SrcChainTxConfirmation />
+      )}
       <SquidTxSummary />
       <TxSummary />
     </>

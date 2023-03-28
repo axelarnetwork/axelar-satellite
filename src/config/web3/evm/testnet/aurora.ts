@@ -13,7 +13,7 @@ export const aurora: ChainExtension = {
   blockExplorers: {
     default: {
       name: "aurorascan",
-      url: "https://testnet.aurorascan.dev/",
+      url: "https://testnet.aurorascan.dev",
     },
   },
   rpcUrls: {
