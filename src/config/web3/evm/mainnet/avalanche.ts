@@ -4,6 +4,6 @@ import { ChainExtension } from "../interface";
 
 export const avalanche: ChainExtension = {
   ...avalancheConfig,
-  networkNameOverride: "rvalanche",
+  networkNameOverride: "avalanche",
   testnet: false,
 };
