@@ -8,14 +8,18 @@ export const MaxButton = () => {
   const setTokensToTransfer = useSwapStore(
     (state) => state.setTokensToTransfer
   );
-  const maxBalance = useGetAllowedMaxBalance();
+  const { data: maxBalance, isLoading } = useGetAllowedMaxBalance();
 
   function handleOnMaxButtonClick() {
-    setTokensToTransfer(maxBalance);
+    setTokensToTransfer(maxBalance as string);
   }
 
   return (
-    <button className="btn btn-info btn-xs" onClick={handleOnMaxButtonClick}>
+    <button
+      className="btn btn-info btn-xs"
+      disabled={isLoading || !maxBalance}
+      onClick={handleOnMaxButtonClick}
+    >
       Max
     </button>
   );
