@@ -1,8 +1,9 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 
 import { ENVIRONMENT, UNDER_MAINTENANCE } from "~/config/constants";
-import { Layout, UnderMaintenance, VideoBackground } from "~/components/layout";
+import { Layout, UnderMaintenance } from "~/components/layout";
 import { PageSEO } from "~/components/seo";
 import { SwapBox } from "~/components/swap";
 import { FirstTimeWarning } from "~/components/swap/parts/FirstTimeWarning";
@@ -13,6 +14,10 @@ import { siteMetadata } from "~/data";
 import { useNormalizeChains, useNormalizeUrlPaths } from "~/hooks";
 import { useInitialChainList } from "~/hooks/init";
 import { drawBackground } from "~/hooks/particle";
+
+const VideoBackground = dynamic(
+  () => import("~/components/layout/VideoBackground")
+);
 
 const Home: NextPage = () => {
   const allAssets = useSwapStore((state) => state.allAssets);

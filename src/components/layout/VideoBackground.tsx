@@ -30,3 +30,5 @@ export const VideoBackground = () => {
     </video>
   );
 };
+
+export default VideoBackground;

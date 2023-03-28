@@ -1,12 +1,11 @@
 import React from "react";
+import dynamic from "next/dynamic";
 
-import { TransferStats, TransferSwapStats } from "~/components/swap/parts";
+import { TransferStats } from "~/components/swap/parts";
 
 import {
   DepositAddressGeneration,
   Idle,
-  SquidStates,
-  SquidTxSummary,
   SrcChainTxConfirmation,
   SrcChainTxExecution,
   SrcChainTxPropagation,
@@ -16,6 +15,17 @@ import {
 import { useSquidStateStore, useSwapStore } from "~/store";
 
 import { SwapStatus } from "~/utils/enums";
+
+const SquidStates = dynamic(
+  () => import("~/features/swap-states/states/02.SquidStates")
+);
+const TransferSwapStats = dynamic(
+  () => import("~/components/swap/parts/TransferSwapStats")
+);
+
+const SquidTxSummary = dynamic(
+  () => import("~/features/swap-states/states/07.SquidTxSummary")
+);
 
 export const SwapExecutionState = () => {
   const swapStatus = useSwapStore((state) => state.swapStatus);
