@@ -27,7 +27,7 @@ export const DestAssetSelector = ({
 }: {
   squidAssets: AssetConfigExtended[];
 }) => {
-  const { isLoading, isError } = useGetSquidRouteData();
+  useGetSquidRouteData();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -48,11 +48,9 @@ export const DestAssetSelector = ({
     selectedSquidAsset,
     setSelectedSquidAsset,
     setRouteData,
-    routeData,
   } = useSquidStateStore();
   const [selectedAssetSymbol, setSelectedAssetSymbol] = useState<string>();
   const ref = useRef(null);
-  console.log("route data", routeData, isLoading, isError);
 
   const nativeAsset = useMemo(
     () =>
