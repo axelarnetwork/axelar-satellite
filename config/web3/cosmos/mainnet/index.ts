@@ -1,5 +1,6 @@
 import acrechain from "config/web3/cosmos/mainnet/acrechain";
 import { carbon } from "config/web3/cosmos/mainnet/carbon";
+import persistence from "config/web3/cosmos/mainnet/persistence";
 import { stride } from "config/web3/cosmos/mainnet/stride";
 import xpla from "config/web3/cosmos/mainnet/xpla";
 import { CosmosChain } from "../interface";
@@ -49,4 +50,5 @@ export const mainnetChains: CosmosChain[] = [
   xpla,
   carbon,
   stride,
+  persistence,
 ];
