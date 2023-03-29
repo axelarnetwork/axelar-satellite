@@ -130,12 +130,13 @@ export const useSquidStateStore = create<SquidStateStore>()(
           params: { ...route.params, enableForecall: gmpeEnabled },
         };
         set({ routeData, routeDataLoading: false }, false, "setRouteDataAsync");
-      } catch (e) {
+      } catch (e: any) {
         set(
           { routeData: null, routeDataLoading: false },
           false,
           "setRouteDataAsync"
         );
+        throw JSON.stringify(e.errors);
       }
     },
     setRouteDataLoading: (state) =>

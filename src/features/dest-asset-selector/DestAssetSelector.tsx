@@ -1,17 +1,7 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/legacy/image";
-import { GetRoute } from "@0xsquid/sdk";
-import { AssetInfo } from "@axelar-network/axelarjs-sdk";
-import { parseUnits } from "ethers/lib/utils.js";
 import { useOnClickOutside } from "usehooks-ts";
 
-import { ARBITRARY_EVM_ADDRESS, NATIVE_ASSET_IDS } from "~/config/constants";
 import { Blockable, InputWrapper } from "~/components/common";
 
 import {
@@ -21,6 +11,7 @@ import {
   useSwapStore,
 } from "~/store";
 
+import { useGetSquidRouteData } from "~/hooks/useGetSquidRouteData";
 import { AssetAlias, AssetConfigExtended } from "~/types";
 
 import {
@@ -36,8 +27,9 @@ export const DestAssetSelector = ({
 }: {
   squidAssets: AssetConfigExtended[];
 }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { isLoading, isError } = useGetSquidRouteData();
 
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const allAssets = useSwapStore((state) => state.allAssets);
   const srcAsset = useSwapStore((state) => state.asset);
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -50,21 +42,17 @@ export const DestAssetSelector = ({
 
   const unwrappedAssetSymbol = useSwapStore(getUnwrappedAssetSymbol);
   const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
-  const tokensToTransfer = useSwapStore((state) => state.tokensToTransfer);
-  const destAddress = useSwapStore((state) => state.destAddress);
+
   const {
     setIsSquidTrade,
     selectedSquidAsset,
     setSelectedSquidAsset,
-    isSquidTrade,
-    slippage,
-    squidChains,
-    setRouteDataAsync,
     setRouteData,
-    setRouteDataLoading,
+    routeData,
   } = useSquidStateStore();
   const [selectedAssetSymbol, setSelectedAssetSymbol] = useState<string>();
   const ref = useRef(null);
+  console.log("route data", routeData, isLoading, isError);
 
   const nativeAsset = useMemo(
     () =>
@@ -74,51 +62,6 @@ export const DestAssetSelector = ({
           asset.is_gas_token
       ),
     [allAssets, destChain.chainName]
-  );
-
-  const getRouteData = useCallback(
-    async (asset: AssetInfo) => {
-      if (!srcAsset) {
-        return;
-      }
-      const fromToken = srcAsset.is_gas_token
-        ? ARBITRARY_EVM_ADDRESS
-        : srcAsset.chain_aliases[srcChain.chainName.toLowerCase()].tokenAddress;
-      const toToken = NATIVE_ASSET_IDS.includes(
-        asset.assetSymbol?.toLowerCase() as string
-      )
-        ? ARBITRARY_EVM_ADDRESS
-        : (asset?.tokenAddress as string);
-      setRouteDataLoading(true);
-      const params: GetRoute = {
-        fromChain: squidChains.find(
-          (c) => c.chainName.toLowerCase() === srcChain.id
-        )?.chainId as string | number,
-        fromToken: String(fromToken),
-        fromAmount: parseUnits(tokensToTransfer, srcAsset.decimals).toString(),
-        toChain: squidChains.find(
-          (c) => c.chainName.toLowerCase() === destChain.id
-        )?.chainId as string | number,
-        toToken,
-        toAddress: destAddress,
-        slippage,
-        enableForecall: false, // instant execution service, defaults to true
-        quoteOnly: false, // optional, defaults to false
-      };
-      setRouteDataAsync(params);
-    },
-    [
-      srcAsset,
-      srcChain.chainName,
-      srcChain.id,
-      setRouteDataLoading,
-      squidChains,
-      tokensToTransfer,
-      destAddress,
-      slippage,
-      setRouteDataAsync,
-      destChain.id,
-    ]
   );
 
   useEffect(() => {
@@ -139,31 +82,6 @@ export const DestAssetSelector = ({
     setSelectedSquidAsset,
     setShouldUnwrapAsset,
     srcChain,
-  ]);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      if (
-        isSquidTrade &&
-        tokensToTransfer &&
-        selectedSquidAsset &&
-        destAddress &&
-        slippage
-      ) {
-        getRouteData(selectedSquidAsset);
-      }
-    }, 500);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [
-    tokensToTransfer,
-    selectedSquidAsset,
-    isSquidTrade,
-    destAddress,
-    slippage,
-    getRouteData,
   ]);
 
   const handleOnDropdownToggle = () => setDropdownOpen(!dropdownOpen);
