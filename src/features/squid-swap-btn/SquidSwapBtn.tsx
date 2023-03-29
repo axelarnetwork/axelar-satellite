@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { RouteData } from "@0xsquid/sdk";
 import clsx from "clsx";
 import { useConnect, useNetwork, useSigner, useSwitchNetwork } from "wagmi";
@@ -19,6 +19,7 @@ import {
 } from "~/store";
 
 import { squid } from "~/squid.config";
+import { validateCosmosAddress, validateEvmAddress } from "~/utils/address";
 import { SwapStatus } from "~/utils/enums";
 import { showErrorMsgAndThrow } from "~/utils/error";
 
@@ -46,9 +47,35 @@ const SquidSwapBtn = React.memo(() => {
   const reservedAddresses = useSwapStore(getReservedAddresses);
 
   const setSwapStatus = useSwapStore((state) => state.setSwapStatus);
-  const { routeData, setTxReceipt, resetSquidState } = useSquidStateStore();
+  const { routeData, setTxReceipt, resetSquidState, routeDataLoading } =
+    useSquidStateStore();
 
   const { loading } = useGetDepositAddress();
+
+  const errorMessage = useMemo(() => {
+    if (routeDataLoading) return "Fetching swap estimates for input parameters";
+    if (
+      [
+        validateCosmosAddress(destAddress, destChain.addressPrefix),
+        validateEvmAddress(destAddress),
+      ].every((t) => !t)
+    )
+      return "Enter a valid destination address";
+    if (!tokensToTransfer || tokensToTransfer === "0")
+      return "Enter a valid amount to swap";
+    if (reservedAddresses.includes(destAddress))
+      return "Cannot send to this address";
+    if (routeData) return null;
+    return "A valid route was not found for this chain/asset pair. Please select another";
+  }, [
+    destAddress,
+    tokensToTransfer,
+    routeDataLoading,
+    routeData,
+    destChain.addressPrefix,
+    validateCosmosAddress,
+    validateEvmAddress,
+  ]);
 
   async function handleOnMetamaskSwitch() {
     const connector = connectors.find((c) => c.name === "MetaMask");
@@ -138,20 +165,23 @@ const SquidSwapBtn = React.memo(() => {
   }
 
   return (
-    <button
-      className={clsx("w-full text-base font-semibold capitalize btn", {
-        "btn-primary": chain?.id === srcChainId,
-        "btn-outline": chain?.id !== srcChainId,
-      })}
-      onClick={handleSwap}
-      disabled={chain?.id === srcChainId && !routeData}
-    >
-      {chain?.id !== srcChainId
+    <div className="tooltip" data-tip={errorMessage}>
+      <button
+        className={clsx("w-full text-base font-semibold capitalize btn", {
+          "btn-primary": chain?.id === srcChainId,
+          "btn-outline": chain?.id !== srcChainId,
+        })}
+        onClick={handleSwap}
+        disabled={(chain?.id === srcChainId && !routeData) || routeDataLoading}
+      >
+        Swap via Squid
+        {/* {chain?.id !== srcChainId
         ? `Switch to ${srcChain.chainName}`
         : routeData
         ? "Swap with Squid"
-        : "Select A Valid Swap Path"}
-    </button>
+      : "Select A Valid Swap Path"} */}
+      </button>
+    </div>
   );
 });
 

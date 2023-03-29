@@ -68,20 +68,26 @@ export function useGetSquidRouteData() {
   ]);
   const debouncedRouteParams = useDebounce(routeParams, 1000);
 
-  return useQuery(["squid-route-data", debouncedRouteParams], async () => {
-    if (!debouncedRouteParams.fromChain) {
-      setRouteData(null);
-      return;
-    }
-    setRouteDataLoading(true);
+  return useQuery(
+    ["squid-route-data", debouncedRouteParams],
+    async () => {
+      if (!debouncedRouteParams.fromChain) {
+        setRouteData(null);
+        return;
+      }
+      setRouteDataLoading(true);
 
-    try {
-      await setRouteDataAsync(debouncedRouteParams);
-    } catch (e: any) {
-      console.error("Squid Route Call error: ", e);
-      toast.error(
-        `Selected Squid route is not supported. Please selection another chain/asset pair`
-      );
+      try {
+        await setRouteDataAsync(debouncedRouteParams);
+      } catch (e: any) {
+        console.error("Squid Route Call error: ", e);
+        toast.error(
+          `Selected Squid route is not supported. Please selection another chain/asset pair`
+        );
+      }
+    },
+    {
+      cacheTime: 15_000,
     }
-  });
+  );
 }
