@@ -7,6 +7,7 @@ import { binance } from "./binance";
 import { celo } from "./celo";
 import { ethereum } from "./ethereum";
 import { fantom } from "./fantom";
+import { filecoin } from "./filecoin";
 import { kava } from "./kava";
 import { moonbeam } from "./moonbeam";
 import { optimism } from "./optimism";
@@ -19,6 +20,7 @@ export const testnetChains: ChainExtension[] = [
   ethereum,
   moonbeam,
   fantom,
+  filecoin,
   polygon,
   binance,
   kava,
