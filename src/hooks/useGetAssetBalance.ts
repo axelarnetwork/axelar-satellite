@@ -60,7 +60,7 @@ export const useGetAssetBalance = () => {
       setLoading(evmIsLoading);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [evmBalance, srcChain.module, evmIsLoading]
+    [evmBalance, srcChain, evmIsLoading]
   );
 
   /**

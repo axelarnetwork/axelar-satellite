@@ -171,7 +171,7 @@ export const useInitialChainList = () => {
 
     const chainsWithUniqueAssets = chains.map((chain) => ({
       ...chain,
-      assets: uniqBy((asset) => asset.assetSymbol, chain.assets),
+      assets: uniqBy((asset) => asset.common_key, chain.assets),
     }));
 
     const uniqueChains = injectSquidAssetsIntoChains(
