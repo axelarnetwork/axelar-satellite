@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@0xsquid/sdk': ^1.3.5-beta.1
-  '@axelar-network/axelarjs-sdk': 0.12.5
+  '@axelar-network/axelarjs-sdk': 0.12.7-alpha.0
   '@commitlint/cli': ^17.4.4
   '@commitlint/config-conventional': ^17.4.4
   '@cosmjs/launchpad': ^0.27.1
@@ -64,7 +64,7 @@ specifiers:
 
 dependencies:
   '@0xsquid/sdk': 1.3.5
-  '@axelar-network/axelarjs-sdk': 0.12.5
+  '@axelar-network/axelarjs-sdk': 0.12.7-alpha.0
   '@cosmjs/stargate': 0.29.5
   '@ethersproject/abstract-provider': 5.7.0
   '@evmos/proto': 0.1.27
@@ -160,8 +160,8 @@ packages:
     engines: {node: ^16.0.0 || ^18.0.0}
     dev: false
 
-  /@axelar-network/axelarjs-sdk/0.12.5:
-    resolution: {integrity: sha512-6wyLQ6Cv321E2jqKxin/Wu4za8FbhAjpD8afmuJ/dkfw2qt1MFlbogT0AYrbD4bgPWuJIRQsA41A3ObWPG2Xfw==}
+  /@axelar-network/axelarjs-sdk/0.12.7-alpha.0:
+    resolution: {integrity: sha512-nQSP/GfMXndPJrZPXZ9TD0EOtBcG4rm6t0vLbLOD+hFwqOhdIqS19kNpUhg+TUr0oPnOM3cDiRcx6eTZT64oBA==}
     dependencies:
       '@axelar-network/axelar-cgp-solidity': 4.5.0
       '@axelar-network/axelarjs-types': 0.27.0
