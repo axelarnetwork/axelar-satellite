@@ -12,6 +12,7 @@ import { kujira } from "./kujira";
 import { odin } from "./odin";
 import { osmosis } from "./osmosis";
 import { persistence } from "./persistence";
+import { secret } from "./secret";
 import { sei } from "./sei";
 import { terra } from "./terra";
 import { xpla } from "./xpla";
@@ -33,4 +34,5 @@ export const testnetChains: CosmosChain[] = [
   burnt,
   acrechain,
   odin,
+  secret,
 ];
