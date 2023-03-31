@@ -132,7 +132,6 @@ export function useGetAllowedMaxBalance() {
       keplrConnected,
     ],
     () => {
-      console.log("asset id and gas token", asset?.id, asset?.is_gas_token);
       if (srcChain.module === "evm" && provider && balance && asset) {
         return computeRealMaxBalance(balance as any); //TODO
       }
