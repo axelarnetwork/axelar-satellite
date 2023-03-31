@@ -127,6 +127,11 @@ export const DestAssetSelector = ({
     (t) => t.symbol.toLowerCase() === selectedAssetSymbol?.toLowerCase()
   );
 
+  const filteredSquidAssets = useMemo(
+    () => squidAssets.filter((t) => t.id !== srcAsset?.id),
+    [squidAssets, srcAsset]
+  );
+
   function renderAssetDropdown() {
     if (!(dropdownOpen && srcChain)) {
       return null;
@@ -174,7 +179,7 @@ export const DestAssetSelector = ({
             </li>
           )}
           {shouldRenderSquidAssets &&
-            squidAssets.map((squidAsset) => (
+            filteredSquidAssets.map((squidAsset) => (
               <li key={`squid_token_${squidAsset.id}`}>
                 <button
                   onClick={() =>
