@@ -103,10 +103,15 @@ export function useGetAllowedMaxBalance() {
     if (!asset?.is_gas_token) {
       return formatUnits(tokenBalance || "0", asset?.decimals || 18);
     }
-
     // if native asset return native token balance minus tx fee
-    const gas = await estimateGas();
-    const gasPrice = await provider.getGasPrice();
+    let gas = BigNumber.from(0),
+      gasPrice = BigNumber.from(0);
+    try {
+      gas = await estimateGas();
+      gasPrice = await provider.getGasPrice();
+    } catch (e) {
+      console.warn("could not estimate gas for max calculation");
+    }
     const fee = gas.mul(gasPrice);
     return formatUnits(balance.value.sub(fee), asset?.decimals || 18).substring(
       0,
@@ -127,6 +132,7 @@ export function useGetAllowedMaxBalance() {
       keplrConnected,
     ],
     () => {
+      console.log("asset id and gas token", asset?.id, asset?.is_gas_token);
       if (srcChain.module === "evm" && provider && balance && asset) {
         return computeRealMaxBalance(balance as any); //TODO
       }

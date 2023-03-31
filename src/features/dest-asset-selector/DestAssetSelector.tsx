@@ -212,7 +212,6 @@ export const DestAssetSelector = ({
   if (!srcAsset) {
     return null;
   }
-  console.log("dynamic token logo", dynamicNativeTokenLogo);
 
   return (
     <InputWrapper>
