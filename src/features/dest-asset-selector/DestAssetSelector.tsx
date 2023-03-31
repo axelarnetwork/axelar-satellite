@@ -154,7 +154,9 @@ export const DestAssetSelector = ({
           <li key={"selected_src_asset"}>
             <button onClick={() => handleSelect(false, assetSymbol)}>
               <AssetIcon
-                assetId={srcAsset?.id}
+                assetId={
+                  srcAsset?.is_gas_token ? srcAsset.wrapped_erc20 : srcAsset?.id
+                }
                 iconSrc={srcAsset?.iconSrc}
                 size={35}
               />
@@ -210,6 +212,7 @@ export const DestAssetSelector = ({
   if (!srcAsset) {
     return null;
   }
+  console.log("dynamic token logo", dynamicNativeTokenLogo);
 
   return (
     <InputWrapper>
@@ -234,7 +237,10 @@ export const DestAssetSelector = ({
                 <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
                   <AssetIcon
                     assetId={
-                      selectedSquidAsset?.ibcDenom ?? dynamicNativeTokenLogo
+                      selectedSquidAsset?.ibcDenom ??
+                      (srcAsset?.is_gas_token
+                        ? srcAsset.wrapped_erc20
+                        : dynamicNativeTokenLogo)
                     }
                     iconSrc={
                       selectedSquidAsset?.iconSrc ?? destSquidAsset?.logoURI
