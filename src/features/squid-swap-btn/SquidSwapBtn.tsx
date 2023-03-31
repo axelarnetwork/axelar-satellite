@@ -172,7 +172,11 @@ const SquidSwapBtn = React.memo(() => {
           "btn-outline": chain?.id !== srcChainId,
         })}
         onClick={handleSwap}
-        disabled={(chain?.id === srcChainId && !routeData) || routeDataLoading}
+        disabled={
+          (chain?.id === srcChainId && !routeData) ||
+          routeDataLoading ||
+          errorMessage !== null
+        }
       >
         Swap via Squid
         {/* {chain?.id !== srcChainId
