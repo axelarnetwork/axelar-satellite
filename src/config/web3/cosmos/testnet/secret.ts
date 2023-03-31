@@ -8,7 +8,7 @@ export const secret: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/secret`,
   chainId: "secret-snip-2",
   chainName: "Secret Testnet",
-  chainIdentifier: "secret-snip-2",
+  chainIdentifier: "secret",
   currencies: [
     {
       coinDenom: "SCRT",
