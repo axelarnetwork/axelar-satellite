@@ -261,7 +261,9 @@ export const useInitialChainList = () => {
         fullDenomPath: token.coingeckoId,
         ibcDenom: token.coingeckoId,
         iconSrc: token.logoURI,
+        decimals: token.decimals,
       };
+
       const chainName = token.chainName.toLowerCase();
 
       if (existingAsset) {
@@ -272,6 +274,8 @@ export const useInitialChainList = () => {
         if (!(chainName in existingAsset.chain_aliases)) {
           existingAsset.chain_aliases[chainName] = newAlias;
         }
+        if (!existingAsset.chain_aliases[chainName]?.decimals)
+          existingAsset.chain_aliases[chainName].decimals = token.decimals;
       } else {
         const assetId = token.coingeckoId || token.symbol.toLocaleLowerCase();
         const newAsset: AssetConfigExtended = {
