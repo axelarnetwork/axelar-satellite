@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 type LinkProps = {
   url: string;
@@ -21,7 +21,6 @@ export const Link: FC<LinkProps> = ({ linkDescription, linkTitle, url }) => {
       </div>
 
       <Image
-        layout="intrinsic"
         width={20}
         height={20}
         src="/assets/ui/forward-arrow-link.svg"
