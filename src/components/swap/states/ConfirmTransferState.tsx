@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { AssetConfig, ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwitchNetwork } from "wagmi";
 

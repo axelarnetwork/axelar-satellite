@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { useSwitchNetwork } from "wagmi";
 import wait from "wait";

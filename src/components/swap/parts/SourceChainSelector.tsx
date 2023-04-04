@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useOnClickOutside } from "usehooks-ts";
@@ -39,7 +39,7 @@ export const SourceChainSelector = () => {
           chain.chainName !== destChain.chainName &&
           chain.chainName !== srcChain.chainName &&
           // TODO: fix correctly
-          !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes((chain as any).id)
+          !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes(chain.id)
       );
       // .filter((chain) =>
       //   chain.assets
@@ -86,7 +86,7 @@ export const SourceChainSelector = () => {
           chain.chainName !== destChain.chainName &&
           chain.chainName !== srcChain.chainName &&
           // TODO: fix correctly
-          !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes((chain as any).id)
+          !ASSET_RESTRICTIONS[0]?.hideSrcChains?.includes(chain.id)
       );
       setFilteredChains(chains);
     },
@@ -152,7 +152,6 @@ export const SourceChainSelector = () => {
                   <Image
                     loading="eager"
                     src={`/assets/chains/${chain.chainName?.toLowerCase()}.logo.svg`}
-                    layout="intrinsic"
                     width={35}
                     height={35}
                     onError={(e) => {
@@ -184,7 +183,6 @@ export const SourceChainSelector = () => {
               <Image
                 loading="eager"
                 src={`/assets/chains/${srcChain?.chainName?.toLowerCase()}.logo.svg`}
-                layout="intrinsic"
                 width={35}
                 height={35}
                 onError={(e) => {
@@ -200,7 +198,6 @@ export const SourceChainSelector = () => {
                 <Image
                   loading="eager"
                   src="/assets/ui/arrow-down.svg"
-                  layout="intrinsic"
                   width={25}
                   height={25}
                   alt="arrow down"

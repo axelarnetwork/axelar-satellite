@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 import { useSquidStateStore } from "~/store";
 
@@ -39,10 +39,11 @@ export const SquidParamConfig = () => {
             <div className="flex items-center gap-x-5">
               <span>Slippage</span>
               <input
-                type="text"
+                type="number"
                 placeholder="1"
+                step={0.01}
                 value={slippage}
-                onChange={(e) => setSlippage(e.target.value as any)}
+                onChange={(e) => setSlippage(Number(e.target.value))}
                 className="w-16 input input-sm input-bordered"
               />
             </div>

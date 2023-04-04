@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import clsx from "clsx";
 
@@ -71,7 +71,6 @@ export const ChainsDropdown: React.FC<Props> = ({
                 <Image
                   loading="eager"
                   src={`/assets/chains/${chainName}.logo.svg`}
-                  layout="intrinsic"
                   width={35}
                   height={35}
                   onError={(e) => {

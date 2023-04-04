@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 type Props = {
   assetId?: string;
@@ -16,7 +16,6 @@ const AssetIcon = (props: Props) => {
     <Image
       loading="eager"
       src={`/assets/tokens/${props.assetId}.logo.svg`}
-      layout="intrinsic"
       width={props.size}
       height={props.size}
       onError={(e) => {
@@ -27,7 +26,7 @@ const AssetIcon = (props: Props) => {
         e.currentTarget.src = defaultAssetImg;
         e.currentTarget.srcset = defaultAssetImg;
       }}
-      alt={props.alt}
+      alt={props.alt ?? "asset"}
     />
   );
 };

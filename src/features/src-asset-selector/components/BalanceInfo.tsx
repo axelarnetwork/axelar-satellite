@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { SpinnerDotted } from "spinners-react";
 
 import { connectToKeplr } from "~/components/web3/utils/handleOnKeplrConnect";
@@ -162,7 +162,6 @@ export const BalanceInfo = () => {
         <Image
           loading="eager"
           src={"/assets/ui/forward-arrow-link.svg"}
-          layout="intrinsic"
           width={10}
           height={10}
           alt="arrow"

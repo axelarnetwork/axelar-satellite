@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { Blockable, InputWrapper } from "~/components/common";
@@ -251,7 +251,6 @@ export const DestAssetSelector = ({
                     <Image
                       loading="eager"
                       src="/assets/ui/arrow-down.svg"
-                      layout="intrinsic"
                       width={35}
                       height={35}
                       alt="arrow down"

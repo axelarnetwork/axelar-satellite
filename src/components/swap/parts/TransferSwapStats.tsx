@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { formatEther } from "ethers/lib/utils.js";
 
 import { AXELARSCAN_URL } from "~/config/constants";
@@ -88,13 +88,7 @@ export const TransferSwapStats = () => {
             ? evmRpc?.blockExplorers?.default?.name
             : "Axelarscan"}
         </span>
-        <Image
-          src={"/assets/ui/link.svg"}
-          height={16}
-          width={16}
-          layout="intrinsic"
-          alt="link"
-        />
+        <Image src={"/assets/ui/link.svg"} height={16} width={16} alt="link" />
       </a>
     );
   }

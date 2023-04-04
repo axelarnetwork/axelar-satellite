@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 import { SUPPORT_MODAL } from "~/config/constants";
 
@@ -63,7 +63,6 @@ export const GetSocials = () => {
         rel="noopener noreferrer nofollow"
       >
         <Image
-          layout="intrinsic"
           width={25}
           height={50}
           src="/assets/ui/discord.svg"
@@ -77,7 +76,6 @@ export const GetSocials = () => {
         rel="noopener noreferrer nofollow"
       >
         <Image
-          layout="intrinsic"
           width={25}
           height={25}
           src="/assets/ui/twitter.svg"
@@ -91,7 +89,6 @@ export const GetSocials = () => {
         rel="noopener noreferrer nofollow"
       >
         <Image
-          layout="intrinsic"
           width={25}
           height={25}
           src="/assets/ui/linkedin.svg"

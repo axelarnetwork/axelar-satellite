@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
 import { ENVIRONMENT } from "~/config/constants";
@@ -9,6 +9,20 @@ import { useSwapStore } from "~/store";
 import { AssetConfigExtended } from "~/types";
 import { SwapStatus } from "~/utils/enums";
 import { makeAccessibleKeysHandler } from "~/utils/react";
+
+const Icon = ({ src = "", alt = "" }) => (
+  <Image src={src} alt={alt} width={35} height={35} />
+);
+
+const EthereumIcon = () => (
+  <Icon src="/assets/chains/ethereum.logo.svg" alt="Ethereum" />
+);
+
+const UsdcIcon = () => <Icon src="/assets/tokens/uausdc.logo.svg" alt="USDC" />;
+
+const OsmosisIcon = () => (
+  <Icon src="/assets/chains/osmosis.logo.svg" alt="osmosis" />
+);
 
 export const Arrow = () => (
   <svg
@@ -149,29 +163,11 @@ export const TopFlows = () => {
           {...makeAccessibleKeysHandler(handleOnFlow0)}
         >
           <div className="flex">
-            <Image
-              src={"/assets/chains/polygon.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="polygon"
-            />
+            <Icon src={"/assets/chains/polygon.logo.svg"} alt="polygon" />
             <Arrow />
-            <Image
-              src={"/assets/tokens/uausdc.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="usdc"
-            />
+            <UsdcIcon />
             <Arrow />
-            <Image
-              src={"/assets/chains/osmosis.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="osmosis"
-            />
+            <OsmosisIcon />
           </div>
         </li>
         <li
@@ -179,29 +175,11 @@ export const TopFlows = () => {
           {...makeAccessibleKeysHandler(handleOnFlow1)}
         >
           <div className="flex">
-            <Image
-              src={"/assets/chains/ethereum.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="ethereum"
-            />
+            <EthereumIcon />
             <Arrow />
-            <Image
-              src={"/assets/tokens/uausdc.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="usdc"
-            />
+            <UsdcIcon />
             <Arrow />
-            <Image
-              src={"/assets/chains/osmosis.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="osmosis"
-            />
+            <OsmosisIcon />
           </div>
         </li>
         <li
@@ -209,29 +187,11 @@ export const TopFlows = () => {
           {...makeAccessibleKeysHandler(handleOnFlow2)}
         >
           <div className="flex">
-            <Image
-              src={"/assets/chains/ethereum.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="ethereum"
-            />
+            <EthereumIcon />
             <Arrow />
-            <Image
-              src={"/assets/tokens/uaxl.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="axelar"
-            />
+            <Icon src="/assets/tokens/uaxl.logo.svg" alt="axelar" />
             <Arrow />
-            <Image
-              src={"/assets/chains/axelar.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="axelar"
-            />
+            <Icon src="/assets/chains/axelar.logo.svg" alt="axelar" />
           </div>
         </li>
 
@@ -240,29 +200,11 @@ export const TopFlows = () => {
           {...makeAccessibleKeysHandler(handleOnFlow3)}
         >
           <div className="flex">
-            <Image
-              src={"/assets/chains/ethereum.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="ethereum"
-            />
+            <EthereumIcon />
             <Arrow />
-            <Image
-              src={"/assets/tokens/weth-wei.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="weth"
-            />
+            <Icon src="/assets/tokens/weth-wei.logo.svg" alt="weth" />
             <Arrow />
-            <Image
-              src={"/assets/chains/osmosis.logo.svg"}
-              layout="intrinsic"
-              width={35}
-              height={35}
-              alt="osmosis"
-            />
+            <OsmosisIcon />
           </div>
         </li>
       </ul>

@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 import { getSelectedAssetSymbol, useSwapStore } from "~/store";
 
@@ -13,8 +13,7 @@ import { TransferStats } from "../parts";
 import { CosmosWalletTransfer, EvmWalletTransfer, ProgressBar } from "./parts";
 
 export const WaitDepositState = () => {
-  const { depositAddress, destAddress, srcChain, destChain, asset } =
-    useSwapStore((state) => state);
+  const { depositAddress, srcChain, asset } = useSwapStore((state) => state);
   const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
   const { data: relayerGasFee } = useGetRelayerGasFee();
 
