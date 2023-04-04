@@ -53,6 +53,7 @@
     "@cosmjs/tendermint-rpc": "^0.29.5",
     "@ianvs/prettier-plugin-sort-imports": "^3.7.2",
     "@keplr-wallet/types": "^0.10.24",
+    "@next/bundle-analyzer": "13.2.4",
     "@playwright/test": "^1.32.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
