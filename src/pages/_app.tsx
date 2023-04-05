@@ -20,7 +20,13 @@ import { useEffect, useState } from "react";
 
 import { squid } from "~/squid.config";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function MyApp({
   Component,

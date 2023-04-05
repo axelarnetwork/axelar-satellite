@@ -25,7 +25,7 @@ enum SquidSwapStatus {
 }
 
 export const SquidStates = () => {
-  const srcChain = useSwapStore((state) => state.srcChain);
+  const srcChain: ChainInfoExtended = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const swapStatus = useSwapStore((state) => state.swapStatus);
   const srcChainId = useSwapStore(getSrcChainId);
@@ -51,26 +51,32 @@ export const SquidStates = () => {
       switch (ctx.statusResponse.status) {
         case GMPStatus.SRC_GATEWAY_CALLED: {
           return {
-            nextProgress: SquidSwapStatus.SRC_GATEWAY_CALLED,
+            prog: SquidSwapStatus.SRC_GATEWAY_CALLED,
             txt: `Transaction on ${ctx.srcChain.chainName} detected`,
+          };
+        }
+        case GMPStatus.SRC_GATEWAY_CONFIRMED: {
+          return {
+            prog: SquidSwapStatus.SRC_GATEWAY_CALLED,
+            txt: `Confirmed on Axelar and sending to ${ctx.destChain.chainName}`,
           };
         }
         case GMPStatus.DEST_EXECUTING: {
           return {
-            nextProgress: SquidSwapStatus.DEST_EXECUTING,
+            prog: SquidSwapStatus.DEST_EXECUTING,
             txt: `Arrived on ${ctx.destChain.chainName}. Awaiting final execution...`,
           };
         }
         case GMPStatus.DEST_EXECUTED: {
           return {
-            nextProgress: SquidSwapStatus.DEST_EXECUTED,
+            prog: SquidSwapStatus.DEST_EXECUTED,
             txt: "Swap complete!",
             nextStatus: SwapStatus.SQUID_FINISHED,
           };
         }
         case "express_executed": {
           return {
-            nextProgress: SquidSwapStatus.DEST_EXECUTED,
+            prog: SquidSwapStatus.DEST_EXECUTED,
             txt: "Swap complete!",
             nextStatus: SwapStatus.SQUID_FINISHED,
           };
@@ -185,18 +191,13 @@ export const SquidStates = () => {
     return (
       <div className="flex flex-col items-center gap-x-5">
         <div className="flex items-center gap-x-2">
-          <SpinnerRoundFilled
-            className="text-blue-500"
-            size={20}
-            color="#00a6ff"
-          />
           <span className="text-sm">
             Waiting for{" "}
             {Math.min(numConfirmationsSoFar, srcChain.confirmLevel as number)}/
             {srcChain.confirmLevel} confirmations before sending to Axelar...
           </span>
         </div>
-        <div className="flex items-center mt-2 gap-x-2">
+        <div className="flex items-center my-2 gap-x-2">
           <progress
             className="w-56 progress progress-success"
             value={numConfirmationsSoFar}
@@ -214,18 +215,18 @@ export const SquidStates = () => {
           <div className="flex flex-col w-full h-full">
             <div className="h-full">
               <ProgressBar currentLevel={progress} maxLevels={4} />
-              <div className="h-6" />
+              <div className="h-2" />
               <div className="flex items-center justify-center h-full py-4 text-base gap-x-2">
-                <SpinnerRoundFilled
-                  size={20}
-                  thickness={147}
-                  color={"#00a5ff"}
-                />
+                {progress !== SquidSwapStatus.DEST_EXECUTED && (
+                  <SpinnerRoundFilled
+                    size={20}
+                    thickness={147}
+                    color={"#00a5ff"}
+                  />
+                )}
                 <span className="font-semibold">{statusText}</span>
               </div>
-
               {getStatus()}
-
               {statusResponse?.axelarTransactionUrl && (
                 <div className="flex flex-col items-center">
                   <div className="my-0 divider" />
@@ -235,7 +236,7 @@ export const SquidStates = () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <span>{"View transaction progress on Axelarscan..."}</span>
+                    <span>{"View transaction details on Axelarscan..."}</span>
                     <Image
                       src={"/assets/ui/link.svg"}
                       height={16}
