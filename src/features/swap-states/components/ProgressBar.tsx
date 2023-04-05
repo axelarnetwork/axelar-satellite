@@ -11,7 +11,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
 }) => {
   function renderLevel(level: number) {
     return (
-      <>
+      <React.Fragment key={`progress-bar-level${level}`}>
         <div
           className={clsx(
             "flex items-center justify-center w-6 h-6 rounded-full bg-primary inline-bloc",
@@ -31,7 +31,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
             value={1}
           />
         )}
-      </>
+      </React.Fragment>
     );
   }
 

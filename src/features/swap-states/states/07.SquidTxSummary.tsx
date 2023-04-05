@@ -9,6 +9,7 @@ import {
   StatusResponse,
   Swap,
 } from "@0xsquid/sdk";
+import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { formatUnits } from "ethers/lib/utils.js";
 
 import { InputWrapper } from "~/components/common";
@@ -18,6 +19,45 @@ import { useSquidStateStore, useSwapStore } from "~/store";
 import { SwapStatus } from "~/utils/enums";
 
 import { ProgressBar } from "../components";
+
+const ShowSwapRouteOnChain = ({
+  squidChainInfo,
+  chainInfo,
+}: {
+  squidChainInfo: Route;
+  chainInfo: ChainInfo;
+}) => {
+  if (!squidChainInfo?.length) return null;
+
+  return (
+    <>
+      {(squidChainInfo as Route).map((chInfo: Call | Swap, index: number) => {
+        if (chInfo.type === "SWAP") {
+          const info: Swap = { ...chInfo } as Swap;
+          return (
+            <div
+              key={`route-${info.fromToken.chainId}-${index}`}
+              className="flex flex-row justify-start w-full"
+            >
+              <CheckIcon />
+              <div className="w-full text-xs">
+                Swap ~
+                {Number(
+                  formatUnits(info.fromAmount, info.fromToken.decimals)
+                ).toPrecision(4)}{" "}
+                {info.fromToken.symbol} to ~
+                {Number(
+                  formatUnits(info.toAmount, info.toToken.decimals)
+                ).toPrecision(4)}{" "}
+                {info.toToken.symbol} on {chainInfo.chainName}
+              </div>
+            </div>
+          );
+        }
+      })}
+    </>
+  );
+};
 
 const CheckIcon = () => (
   <svg
@@ -51,50 +91,24 @@ export const SquidTxSummary = () => {
         sendAmount,
       },
     } = { ...routeData } as RouteData;
-    const res: JSX.Element[] = [];
 
-    const showSwapRouteOnChain = (chain: Route) => {
-      if (chain?.length > 0) {
-        (chain as Route).forEach((chInfo: Call | Swap) => {
-          if (chInfo.type === "SWAP") {
-            const info: Swap = { ...chInfo } as Swap;
-            res.push(
-              <div className="flex flex-row justify-start w-full">
-                <CheckIcon />
-                <div className="w-full text-xs">
-                  Swap ~
-                  {Number(
-                    formatUnits(info.fromAmount, info.fromToken.decimals)
-                  ).toPrecision(4)}{" "}
-                  {info.fromToken.symbol} to ~
-                  {Number(
-                    formatUnits(info.toAmount, info.toToken.decimals)
-                  ).toPrecision(4)}{" "}
-                  {info.toToken.symbol} on {srcChain.chainName}
-                </div>
-              </div>
-            );
-          }
-        });
-      }
-    };
-
-    showSwapRouteOnChain(fromChain);
-
-    res.push(
-      <div className="flex flex-row justify-start w-full">
-        <CheckIcon />
-        <div className="w-full text-xs">
-          Send ~{Number(formatUnits(sendAmount, 6)).toPrecision(4)}{" "}
-          {srcChain.id.includes("ethereum") ? "USDC" : "axlUSDC"} to{" "}
-          {destChain.chainName}
+    return (
+      <div className="flex flex-col items-center w-full my-2">
+        <ShowSwapRouteOnChain squidChainInfo={fromChain} chainInfo={srcChain} />
+        <div
+          key={`route-usdc-${srcChain.chainName}`}
+          className="flex flex-row justify-start w-full"
+        >
+          <CheckIcon />
+          <div className="w-full text-xs">
+            Send ~{Number(formatUnits(sendAmount, 6)).toPrecision(4)}{" "}
+            {srcChain.id.includes("ethereum") ? "USDC" : "axlUSDC"} to{" "}
+            {destChain.chainName}
+          </div>
         </div>
+        <ShowSwapRouteOnChain squidChainInfo={toChain} chainInfo={destChain} />
       </div>
     );
-
-    showSwapRouteOnChain(toChain);
-
-    return <div className="flex flex-col items-center w-full my-2">{res}</div>;
   };
 
   function renderTxConfirmationInfo() {
