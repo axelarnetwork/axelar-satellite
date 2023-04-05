@@ -87,3 +87,4 @@ export const ASSET_RESTRICTIONS: AssetRestriction[] = chainPolicies;
 
 export const defaultChainImg = "/assets/chains/default.logo.svg";
 export const defaultAssetImg = "/assets/chains/default.logo.svg";
+export const TERRA_IBC_GAS_LIMIT = "150000";

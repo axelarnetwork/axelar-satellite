@@ -7,6 +7,7 @@ import { useAccount } from "wagmi";
 import { getWagmiChains } from "~/config/web3";
 
 import { makeAccessibleKeysHandler } from "~/utils/react";
+import { addAssetToMetamaskWithAssetConfig } from "~/utils/wallet/metamask";
 
 import { tokenContractDocs } from "../../config/constants";
 import { useGetAssetBalance } from "../../hooks";
@@ -24,7 +25,6 @@ import {
 import { copyToClipboard } from "../../utils";
 import { SwapStatus } from "../../utils/enums";
 import { AddressShortener } from "../common";
-import { addTokenToMetamask } from "../swap/states";
 
 export const EvmAssetWarningModal = () => {
   const { asset, destChain, resetState, srcChain, swapStatus, depositAddress } =
@@ -33,9 +33,6 @@ export const EvmAssetWarningModal = () => {
   const unwrappedAssetSymbol = useSwapStore(getUnwrappedAssetSymbol);
   const { shouldUnwrapAsset } = useSwapStore((state) => state);
   const selectedAssetIsWrappedNative = useSwapStore(getSelectedAsssetIsWrapped);
-  const selectedAssetSymbolOnDestinationChain = useSwapStore(
-    getSelectedAssetSymbolDestinationChain
-  );
   const selectedAssetNameSrcChain = useSwapStore(getSelectedAssetName);
   const selectedAssetNameOnDestinationChain = useSwapStore(
     getSelectedAssetNameDestChain
@@ -54,7 +51,7 @@ export const EvmAssetWarningModal = () => {
         srcChain.chainName?.toLowerCase() === newNetwork ? srcChain : destChain;
       setTimeout(() => {
         if (!asset) return;
-        addTokenToMetamask(asset, chain);
+        addAssetToMetamaskWithAssetConfig(asset, chain);
       }, 2000);
     },
   });

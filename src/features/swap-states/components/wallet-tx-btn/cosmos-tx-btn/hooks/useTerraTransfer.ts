@@ -10,7 +10,7 @@ import { BigNumber } from "bignumber.js";
 import { utils } from "ethers";
 import toast from "react-hot-toast";
 
-import { TERRA_IBC_GAS_LIMIT } from "~/components/swap/states/parts";
+import { TERRA_IBC_GAS_LIMIT } from "~/config/constants";
 
 import { useSwapStore } from "~/store";
 
