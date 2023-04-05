@@ -55,7 +55,7 @@ export const DestAssetSelector = ({
     if (selectedSquidAsset) return selectedSquidAsset.assetSymbol;
     else if (shouldUnwrapAsset) return unwrappedAssetSymbol;
     else
-      return srcAsset.chain_aliases[destChain.chainName.toLowerCase()]
+      return srcAsset?.chain_aliases[destChain.chainName.toLowerCase()]
         ?.assetName;
   }, [selectedSquidAsset, shouldUnwrapAsset, srcAsset]);
 

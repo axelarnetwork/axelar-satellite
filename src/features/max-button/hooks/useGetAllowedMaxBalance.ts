@@ -99,7 +99,7 @@ export function useGetAllowedMaxBalance() {
     try {
       return provider
         .getFeeData()
-        .then((feeData) => feeData.maxPriorityFeePerGas);
+        .then((feeData) => feeData.maxPriorityFeePerGas ?? gas);
     } catch (e) {}
 
     return gas;
