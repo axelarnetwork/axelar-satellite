@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 import {
   FAQ_MODAL,
@@ -10,7 +10,7 @@ import {
 
 import { useApplicationStateStore } from "~/store";
 
-import { withAccessibleKeysHandler, withKeysHandler } from "~/utils/react";
+import { withAccessibleKeysHandler } from "~/utils/react";
 
 import { ConnectButton } from "../swap/parts";
 
@@ -20,7 +20,7 @@ const SatelliteLogo = () => {
       <div className="relative flex items-center">
         <div className="relative flex items-center w-11 h-11">
           <Image
-            layout="fill"
+            fill
             src="/assets/ui/satellite.logo.svg"
             alt="Satellite Logo"
           />

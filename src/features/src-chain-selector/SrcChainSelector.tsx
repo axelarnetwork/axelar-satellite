@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { defaultChainImg } from "~/config/constants";
@@ -49,7 +49,6 @@ export const SrcChainSelector = () => {
                 <Image
                   loading="eager"
                   src={`/assets/chains/${chainName}.logo.svg`}
-                  layout="intrinsic"
                   width={35}
                   height={35}
                   onError={(e) => {
@@ -66,7 +65,6 @@ export const SrcChainSelector = () => {
                 <Image
                   loading="eager"
                   src="/assets/ui/arrow-down.svg"
-                  layout="intrinsic"
                   width={25}
                   height={25}
                   alt="arrow-down"

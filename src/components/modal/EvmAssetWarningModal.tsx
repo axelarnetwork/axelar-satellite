@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import clsx from "clsx";
 import { useSwitchNetwork } from "wagmi";
 import { useAccount } from "wagmi";
 
 import { getWagmiChains } from "~/config/web3";
+
+import { makeAccessibleKeysHandler } from "~/utils/react";
 
 import { tokenContractDocs } from "../../config/constants";
 import { useGetAssetBalance } from "../../hooks";
@@ -135,7 +137,9 @@ export const EvmAssetWarningModal = () => {
                   <AddressShortener value={depositAddress} />{" "}
                   <span
                     className="cursor-pointer"
-                    onClick={() => copyToClipboard(depositAddress)}
+                    {...makeAccessibleKeysHandler(
+                      copyToClipboard.bind(null, depositAddress)
+                    )}
                   >
                     <Image
                       src={"/assets/ui/copy.svg"}

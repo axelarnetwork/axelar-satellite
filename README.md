@@ -7,6 +7,8 @@
 - use barrel exports
 - use named expors instead of default ones (tree shaking)
 - make sure prettify is configured in your vs code (cmd + p and "> format document", then select prettify)
+- use react-query for remote data fetching
+- [pnpm](https://pnpm.io)
 
 ### Project structure (inspired by atomic design)
 
@@ -17,4 +19,10 @@
 ├── hooks -> global hooks
 ├── pages -> main screens + nextjs specifics
 ├── store -> global store
+```
+
+### Bundle analyzer
+
+```bash
+ANALYZE=true pnpm build
 ```

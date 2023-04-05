@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import clsx from "clsx";
 
 import { useSwapStore } from "~/store";
@@ -70,7 +70,7 @@ export const ChainSwapper = () => {
         <div className="flex justify-center items-center h-full w-full bg-[#398cc9] rounded-xl p-2.5">
           <div className="relative w-full h-full">
             <Image
-              layout="fill"
+              fill
               src="/assets/ui/double-arrows.svg"
               alt="double-arrows"
               className={clsx("transform transition-transform duration-300", {

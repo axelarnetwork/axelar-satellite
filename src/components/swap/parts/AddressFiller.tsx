@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import toast from "react-hot-toast";
 import { useAccount, useConnect } from "wagmi";
@@ -108,7 +108,6 @@ export const AddressFiller = () => {
 
           <div className="relative flex items-center h-full">
             <Image
-              layout="intrinsic"
               height={25}
               width={25}
               src="/assets/wallets/metamask.logo.svg"
@@ -142,7 +141,6 @@ export const AddressFiller = () => {
           {...makeAccessibleKeysHandler(fillCosmosDestinationAddress)}
         >
           <Image
-            layout="intrinsic"
             height={20}
             width={20}
             src="/assets/wallets/kepler.logo.svg"
@@ -157,7 +155,6 @@ export const AddressFiller = () => {
               {...makeAccessibleKeysHandler(fillTerraStationDestinationAddress)}
             >
               <Image
-                layout="intrinsic"
                 height={20}
                 width={20}
                 src="/assets/wallets/terra-station.logo.svg"

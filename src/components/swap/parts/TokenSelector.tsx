@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import { SpinnerDotted } from "spinners-react";
@@ -145,9 +145,7 @@ export const TokenSelector = () => {
 
   // update filtered assets state on chain change
   useEffect(() => {
-    let list;
-
-    list = selectableAssetList
+    const list = selectableAssetList
       .filter((asset) => {
         // @ts-ignore
         return (
@@ -361,7 +359,6 @@ export const TokenSelector = () => {
           <Image
             loading="eager"
             src={"/assets/ui/forward-arrow-link.svg"}
-            layout="intrinsic"
             width={10}
             height={10}
             alt="arrow"
@@ -439,7 +436,6 @@ export const TokenSelector = () => {
                   <Image
                     loading="eager"
                     src={`/assets/tokens/${asset.id}.logo.svg`}
-                    layout="intrinsic"
                     width={35}
                     height={35}
                     onError={(e) => {
@@ -615,7 +611,6 @@ export const TokenSelector = () => {
                   <Image
                     loading="eager"
                     src="/assets/ui/arrow-down.svg"
-                    layout="intrinsic"
                     width={35}
                     height={35}
                     alt="arrow down"

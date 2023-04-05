@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { useOnClickOutside } from "usehooks-ts";
@@ -150,7 +150,6 @@ export const DestChainSelector = () => {
                   <Image
                     loading="eager"
                     src={`/assets/chains/${chain?.chainName?.toLowerCase()}.logo.svg`}
-                    layout="intrinsic"
                     width={35}
                     height={35}
                     onError={(e) => {
@@ -186,7 +185,6 @@ export const DestChainSelector = () => {
               <Image
                 loading="eager"
                 src={`/assets/chains/${destChain?.chainName?.toLowerCase()}.logo.svg`}
-                layout="intrinsic"
                 width={35}
                 height={35}
                 onError={(e) => {
@@ -202,7 +200,6 @@ export const DestChainSelector = () => {
                 <Image
                   loading="eager"
                   src="/assets/ui/arrow-down.svg"
-                  layout="intrinsic"
                   width={25}
                   height={25}
                   alt="arrow down"

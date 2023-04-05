@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { OfflineSigner } from "@cosmjs/proto-signing";
 import toast from "react-hot-toast";
 import { useConnect } from "wagmi";
@@ -34,7 +34,7 @@ const DownloadButton = () => (
 export const Web3Modal = () => {
   const { connect, connectors, error } = useConnect();
   const allAssets = useSwapStore((state) => state.allAssets);
-  const modalRef = useRef<any>();
+  const modalRef = useRef<HTMLInputElement>(null);
   const {
     setKeplrConnected,
     keplrConnected,
@@ -120,8 +120,6 @@ export const Web3Modal = () => {
               <Image
                 src="/assets/wallets/metamask.logo.svg"
                 alt="metamask"
-                layout="intrinsic"
-                objectFit="contain"
                 height={30}
                 width={30}
               />
@@ -136,7 +134,7 @@ export const Web3Modal = () => {
               <Image
                 src="/assets/wallets/walletconnect.logo.svg"
                 alt="walletconnect"
-                layout="intrinsic"
+                
                 objectFit="contain"
                 height={30}
                 width={30}
@@ -152,7 +150,6 @@ export const Web3Modal = () => {
               <Image
                 src="/assets/wallets/kepler.logo.svg"
                 alt="walletconnect"
-                layout="intrinsic"
                 objectFit="contain"
                 height={30}
                 width={30}
@@ -174,7 +171,6 @@ export const Web3Modal = () => {
                 <Image
                   src="/assets/wallets/terra-station.logo.svg"
                   alt="walletconnect"
-                  layout="intrinsic"
                   objectFit="contain"
                   height={30}
                   width={30}
@@ -194,7 +190,7 @@ export const Web3Modal = () => {
               <Image
                 src="/assets/wallets/walletconnect.logo.svg"
                 alt="walletconnect"
-                layout="intrinsic"
+                
                 objectFit="contain"
                 height={30}
                 width={30}

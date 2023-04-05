@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 import { AXELARSCAN_URL } from "~/config/constants";
 import { getWagmiChains } from "~/config/web3";
@@ -226,7 +226,6 @@ export const TransferStats = () => {
             src={"/assets/ui/link.svg"}
             height={16}
             width={16}
-            layout="intrinsic"
             alt="link"
           />
         </a>
@@ -267,7 +266,6 @@ export const TransferStats = () => {
                 src={"/assets/ui/link.svg"}
                 height={16}
                 width={16}
-                layout="intrinsic"
                 alt="link"
               />
             </a>

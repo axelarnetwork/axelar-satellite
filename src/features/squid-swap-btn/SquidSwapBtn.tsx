@@ -31,7 +31,7 @@ const SquidSwapBtn = React.memo(() => {
   const { switchNetworkAsync } = useSwitchNetwork({
     chainId: srcChainId,
   });
-  const srcChain = useSwapStore((state) => state.srcChain);
+
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
   const { data: signer } = useSigner({
@@ -68,13 +68,12 @@ const SquidSwapBtn = React.memo(() => {
     if (routeData) return null;
     return "A valid route was not found for this chain/asset pair. Please select another";
   }, [
-    destAddress,
-    tokensToTransfer,
     routeDataLoading,
-    routeData,
+    destAddress,
     destChain.addressPrefix,
-    validateCosmosAddress,
-    validateEvmAddress,
+    tokensToTransfer,
+    reservedAddresses,
+    routeData,
   ]);
 
   async function handleOnMetamaskSwitch() {
