@@ -85,12 +85,24 @@ export function useGetAllowedMaxBalance() {
   };
 
   const estimateGas = async () => {
-    return provider
-      .estimateGas({
-        to: depositAddress,
-        value: utils.parseEther("1.0"),
-      })
-      .then((bigNum) => bigNum.mul(5));
+    let gas = BigNumber.from(200_000); // filler default value, arbitrarily
+    try {
+      return provider
+        .estimateGas({
+          to: depositAddress,
+          value: utils.parseEther("1.0"),
+        })
+        .then((bigNum) => bigNum.mul(5));
+    } catch (e) {}
+
+    //in some cases, the above calculation does not work, so invoking maxPriorityFeePerGas instead
+    try {
+      return provider
+        .getFeeData()
+        .then((feeData) => feeData.maxPriorityFeePerGas);
+    } catch (e) {}
+
+    return gas;
   };
 
   const computeRealMaxBalance = async (balance: {
@@ -110,7 +122,9 @@ export function useGetAllowedMaxBalance() {
       gas = await estimateGas();
       gasPrice = await provider.getGasPrice();
     } catch (e) {
-      console.warn("could not estimate gas for max calculation");
+      console.warn(
+        "computeRealMaxBalance(): could not estimate gas for max calculation"
+      );
     }
     const fee = gas.mul(gasPrice);
     return formatUnits(balance.value.sub(fee), asset?.decimals || 18).substring(
