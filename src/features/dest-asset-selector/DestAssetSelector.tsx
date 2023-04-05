@@ -49,8 +49,15 @@ export const DestAssetSelector = ({
     setSelectedSquidAsset,
     setRouteData,
   } = useSquidStateStore();
-  const [selectedAssetSymbol, setSelectedAssetSymbol] = useState<string>();
   const ref = useRef(null);
+
+  const selectedAssetSymbol = useMemo(() => {
+    if (selectedSquidAsset) return selectedSquidAsset.assetSymbol;
+    else if (shouldUnwrapAsset) return unwrappedAssetSymbol;
+    else
+      return srcAsset.chain_aliases[destChain.chainName.toLowerCase()]
+        ?.assetName;
+  }, [selectedSquidAsset, shouldUnwrapAsset, srcAsset]);
 
   const nativeAsset = useMemo(
     () =>
@@ -65,9 +72,6 @@ export const DestAssetSelector = ({
   useEffect(() => {
     if (srcAsset && srcChain) {
       setShouldUnwrapAsset(false);
-      setSelectedAssetSymbol(
-        srcAsset.chain_aliases[destChain.chainName.toLowerCase()]?.assetName
-      );
       setSelectedSquidAsset(null);
       setIsSquidTrade(false);
       setRouteData(null);
@@ -88,14 +92,7 @@ export const DestAssetSelector = ({
     dropdownOpen && handleOnDropdownToggle();
   });
 
-  const handleSelect = (
-    shouldUnwrap: boolean,
-    assetSymbol: string | undefined
-  ) => {
-    if (!assetSymbol) {
-      return;
-    }
-    setSelectedAssetSymbol(assetSymbol);
+  const handleSelect = (shouldUnwrap: boolean) => {
     setShouldUnwrapAsset(shouldUnwrap);
     setSelectedSquidAsset(null);
     setIsSquidTrade(false);
@@ -104,7 +101,6 @@ export const DestAssetSelector = ({
 
   const handleSquidSelect = (asset: AssetAlias) => {
     setShouldUnwrapAsset(false);
-    setSelectedAssetSymbol(asset.assetSymbol);
     setSelectedSquidAsset(asset);
     setIsSquidTrade(true);
   };
@@ -152,7 +148,7 @@ export const DestAssetSelector = ({
           onKeyDown={handleOnDropdownToggle}
         >
           <li key={"selected_src_asset"}>
-            <button onClick={() => handleSelect(false, assetSymbol)}>
+            <button onClick={() => handleSelect(false)}>
               <AssetIcon
                 assetId={
                   srcAsset?.is_gas_token ? srcAsset.wrapped_erc20 : srcAsset?.id
@@ -170,7 +166,7 @@ export const DestAssetSelector = ({
           </li>
           {destChain?.module === "evm" && selectedAssetIsWrapped && (
             <li key={"native_version"}>
-              <button onClick={() => handleSelect(true, unwrappedAssetSymbol)}>
+              <button onClick={() => handleSelect(true)}>
                 <AssetIcon
                   size={35}
                   assetId={nativeAsset?.id}
