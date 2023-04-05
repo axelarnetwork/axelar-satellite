@@ -226,10 +226,8 @@ export const useSwapStore = create<SwapStore>()(
           selectableAssetList: get().selectableAssetList,
           srcChain: get().srcChain,
           destChain: get().destChain,
-          asset: get().allAssets.find((asset) =>
-            asset?.common_key[ENVIRONMENT].includes("usdc")
-          ),
-          rehydrateAssets: true,
+          asset: get().asset,
+          rehydrateAssets: false,
         },
         false,
         "resetState"
