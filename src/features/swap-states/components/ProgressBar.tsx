@@ -43,7 +43,7 @@ export const ProgressBar: React.FC<ProgressBarType> = ({
           "grid-cols-3": maxLevels === 2,
           "grid-cols-5": maxLevels === 3,
           "grid-cols-7": maxLevels === 4,
-          "grid-cols-8": maxLevels === 5,
+          "grid-cols-9": maxLevels === 5,
         }
       )}
     >

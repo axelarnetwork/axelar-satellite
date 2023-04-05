@@ -20,8 +20,9 @@ import { ProgressBar } from "../components";
 enum SquidSwapStatus {
   WAIT_SRC_CHAIN = 1,
   SRC_GATEWAY_CALLED = 2,
-  DEST_EXECUTING = 3,
-  DEST_EXECUTED = 4,
+  CONFIRMED = 3,
+  DEST_EXECUTING = 4,
+  DEST_EXECUTED = 5,
 }
 
 export const SquidStates = () => {
@@ -47,7 +48,7 @@ export const SquidStates = () => {
     srcChain: ChainInfoExtended;
     statusResponse: StatusResponse | null;
   }) => {
-    if (ctx.statusResponse?.status && ctx.progress < 4) {
+    if (ctx.statusResponse?.status && ctx.progress < 5) {
       switch (ctx.statusResponse.status) {
         case GMPStatus.SRC_GATEWAY_CALLED: {
           return {
@@ -57,7 +58,7 @@ export const SquidStates = () => {
         }
         case GMPStatus.SRC_GATEWAY_CONFIRMED: {
           return {
-            prog: SquidSwapStatus.SRC_GATEWAY_CALLED,
+            prog: SquidSwapStatus.CONFIRMED,
             txt: `Confirmed on Axelar and sending to ${ctx.destChain.chainName}`,
           };
         }
@@ -214,7 +215,7 @@ export const SquidStates = () => {
         <div className="h-full space-x-2">
           <div className="flex flex-col w-full h-full">
             <div className="h-full">
-              <ProgressBar currentLevel={progress} maxLevels={4} />
+              <ProgressBar currentLevel={progress} maxLevels={5} />
               <div className="h-2" />
               <div className="flex items-center justify-center h-full py-4 text-base gap-x-2">
                 {progress !== SquidSwapStatus.DEST_EXECUTED && (
