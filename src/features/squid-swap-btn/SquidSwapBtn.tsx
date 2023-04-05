@@ -23,6 +23,8 @@ import { validateCosmosAddress, validateEvmAddress } from "~/utils/address";
 import { SwapStatus } from "~/utils/enums";
 import { showErrorMsgAndThrow } from "~/utils/error";
 
+import { parseSquidError } from ".";
+
 const SquidSwapBtn = React.memo(() => {
   const { connectAsync, connectors } = useConnect();
   const { chain } = useNetwork();
@@ -120,10 +122,7 @@ const SquidSwapBtn = React.memo(() => {
         err,
       });
       setSwapStatus(SwapStatus.IDLE);
-      showErrorMsgAndThrow(
-        (err as Error)?.message ||
-          "Could not execute route pair for asset/chain combination"
-      );
+      showErrorMsgAndThrow(parseSquidError((err as Error)?.message));
     }
   }
 
