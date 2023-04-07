@@ -90,12 +90,12 @@ export const useInitialChainList = () => {
     let srcChainFound = uniqueChains.find(
       (chain) =>
         chain.chainName?.toLowerCase() === source &&
-        !DISABLED_CHAIN_NAMES?.toLowerCase().includes(source?.toLowerCase())
+        !DISABLED_CHAIN_NAMES.includes(source?.toLowerCase())
     ) as ChainInfo;
     let destChainFound = uniqueChains.find(
       (chain) =>
         chain.chainName?.toLowerCase() === destination &&
-        !DISABLED_CHAIN_NAMES?.toLowerCase().includes(
+        !DISABLED_CHAIN_NAMES.includes(
           destination?.toLowerCase()
         )
     ) as ChainInfo;
