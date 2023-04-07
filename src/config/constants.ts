@@ -8,7 +8,7 @@ export const SOCKET_API = process.env.NEXT_PUBLIC_SOCKET_API as string;
 export const SHOULD_ENABLE_SQUID =
   (process.env.SHOULD_ENABLE_SQUID as string) === "true";
 export const DISABLED_CHAIN_NAMES =
-  process.env.NEXT_PUBLIC_DISABLED_CHAIN_NAMES || "";
+  process.env.NEXT_PUBLIC_DISABLED_CHAIN_NAMES?.toLowerCase()?.split(",") || [];
 export const UNDER_MAINTENANCE =
   process.env.NEXT_PUBLIC_UNDER_MAINTENANCE === "true" ? true : false;
 
