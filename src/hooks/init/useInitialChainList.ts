@@ -39,9 +39,7 @@ import { useSquidList } from "./useSquidList";
 const isValidChain = (chainName: string) => (chain: ChainInfo) => {
   return (
     chain.chainName?.toLowerCase() === chainName &&
-    !DISABLED_CHAIN_NAMES?.toLowerCase()
-      ?.split(",")
-      ?.includes(chainName?.toLowerCase())
+    !DISABLED_CHAIN_NAMES?.includes(chainName?.toLowerCase())
   );
 };
 

@@ -12,7 +12,7 @@ xdescribe("loadAllChains", () => {
     let result: ChainInfo[];
 
     beforeEach(async () => {
-      jest.spyOn(_module, "getDisabledChains").mockReturnValue(undefined);
+      jest.spyOn(_module, "getDisabledChains").mockReturnValue([]);
       result = await _module.loadAllChains(environment);
     });
 
@@ -29,7 +29,7 @@ xdescribe("loadAllChains", () => {
     let result: ChainInfo[];
 
     beforeEach(async () => {
-      jest.spyOn(_module, "getDisabledChains").mockReturnValue(disabledChain);
+      jest.spyOn(_module, "getDisabledChains").mockReturnValue([disabledChain]);
       result = await _module.loadAllChains(environment);
     });
 
