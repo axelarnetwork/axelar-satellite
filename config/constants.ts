@@ -3,7 +3,7 @@ import { Environment } from "../utils/enums";
 export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
 export const SOCKET_API = process.env.NEXT_PUBLIC_SOCKET_API as string;
 export const DISABLED_CHAIN_NAMES =
-  process.env.NEXT_PUBLIC_DISABLED_CHAIN_NAMES || "";
+  process.env.NEXT_PUBLIC_DISABLED_CHAIN_NAMES?.toLowerCase()?.split(",") || [];
 export const UNDER_MAINTENANCE =
   process.env.NEXT_PUBLIC_UNDER_MAINTENANCE === "true" ? true : false;
 
