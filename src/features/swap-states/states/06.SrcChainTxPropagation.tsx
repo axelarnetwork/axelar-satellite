@@ -59,7 +59,7 @@ export const SrcChainTxPropagation = () => {
 
   const filecoinMsg = useMemo(() => {
     return srcChain?.chainName.toLowerCase().includes("filecoin")
-      ? "Filecoin transactions may take up to ~7 hours to complete, so check Axelarscan for the latest on your transaction instead. See Filecoin docs for more information on finality."
+      ? "Transfers from Filecoin will take at least ~8 hours to complete due to the long block finality of Filecoin, so Check Axelarscan for updates on your transfer."
       : null;
   }, [srcChain]);
 
