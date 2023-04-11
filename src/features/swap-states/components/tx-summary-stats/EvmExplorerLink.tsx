@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
 
-import { useSwapStore } from "~/store";
-
 import { getWagmiChains } from "~/config/web3";
+
+import { useSwapStore } from "~/store";
 
 const EvmExplorerLink = React.memo(() => {
   const destAddress = useSwapStore((state) => state.destAddress);
@@ -19,7 +19,7 @@ const EvmExplorerLink = React.memo(() => {
     <div>
       <a
         className="flex items-center text-primary hover:underline gap-x-2"
-        href={`${url}address/${destAddress}`}
+        href={`${url}/address/${destAddress}`}
         target="_blank"
         rel="noreferrer"
       >

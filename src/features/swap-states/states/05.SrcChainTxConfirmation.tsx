@@ -42,14 +42,6 @@ export const SrcChainTxConfirmation = () => {
       if (event.blockNumber < Number(txInfo.destStartBlockNumber)) {
         return;
       }
-      console.log({
-        "Transfer(fromAddress, toAddress, amount, event)": {
-          fromAddress,
-          toAddress,
-          amount,
-          event,
-        },
-      });
       if (toAddress === destAddress) {
         setTxInfo({
           destTxHash: event?.transactionHash,

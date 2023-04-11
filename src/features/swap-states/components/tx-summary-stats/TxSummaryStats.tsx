@@ -12,6 +12,7 @@ import { BlockExplorerLink } from "./BlockExplorerLink";
 
 export const TxSummaryStats = () => {
   const asset = useSwapStore((state) => state.asset);
+  const shouldUnwrapAsset = useSwapStore((state) => state.shouldUnwrapAsset);
   const destChain = useSwapStore((state) => state.destChain);
   const { switchNetwork } = useSwitchNetwork();
 
@@ -20,7 +21,7 @@ export const TxSummaryStats = () => {
       <h2 className="text-lg font-bold text-center">Transfer complete!</h2>
       <div className="my-0 divider" />
       <BlockExplorerLink />
-      {destChain.module === "evm" && (
+      {destChain.module === "evm" && !shouldUnwrapAsset && (
         <div className="flex items-center justify-center hover:underline hover:cursor-pointer gap-x-2">
           <button
             className="font-light text-gray-200"
