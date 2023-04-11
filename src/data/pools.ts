@@ -33,8 +33,8 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   juno: {
     pairs: ["JUNO/axlUSDC"],
-    dex: "Junoswap",
-    url: "https://junoswap.com/pools/JUNO-USDC",
+    dex: "Wynd Dex",
+    url: "https://app.wynddao.com",
   },
   kujira: {
     pairs: ["axlUSDC/KUJI"],
@@ -78,7 +78,7 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   kava: {
     pairs: ["axlUSDC/axlDAI"],
-    dex: "Curve",
-    url: "https://curve.fi/#/kava/pools/factory-v2-2/swap",
+    dex: "Equilibre",
+    url: "https://equilibrefinance.com/swap?outputCurrency=0xeb466342c4d449bc9f53a865d5cb90586f405215",
   },
 };
