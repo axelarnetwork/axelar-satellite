@@ -150,23 +150,27 @@ export const SrcChainTxPropagation = () => {
                   <div className={clsx("flex flex-row text-sm")}>
                     Waiting for transaction to be finalized on {srcChainName}
                   </div>
-                  <div className="text-sm text-gray-400">
-                    (
-                    {Math.min(
-                      numConfirmationsSoFar,
-                      srcChain.confirmLevel as number
-                    )}
-                    /{srcChain.confirmLevel} confirmations)
-                  </div>
+                  {!filecoinMsg && (
+                    <div className="text-sm text-gray-400">
+                      (
+                      {Math.min(
+                        numConfirmationsSoFar,
+                        srcChain.confirmLevel as number
+                      )}
+                      /{srcChain.confirmLevel} confirmations)
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="flex items-center justify-center mt-2 gap-x-2">
-                <progress
-                  className="w-56 progress progress-success"
-                  value={numConfirmationsSoFar}
-                  max={srcChain.confirmLevel}
-                />
-              </div>
+              {!filecoinMsg && (
+                <div className="flex items-center justify-center mt-2 gap-x-2">
+                  <progress
+                    className="w-56 progress progress-success"
+                    value={numConfirmationsSoFar}
+                    max={srcChain.confirmLevel}
+                  />
+                </div>
+              )}
               <div className="my-0 divider" />
               <div className="flex justify-center w-full">
                 <AxelarscanLink />
