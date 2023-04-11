@@ -18,10 +18,18 @@ export const filecoin: ChainExtension = {
   },
   rpcUrls: {
     default: {
-      http: ["https://api.node.glif.io/rpc/v1"],
+      http: [
+        "https://api.node.glif.io/rpc/v1",
+        "https://rpc.ankr.com/filecoin",
+        "https://api.node.glif.io/rpc/v1",
+      ],
     },
     public: {
-      http: ["https://api.node.glif.io/rpc/v1"],
+      http: [
+        "https://api.node.glif.io/rpc/v1",
+        "https://rpc.ankr.com/filecoin",
+        "https://api.node.glif.io/rpc/v1",
+      ],
     },
   },
   testnet: false,
