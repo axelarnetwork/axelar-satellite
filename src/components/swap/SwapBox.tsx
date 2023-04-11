@@ -80,11 +80,10 @@ export const SwapBox = () => {
         </Blockable>
 
         <AssetSelector />
-        {SHOULD_ENABLE_SQUID && (
-          <DestAssetSelector
-            squidAssets={srcChain?.module === "evm" ? squidAssets : []}
-          />
-        )}
+
+        <DestAssetSelector
+          squidAssets={srcChain?.module === "evm" ? squidAssets : []}
+        />
         <SwapExecutionState />
         {isSquidTrade ? <SquidSwapBtn /> : <GetAddressBtn />}
       </div>

@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
 
-import { useSwapStore } from "~/store";
-
 import { getCosmosChains } from "~/config/web3";
+
+import { useSwapStore } from "~/store";
 
 export const CosmosExplorerLink = React.memo(() => {
   const destAddress = useSwapStore((state) => state.destAddress);
