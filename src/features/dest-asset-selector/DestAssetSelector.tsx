@@ -57,7 +57,13 @@ export const DestAssetSelector = ({
     else
       return srcAsset?.chain_aliases[destChain.chainName.toLowerCase()]
         ?.assetName;
-  }, [selectedSquidAsset, shouldUnwrapAsset, srcAsset]);
+  }, [
+    selectedSquidAsset,
+    shouldUnwrapAsset,
+    srcAsset,
+    destChain,
+    unwrappedAssetSymbol,
+  ]);
 
   const nativeAsset = useMemo(
     () =>
