@@ -20,12 +20,6 @@ export const Support: FC<SupportProps> = () => {
     <div>
       <h1 className="mb-10 text-3xl">Get Support</h1>
       {Link({
-        url: "https://transaction-confirmation.axelar.dev",
-        linkTitle: "Transaction Stuck?",
-        linkDescription:
-          "Try this Deposit Recovery Tool to confirm your deposit transasction on the Axelar network.",
-      })}
-      {Link({
         url: `https://${
           process.env.NEXT_PUBLIC_ENVIRONMENT !== "mainnet" ? "testnet." : ""
         }axelarscan.io`,
