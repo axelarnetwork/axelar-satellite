@@ -101,6 +101,18 @@ export const EvmAssetWarningModal = () => {
     );
   }
 
+  const FilecoinMessage = () => {
+    if (!srcChain.id.includes("filecoin")) return null;
+
+    return (
+      <div className="my-5 font-bold text-center uppercase text-yellow-500/50">
+        Transfers from Filecoin will take at least ~8 hours to complete due to
+        the long block finality of Filecoin, so keep this in mind before
+        proceeding.
+      </div>
+    );
+  };
+
   const tokenAddress = asset?.chain_aliases[srcChain.chainName?.toLowerCase()]
     ?.tokenAddress as string;
 
@@ -118,6 +130,7 @@ export const EvmAssetWarningModal = () => {
       <div className="modal-box">
         {srcChain?.module === "evm" && (
           <div>
+            <FilecoinMessage />
             <div>
               Only send{" "}
               <span className="font-bold">
@@ -223,7 +236,7 @@ export const EvmAssetWarningModal = () => {
           .
         </div>
 
-        {destChain.module === "axelarnet" && (
+        {destChain.id.includes("axelar") && (
           <div className="block p-4 mt-5 rounded-lg bg-yellow-500/50">
             <h2 className="mt-2 text-center text-neutral-200">
               Exchange addresses that need a memo are <strong>NOT</strong>{" "}
