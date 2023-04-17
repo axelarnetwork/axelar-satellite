@@ -6,7 +6,7 @@ import { useWalletStore } from "~/store";
 import { useIsTerraConnected } from "~/hooks/terra/useIsTerraConnected";
 
 export const ConnectIndicator = () => {
-  const { wagmiConnected, keplrConnected } = useWalletStore();
+  const { wagmiConnected, keplrConnected, wagmiConnectorId } = useWalletStore();
   const { isTerraConnected } = useIsTerraConnected();
 
   return (
@@ -27,7 +27,7 @@ export const ConnectIndicator = () => {
           <Image
             height={25}
             width={25}
-            src="/assets/wallets/metamask.logo.svg"
+            src={`/assets/wallets/${wagmiConnectorId?.toLowerCase()}.logo.svg`}
             alt="Metamask Logo"
           />
         )}

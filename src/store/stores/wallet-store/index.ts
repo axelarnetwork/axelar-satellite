@@ -3,9 +3,11 @@ import { persist } from "zustand/middleware";
 
 interface WalletState {
   wagmiConnected: boolean;
+  wagmiConnectorId?: string;
   keplrConnected: boolean;
   userSelectionForCosmosWallet: "terraStation" | "keplr";
 }
+
 const initialWalletState: WalletState = {
   wagmiConnected: false,
   keplrConnected: false,
@@ -13,20 +15,26 @@ const initialWalletState: WalletState = {
 };
 
 interface WalletStore extends WalletState {
-  setWagmiConnected: (state: boolean) => void;
+  setWagmiConnected: (state: boolean, connectorId?: string) => void;
   setKeplrConnected: (state: boolean) => void;
   setUserSelectionForCosmosWallet: (state: "terraStation" | "keplr") => void;
 }
 export const useWalletStore = create<WalletStore>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       ...initialWalletState,
-      setWagmiConnected: (wagmiConnected) => set({ wagmiConnected }),
+      setWagmiConnected: (wagmiConnected, connectorId) =>
+        set({
+          wagmiConnected,
+          wagmiConnectorId: connectorId,
+        }),
       setKeplrConnected: (keplrConnected) => set({ keplrConnected }),
       setUserSelectionForCosmosWallet: (
         userSelectionForCosmosWallet: "terraStation" | "keplr"
       ) => set({ userSelectionForCosmosWallet }),
     }),
-    { name: "walletStore" }
+    {
+      name: "walletStore",
+    }
   )
 );
