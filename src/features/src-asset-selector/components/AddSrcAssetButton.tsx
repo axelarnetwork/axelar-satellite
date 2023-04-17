@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import Image from "next/image";
+import { pick } from "rambda";
 import { useSwitchNetwork } from "wagmi";
 import wait from "wait";
 
@@ -12,7 +13,9 @@ import { makeAccessibleKeysHandler } from "~/utils/react";
 import { addAssetToMetamaskWithAssetConfig } from "~/utils/wallet/metamask";
 
 export const AddSrcAssetButton = () => {
-  const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
+  const { wagmiConnected, wagmiConnectorId } = useWalletStore(
+    pick(["wagmiConnected", "wagmiConnectorId"])
+  );
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
@@ -95,10 +98,12 @@ export const AddSrcAssetButton = () => {
         </span>
         <Image
           loading="eager"
-          src={"/assets/wallets/metamask.logo.svg"}
+          src={`/assets/wallets/${
+            wagmiConnectorId?.toLowerCase() ?? "metamask"
+          }.logo.svg`}
           height={20}
           width={20}
-          alt="metamask"
+          alt={wagmiConnectorId ?? "metamask"}
         />
       </label>
       <ul
