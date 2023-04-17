@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { PropsWithChildren, useEffect, useRef } from "react";
 import Image from "next/image";
 import { pick } from "rambda";
 import toast from "react-hot-toast";
@@ -30,6 +30,31 @@ const DownloadButton = () => (
       />
     </svg>
   </span>
+);
+
+const ConnectorButton = (
+  props: PropsWithChildren<{
+    connector: {
+      id: string;
+      name: string;
+    };
+    onClick: () => void;
+  }>
+) => (
+  <button
+    className="relative flex w-full btn btn-neutral"
+    onClick={props.onClick}
+  >
+    <span>{props.children}</span>
+    <div className="ml-auto">
+      <Image
+        src={`/assets/wallets/${props.connector.id.toLowerCase()}.logo.svg`}
+        alt={props.connector.name}
+        height={30}
+        width={30}
+      />
+    </div>
+  </button>
 );
 
 export const Web3Modal = () => {
@@ -128,8 +153,8 @@ export const Web3Modal = () => {
           <h4 className="text-lg font-light text-white">Select Wallet</h4>
           <div className="grid grid-cols-2 mt-4 gap-x-4 gap-y-5">
             {activeConnector ? (
-              <button
-                className="relative flex w-full btn btn-neutral"
+              <ConnectorButton
+                connector={activeConnector}
                 onClick={() =>
                   disconnect(undefined, {
                     onError: (error) => {
@@ -138,49 +163,28 @@ export const Web3Modal = () => {
                   })
                 }
               >
-                <span>Disconnect</span>
-                <div className="ml-auto">
-                  <Image
-                    src={`/assets/wallets/${activeConnector.id.toLowerCase()}.logo.svg`}
-                    alt={activeConnector.name}
-                    height={30}
-                    width={30}
-                  />
-                </div>
-              </button>
+                Diconnect
+              </ConnectorButton>
             ) : (
               connectors.map((connector) => (
-                <button
+                <ConnectorButton
                   key={connector.id}
-                  className="relative flex w-full btn btn-neutral"
+                  connector={connector}
                   onClick={connect.bind(null, { connector })}
                 >
-                  <span>{connector.name}</span>
-                  <div className="ml-auto">
-                    <Image
-                      src={`/assets/wallets/${connector.id.toLowerCase()}.logo.svg`}
-                      alt={connector.name}
-                      height={30}
-                      width={30}
-                    />
-                  </div>
-                </button>
+                  {connector.name}
+                </ConnectorButton>
               ))
             )}
-            <button
-              className="relative flex btn btn-neutral"
+            <ConnectorButton
+              connector={{
+                id: "kepler",
+                name: "Keplr",
+              }}
               onClick={handleOnKeplrConnect}
             >
-              <span>Keplr</span>
-              <div className="ml-auto">
-                <Image
-                  src="/assets/wallets/kepler.logo.svg"
-                  alt="walletconnect"
-                  height={30}
-                  width={30}
-                />
-              </div>
-            </button>{" "}
+              Keplr
+            </ConnectorButton>
             <button
               className={`relative flex btn btn-neutral ${
                 isTerraInstalled ? "" : "tooltip"
