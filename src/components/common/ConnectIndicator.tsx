@@ -28,7 +28,7 @@ export const ConnectIndicator = () => {
             height={25}
             width={25}
             src={`/assets/wallets/${wagmiConnectorId?.toLowerCase()}.logo.svg`}
-            alt="Metamask Logo"
+            alt={`${wagmiConnectorId} Logo`}
           />
         )}
         {keplrConnected && (
