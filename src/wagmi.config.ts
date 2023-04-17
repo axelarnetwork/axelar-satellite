@@ -1,4 +1,5 @@
 import { configureChains, createClient } from "wagmi";
+import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
@@ -27,6 +28,13 @@ export const wagmiClient = createClient({
       options: {
         shimDisconnect: false,
         shimChainChangedDisconnect: false,
+      },
+    }),
+    new CoinbaseWalletConnector({
+      chains,
+      options: {
+        appName: "Satellite",
+        darkMode: true,
       },
     }),
     new WalletConnectConnector({

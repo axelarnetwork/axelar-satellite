@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { OfflineSigner } from "@cosmjs/proto-signing";
 import toast from "react-hot-toast";
 import { useConnect } from "wagmi";
 
@@ -9,9 +8,10 @@ import { CosmosChain } from "~/config/web3/cosmos/interface";
 
 import { useSwapStore, useWalletStore } from "~/store";
 
-import { useConnectTerraStation } from "../../hooks/terra/useConnectTerraStation";
-import { useIsTerraConnected } from "../../hooks/terra/useIsTerraConnected";
-import { useIsTerraInstalled } from "../../hooks/terra/useIsTerraInstalled";
+import { useConnectTerraStation } from "~/hooks/terra/useConnectTerraStation";
+import { useIsTerraConnected } from "~/hooks/terra/useIsTerraConnected";
+import { useIsTerraInstalled } from "~/hooks/terra/useIsTerraInstalled";
+
 import { connectToKeplr } from "./utils/handleOnKeplrConnect";
 
 const DownloadButton = () => (
@@ -33,6 +33,7 @@ const DownloadButton = () => (
 
 export const Web3Modal = () => {
   const { connect, connectors, error } = useConnect();
+
   const allAssets = useSwapStore((state) => state.allAssets);
   const modalRef = useRef<HTMLInputElement>(null);
   const {
@@ -80,11 +81,6 @@ export const Web3Modal = () => {
     }
   }
 
-  function handleOnMetamaskSwitch() {
-    const connector = connectors.find((c) => c.name === "MetaMask");
-    connect({ connector });
-  }
-
   async function handleOnTerraStationConnect() {
     connectTerraStation();
   }
@@ -95,14 +91,12 @@ export const Web3Modal = () => {
       (chain) => chain.chainIdentifier === "axelar"
     ) as CosmosChain;
     await connectToKeplr(allAssets);
-    const _signer = (await keplr?.getOfflineSignerAuto(
-      axelar.chainId
-    )) as OfflineSigner;
-    const [account] = await _signer.getAccounts();
+    const signer = await keplr?.getOfflineSignerAuto(axelar.chainId);
+
     if (keplrConnected) {
       toast.error("Wallet already connected");
     }
-    setKeplrConnected(true);
+    setKeplrConnected(Boolean(signer));
     setUserSelectionForCosmosWallet("keplr");
   }
 
@@ -111,36 +105,23 @@ export const Web3Modal = () => {
       <div>
         <h4 className="text-lg font-light text-white">Select Wallet</h4>
         <div className="grid grid-cols-2 mt-4 gap-x-4 gap-y-5">
-          <button
-            className="relative flex w-full btn btn-neutral"
-            onClick={handleOnMetamaskSwitch}
-          >
-            <span>Metamask</span>
-            <div className="ml-auto">
-              <Image
-                src="/assets/wallets/metamask.logo.svg"
-                alt="metamask"
-                height={30}
-                width={30}
-              />
-            </div>
-          </button>
-          {/* <button
-            className="relative flex btn btn-neutral"
-            onClick={handleOnWalletConnectSwitch}
-          >
-            <span>WC (Coming Soon!)</span>
-            <div className="ml-auto">
-              <Image
-                src="/assets/wallets/walletconnect.logo.svg"
-                alt="walletconnect"
-                
-                objectFit="contain"
-                height={30}
-                width={30}
-              />
-            </div>
-          </button> */}
+          {connectors.map((connector) => (
+            <button
+              key={connector.id}
+              className="relative flex w-full btn btn-neutral"
+              onClick={connect.bind(null, { connector })}
+            >
+              <span>{connector.name}</span>
+              <div className="ml-auto">
+                <Image
+                  src={`/assets/wallets/${connector.id.toLowerCase()}.logo.svg`}
+                  alt={connector.name}
+                  height={30}
+                  width={30}
+                />
+              </div>
+            </button>
+          ))}
           <button
             className="relative flex btn btn-neutral"
             onClick={handleOnKeplrConnect}
@@ -150,7 +131,6 @@ export const Web3Modal = () => {
               <Image
                 src="/assets/wallets/kepler.logo.svg"
                 alt="walletconnect"
-                objectFit="contain"
                 height={30}
                 width={30}
               />
@@ -171,7 +151,6 @@ export const Web3Modal = () => {
                 <Image
                   src="/assets/wallets/terra-station.logo.svg"
                   alt="walletconnect"
-                  objectFit="contain"
                   height={30}
                   width={30}
                 />
@@ -180,23 +159,6 @@ export const Web3Modal = () => {
               )}
             </div>
           </button>
-          {/* <button
-            className="relative flex btn btn-neutral"
-            disabled
-            onClick={handleOnWalletConnectSwitch}
-          >
-            <span>Cosmostation (Coming Soon!)</span>
-            <div className="ml-auto">
-              <Image
-                src="/assets/wallets/walletconnect.logo.svg"
-                alt="walletconnect"
-                
-                objectFit="contain"
-                height={30}
-                width={30}
-              />
-            </div>
-          </button>{" "} */}
         </div>
       </div>
     );
