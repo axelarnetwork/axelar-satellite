@@ -18,8 +18,8 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   avalanche: {
     pairs: ["axlUSDC/USDC"],
-    dex: "Platypus",
-    url: "https://app.platypus.finance/swap?from=axlUSDC&to=USDC",
+    dex: "Curve",
+    url: "https://curve.fi/#/avalanche/swap",
   },
   fantom: {
     pairs: ["axlUSDC/USDC"],
