@@ -45,7 +45,7 @@ export const MetamaskFill = () => {
         "bg-gradient-to-b group h-full w-28 p-[1px] rounded-lg cursor-pointer animate__animated animate__pulse",
         {
           "from-[#E8821E] to-[#F89C35]":
-            wagmiConnectorId === "metamask" || !wagmiConnectorId,
+            wagmiConnectorId === "metaMask" || !wagmiConnectorId,
           "from-[#0052FF] to-[#1062FF]": wagmiConnectorId === "coinbaseWallet",
         }
       )}
@@ -57,7 +57,7 @@ export const MetamaskFill = () => {
             "text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-b",
             {
               "from-[#E8821E] to-[#F89C35]":
-                wagmiConnectorId === "metamask" || !wagmiConnectorId,
+                wagmiConnectorId === "metaMask" || !wagmiConnectorId,
               "from-[#0052FF] to-[#1062FF]":
                 wagmiConnectorId === "coinbaseWallet",
             }
