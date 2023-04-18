@@ -132,7 +132,22 @@ export const useSwapStore = create<SwapStore>()(
         false,
         "setDestAddress"
       ),
-    setAsset: (asset) => {
+    setAsset: (_asset) => {
+      const { allAssets, destChain } = get();
+      let asset = _asset;
+
+      if (
+        _asset &&
+        _asset.gas_token_id &&
+        destChain.chainName.toLowerCase() === _asset.native_chain
+      ) {
+        const nativeAsset = allAssets.find((t) => t.id === _asset.gas_token_id);
+
+        if (nativeAsset) {
+          asset = nativeAsset;
+        }
+      }
+
       set(
         {
           asset,
