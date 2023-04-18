@@ -1,6 +1,7 @@
+import { ASSET_RESTRICTIONS } from "~/config/constants";
+
 import { useSwapStore } from "~/store";
 
-import { ASSET_RESTRICTIONS } from "~/config/constants";
 import { AssetConfigExtended } from "~/types";
 
 export const useSwitchAsset = () => {
@@ -53,6 +54,20 @@ export const useSwitchAsset = () => {
     setInitialAsset(asset);
     // if asset not compatible with destination chain change to closest compatible dest chain
     // then change asset
+    console.log("hmm!", asset, destChain);
+
+    if (
+      asset.gas_token_id &&
+      destChain.chainName.toLowerCase() === asset.native_chain
+    ) {
+      console.log("yup!", asset);
+      const nativeAsset = allAssets.find((t) => t.id === asset.gas_token_id);
+
+      if (nativeAsset) {
+        return setAsset(nativeAsset);
+      }
+    }
+    console.log("elsesss");
     setAsset(asset);
   };
 };
