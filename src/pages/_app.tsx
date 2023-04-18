@@ -18,8 +18,6 @@ import "../styles/globals.css";
 import "../styles/loader.css";
 import { useEffect, useState } from "react";
 
-import { squid } from "~/squid.config";
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -56,7 +54,6 @@ function MyApp({
       <Toaster position="top-right" reverseOrder={false} />
     </QueryClientProvider>
   );
-  const squidApi = squid;
 
   return typeof window !== "undefined" ? (
     <WalletProvider {...terraConfig}>{main}</WalletProvider>

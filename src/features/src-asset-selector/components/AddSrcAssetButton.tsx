@@ -68,7 +68,7 @@ export const AddSrcAssetButton = () => {
     // add token
   }, [destChain, asset, switchNetworkAsync]);
 
-  if (!wagmiConnected) {
+  if (!wagmiConnected || wagmiConnectorId?.toLowerCase() !== "metamask") {
     return null;
   }
   if (srcChain.module !== "evm" && destChain.module !== "evm") {
@@ -98,12 +98,10 @@ export const AddSrcAssetButton = () => {
         </span>
         <Image
           loading="eager"
-          src={`/assets/wallets/${
-            wagmiConnectorId?.toLowerCase() ?? "metamask"
-          }.logo.svg`}
+          src="/assets/wallets/metamask.logo.svg"
           height={20}
           width={20}
-          alt={wagmiConnectorId ?? "metamask"}
+          alt="metamask logo"
         />
       </label>
       <ul

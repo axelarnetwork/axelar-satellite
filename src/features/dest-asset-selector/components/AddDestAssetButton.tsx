@@ -57,9 +57,10 @@ export const AddDestAssetButton = () => {
     // add token
   }, [destChain, asset, switchNetworkAsync, isSquidTrade, selectedSquidAsset]);
 
-  if (!wagmiConnected) {
+  if (!wagmiConnected || wagmiConnectorId?.toLowerCase() !== "metamask") {
     return null;
   }
+
   if (destChain.module !== "evm") {
     return null;
   }
@@ -90,12 +91,10 @@ export const AddDestAssetButton = () => {
         </span>
         <Image
           loading="eager"
-          src={`/assets/wallets/${
-            wagmiConnectorId?.toLowerCase() ?? "metamask"
-          }.logo.svg`}
+          src="/assets/wallets/metamask.logo.svg"
           height={20}
           width={20}
-          alt={wagmiConnectorId ?? "metamask"}
+          alt="metamask logo"
         />
       </label>
       <ul
