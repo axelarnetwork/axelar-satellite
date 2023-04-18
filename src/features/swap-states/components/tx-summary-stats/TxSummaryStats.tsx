@@ -24,38 +24,38 @@ export const TxSummaryStats = () => {
       <BlockExplorerLink />
       {destChain.module === "evm" && !shouldUnwrapAsset && (
         <div className="flex items-center justify-center hover:underline hover:cursor-pointer gap-x-2">
-          {wagmiConnectorId?.toLowerCase() === "metamask" && (
-            <button
-              className="font-light text-gray-200"
-              onClick={() =>
-                asset && addAssetToMetamaskWithAssetConfig(asset, destChain)
-              }
-            >
-              Add token to Metamask ({destChain.chainName})
-            </button>
-          )}
-          {wagmiConnectorId && (
-            <button
-              onClick={() => {
-                const targetNetwork = getWagmiChains().find(
-                  (chain) =>
-                    chain.networkNameOverride ===
-                    destChain.chainName?.toLowerCase()
-                );
+          {wagmiConnectorId === "metaMask" && (
+            <>
+              <button
+                className="font-light text-gray-200"
+                onClick={() =>
+                  asset && addAssetToMetamaskWithAssetConfig(asset, destChain)
+                }
+              >
+                Add token to Metamask ({destChain.chainName})
+              </button>
+              <button
+                onClick={() => {
+                  const targetNetwork = getWagmiChains().find(
+                    (chain) =>
+                      chain.networkNameOverride ===
+                      destChain.chainName?.toLowerCase()
+                  );
 
-                switchNetwork?.(targetNetwork?.id);
-              }}
-              className="tooltip"
-              data-tip={`Switch to this network in ${wagmiConnectorId}`}
-              aria-label={`Switch to this network in ${wagmiConnectorId}`}
-            >
-              <Image
-                src={`/assets/wallets/${wagmiConnectorId?.toLowerCase()}.logo.svg`}
-                height={16}
-                width={16}
-                alt={wagmiConnectorId}
-              />
-            </button>
+                  switchNetwork?.(targetNetwork?.id);
+                }}
+                className="tooltip"
+                data-tip={`Switch to this network in ${wagmiConnectorId}`}
+                aria-label={`Switch to this network in ${wagmiConnectorId}`}
+              >
+                <Image
+                  src={`/assets/wallets/${wagmiConnectorId?.toLowerCase()}.logo.svg`}
+                  height={16}
+                  width={16}
+                  alt={wagmiConnectorId}
+                />
+              </button>
+            </>
           )}
         </div>
       )}
