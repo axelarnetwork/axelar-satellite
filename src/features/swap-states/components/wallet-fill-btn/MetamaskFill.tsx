@@ -72,7 +72,9 @@ export const MetamaskFill = () => {
             height={25}
             width={25}
             alt={wagmiConnectorId ?? "metamask"}
-            src={`/assets/wallets/${wagmiConnectorId ?? "metamask"}.logo.svg`}
+            src={`/assets/wallets/${
+              wagmiConnectorId?.toLowerCase() ?? "metamask"
+            }.logo.svg`}
           />
         </div>
       </div>

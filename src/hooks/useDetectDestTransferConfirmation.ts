@@ -56,9 +56,6 @@ export const useDetectDestTransferConfirmation = () => {
         asset?.native_chain === srcChain.chainName?.toLowerCase();
 
       const assetCommonKey = asset?.common_key[ENVIRONMENT];
-      let assetData = destChain.assets?.find(
-        (asset) => asset.common_key === assetCommonKey
-      );
 
       if (sentNative) {
         //for now, the native asset is not in assets[] on destChain since it is hard-coded in satellite, so
