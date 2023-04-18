@@ -163,7 +163,7 @@ export const Web3Modal = () => {
                   })
                 }
               >
-                Diconnect
+                Disconnect
               </ConnectorButton>
             ) : (
               connectors.map((connector) => (
