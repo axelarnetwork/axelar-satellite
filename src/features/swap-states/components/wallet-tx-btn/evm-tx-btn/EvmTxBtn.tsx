@@ -80,7 +80,7 @@ export const EvmTxBtn = () => {
           <span className="mr-2">
             {chain?.id !== srcChainId
               ? `Switch to ${srcChain.chainName}`
-              : "Send From Metamask"}
+              : `Send From ${wagmiConnectorId}`}
           </span>
           <div className="flex justify-center my-2 gap-x-5">
             <Image
