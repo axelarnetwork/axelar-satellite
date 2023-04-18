@@ -35,8 +35,6 @@ async function _getDepositAddress(payload: DepositAddressPayload) {
     fromChainModule,
   } = payload;
 
-  console.log("transfer type _getDepositAddress", transferType);
-
   if (transferType === "wrap") {
     const depositAddress = await assetTransfer.getDepositAddress({
       fromChain: fromChain,

@@ -43,14 +43,6 @@ export function useSendErc20() {
     setTokenAddress(assetData?.tokenAddress);
   }, [asset?.id, srcChain.assets]);
 
-  console.log({
-    method: "useSendErc20",
-    srcChainId,
-    tokenAddress,
-    depositAddress,
-    asset,
-  });
-
   // prepare tx to detect potential errors
   const { config: contractWriteConfig } = usePrepareContractWrite({
     enabled: chain?.id === srcChainId && !!tokensToTransfer && !!tokenAddress,
@@ -75,8 +67,6 @@ export function useSendErc20() {
   // tx execution
   const { write, isLoading, isSuccess, data, error } =
     useContractWrite(contractWriteConfig);
-
-  console.log("tx execution error", error);
 
   // on tx success save tx metadata in store for further use
   useEffect(() => {

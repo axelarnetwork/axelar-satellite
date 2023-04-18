@@ -108,14 +108,6 @@ export const getTransferType = memoize(
     if (!asset) {
       return transferType;
     }
-    console.log({
-      hiiii: "",
-      shouldUnwrapAsset,
-      native_chain: asset.native_chain,
-      destChainMame: destChain.chainName?.toLowerCase(),
-      destModule: destChain.module === "evm",
-      isGasToken: asset.is_gas_token,
-    });
     const assetIsWrappedVersionOfNativeAssetOnDestChain =
       state?.destChain?.nativeAsset &&
       state.destChain.nativeAsset.length > 0 &&
