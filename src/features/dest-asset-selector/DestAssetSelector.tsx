@@ -144,8 +144,6 @@ export const DestAssetSelector = ({
 
     const destChainName = destChain.chainName.toLowerCase();
 
-    const assetSymbol = srcAsset?.chain_aliases[destChainName]?.assetSymbol;
-
     return (
       <div className="left-0 w-full p-2 overflow-auto rounded-lg shadow dropdown-content menu bg-neutral max-h-80">
         <ul
@@ -170,18 +168,6 @@ export const DestAssetSelector = ({
               </span>
             </button>
           </li>
-          {/* {destChain?.module === "evm" && selectedAssetIsWrapped && (
-            <li key={"native_version"}>
-              <button onClick={() => handleSelect(true)}>
-                <AssetIcon
-                  size={35}
-                  assetId={nativeAsset?.id}
-                  iconSrc={nativeAsset?.iconSrc}
-                />
-                <span>{unwrappedAssetSymbol}</span>
-              </button>
-            </li>
-          )} */}
           {shouldRenderSquidAssets &&
             filteredSquidAssets.map((squidAsset) => (
               <li key={`squid_token_${squidAsset.id}`}>
