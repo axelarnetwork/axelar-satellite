@@ -126,6 +126,12 @@ export const getTransferType = memoize(
       assetIsWrappedVersionOfNativeAssetOnDestChain
     ) {
       transferType = "unwrap";
+    } else if (
+      asset.native_chain === destChain.chainName?.toLowerCase() &&
+      destChain.module === "evm" &&
+      asset.is_gas_token
+    ) {
+      transferType = "unwrap";
     }
 
     return transferType;

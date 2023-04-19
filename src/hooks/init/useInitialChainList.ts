@@ -292,6 +292,7 @@ export const useInitialChainList = () => {
           decimals: token.decimals,
           iconSrc: token.logoURI,
           native_chain: chainName,
+          gas_token_id: "",
         };
 
         result.push(newAsset);

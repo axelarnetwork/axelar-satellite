@@ -1,6 +1,7 @@
+import { ASSET_RESTRICTIONS } from "~/config/constants";
+
 import { useSwapStore } from "~/store";
 
-import { ASSET_RESTRICTIONS } from "~/config/constants";
 import { AssetConfigExtended } from "~/types";
 
 export const useSwitchAsset = () => {

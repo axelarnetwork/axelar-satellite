@@ -45,8 +45,7 @@ export function useSendErc20() {
 
   // prepare tx to detect potential errors
   const { config: contractWriteConfig } = usePrepareContractWrite({
-    enabled:
-      chain?.id === srcChainId && !!tokensToTransfer && !asset?.is_gas_token,
+    enabled: chain?.id === srcChainId && !!tokensToTransfer && !!tokenAddress,
     chainId: srcChainId, // call transfer on source chain
     address: tokenAddress as `0x${string}`,
     abi: erc20ABI,
