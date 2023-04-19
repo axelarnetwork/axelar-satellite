@@ -200,7 +200,8 @@ export const getSelectedAsssetIsWrapped = memoize(
     }
     const destChainName = state.destChain?.chainName?.toLowerCase();
     const isGasToken = state.asset.is_gas_token; // e.g. is this pure avax/eth/ftm/etc
-    const isGlmr = state.asset.id.includes("glmr");
+    const isGlmr =
+      state.asset.id.includes("glmr") || state.asset.id.includes("wdev");
     const destChainIsNativeChain = state.asset.native_chain === destChainName;
     const assetIsWrappedVersionOfNativeAssetOnDestChain =
       state?.destChain?.nativeAsset &&
