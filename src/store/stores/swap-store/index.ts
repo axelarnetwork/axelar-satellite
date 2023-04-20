@@ -143,7 +143,13 @@ export const useSwapStore = create<SwapStore>()(
         ? allAssets.find((t) => t.id === asset.gas_token_id)
         : undefined;
 
-      set({ asset: nativeAsset ?? asset }, false, "setAsset");
+      set(
+        {
+          asset: nativeAsset ?? asset,
+        },
+        false,
+        "setAsset"
+      );
     },
     setInitialAsset: (asset) =>
       set(
