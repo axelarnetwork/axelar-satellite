@@ -75,8 +75,12 @@ export const DestAssetSelector = ({
     [allAssets, destChain.chainName]
   );
 
+  const destChainCompatible = useMemo(() => {
+    return !!srcAsset?.chain_aliases[destChain.chainName.toLowerCase()];
+  }, [srcAsset, destChain]);
+
   useEffect(() => {
-    if (srcAsset && srcChain) {
+    if (srcAsset && srcChain && destChainCompatible) {
       setShouldUnwrapAsset(false);
       setSelectedSquidAsset(null);
       setIsSquidTrade(false);
@@ -151,23 +155,27 @@ export const DestAssetSelector = ({
           onClick={handleOnDropdownToggle}
           onKeyDown={handleOnDropdownToggle}
         >
-          <li key={"selected_src_asset"}>
-            <button onClick={() => handleSelect(false)}>
-              <AssetIcon
-                assetId={
-                  srcAsset?.is_gas_token ? srcAsset.wrapped_erc20 : srcAsset?.id
-                }
-                iconSrc={srcAsset?.iconSrc}
-                size={35}
-              />
-              <span>
-                {
-                  srcAsset?.chain_aliases[destChain.chainName.toLowerCase()]
-                    ?.assetSymbol
-                }
-              </span>
-            </button>
-          </li>
+          {destChainCompatible && (
+            <li key={"selected_src_asset"}>
+              <button onClick={() => handleSelect(false)}>
+                <AssetIcon
+                  assetId={
+                    srcAsset?.is_gas_token
+                      ? srcAsset.wrapped_erc20
+                      : srcAsset?.id
+                  }
+                  iconSrc={srcAsset?.iconSrc}
+                  size={35}
+                />
+                <span>
+                  {
+                    srcAsset?.chain_aliases[destChain.chainName.toLowerCase()]
+                      ?.assetSymbol
+                  }
+                </span>
+              </button>
+            </li>
+          )}
           {shouldRenderSquidAssets &&
             filteredSquidAssets.map((squidAsset) => (
               <li key={`squid_token_${squidAsset.id}`}>
@@ -222,19 +230,18 @@ export const DestAssetSelector = ({
             <div className="static flex justify-between w-full mt-1 dropdown dropdown-open">
               <button tabIndex={0} onClick={() => setDropdownOpen(true)}>
                 <div className="flex items-center w-full space-x-2 text-lg font-medium cursor-pointer">
-                  <AssetIcon
-                    assetId={
-                      selectedSquidAsset?.ibcDenom ??
-                      (srcAsset?.is_gas_token
-                        ? srcAsset.wrapped_erc20
-                        : dynamicNativeTokenLogo)
-                    }
-                    iconSrc={
-                      selectedSquidAsset?.iconSrc ?? destSquidAsset?.logoURI
-                    }
-                    size={30}
-                  />
-                  <span>{selectedAssetSymbol}</span>
+                  {selectedAssetSymbol && (
+                    <AssetIcon
+                      assetId={
+                        selectedSquidAsset?.ibcDenom ?? dynamicNativeTokenLogo
+                      }
+                      iconSrc={
+                        selectedSquidAsset?.iconSrc ?? destSquidAsset?.logoURI
+                      }
+                      size={30}
+                    />
+                  )}
+                  <span>{selectedAssetSymbol ?? "Select an asset"}</span>
                   <div className="flex items-center">
                     <Image
                       loading="eager"
