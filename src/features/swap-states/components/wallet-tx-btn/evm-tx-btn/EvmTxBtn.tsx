@@ -2,10 +2,16 @@ import React from "react";
 import Image from "next/image";
 import BigNumber from "bignumber.js";
 import { clsx } from "clsx";
+import { pick } from "rambda";
 import toast from "react-hot-toast";
 import { useNetwork, useSwitchNetwork } from "wagmi";
 
-import { getSelectedAssetName, getSrcChainId, useSwapStore } from "~/store";
+import {
+  getSelectedAssetName,
+  getSrcChainId,
+  useSwapStore,
+  useWalletStore,
+} from "~/store";
 
 import { useGetRelayerGasFee } from "~/hooks";
 
@@ -19,6 +25,7 @@ export const EvmTxBtn = () => {
   const srcChainId = useSwapStore(getSrcChainId);
   const assetName = useSwapStore(getSelectedAssetName);
   const { data: relayerGasFee } = useGetRelayerGasFee();
+  const { wagmiConnectorId } = useWalletStore(pick(["wagmiConnectorId"]));
 
   const { loading: loadingErc20Tx, sendErc20 } = useSendErc20();
   const { loading: loadingNativeTx, sendNative } = useSendNative();
@@ -73,14 +80,16 @@ export const EvmTxBtn = () => {
           <span className="mr-2">
             {chain?.id !== srcChainId
               ? `Switch to ${srcChain.chainName}`
-              : "Send From Metamask"}
+              : `Send From ${wagmiConnectorId}`}
           </span>
           <div className="flex justify-center my-2 gap-x-5">
             <Image
-              src="/assets/wallets/metamask.logo.svg"
+              src={`/assets/wallets/${
+                wagmiConnectorId?.toLowerCase() ?? "metamask"
+              }.logo.svg`}
               height={30}
               width={30}
-              alt="metamask"
+              alt={`${wagmiConnectorId} Logo`}
             />
           </div>
         </button>

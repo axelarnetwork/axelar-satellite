@@ -1,17 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { PropsWithChildren, useEffect, useRef } from "react";
 import Image from "next/image";
-import { OfflineSigner } from "@cosmjs/proto-signing";
+import { pick } from "rambda";
 import toast from "react-hot-toast";
-import { useConnect } from "wagmi";
+import { useConnect, useDisconnect } from "wagmi";
 
 import { getCosmosChains } from "~/config/web3";
 import { CosmosChain } from "~/config/web3/cosmos/interface";
 
 import { useSwapStore, useWalletStore } from "~/store";
 
-import { useConnectTerraStation } from "../../hooks/terra/useConnectTerraStation";
-import { useIsTerraConnected } from "../../hooks/terra/useIsTerraConnected";
-import { useIsTerraInstalled } from "../../hooks/terra/useIsTerraInstalled";
+import { useConnectTerraStation } from "~/hooks/terra/useConnectTerraStation";
+import { useIsTerraConnected } from "~/hooks/terra/useIsTerraConnected";
+import { useIsTerraInstalled } from "~/hooks/terra/useIsTerraInstalled";
+
 import { connectToKeplr } from "./utils/handleOnKeplrConnect";
 
 const DownloadButton = () => (
@@ -31,19 +32,55 @@ const DownloadButton = () => (
   </span>
 );
 
+const ConnectorButton = (
+  props: PropsWithChildren<{
+    connector: {
+      id: string;
+      name: string;
+    };
+    onClick: () => void;
+  }>
+) => (
+  <button
+    className="relative flex w-full btn btn-neutral"
+    onClick={props.onClick}
+  >
+    <span>{props.children}</span>
+    <div className="ml-auto">
+      <Image
+        src={`/assets/wallets/${props.connector.id.toLowerCase()}.logo.svg`}
+        alt={props.connector.name}
+        height={30}
+        width={30}
+      />
+    </div>
+  </button>
+);
+
 export const Web3Modal = () => {
   const { connect, connectors, error } = useConnect();
+
+  const { disconnect } = useDisconnect();
+
   const allAssets = useSwapStore((state) => state.allAssets);
   const modalRef = useRef<HTMLInputElement>(null);
   const {
     setKeplrConnected,
     keplrConnected,
     wagmiConnected,
+    wagmiConnectorId,
     setUserSelectionForCosmosWallet,
-  } = useWalletStore((state) => state);
+  } = useWalletStore(
+    pick([
+      "setKeplrConnected",
+      "keplrConnected",
+      "wagmiConnected",
+      "wagmiConnectorId",
+      "setUserSelectionForCosmosWallet",
+    ])
+  );
   const isTerraInstalled = useIsTerraInstalled();
-  const { isTerraConnected, isTerraInitializingOrConnected } =
-    useIsTerraConnected();
+  const { isTerraConnected } = useIsTerraConnected();
   const connectTerraStation = useConnectTerraStation();
 
   // close modal upon successful metamask connection
@@ -80,11 +117,6 @@ export const Web3Modal = () => {
     }
   }
 
-  function handleOnMetamaskSwitch() {
-    const connector = connectors.find((c) => c.name === "MetaMask");
-    connect({ connector });
-  }
-
   async function handleOnTerraStationConnect() {
     connectTerraStation();
   }
@@ -95,112 +127,18 @@ export const Web3Modal = () => {
       (chain) => chain.chainIdentifier === "axelar"
     ) as CosmosChain;
     await connectToKeplr(allAssets);
-    const _signer = (await keplr?.getOfflineSignerAuto(
-      axelar.chainId
-    )) as OfflineSigner;
-    const [account] = await _signer.getAccounts();
+    const signer = await keplr?.getOfflineSignerAuto(axelar.chainId);
+
     if (keplrConnected) {
       toast.error("Wallet already connected");
     }
-    setKeplrConnected(true);
+    setKeplrConnected(Boolean(signer));
     setUserSelectionForCosmosWallet("keplr");
   }
 
-  function renderConnectors() {
-    return (
-      <div>
-        <h4 className="text-lg font-light text-white">Select Wallet</h4>
-        <div className="grid grid-cols-2 mt-4 gap-x-4 gap-y-5">
-          <button
-            className="relative flex w-full btn btn-neutral"
-            onClick={handleOnMetamaskSwitch}
-          >
-            <span>Metamask</span>
-            <div className="ml-auto">
-              <Image
-                src="/assets/wallets/metamask.logo.svg"
-                alt="metamask"
-                height={30}
-                width={30}
-              />
-            </div>
-          </button>
-          {/* <button
-            className="relative flex btn btn-neutral"
-            onClick={handleOnWalletConnectSwitch}
-          >
-            <span>WC (Coming Soon!)</span>
-            <div className="ml-auto">
-              <Image
-                src="/assets/wallets/walletconnect.logo.svg"
-                alt="walletconnect"
-                
-                objectFit="contain"
-                height={30}
-                width={30}
-              />
-            </div>
-          </button> */}
-          <button
-            className="relative flex btn btn-neutral"
-            onClick={handleOnKeplrConnect}
-          >
-            <span>Keplr</span>
-            <div className="ml-auto">
-              <Image
-                src="/assets/wallets/kepler.logo.svg"
-                alt="walletconnect"
-                objectFit="contain"
-                height={30}
-                width={30}
-              />
-            </div>
-          </button>{" "}
-          <button
-            className={`relative flex btn btn-neutral ${
-              isTerraInstalled ? "" : "tooltip"
-            }`}
-            data-tip={
-              "Click to install the extension. Refresh Satellite once installed."
-            }
-            onClick={handleOnTerraStationConnect}
-          >
-            <span>Terra Station</span>
-            <div className="ml-auto">
-              {isTerraInstalled ? (
-                <Image
-                  src="/assets/wallets/terra-station.logo.svg"
-                  alt="walletconnect"
-                  objectFit="contain"
-                  height={30}
-                  width={30}
-                />
-              ) : (
-                <DownloadButton />
-              )}
-            </div>
-          </button>
-          {/* <button
-            className="relative flex btn btn-neutral"
-            disabled
-            onClick={handleOnWalletConnectSwitch}
-          >
-            <span>Cosmostation (Coming Soon!)</span>
-            <div className="ml-auto">
-              <Image
-                src="/assets/wallets/walletconnect.logo.svg"
-                alt="walletconnect"
-                
-                objectFit="contain"
-                height={30}
-                width={30}
-              />
-            </div>
-          </button>{" "} */}
-        </div>
-      </div>
-    );
-  }
+  const activeConnector = connectors.find(
+    (connector) => connector.id === wagmiConnectorId
+  );
 
   return (
     <div data-testid="web3-modal">
@@ -212,7 +150,65 @@ export const Web3Modal = () => {
       />
       <label htmlFor="web3-modal" className="modal backdrop-blur-sm">
         <div className="relative max-w-lg bg-base-100 modal-box">
-          {renderConnectors()}
+          <h4 className="text-lg font-light text-white">Select Wallet</h4>
+          <div className="grid grid-cols-2 mt-4 gap-x-4 gap-y-5">
+            {activeConnector ? (
+              <ConnectorButton
+                connector={activeConnector}
+                onClick={() =>
+                  disconnect(undefined, {
+                    onError: (error) => {
+                      toast.error(error.message);
+                    },
+                  })
+                }
+              >
+                Disconnect
+              </ConnectorButton>
+            ) : (
+              connectors.map((connector) => (
+                <ConnectorButton
+                  key={connector.id}
+                  connector={connector}
+                  onClick={connect.bind(null, { connector })}
+                >
+                  {connector.name}
+                </ConnectorButton>
+              ))
+            )}
+            <ConnectorButton
+              connector={{
+                id: "kepler",
+                name: "Keplr",
+              }}
+              onClick={handleOnKeplrConnect}
+            >
+              Keplr
+            </ConnectorButton>
+            <button
+              className={`relative flex btn btn-neutral ${
+                isTerraInstalled ? "" : "tooltip"
+              }`}
+              data-tip={
+                "Click to install the extension. Refresh Satellite once installed."
+              }
+              onClick={handleOnTerraStationConnect}
+            >
+              <span>Terra Station</span>
+              <div className="ml-auto">
+                {isTerraInstalled ? (
+                  <Image
+                    src="/assets/wallets/terra-station.logo.svg"
+                    alt="walletconnect"
+                    height={30}
+                    width={30}
+                  />
+                ) : (
+                  <DownloadButton />
+                )}
+              </div>
+            </button>
+          </div>
         </div>
       </label>
     </div>

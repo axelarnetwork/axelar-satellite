@@ -42,13 +42,15 @@ export const useSquidList = () => {
     }
 
     const tokensWithExtendedChainData: TokensWithExtendedChainData[] =
-      squid.tokens.map((t) => {
-        const chain = computed.chainsById[t.chainId];
-        return {
-          ...t,
-          chainName: chain?.chainName as ChainName,
-        };
-      });
+      squid.tokens
+        .filter((t) => t.symbol !== "SQD")
+        .map((t) => {
+          const chain = computed.chainsById[t.chainId];
+          return {
+            ...t,
+            chainName: chain?.chainName as ChainName,
+          };
+        });
 
     if (!squidTokens.length && tokensWithExtendedChainData.length) {
       setSquidTokens(tokensWithExtendedChainData);

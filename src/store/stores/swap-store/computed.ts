@@ -126,6 +126,12 @@ export const getTransferType = memoize(
       assetIsWrappedVersionOfNativeAssetOnDestChain
     ) {
       transferType = "unwrap";
+    } else if (
+      asset.native_chain === destChain.chainName?.toLowerCase() &&
+      destChain.module === "evm" &&
+      asset.is_gas_token
+    ) {
+      transferType = "unwrap";
     }
 
     return transferType;
@@ -194,7 +200,8 @@ export const getSelectedAsssetIsWrapped = memoize(
     }
     const destChainName = state.destChain?.chainName?.toLowerCase();
     const isGasToken = state.asset.is_gas_token; // e.g. is this pure avax/eth/ftm/etc
-    const isGlmr = state.asset.id.includes("glmr");
+    const isGlmr =
+      state.asset.id.includes("glmr") || state.asset.id.includes("wdev");
     const destChainIsNativeChain = state.asset.native_chain === destChainName;
     const assetIsWrappedVersionOfNativeAssetOnDestChain =
       state?.destChain?.nativeAsset &&

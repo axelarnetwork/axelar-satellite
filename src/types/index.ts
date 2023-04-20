@@ -33,6 +33,7 @@ export type AssetAlias = Pick<
 export interface AssetConfigExtended extends AssetConfig {
   id: string;
   native_chain: string;
+  gas_token_id?: string;
   wrapped_erc20: string;
   is_gas_token: boolean;
   isSquidAsset: boolean;

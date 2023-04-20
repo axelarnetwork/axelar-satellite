@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import Image from "next/image";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
+import { pick } from "rambda";
 import { useSwitchNetwork } from "wagmi";
 import wait from "wait";
 
@@ -20,7 +21,9 @@ import {
 } from "~/utils/wallet/metamask";
 
 export const AddDestAssetButton = () => {
-  const wagmiConnected = useWalletStore((state) => state.wagmiConnected);
+  const { wagmiConnected, wagmiConnectorId } = useWalletStore(
+    pick(["wagmiConnected", "wagmiConnectorId"])
+  );
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
   const { isSquidTrade, selectedSquidAsset } = useSquidStateStore();
@@ -54,9 +57,10 @@ export const AddDestAssetButton = () => {
     // add token
   }, [destChain, asset, switchNetworkAsync, isSquidTrade, selectedSquidAsset]);
 
-  if (!wagmiConnected) {
+  if (!wagmiConnected || wagmiConnectorId?.toLowerCase() !== "metamask") {
     return null;
   }
+
   if (destChain.module !== "evm") {
     return null;
   }
@@ -87,10 +91,10 @@ export const AddDestAssetButton = () => {
         </span>
         <Image
           loading="eager"
-          src={"/assets/wallets/metamask.logo.svg"}
+          src="/assets/wallets/metamask.logo.svg"
           height={20}
           width={20}
-          alt="metamask"
+          alt="metamask logo"
         />
       </label>
       <ul

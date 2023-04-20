@@ -6,6 +6,7 @@ import {
 import { constants } from "ethers";
 
 import { ENVIRONMENT } from "~/config/constants";
+
 import { AssetConfigExtended } from "~/types";
 import { showErrorMsgAndThrow } from "~/utils/error";
 
@@ -66,7 +67,7 @@ async function _getDepositAddress(payload: DepositAddressPayload) {
     const result = await assetTransfer.getDepositAddress({
       fromChain,
       toChain,
-      asset: asset.id,
+      asset: asset.is_gas_token ? asset.wrapped_erc20 : asset.id,
       destinationAddress: destAddress,
       options: {
         shouldUnwrapIntoNative: true,
@@ -84,7 +85,7 @@ async function _getDepositAddress(payload: DepositAddressPayload) {
     fromChain,
     toChain,
     destinationAddress: destAddress,
-    asset: asset.id,
+    asset: asset.is_gas_token ? asset.wrapped_erc20 : asset.id,
   });
 
   return {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
+import { pick } from "rambda";
 import { useSwitchNetwork } from "wagmi";
 import { useAccount } from "wagmi";
 
@@ -41,7 +42,9 @@ export const EvmAssetWarningModal = () => {
 
   const { balance } = useGetAssetBalance();
   const { address } = useAccount();
-  const { wagmiConnected } = useWalletStore();
+  const { wagmiConnected, wagmiConnectorId } = useWalletStore(
+    pick(["wagmiConnected", "wagmiConnectorId"])
+  );
   const [showAssetWarning, setShowAssetWarning] = useState(false);
   const { switchNetwork } = useSwitchNetwork({
     onSuccess(data) {
@@ -76,7 +79,10 @@ export const EvmAssetWarningModal = () => {
   }, [setShowAssetWarning]);
 
   function addTokenToMetamaskButton() {
-    if (!wagmiConnected) return null;
+    if (!wagmiConnected || wagmiConnectorId?.toLowerCase() !== "metamask") {
+      return null;
+    }
+
     return (
       <button
         className="cursor-pointer tooltip"

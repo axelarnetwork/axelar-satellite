@@ -1,7 +1,4 @@
 import React from "react";
-import Image from "next/image";
-
-import { AXELARSCAN_URL } from "~/config/constants";
 
 import { getTransferType, useSwapStore } from "~/store";
 
