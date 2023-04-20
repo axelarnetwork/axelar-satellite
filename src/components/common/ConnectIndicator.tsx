@@ -1,12 +1,15 @@
 import React from "react";
 import Image from "next/image";
+import { pick } from "rambda";
 
 import { useWalletStore } from "~/store";
 
 import { useIsTerraConnected } from "~/hooks/terra/useIsTerraConnected";
 
 export const ConnectIndicator = () => {
-  const { wagmiConnected, keplrConnected, wagmiConnectorId } = useWalletStore();
+  const { wagmiConnected, keplrConnected, wagmiConnectorId } = useWalletStore(
+    pick(["wagmiConnected", "keplrConnected", "wagmiConnectorId"])
+  );
   const { isTerraConnected } = useIsTerraConnected();
 
   return (
@@ -27,7 +30,9 @@ export const ConnectIndicator = () => {
           <Image
             height={25}
             width={25}
-            src={`/assets/wallets/${wagmiConnectorId?.toLowerCase()}.logo.svg`}
+            src={`/assets/wallets/${
+              wagmiConnectorId?.toLowerCase() ?? "metamask"
+            }.logo.svg`}
             alt={`${wagmiConnectorId} Logo`}
           />
         )}
