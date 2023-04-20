@@ -33,7 +33,7 @@ const SquidSwapBtn = React.memo(() => {
   const { switchNetworkAsync } = useSwitchNetwork({
     chainId: srcChainId,
   });
-
+  const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
   const { data: signer } = useSigner({
@@ -176,12 +176,10 @@ const SquidSwapBtn = React.memo(() => {
           errorMessage !== null
         }
       >
-        Swap via Squid
-        {/* {chain?.id !== srcChainId
-        ? `Switch to ${srcChain.chainName}`
-        : routeData
-        ? "Swap with Squid"
-      : "Select A Valid Swap Path"} */}
+        {/* Swap via Squid */}
+        {chain?.id !== srcChainId
+          ? `Switch to ${srcChain.chainName}`
+          : "Swap with Squid"}
       </button>
     </div>
   );

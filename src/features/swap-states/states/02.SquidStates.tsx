@@ -137,7 +137,7 @@ export const SquidStates = () => {
 
       const getStatusParams = {
         transactionId: txReceipt.transactionHash,
-        routeType: routeData.transactionRequest.routeType,
+        routeType: routeData.transactionRequest?.routeType,
       };
 
       squid

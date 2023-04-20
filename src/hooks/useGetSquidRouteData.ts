@@ -50,7 +50,7 @@ export function useGetSquidRouteData() {
       toToken,
       toAddress: destAddress,
       slippage,
-      enableForecall: enableGMPExpress, // instant execution service, defaults to true
+      enableExpress: enableGMPExpress, // instant execution service, defaults to true
       quoteOnly: false, // optional, defaults to false
     };
     console.log("update route params", params);

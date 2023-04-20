@@ -1,6 +1,6 @@
 import { ASSET_RESTRICTIONS } from "~/config/constants";
 
-import { useSwapStore } from "~/store";
+import { useSquidStateStore, useSwapStore } from "~/store";
 
 import { AssetConfigExtended } from "~/types";
 
@@ -12,6 +12,7 @@ export const useSwitchAsset = () => {
   const setDestChain = useSwapStore((state) => state.setDestChain);
   const destChain = useSwapStore((state) => state.destChain);
   const srcChain = useSwapStore((state) => state.srcChain);
+  const setIsSquidTrade = useSquidStateStore((state) => state.setIsSquidTrade);
 
   return (asset: AssetConfigExtended) => {
     // check if asset is compatible with dest chain
@@ -19,7 +20,7 @@ export const useSwitchAsset = () => {
       !!asset.chain_aliases[destChain.chainName.toLowerCase()];
 
     // if we select an asset incompatible on destination chain, change destination chain to first compatible one
-    if (!destChainCompatible) {
+    if (!destChainCompatible && !asset.isSquidAsset) {
       const compatibleChain = allAssets.find(
         (_asset) => _asset.id === asset.id
       );
@@ -49,6 +50,8 @@ export const useSwitchAsset = () => {
         setDestChain(nextCompatibleChain);
       }
     }
+
+    if (!destChainCompatible && asset.isSquidAsset) setIsSquidTrade(true);
 
     // cache the initial asset
     setInitialAsset(asset);
