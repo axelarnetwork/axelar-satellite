@@ -23,7 +23,7 @@ export const useWalletStore = create<WalletStore>()(
   persist(
     (set, _get) => ({
       ...initialWalletState,
-      setWagmiConnected: (wagmiConnected, connectorId) =>
+      setWagmiConnected: (wagmiConnected, connectorId = "metaMask") =>
         set({
           wagmiConnected,
           wagmiConnectorId: connectorId,
