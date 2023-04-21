@@ -112,7 +112,7 @@ export const EvmAssetWarningModal = () => {
 
     return (
       <div className="my-5 font-bold text-center uppercase text-yellow-500/50">
-        Transfers from Filecoin will take at least ~8 hours to complete due to
+        Transfers from Filecoin will take at least ~1 hour to complete due to
         the long block finality of Filecoin, so keep this in mind before
         proceeding.
       </div>
