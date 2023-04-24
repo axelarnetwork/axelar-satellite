@@ -56,7 +56,9 @@ export const TransferStats = () => {
       return "~3 minutes";
     }
 
-    return `~${srcChain.estimatedWaitTime} minute/s`;
+    if (srcChain.estimatedWaitTime === 1) return "~1 minute";
+
+    return `~${srcChain.estimatedWaitTime} minutes`;
   }
 
   function renderMaxTransferAmount() {
