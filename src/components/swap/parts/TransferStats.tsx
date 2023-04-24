@@ -53,7 +53,7 @@ export const TransferStats = () => {
 
   function renderWaitTime() {
     if (!srcChain) {
-      return "";
+      return "~3 minutes";
     }
 
     if (srcChain.module === "axelarnet") {
@@ -61,10 +61,10 @@ export const TransferStats = () => {
     }
 
     if (["ethereum", "polygon"].includes(srcChain?.chainName?.toLowerCase())) {
-      return "~15 minutes";
+      return "~15-30 minutes";
     }
 
-    return "~3 minutes";
+    return `${srcChain.estimatedWaitTime} minutes`;
   }
 
   function renderMaxTransferAmount() {
