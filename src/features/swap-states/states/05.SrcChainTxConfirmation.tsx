@@ -18,15 +18,7 @@ import { ProgressBar } from "../components";
 export const SrcChainTxConfirmation = () => {
   const { asset, srcChain, destChain, destAddress, setSwapStatus } =
     useSwapStore(
-      pick([
-        "asset",
-        "srcChain",
-        "destChain",
-        "destAddress",
-        "setSwapStatus",
-        "txInfo",
-        "setTxInfo",
-      ])
+      pick(["asset", "srcChain", "destChain", "destAddress", "setSwapStatus"])
     );
 
   const chainAlias = destChain.chainName?.toLowerCase();
@@ -41,7 +33,7 @@ export const SrcChainTxConfirmation = () => {
     address: tokenAddress as `0x${string}`,
     abi: erc20ABI,
     eventName: "Transfer",
-    listener(fromAddress, toAddress, amount) {
+    listener(_fromAddress, toAddress, _amount) {
       if (toAddress === destAddress) {
         setSwapStatus(SwapStatus.FINISHED);
       }
