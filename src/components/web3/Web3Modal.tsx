@@ -136,11 +136,8 @@ export const Web3Modal = () => {
   }
 
   const activeConnector = useMemo(
-    () =>
-      wagmiConnected
-        ? connectors.find((connector) => connector.id === wagmiConnectorId)
-        : undefined,
-    [connectors, wagmiConnected, wagmiConnectorId]
+    () => connectors.find((connector) => connector.id === wagmiConnectorId),
+    [connectors, wagmiConnectorId]
   );
 
   return (
