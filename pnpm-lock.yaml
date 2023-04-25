@@ -97,9 +97,6 @@ dependencies:
   zustand:
     specifier: ^4.3.7
     version: 4.3.7(react@18.2.0)
-  zustand-persist:
-    specifier: ^0.4.0
-    version: 0.4.0(react@18.2.0)(zustand@4.3.7)
 
 devDependencies:
   '@commitlint/cli':
@@ -11482,16 +11479,6 @@ packages:
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-
-  /zustand-persist@0.4.0(react@18.2.0)(zustand@4.3.7):
-    resolution: {integrity: sha512-u6bBIc4yZRpSKBKuTNhoqvoIb09gGHk2NkiPg4K7MPIWTYZg70PlpBn48QEDnKZwfNurnf58TaW5BuMGIMf5hw==}
-    peerDependencies:
-      react: '>=16.8.0'
-      zustand: '>=3.6.3'
-    dependencies:
-      react: 18.2.0
-      zustand: 4.3.7(react@18.2.0)
-    dev: false
 
   /zustand@4.3.7(react@18.2.0):
     resolution: {integrity: sha512-dY8ERwB9Nd21ellgkBZFhudER8KVlelZm8388B5nDAXhO/+FZDhYMuRnqDgu5SYyRgz/iaf8RKnbUs/cHfOGlQ==}
