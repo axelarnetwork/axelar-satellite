@@ -84,7 +84,7 @@ const GetAddressBtn = React.memo(() => {
       tokensToTransfer === "0" ||
       Number(tokensToTransfer) <= 0
     )
-      return "Enter a valid amount to swap";
+      return "Enter a valid amount to transfer";
 
     return null;
   }, [tokensToTransfer]);
