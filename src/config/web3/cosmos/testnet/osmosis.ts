@@ -1,6 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const osmosis: CosmosChain = {
@@ -44,14 +45,14 @@ export const osmosis: CosmosChain = {
       coinDecimals: 6,
       coinGeckoId: "osmosis",
       coinImageUrl: "https://dhj8dql1kzq2v.cloudfront.net/white/osmo.png",
+      gasPriceStep: {
+        low: 0,
+        average: 0,
+        high: 0.025,
+      },
     },
   ],
   coinType: 118,
-  gasPriceStep: {
-    low: 0,
-    average: 0,
-    high: 0.025,
-  },
   features: ["ibc-transfer", "ibc-go"],
   chainToAxelarChannelId: "channel-1946",
   explorer: "", // TODO: add explorer

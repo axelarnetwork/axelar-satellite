@@ -1,6 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const terra: CosmosChain = {
@@ -25,9 +26,13 @@ export const terra: CosmosChain = {
       coinMinimalDenom: "uluna",
       coinDecimals: 6,
       coinGeckoId: "terra-luna-2",
+      gasPriceStep: {
+        low: 0.05,
+        average: 0.125,
+        high: 0.2,
+      },
     },
   ],
-  gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
   features: ["ibc-transfer"],
   chainToAxelarChannelId: "channel-22",
   explorer: "https://finder.terra.money/pisco-1",
