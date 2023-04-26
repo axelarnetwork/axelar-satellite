@@ -26,7 +26,7 @@ export const useWalletStore = create<WalletStore>()(
       setWagmiConnected: (wagmiConnected, connectorId = "metaMask") =>
         set({
           wagmiConnected,
-          wagmiConnectorId: connectorId,
+          wagmiConnectorId: wagmiConnected ? connectorId : undefined,
         }),
       setKeplrConnected: (keplrConnected) => set({ keplrConnected }),
       setUserSelectionForCosmosWallet: (

@@ -1,10 +1,11 @@
 import React from "react";
+import { pick } from "rambda";
 import { SpinnerRoundFilled } from "spinners-react";
 import { erc20ABI, useContractEvent } from "wagmi";
 
 import { InputWrapper, truncate } from "~/components/common";
 
-import { getDestChainId, getSelectedAssetSymbol, useSwapStore } from "~/store";
+import { getDestChainId, useSwapStore } from "~/store";
 
 import {
   useDetectDestTransferConfirmation,
@@ -15,21 +16,15 @@ import { SwapStatus } from "~/utils/enums";
 import { ProgressBar } from "../components";
 
 export const SrcChainTxConfirmation = () => {
-  const {
-    asset,
-    srcChain,
-    destChain,
-    destAddress,
-    setSwapStatus,
-    txInfo,
-    setTxInfo,
-  } = useSwapStore((state) => state);
+  const { asset, srcChain, destChain, destAddress, setSwapStatus } =
+    useSwapStore(
+      pick(["asset", "srcChain", "destChain", "destAddress", "setSwapStatus"])
+    );
 
   const chainAlias = destChain.chainName?.toLowerCase();
   const tokenAddress = asset?.chain_aliases[chainAlias]?.tokenAddress;
 
   const destChainId = useSwapStore(getDestChainId);
-  const selectedAssetSymbol = useSwapStore(getSelectedAssetSymbol);
 
   useDetectUnwrapTransfer();
   useDetectDestTransferConfirmation();
@@ -38,14 +33,8 @@ export const SrcChainTxConfirmation = () => {
     address: tokenAddress as `0x${string}`,
     abi: erc20ABI,
     eventName: "Transfer",
-    listener(fromAddress, toAddress, amount, event) {
-      if (event.blockNumber < Number(txInfo.destStartBlockNumber)) {
-        return;
-      }
+    listener(_fromAddress, toAddress, _amount) {
       if (toAddress === destAddress) {
-        setTxInfo({
-          destTxHash: event?.transactionHash,
-        });
         setSwapStatus(SwapStatus.FINISHED);
       }
     },

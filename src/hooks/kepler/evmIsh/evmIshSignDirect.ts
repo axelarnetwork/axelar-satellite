@@ -5,7 +5,8 @@ import {
   generatePostBodyBroadcast,
 } from "@evmos/provider";
 import {
-  MessageIBCMsgTransfer,
+  IBCMsgTransferParams,
+  TxContext,
   createTxIBCMsgTransfer,
 } from "@evmos/transactions";
 import Long from "long";
@@ -57,22 +58,18 @@ export const evmIshSignDirect = async (
     pubKeyKey = pub_key?.key;
   }
 
-  const sender: any = {
+  const sender = {
     accountAddress: address,
     sequence: sequence,
     accountNumber: account_number,
+    pubkey: "",
   };
   if (pubKeyKey) {
     sender.pubkey = pubKeyKey;
   }
   console.log("fetch sender results", fetchSenderResults);
 
-  const fee = {
-    amount: "20",
-    denom: keplrConfig.feeCurrencies[0].coinMinimalDenom,
-    gas: "200000",
-  };
-  const params: MessageIBCMsgTransfer = {
+  const params: IBCMsgTransferParams = {
     sourcePort: "transfer",
     sourceChannel: chainToAxelarChannelId,
     amount,
@@ -82,14 +79,24 @@ export const evmIshSignDirect = async (
     revisionHeight: 10,
     timeoutTimestamp: "0",
   };
-  const msg = createTxIBCMsgTransfer(chain, sender, fee, "", params);
+  const context: TxContext = {
+    chain,
+    sender,
+    fee: {
+      amount: "20",
+      denom: keplrConfig.feeCurrencies[0].coinMinimalDenom,
+      gas: "200000",
+    },
+    memo: "",
+  };
+  const msg = createTxIBCMsgTransfer(context, params);
 
-  let sign = await window?.keplr?.signDirect(
+  const sign = await window?.keplr?.signDirect(
     chain.cosmosChainId,
     sender.accountAddress,
     {
-      bodyBytes: msg.signDirect.body.serializeBinary(),
-      authInfoBytes: msg.signDirect.authInfo.serializeBinary(),
+      bodyBytes: msg.signDirect.body.toBinary(),
+      authInfoBytes: msg.signDirect.authInfo.toBinary(),
       chainId: chain.cosmosChainId,
       accountNumber: new Long(sender.accountNumber),
     },
@@ -98,9 +105,11 @@ export const evmIshSignDirect = async (
   );
 
   if (sign !== undefined) {
-    let rawTx = createTxRaw(sign.signed.bodyBytes, sign.signed.authInfoBytes, [
-      new Uint8Array(Buffer.from(sign.signature.signature, "base64")),
-    ]);
+    const rawTx = createTxRaw(
+      sign.signed.bodyBytes,
+      sign.signed.authInfoBytes,
+      [new Uint8Array(Buffer.from(sign.signature.signature, "base64"))]
+    );
 
     // Broadcast it
     const postOptions = {
@@ -109,7 +118,7 @@ export const evmIshSignDirect = async (
       body: generatePostBodyBroadcast(rawTx),
     };
 
-    let broadcastPost = await fetch(
+    const broadcastPost = await fetch(
       `${rest}${generateEndpointBroadcast()}?chain=${chainName}`,
       postOptions
     );

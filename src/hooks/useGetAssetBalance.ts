@@ -159,7 +159,7 @@ const useGetEvmBalance = () => {
     refetch: refetchErc20Balance,
   } = useContractRead({
     enabled: srcChain?.module === "evm" && wagmiConnected,
-    address: srcTokenAddress as string,
+    address: srcTokenAddress as `0x${string}`,
     abi: erc20ABI,
     chainId: srcChainId,
     functionName: "balanceOf",

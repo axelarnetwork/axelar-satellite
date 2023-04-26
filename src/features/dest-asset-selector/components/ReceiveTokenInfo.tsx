@@ -28,12 +28,7 @@ export const ReceiveTokenInfo = () => {
                 routeData.estimate.toAmount,
                 selectedSquidAsset?.decimals
               )
-            ).toFixed(5)).toString()} ${
-              selectedSquidAsset.assetSymbol
-            } / $${(+routeData.estimate.toAmountUSD?.replaceAll(
-              ",",
-              ""
-            )).toFixed(2)} USD`
+            ).toFixed(5)).toString()} ${selectedSquidAsset.assetSymbol}`
           ) : (
             "NA"
           )}
