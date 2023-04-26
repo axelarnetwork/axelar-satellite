@@ -1,4 +1,5 @@
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const crescent: CosmosChain = {
@@ -32,6 +33,11 @@ export const crescent: CosmosChain = {
       coinMinimalDenom: "ucre",
       coinDecimals: 6,
       coinGeckoId: "crescent",
+      gasPriceStep: {
+        low: 1,
+        average: 1,
+        high: 1,
+      },
     },
   ],
   stakeCurrency: {
@@ -41,11 +47,6 @@ export const crescent: CosmosChain = {
     coinGeckoId: "crescent",
   },
   coinType: 118,
-  gasPriceStep: {
-    low: 1,
-    average: 1,
-    high: 1,
-  },
   features: ["ibc-transfer"],
   chainToAxelarChannelId: "channel-3",
   explorer: "https://testnet-explorer.crescent.network",

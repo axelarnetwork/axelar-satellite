@@ -1,4 +1,5 @@
-import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const crescent: CosmosChain = {
@@ -33,6 +34,11 @@ export const crescent: CosmosChain = {
       coinMinimalDenom: "ucre",
       coinDecimals: 6,
       coinGeckoId: "crescent",
+      gasPriceStep: {
+        low: 1,
+        average: 1,
+        high: 1,
+      },
     },
   ],
   stakeCurrency: {
@@ -42,11 +48,6 @@ export const crescent: CosmosChain = {
     coinGeckoId: "crescent",
   },
   coinType: 118,
-  gasPriceStep: {
-    low: 1,
-    average: 1,
-    high: 1,
-  },
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
   chainToAxelarChannelId: "channel-4",
   explorer: "https://www.mintscan.io/crescent/account/",

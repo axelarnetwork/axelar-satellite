@@ -1,6 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const odin: CosmosChain = {
@@ -37,13 +38,13 @@ export const odin: CosmosChain = {
       coinMinimalDenom: "loki",
       coinDecimals: 6,
       coinGeckoId: "odin",
+      gasPriceStep: {
+        low: 0.0125,
+        average: 0.025,
+        high: 0.03,
+      },
     },
   ],
-  gasPriceStep: {
-    low: 0.0125,
-    average: 0.025,
-    high: 0.03,
-  },
   features: ["ibc-transfer", "ibc-go"],
   chainToAxelarChannelId: "channel-5",
   explorer: "https://testnet.odinprotocol.io",

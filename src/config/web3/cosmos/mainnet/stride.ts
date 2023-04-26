@@ -1,6 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const stride: CosmosChain = {
@@ -65,13 +66,13 @@ export const stride: CosmosChain = {
       coinMinimalDenom: "ustrd",
       coinDecimals: 6,
       coinGeckoId: "stride",
+      gasPriceStep: {
+        low: 0,
+        average: 0,
+        high: 0.04,
+      },
     },
   ],
-  gasPriceStep: {
-    low: 0,
-    average: 0,
-    high: 0.04,
-  },
   features: ["ibc-transfer"],
   chainToAxelarChannelId: "channel-69",
   explorer: "https://www.mintscan.io/stride/account/",

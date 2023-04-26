@@ -1,6 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const fetch: CosmosChain = {
@@ -27,6 +28,11 @@ export const fetch: CosmosChain = {
       coinMinimalDenom: "atestfet",
       coinDecimals: 18,
       coinGeckoId: "fetch-ai",
+      gasPriceStep: {
+        low: 0,
+        average: 5000000000,
+        high: 6250000000,
+      },
     },
   ],
   stakeCurrency: {
@@ -36,11 +42,6 @@ export const fetch: CosmosChain = {
     coinGeckoId: "fetch-ai",
   },
   coinType: 118,
-  gasPriceStep: {
-    low: 0,
-    average: 5000000000,
-    high: 6250000000,
-  },
   features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
   chainToAxelarChannelId: "channel-6",
   explorer: "", // TODO: add explorer

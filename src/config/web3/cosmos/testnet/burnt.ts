@@ -1,4 +1,5 @@
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const burnt: CosmosChain = {
@@ -36,13 +37,13 @@ export const burnt: CosmosChain = {
       coinMinimalDenom: "uturnt",
       coinDecimals: 6,
       coinGeckoId: "turnt",
+      gasPriceStep: {
+        low: 0.25,
+        average: 0.25,
+        high: 0.4,
+      },
     },
   ],
-  gasPriceStep: {
-    low: 0.25,
-    average: 0.25,
-    high: 0.4,
-  },
   features: ["stargate", "no-legacy-stdTx", "cosmwasm", "ibc-transfer"],
   chainToAxelarChannelId: "channel-1",
   explorer: "", // TODO: add explorer

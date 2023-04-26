@@ -1,4 +1,5 @@
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const evmos: CosmosChain = {
@@ -37,13 +38,13 @@ export const evmos: CosmosChain = {
       coinMinimalDenom: "atevmos",
       coinDecimals: 18,
       coinGeckoId: "evmos",
+      gasPriceStep: {
+        low: 25000000000,
+        average: 25000000000,
+        high: 40000000000,
+      },
     },
   ],
-  gasPriceStep: {
-    low: 25000000000,
-    average: 25000000000,
-    high: 40000000000,
-  },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "evmos",
   chainToAxelarChannelId: "channel-22",

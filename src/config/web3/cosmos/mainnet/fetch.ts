@@ -1,4 +1,5 @@
-import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const fetch: CosmosChain = {
@@ -37,9 +38,13 @@ export const fetch: CosmosChain = {
       coinMinimalDenom: "afet",
       coinDecimals: 18,
       coinGeckoId: "fetch-ai",
+      gasPriceStep: {
+        low: 0.05,
+        average: 0.125,
+        high: 0.2,
+      },
     },
   ],
-  gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "fetch",
   chainToAxelarChannelId: "channel-14",
