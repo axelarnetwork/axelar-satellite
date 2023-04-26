@@ -10,9 +10,8 @@ export function useDetectUnwrapTransfer() {
 
   useContractEvent({
     chainId: destChainId as number,
-    address:
-      (asset?.chain_aliases?.[destChain?.chainName.toLowerCase()]
-        ?.tokenAddress as string) || "0x",
+    address: ((asset?.chain_aliases?.[destChain?.chainName.toLowerCase()]
+      ?.tokenAddress as string) || "0x") as `0x${string}`,
     abi: [
       {
         anonymous: false,

@@ -14,7 +14,7 @@ export const useGatewayQuery = () => {
   const { api } = useAxelarRPCQuery();
 
   const { data: maxTransferAmount, error } = useContractRead({
-    address: gatewayAddr,
+    address: gatewayAddr as `0x${string}`,
     chainId: getWagmiChains().find(
       (chain) =>
         chain.networkNameOverride === destChain.chainName?.toLowerCase()

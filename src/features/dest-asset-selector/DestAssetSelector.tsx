@@ -5,7 +5,6 @@ import { useOnClickOutside } from "usehooks-ts";
 import { Blockable, InputWrapper } from "~/components/common";
 
 import {
-  getSelectedAsssetIsWrapped,
   getUnwrappedAssetSymbol,
   useSquidStateStore,
   useSwapStore,
@@ -41,7 +40,6 @@ export const DestAssetSelector = ({
   );
 
   const unwrappedAssetSymbol = useSwapStore(getUnwrappedAssetSymbol);
-  const selectedAssetIsWrapped = useSwapStore(getSelectedAsssetIsWrapped);
 
   const {
     setIsSquidTrade,
@@ -94,6 +92,7 @@ export const DestAssetSelector = ({
     setSelectedSquidAsset,
     setShouldUnwrapAsset,
     srcChain,
+    destChainCompatible,
   ]);
 
   const handleOnDropdownToggle = () => setDropdownOpen(!dropdownOpen);

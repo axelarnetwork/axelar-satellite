@@ -1,6 +1,6 @@
 {
   "name": "axelar-satellite",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -40,10 +40,9 @@
     "socket.io-client": "^4.6.1",
     "spinners-react": "^1.0.7",
     "usehooks-ts": "^2.9.1",
-    "wagmi": "0.10.0",
+    "wagmi": "0.12.10",
     "wait": "^0.4.2",
-    "zustand": "^4.3.7",
-    "zustand-persist": "^0.4.0"
+    "zustand": "^4.3.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.5.1",

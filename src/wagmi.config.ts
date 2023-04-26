@@ -27,7 +27,6 @@ export const wagmiClient = createClient({
       chains,
       options: {
         shimDisconnect: false,
-        shimChainChangedDisconnect: false,
       },
     }),
     new CoinbaseWalletConnector({
@@ -40,7 +39,7 @@ export const wagmiClient = createClient({
     new WalletConnectConnector({
       chains,
       options: {
-        qrcode: true,
+        showQrModal: true,
         projectId: String(process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID),
       },
     }),

@@ -1,25 +1,8 @@
+import { auroraTestnet } from "wagmi/chains";
+
 import { ChainExtension } from "../interface";
 
 export const aurora: ChainExtension = {
-  id: 131_316_555,
-  name: "Aurora Testnet",
-  network: "aurora",
+  ...auroraTestnet,
   networkNameOverride: "aurora",
-  nativeCurrency: {
-    name: "ETH",
-    symbol: "ETH",
-    decimals: 18,
-  },
-  blockExplorers: {
-    default: {
-      name: "aurorascan",
-      url: "https://testnet.aurorascan.dev",
-    },
-  },
-  rpcUrls: {
-    default: {
-      http: ["https://testnet.aurora.dev"],
-    },
-  },
-  testnet: true,
 };
