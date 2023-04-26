@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { useGetDepositAddress } from "~/features/gen-address-btn/hooks";
 import {
@@ -78,6 +78,17 @@ const GetAddressBtn = React.memo(() => {
       });
   }
 
+  const errorMessage = useMemo(() => {
+    if (
+      !tokensToTransfer ||
+      tokensToTransfer === "0" ||
+      Number(tokensToTransfer) <= 0
+    )
+      return "Enter a valid amount to swap";
+
+    return null;
+  }, [tokensToTransfer]);
+
   useEffect(() => {
     if (loading) {
       setSwapStatus(SwapStatus.GEN_DEPOSIT_ADDRESS);
@@ -118,8 +129,9 @@ const GetAddressBtn = React.memo(() => {
     <button
       className="w-full text-base font-semibold capitalize btn btn-primary"
       onClick={generateDepositAddress}
+      disabled={Boolean(errorMessage)}
     >
-      Generate Deposit Address
+      {errorMessage ?? "Generate Deposit Address"}
     </button>
   );
 });

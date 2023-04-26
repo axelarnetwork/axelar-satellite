@@ -68,7 +68,11 @@ const SquidSwapBtn = React.memo(() => {
       return "Enter a valid destination address";
 
     // Invalid amount to swap
-    if (!tokensToTransfer || tokensToTransfer === "0")
+    if (
+      !tokensToTransfer ||
+      tokensToTransfer === "0" ||
+      Number(tokensToTransfer) <= 0
+    )
       return "Enter a valid amount to swap";
 
     // Restricted destination address
