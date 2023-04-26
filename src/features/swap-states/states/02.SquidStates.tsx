@@ -30,12 +30,18 @@ export const SquidStates = () => {
   const destChain = useSwapStore((state) => state.destChain);
   const swapStatus = useSwapStore((state) => state.swapStatus);
   const srcChainId = useSwapStore(getSrcChainId);
+
   const [numConfirmationsSoFar, setNumConfirmationsSoFar] = useState(0);
 
   const setSwapStatus = useSwapStore((state) => state.setSwapStatus);
 
-  const { txReceipt, routeData, statusResponse, setStatusResponse } =
-    useSquidStateStore();
+  const {
+    txReceipt,
+    routeData,
+    statusResponse,
+    setStatusResponse,
+    enableGMPExpress,
+  } = useSquidStateStore();
 
   const [progress, setProgress] = useState<SquidSwapStatus>(
     SquidSwapStatus.WAIT_SRC_CHAIN
@@ -155,7 +161,7 @@ export const SquidStates = () => {
   }
 
   const getStatus = () => {
-    if (progress !== SquidSwapStatus.SRC_GATEWAY_CALLED) {
+    if (progress !== SquidSwapStatus.SRC_GATEWAY_CALLED || enableGMPExpress) {
       return;
     }
     if (
@@ -189,6 +195,7 @@ export const SquidStates = () => {
         </div>
       );
     }
+
     return (
       <div className="flex flex-col items-center gap-x-5">
         <div className="flex items-center gap-x-2">

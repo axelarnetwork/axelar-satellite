@@ -55,19 +55,31 @@ const SquidSwapBtn = React.memo(() => {
   const { loading } = useGetDepositAddress();
 
   const errorMessage = useMemo(() => {
-    if (routeDataLoading) return "Fetching swap estimates for input parameters";
+    if (routeDataLoading) {
+      return "Fetching swap estimates for input parameters";
+    }
+
     if (
       [
         validateCosmosAddress(destAddress, destChain.addressPrefix),
         validateEvmAddress(destAddress),
       ].every((t) => !t)
-    )
+    ) {
       return "Enter a valid destination address";
-    if (!tokensToTransfer || tokensToTransfer === "0")
+    }
+
+    if (!tokensToTransfer || tokensToTransfer === "0") {
       return "Enter a valid amount to swap";
-    if (reservedAddresses.includes(destAddress))
+    }
+
+    if (reservedAddresses.includes(destAddress)) {
       return "Cannot send to this address";
-    if (routeData) return null;
+    }
+
+    if (routeData) {
+      return null;
+    }
+
     return "A valid route was not found for this chain/asset pair. Please select another";
   }, [
     routeDataLoading,
