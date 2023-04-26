@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useRef } from "react";
+import React, { PropsWithChildren, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import { pick } from "rambda";
 import toast from "react-hot-toast";
@@ -59,7 +59,6 @@ const ConnectorButton = (
 
 export const Web3Modal = () => {
   const { connect, connectors, error } = useConnect();
-
   const { disconnect } = useDisconnect();
 
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -136,8 +135,9 @@ export const Web3Modal = () => {
     setUserSelectionForCosmosWallet("keplr");
   }
 
-  const activeConnector = connectors.find(
-    (connector) => connector.id === wagmiConnectorId
+  const activeConnector = useMemo(
+    () => connectors.find((connector) => connector.id === wagmiConnectorId),
+    [connectors, wagmiConnectorId]
   );
 
   return (
