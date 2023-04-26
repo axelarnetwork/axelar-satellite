@@ -55,32 +55,30 @@ const SquidSwapBtn = React.memo(() => {
   const { loading } = useGetDepositAddress();
 
   const errorMessage = useMemo(() => {
-    if (routeDataLoading) {
-      return "Fetching swap estimates for input parameters";
-    }
+    // Estimating swaps for input
+    if (routeDataLoading) return "Estimating swaps for input.";
 
-    if (
-      [
-        validateCosmosAddress(destAddress, destChain.addressPrefix),
-        validateEvmAddress(destAddress),
-      ].every((t) => !t)
-    ) {
+    // Invalid destination address
+    const isValidCosmosAddress = validateCosmosAddress(
+      destAddress,
+      destChain.addressPrefix
+    );
+    const isValidEvmAddress = validateEvmAddress(destAddress);
+    if (!isValidCosmosAddress && !isValidEvmAddress)
       return "Enter a valid destination address";
-    }
 
-    if (!tokensToTransfer || tokensToTransfer === "0") {
+    // Invalid amount to swap
+    if (!tokensToTransfer || tokensToTransfer === "0")
       return "Enter a valid amount to swap";
-    }
 
-    if (reservedAddresses.includes(destAddress)) {
+    // Restricted destination address
+    if (reservedAddresses.includes(destAddress))
       return "Cannot send to this address";
-    }
 
-    if (routeData) {
-      return null;
-    }
+    // No valid route found
+    if (!routeData) return "No valid route found. Choose another pair.";
 
-    return "A valid route was not found for this chain/asset pair. Please select another";
+    return null;
   }, [
     routeDataLoading,
     destAddress,
@@ -89,6 +87,14 @@ const SquidSwapBtn = React.memo(() => {
     reservedAddresses,
     routeData,
   ]);
+
+  const btnText = useMemo(() => {
+    if (chain?.id !== srcChainId) {
+      return `Switch to ${srcChain.chainName}`;
+    }
+
+    return errorMessage ?? "Swap with Squid";
+  }, [chain?.id, srcChainId, errorMessage, srcChain.chainName]);
 
   async function handleOnMetamaskSwitch() {
     const connector = connectors.find((c) => c.name === "MetaMask");
@@ -188,10 +194,7 @@ const SquidSwapBtn = React.memo(() => {
           errorMessage !== null
         }
       >
-        {/* Swap via Squid */}
-        {chain?.id !== srcChainId
-          ? `Switch to ${srcChain.chainName}`
-          : "Swap with Squid"}
+        {btnText}
       </button>
     </div>
   );
