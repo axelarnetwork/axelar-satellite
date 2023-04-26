@@ -137,7 +137,7 @@ export const useSwapStore = create<SwapStore>()(
 
       const shouldUseNativeAsset =
         asset?.gas_token_id &&
-        destChain.chainName.toLowerCase() === asset.native_chain;
+        destChain.chainName?.toLowerCase() === asset.native_chain;
 
       const nativeAsset = shouldUseNativeAsset
         ? allAssets.find((t) => t.id === asset.gas_token_id)
