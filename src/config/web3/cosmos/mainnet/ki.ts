@@ -1,4 +1,5 @@
-import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const ki: CosmosChain = {
@@ -37,9 +38,13 @@ export const ki: CosmosChain = {
       coinMinimalDenom: "uxki",
       coinDecimals: 6,
       coinGeckoId: "ki",
+      gasPriceStep: {
+        low: 0.05,
+        average: 0.125,
+        high: 0.2,
+      },
     },
   ],
-  gasPriceStep: { low: 0.05, average: 0.125, high: 0.2 },
   features: ["stargate", "no-legacy-stdTx", "ibc-transfer"],
   chainIdentifier: "ki",
   chainToAxelarChannelId: "channel-19",

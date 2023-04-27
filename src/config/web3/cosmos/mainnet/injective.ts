@@ -1,6 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const injective: CosmosChain = {
@@ -34,13 +35,13 @@ export const injective: CosmosChain = {
       coinMinimalDenom: "inj",
       coinDecimals: 18,
       coinGeckoId: "injective-protocol",
+      gasPriceStep: {
+        low: 5000000000,
+        average: 25000000000,
+        high: 40000000000,
+      },
     },
   ],
-  gasPriceStep: {
-    low: 5000000000,
-    average: 25000000000,
-    high: 40000000000,
-  },
   features: ["ibc-transfer", "ibc-go"],
   chainIdentifier: "injective",
   chainToAxelarChannelId: "channel-84",

@@ -1,6 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const secret: CosmosChain = {

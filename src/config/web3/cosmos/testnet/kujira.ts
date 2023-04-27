@@ -1,4 +1,5 @@
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const kujira: CosmosChain = {
@@ -30,6 +31,11 @@ export const kujira: CosmosChain = {
       coinMinimalDenom: "ukuji",
       coinDecimals: 6,
       coinGeckoId: "kujira",
+      gasPriceStep: {
+        low: 0.01,
+        average: 0.025,
+        high: 0.03,
+      },
     },
   ],
   stakeCurrency: {
@@ -39,7 +45,6 @@ export const kujira: CosmosChain = {
     coinGeckoId: "kujira",
   },
   coinType: 118,
-  gasPriceStep: { low: 0.01, average: 0.025, high: 0.03 },
   chainToAxelarChannelId: "channel-8",
   explorer: "", // TODO add explorer
 };

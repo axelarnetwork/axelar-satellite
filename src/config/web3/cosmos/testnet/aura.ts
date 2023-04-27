@@ -1,4 +1,5 @@
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const aura: CosmosChain = {
@@ -29,6 +30,11 @@ export const aura: CosmosChain = {
       coinDenom: "EAURA",
       coinMinimalDenom: "ueaura",
       coinDecimals: 6,
+      gasPriceStep: {
+        low: 0.001,
+        average: 0.0025,
+        high: 0.004,
+      },
     },
   ],
   stakeCurrency: {
@@ -37,11 +43,6 @@ export const aura: CosmosChain = {
     coinDecimals: 6,
   },
   coinType: 118,
-  gasPriceStep: {
-    low: 0.001,
-    average: 0.0025,
-    high: 0.004,
-  },
   features: ["no-legacy-stdTx"],
   walletUrlForStaking: "https://euphoria.aurascan.io/validators",
   explorer: "https://euphoria.aurascan.io/",

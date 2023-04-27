@@ -1,6 +1,7 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_TESTNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const axelar: CosmosChain = {
@@ -28,9 +29,17 @@ export const axelar: CosmosChain = {
     },
   ],
   feeCurrencies: [
-    { coinDenom: "AXL", coinMinimalDenom: "uaxl", coinDecimals: 6 },
+    {
+      coinDenom: "AXL",
+      coinMinimalDenom: "uaxl",
+      coinDecimals: 6,
+      gasPriceStep: {
+        low: 0.007,
+        average: 0.007,
+        high: 0.01,
+      },
+    },
   ],
-  gasPriceStep: { low: 0.007, average: 0.007, high: 0.01 },
   features: ["ibc-transfer"],
   chainToAxelarChannelId: "",
   explorer: "https://axelarscan.io/",

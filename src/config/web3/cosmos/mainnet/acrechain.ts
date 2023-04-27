@@ -1,4 +1,5 @@
-import { COSMOS_PROXY_RPC_MAINNET } from "../../../constants";
+import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
+
 import { CosmosChain } from "../interface";
 
 export const acrechain: CosmosChain = {
@@ -36,13 +37,14 @@ export const acrechain: CosmosChain = {
       coinMinimalDenom: "aacre",
       coinDecimals: 18,
       coinGeckoId: "arable-protocol",
+      gasPriceStep: {
+        low: 380000000000,
+        average: 850000000000,
+        high: 1000000000000,
+      },
     },
   ],
-  gasPriceStep: {
-    low: 380000000000,
-    average: 850000000000,
-    high: 1000000000000,
-  },
   features: ["ibc-transfer", "ibc-go", "eth-address-gen", "eth-key-sign"],
   chainToAxelarChannelId: "channel-5",
-} as CosmosChain;
+  explorer: "https://acrescan.com/",
+};
