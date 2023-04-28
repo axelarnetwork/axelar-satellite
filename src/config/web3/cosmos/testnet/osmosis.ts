@@ -6,8 +6,8 @@ import { CosmosChain } from "../interface";
 
 export const osmosis: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/osmosis`,
-  rest: "https://testnet-rest.osmosis.zone",
-  chainId: "osmo-test-4",
+  rest: "https://lcd.osmotest5.osmosis.zone",
+  chainId: "osmo-test-5",
   chainName: "Osmosis Testnet",
   chainIdentifier: "osmosis",
   stakeCurrency: {
@@ -54,6 +54,6 @@ export const osmosis: CosmosChain = {
   ],
   coinType: 118,
   features: ["ibc-transfer", "ibc-go"],
-  chainToAxelarChannelId: "channel-1946",
+  chainToAxelarChannelId: "channel-3",
   explorer: "", // TODO: add explorer
 };
