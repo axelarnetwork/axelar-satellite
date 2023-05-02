@@ -74,14 +74,34 @@ export const DestAssetSelector = ({
   );
 
   const destChainCompatible = useMemo(() => {
-    return !!srcAsset?.chain_aliases[destChain.chainName.toLowerCase()];
+    return !!(
+      srcAsset?.chain_aliases[destChain.chainName.toLowerCase()] &&
+      !srcAsset?.chain_aliases[destChain.chainName.toLowerCase()].addedViaSquid
+    );
   }, [srcAsset, destChain]);
+
+  console.log(
+    "destChainCompatibledestChainCompatible",
+    destChainCompatible,
+    selectedSquidAsset
+  );
 
   useEffect(() => {
     if (srcAsset && srcChain && destChainCompatible) {
       setShouldUnwrapAsset(false);
       setSelectedSquidAsset(null);
       setIsSquidTrade(false);
+      setRouteData(null);
+    } else if (
+      srcAsset &&
+      srcChain &&
+      srcAsset.chain_aliases[destChain.chainName.toLowerCase()]
+    ) {
+      setShouldUnwrapAsset(false);
+      setSelectedSquidAsset(
+        srcAsset.chain_aliases[destChain.chainName.toLowerCase()]
+      );
+      setIsSquidTrade(true);
       setRouteData(null);
     }
   }, [
