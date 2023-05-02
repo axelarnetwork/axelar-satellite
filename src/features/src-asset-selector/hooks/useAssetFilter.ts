@@ -36,6 +36,13 @@ export const useAssetFilter = (input: string | undefined) => {
 
         return assetMatchesSearch && assetIsSupportedByBothChains;
       })
+      .filter((asset) => {
+        if (srcChain.module === "axelarnet") {
+          return !asset.chain_aliases[destChain.chainName.toLowerCase()]
+            ?.addedViaSquid;
+        }
+        return true;
+      })
       .map((asset) => {
         const [isCompatible, reason] = checkCompatibility(asset);
         return {

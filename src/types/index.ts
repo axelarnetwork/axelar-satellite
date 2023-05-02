@@ -28,6 +28,7 @@ export type AssetAlias = Pick<
   mintLimit: number;
   iconSrc?: string;
   decimals?: number;
+  addedViaSquid?: boolean;
 };
 
 export interface AssetConfigExtended extends AssetConfig {
