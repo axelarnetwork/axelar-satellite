@@ -270,7 +270,11 @@ export const useInitialChainList = () => {
         }
 
         if (!(chainName in existingAsset.chain_aliases)) {
-          existingAsset.chain_aliases[chainName] = newAlias;
+          // adding new chain alias
+          existingAsset.chain_aliases[chainName] = {
+            ...newAlias,
+            addedViaSquid: true,
+          };
         }
         if (!existingAsset.chain_aliases[chainName]?.decimals)
           existingAsset.chain_aliases[chainName].decimals = token.decimals;

@@ -73,16 +73,31 @@ export const DestAssetSelector = ({
     [allAssets, destChain.chainName]
   );
 
-  const destChainCompatible = useMemo(() => {
-    return !!srcAsset?.chain_aliases[destChain.chainName.toLowerCase()];
-  }, [srcAsset, destChain]);
+  const isCompatibleWithDestinationChain = useMemo(() => {
+    if (!srcAsset) return false;
+    const destChainAlias =
+      srcAsset.chain_aliases[destChain.chainName.toLowerCase()];
+    return Boolean(destChainAlias) && !destChainAlias.addedViaSquid;
+  }, [srcAsset, destChain.chainName]);
 
   useEffect(() => {
-    if (srcAsset && srcChain && destChainCompatible) {
+    if (!srcAsset || !srcChain) return;
+
+    if (isCompatibleWithDestinationChain) {
+      const destChainAlias =
+        srcAsset.chain_aliases[destChain.chainName.toLowerCase()];
       setShouldUnwrapAsset(false);
-      setSelectedSquidAsset(null);
-      setIsSquidTrade(false);
       setRouteData(null);
+
+      if (destChainAlias.addedViaSquid) {
+        setSelectedSquidAsset(
+          srcAsset.chain_aliases[destChain.chainName.toLowerCase()]
+        );
+        setIsSquidTrade(true);
+      } else {
+        setSelectedSquidAsset(null);
+        setIsSquidTrade(false);
+      }
     }
   }, [
     srcAsset,
@@ -92,7 +107,7 @@ export const DestAssetSelector = ({
     setSelectedSquidAsset,
     setShouldUnwrapAsset,
     srcChain,
-    destChainCompatible,
+    isCompatibleWithDestinationChain,
   ]);
 
   const handleOnDropdownToggle = () => setDropdownOpen(!dropdownOpen);
@@ -132,18 +147,20 @@ export const DestAssetSelector = ({
     (t) => t.symbol.toLowerCase() === selectedAssetSymbol?.toLowerCase()
   );
 
+  const shouldRenderSquidAssets = srcIsSquidAsset && destChain.module === "evm";
+
   const filteredSquidAssets = useMemo(
-    () => squidAssets.filter((t) => t.id !== srcAsset?.id),
-    [squidAssets, srcAsset]
+    () =>
+      shouldRenderSquidAssets
+        ? squidAssets.filter((t) => t.id !== srcAsset?.id)
+        : [],
+    [shouldRenderSquidAssets, squidAssets, srcAsset?.id]
   );
 
   function renderAssetDropdown() {
     if (!(dropdownOpen && srcChain)) {
       return null;
     }
-
-    const shouldRenderSquidAssets =
-      srcIsSquidAsset && destChain.module === "evm";
 
     const destChainName = destChain.chainName.toLowerCase();
 
@@ -154,7 +171,7 @@ export const DestAssetSelector = ({
           onClick={handleOnDropdownToggle}
           onKeyDown={handleOnDropdownToggle}
         >
-          {destChainCompatible && (
+          {isCompatibleWithDestinationChain && (
             <li key={"selected_src_asset"}>
               <button onClick={() => handleSelect(false)}>
                 <AssetIcon
@@ -175,30 +192,29 @@ export const DestAssetSelector = ({
               </button>
             </li>
           )}
-          {shouldRenderSquidAssets &&
-            filteredSquidAssets.map((squidAsset) => (
-              <li key={`squid_token_${squidAsset.id}`}>
-                <button
-                  onClick={() =>
-                    handleSquidSelect(squidAsset.chain_aliases[destChainName])
-                  }
-                >
-                  <AssetIcon
-                    assetId={squidAsset.id}
-                    size={35}
-                    iconSrc={squidAsset.iconSrc}
-                  />
-                  <div className="flex justify-between w-full">
-                    <span>
-                      {squidAsset.chain_aliases[destChainName]?.assetSymbol}
-                    </span>
-                    <div className="text-xs text-slate-400 text-end">
-                      Swap via Squid
-                    </div>
+          {filteredSquidAssets.map((squidAsset) => (
+            <li key={`squid_token_${squidAsset.id}`}>
+              <button
+                onClick={() =>
+                  handleSquidSelect(squidAsset.chain_aliases[destChainName])
+                }
+              >
+                <AssetIcon
+                  assetId={squidAsset.id}
+                  size={35}
+                  iconSrc={squidAsset.iconSrc}
+                />
+                <div className="flex justify-between w-full">
+                  <span>
+                    {squidAsset.chain_aliases[destChainName]?.assetSymbol}
+                  </span>
+                  <div className="text-xs text-slate-400 text-end">
+                    Swap via Squid
                   </div>
-                </button>
-              </li>
-            ))}
+                </div>
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
     );
