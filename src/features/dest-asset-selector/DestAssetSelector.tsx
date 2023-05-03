@@ -49,6 +49,11 @@ export const DestAssetSelector = ({
   } = useSquidStateStore();
   const ref = useRef(null);
 
+  const srcAssetAlias = useMemo(
+    () => srcAsset?.chain_aliases[destChain.chainName.toLowerCase()],
+    [destChain.chainName, srcAsset?.chain_aliases]
+  );
+
   const selectedAssetSymbol = useMemo(() => {
     if (selectedSquidAsset) {
       return selectedSquidAsset.assetSymbol;
@@ -56,19 +61,18 @@ export const DestAssetSelector = ({
     if (shouldUnwrapAsset) {
       return unwrappedAssetSymbol;
     }
-    const alias = srcAsset?.chain_aliases[destChain.chainName.toLowerCase()];
+
     // TODO: review this logic
-    if (alias?.addedViaSquid) {
+    if (srcAssetAlias?.addedViaSquid) {
       return;
     }
 
-    return alias?.assetName;
+    return srcAssetAlias?.assetName;
   }, [
+    srcAssetAlias,
     selectedSquidAsset,
     shouldUnwrapAsset,
     unwrappedAssetSymbol,
-    srcAsset?.chain_aliases,
-    destChain.chainName,
   ]);
 
   const nativeAsset = useMemo(
@@ -81,27 +85,20 @@ export const DestAssetSelector = ({
     [allAssets, destChain.chainName]
   );
 
-  const isCompatibleWithDestinationChain = useMemo(() => {
-    if (!srcAsset) return false;
-    const destChainAlias =
-      srcAsset.chain_aliases[destChain.chainName.toLowerCase()];
-
-    return Boolean(destChainAlias) && !destChainAlias.addedViaSquid;
-  }, [srcAsset, destChain.chainName]);
+  const isCompatibleWithDestinationChain = useMemo(
+    () => Boolean(srcAssetAlias) && !srcAssetAlias?.addedViaSquid,
+    [srcAssetAlias]
+  );
 
   useEffect(() => {
     if (!srcAsset || !srcChain) return;
 
     if (isCompatibleWithDestinationChain) {
-      const destChainAlias =
-        srcAsset.chain_aliases[destChain.chainName.toLowerCase()];
       setShouldUnwrapAsset(false);
       setRouteData(null);
 
-      if (destChainAlias.addedViaSquid) {
-        setSelectedSquidAsset(
-          srcAsset.chain_aliases[destChain.chainName.toLowerCase()]
-        );
+      if (srcAssetAlias?.addedViaSquid) {
+        setSelectedSquidAsset(srcAssetAlias);
         setIsSquidTrade(true);
       } else {
         setSelectedSquidAsset(null);
@@ -110,6 +107,7 @@ export const DestAssetSelector = ({
     }
   }, [
     srcAsset,
+    srcAssetAlias,
     destChain.chainName,
     setIsSquidTrade,
     setRouteData,
@@ -199,12 +197,7 @@ export const DestAssetSelector = ({
                   iconSrc={srcAsset?.iconSrc}
                   size={35}
                 />
-                <span>
-                  {
-                    srcAsset?.chain_aliases[destChain.chainName.toLowerCase()]
-                      ?.assetSymbol
-                  }
-                </span>
+                <span>{srcAssetAlias?.assetSymbol}</span>
               </button>
             </li>
           )}
