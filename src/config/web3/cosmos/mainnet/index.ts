@@ -17,6 +17,7 @@ import { kujira } from "./kujira";
 import { osmosis } from "./osmosis";
 import { regen } from "./regen";
 import { secret } from "./secret";
+import { sommelier } from "./sommelier";
 import { stargaze } from "./stargaze";
 import { stride } from "./stride";
 import { terra } from "./terra";
@@ -49,4 +50,5 @@ export const mainnetChains: CosmosChain[] = [
   xpla,
   carbon,
   stride,
+  sommelier,
 ];
