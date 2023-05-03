@@ -20,9 +20,8 @@ export const AddSrcAssetButton = () => {
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
 
-  const switch_network = useSwitchNetwork();
+  const { switchNetworkAsync } = useSwitchNetwork();
   const network = useNetwork();
-  const { switchNetworkAsync } = switch_network;
 
   const handleOnAddTokenOnSrcChain = useCallback(() => {
     if (!asset) {
@@ -34,10 +33,6 @@ export const AddSrcAssetButton = () => {
       (_chain) =>
         _chain.networkNameOverride === srcChain.chainName?.toLowerCase()
     )?.id;
-    console.log(
-      "handleOnAddTokenOnSrcChainhandleOnAddTokenOnSrcChain chainId",
-      chainId
-    );
     if (!chainId) {
       return;
     }
@@ -53,7 +48,7 @@ export const AddSrcAssetButton = () => {
     }
 
     // add token
-  }, [srcChain, asset, switchNetworkAsync]);
+  }, [srcChain, asset, switchNetworkAsync, network]);
 
   const handleOnAddTokenOnDestChain = useCallback(() => {
     if (!asset) {
