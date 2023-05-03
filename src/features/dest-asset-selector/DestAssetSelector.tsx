@@ -50,17 +50,25 @@ export const DestAssetSelector = ({
   const ref = useRef(null);
 
   const selectedAssetSymbol = useMemo(() => {
-    if (selectedSquidAsset) return selectedSquidAsset.assetSymbol;
-    else if (shouldUnwrapAsset) return unwrappedAssetSymbol;
-    else
-      return srcAsset?.chain_aliases[destChain.chainName.toLowerCase()]
-        ?.assetName;
+    if (selectedSquidAsset) {
+      return selectedSquidAsset.assetSymbol;
+    }
+    if (shouldUnwrapAsset) {
+      return unwrappedAssetSymbol;
+    }
+    const alias = srcAsset?.chain_aliases[destChain.chainName.toLowerCase()];
+    // TODO: review this logic
+    if (alias?.addedViaSquid) {
+      return;
+    }
+
+    return alias?.assetName;
   }, [
     selectedSquidAsset,
     shouldUnwrapAsset,
-    srcAsset,
-    destChain,
     unwrappedAssetSymbol,
+    srcAsset?.chain_aliases,
+    destChain.chainName,
   ]);
 
   const nativeAsset = useMemo(
@@ -77,6 +85,7 @@ export const DestAssetSelector = ({
     if (!srcAsset) return false;
     const destChainAlias =
       srcAsset.chain_aliases[destChain.chainName.toLowerCase()];
+
     return Boolean(destChainAlias) && !destChainAlias.addedViaSquid;
   }, [srcAsset, destChain.chainName]);
 
@@ -149,13 +158,20 @@ export const DestAssetSelector = ({
 
   const shouldRenderSquidAssets = srcIsSquidAsset && destChain.module === "evm";
 
-  const filteredSquidAssets = useMemo(
-    () =>
-      shouldRenderSquidAssets
+  const filteredSquidAssets = useMemo(() => {
+    if (shouldRenderSquidAssets) {
+      return isCompatibleWithDestinationChain
         ? squidAssets.filter((t) => t.id !== srcAsset?.id)
-        : [],
-    [shouldRenderSquidAssets, squidAssets, srcAsset?.id]
-  );
+        : squidAssets;
+    }
+
+    return [];
+  }, [
+    isCompatibleWithDestinationChain,
+    shouldRenderSquidAssets,
+    squidAssets,
+    srcAsset?.id,
+  ]);
 
   function renderAssetDropdown() {
     if (!(dropdownOpen && srcChain)) {

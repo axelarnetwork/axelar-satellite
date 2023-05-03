@@ -44,10 +44,10 @@ export const SwapBox = () => {
   }, [allAssets, destChainName]);
 
   return (
-    <div className="bg-base-100 rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
+    <div className="bg-base-100 md:rounded-xl w-full max-w-[550px] min-h-[500px] h-auto z-10">
       <ModalWindow />
       <EvmAssetWarningModal />
-      <div className="flex flex-col h-full p-8 space-y-5 min-h-[500px]">
+      <div className="flex flex-col h-full p-4 md:p-8 space-y-5 min-h-[500px]">
         <div
           className={clsx("relative flex mb-0 space-x-8", {
             "justify-end": env === "mainnet",
