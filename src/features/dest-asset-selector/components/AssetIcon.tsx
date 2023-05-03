@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import clsx from "clsx";
 
 type Props = {
   assetId?: string;
@@ -27,6 +28,9 @@ const AssetIcon = (props: Props) => {
         e.currentTarget.srcset = defaultAssetImg;
       }}
       alt={props.alt ?? "asset"}
+      className={clsx({
+        "rounded-full overflow-hidden": props.iconSrc,
+      })}
     />
   );
 };
