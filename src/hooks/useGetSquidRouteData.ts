@@ -21,7 +21,6 @@ export function useGetSquidRouteData() {
     squidChains,
     setRouteDataAsync,
     setRouteData,
-    routeData,
     setRouteDataLoading,
     enableGMPExpress,
   } = useSquidStateStore();
@@ -82,7 +81,7 @@ export function useGetSquidRouteData() {
       } catch (e: any) {
         console.error("Squid Route Call error: ", e);
         toast.error(
-          `Selected Squid route is not supported. Please selection another chain/asset pair`
+          "Selected Squid route is not supported. Please selection another chain/asset pair"
         );
       }
     },

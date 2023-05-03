@@ -241,13 +241,11 @@ export const useInitialChainList = () => {
 
     for (const token of squidTokens) {
       const existingAsset = result.find((asset) => {
-        const aliases = uniq(
-          Object.values(asset.chain_aliases).map(
-            compose(toLower, prop("assetSymbol"))
-          )
+        const uniqAddresses = uniq(
+          Object.values(asset.chain_aliases).map((x) => x.tokenAddress)
         );
 
-        return aliases.includes(token.symbol.toLowerCase());
+        return uniqAddresses.includes(token.address);
       });
 
       const newAlias: AssetAlias = {

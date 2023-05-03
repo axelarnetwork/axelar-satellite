@@ -49,14 +49,21 @@ export const DestAssetSelector = ({
   } = useSquidStateStore();
   const ref = useRef(null);
 
-  const srcAssetAlias = useMemo(
+  const srcAssetAliasOnSrcChain = useMemo(
+    () => srcAsset?.chain_aliases[srcChain.chainName.toLowerCase()],
+    [srcAsset?.chain_aliases, srcChain.chainName]
+  );
+  const srcAssetAliasOnDestChain = useMemo(
     () => srcAsset?.chain_aliases[destChain.chainName.toLowerCase()],
     [destChain.chainName, srcAsset?.chain_aliases]
   );
 
   const isCompatibleWithDestinationChain = useMemo(
-    () => Boolean(srcAssetAlias) && !srcAssetAlias?.addedViaSquid,
-    [srcAssetAlias]
+    () =>
+      Boolean(srcAssetAliasOnDestChain) &&
+      !srcAssetAliasOnDestChain?.addedViaSquid &&
+      !srcAssetAliasOnSrcChain?.addedViaSquid,
+    [srcAssetAliasOnDestChain, srcAssetAliasOnSrcChain]
   );
 
   const selectedAssetSymbol = useMemo(() => {
@@ -68,15 +75,15 @@ export const DestAssetSelector = ({
     }
 
     // TODO: review this logic
-    if (srcAssetAlias?.addedViaSquid) {
+    if (!isCompatibleWithDestinationChain) {
       return;
     }
-
-    return srcAssetAlias?.assetName;
+    return srcAssetAliasOnDestChain?.assetName;
   }, [
-    srcAssetAlias,
     selectedSquidAsset,
     shouldUnwrapAsset,
+    isCompatibleWithDestinationChain,
+    srcAssetAliasOnDestChain?.assetName,
     unwrappedAssetSymbol,
   ]);
 
@@ -97,8 +104,8 @@ export const DestAssetSelector = ({
       setShouldUnwrapAsset(false);
       setRouteData(null);
 
-      if (srcAssetAlias?.addedViaSquid) {
-        setSelectedSquidAsset(srcAssetAlias);
+      if (srcAssetAliasOnDestChain?.addedViaSquid) {
+        setSelectedSquidAsset(srcAssetAliasOnDestChain);
         setIsSquidTrade(true);
       } else {
         setSelectedSquidAsset(null);
@@ -107,7 +114,7 @@ export const DestAssetSelector = ({
     }
   }, [
     srcAsset,
-    srcAssetAlias,
+    srcAssetAliasOnDestChain,
     destChain.chainName,
     setIsSquidTrade,
     setRouteData,
@@ -197,7 +204,7 @@ export const DestAssetSelector = ({
                   iconSrc={srcAsset?.iconSrc}
                   size={35}
                 />
-                <span>{srcAssetAlias?.assetSymbol}</span>
+                <span>{srcAssetAliasOnDestChain?.assetSymbol}</span>
               </button>
             </li>
           )}
