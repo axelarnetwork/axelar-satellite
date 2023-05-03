@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import Image from "next/image";
 import { pick } from "rambda";
-import { useSwitchNetwork } from "wagmi";
+import { useNetwork, useSwitchNetwork } from "wagmi";
 import wait from "wait";
 
 import { defaultAssetImg, defaultChainImg } from "~/config/constants";
@@ -20,7 +20,9 @@ export const AddSrcAssetButton = () => {
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
 
-  const { switchNetworkAsync } = useSwitchNetwork();
+  const switch_network = useSwitchNetwork();
+  const network = useNetwork();
+  const { switchNetworkAsync } = switch_network;
 
   const handleOnAddTokenOnSrcChain = useCallback(() => {
     if (!asset) {
@@ -32,15 +34,23 @@ export const AddSrcAssetButton = () => {
       (_chain) =>
         _chain.networkNameOverride === srcChain.chainName?.toLowerCase()
     )?.id;
+    console.log(
+      "handleOnAddTokenOnSrcChainhandleOnAddTokenOnSrcChain chainId",
+      chainId
+    );
     if (!chainId) {
       return;
     }
 
-    // switch to chain
-    switchNetworkAsync?.(chainId)
-      .then(() => wait(500))
-      .then(() => addAssetToMetamaskWithAssetConfig(asset, srcChain))
-      .catch((error) => console.log(error));
+    if (network.chain?.id !== chainId) {
+      // switch to chain
+      switchNetworkAsync?.(chainId)
+        .then(() => wait(500))
+        .then(() => addAssetToMetamaskWithAssetConfig(asset, srcChain))
+        .catch((error) => console.log(error));
+    } else {
+      addAssetToMetamaskWithAssetConfig(asset, srcChain);
+    }
 
     // add token
   }, [srcChain, asset, switchNetworkAsync]);
