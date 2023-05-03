@@ -54,6 +54,11 @@ export const DestAssetSelector = ({
     [destChain.chainName, srcAsset?.chain_aliases]
   );
 
+  const isCompatibleWithDestinationChain = useMemo(
+    () => Boolean(srcAssetAlias) && !srcAssetAlias?.addedViaSquid,
+    [srcAssetAlias]
+  );
+
   const selectedAssetSymbol = useMemo(() => {
     if (selectedSquidAsset) {
       return selectedSquidAsset.assetSymbol;
@@ -83,11 +88,6 @@ export const DestAssetSelector = ({
           asset.is_gas_token
       ),
     [allAssets, destChain.chainName]
-  );
-
-  const isCompatibleWithDestinationChain = useMemo(
-    () => Boolean(srcAssetAlias) && !srcAssetAlias?.addedViaSquid,
-    [srcAssetAlias]
   );
 
   useEffect(() => {
