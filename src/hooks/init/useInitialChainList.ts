@@ -5,7 +5,7 @@ import {
   ChainInfo,
   loadAssets,
 } from "@axelar-network/axelarjs-sdk";
-import { clone, compose, prop, toLower, uniq, uniqBy } from "rambda";
+import { clone, uniq, uniqBy } from "rambda";
 import toast from "react-hot-toast";
 
 import {

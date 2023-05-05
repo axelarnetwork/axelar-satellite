@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import { prop, uniqBy } from "rambda";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { Blockable, InputWrapper } from "~/components/common";
@@ -165,9 +166,11 @@ export const DestAssetSelector = ({
 
   const filteredSquidAssets = useMemo(() => {
     if (shouldRenderSquidAssets) {
-      return isCompatibleWithDestinationChain
+      const assets = isCompatibleWithDestinationChain
         ? squidAssets.filter((t) => t.id !== srcAsset?.id)
         : squidAssets;
+
+      return uniqBy(prop("id"), assets);
     }
 
     return [];
