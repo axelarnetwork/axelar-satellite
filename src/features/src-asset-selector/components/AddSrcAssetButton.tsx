@@ -50,29 +50,6 @@ export const AddSrcAssetButton = () => {
     // add token
   }, [srcChain, asset, switchNetworkAsync, network]);
 
-  const handleOnAddTokenOnDestChain = useCallback(() => {
-    if (!asset) {
-      return;
-    }
-
-    const wagmiChains = getWagmiChains();
-    const chainId = wagmiChains.find(
-      (_chain) =>
-        _chain.networkNameOverride === destChain.chainName?.toLowerCase()
-    )?.id;
-    if (!chainId) {
-      return;
-    }
-
-    // switch to chain
-    switchNetworkAsync?.(chainId)
-      .then(() => wait(500))
-      .then(() => addAssetToMetamaskWithAssetConfig(asset, destChain))
-      .catch((error) => console.log(error));
-
-    // add token
-  }, [destChain, asset, switchNetworkAsync]);
-
   if (!wagmiConnected || wagmiConnectorId?.toLowerCase() !== "metamask") {
     return null;
   }

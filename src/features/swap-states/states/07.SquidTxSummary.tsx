@@ -1,14 +1,5 @@
-import React from "react";
 import Image from "next/image";
-import {
-  Bridge,
-  Call,
-  CustomCall,
-  Route,
-  RouteData,
-  StatusResponse,
-  Swap,
-} from "@0xsquid/sdk";
+import { Call, Route, RouteData, Swap } from "@0xsquid/sdk";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 import { formatUnits } from "ethers/lib/utils.js";
 

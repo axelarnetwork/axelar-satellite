@@ -1,7 +1,7 @@
 import { formatUnits } from "ethers/lib/utils.js";
 import { SpinnerDotted } from "spinners-react";
 
-import { useSquidStateStore, useSwapStore } from "~/store";
+import { useSquidStateStore } from "~/store";
 
 export const ReceiveTokenInfo = () => {
   const { routeDataLoading, routeData, selectedSquidAsset, isSquidTrade } =

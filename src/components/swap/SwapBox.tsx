@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import clsx from "clsx";
 import { identity, pick } from "rambda";
 
-import { SHOULD_ENABLE_SQUID, ENVIRONMENT as env } from "~/config/constants";
+import { ENVIRONMENT as env } from "~/config/constants";
 import { Blockable } from "~/components/common";
 import { EvmAssetWarningModal, ModalWindow } from "~/components/modal";
 

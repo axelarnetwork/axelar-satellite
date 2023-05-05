@@ -11,8 +11,7 @@ import { ConnectIndicator } from "../../common";
 export const ConnectButton = () => {
   const { wagmiConnected, keplrConnected } = useWalletStore();
   const [anyWalletConnected, setAnyWalletConnected] = useState(false);
-  const { isTerraConnected, isTerraInitializingOrConnected } =
-    useIsTerraConnected();
+  const { isTerraConnected } = useIsTerraConnected();
 
   useEffect(() => {
     const anyActive = wagmiConnected || keplrConnected || isTerraConnected;

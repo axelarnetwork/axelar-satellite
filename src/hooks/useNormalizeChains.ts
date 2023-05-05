@@ -9,15 +9,8 @@ import { useSwapStore } from "../store";
  * Make sure that the chains that have been selected have an asset in common
  */
 export const useNormalizeChains = () => {
-  const {
-    allChains,
-    allAssets,
-    asset,
-    srcChain,
-    destChain,
-    setDestChain,
-    destAddress,
-  } = useSwapStore();
+  const { allChains, allAssets, asset, srcChain, destChain, setDestChain } =
+    useSwapStore();
   const router = useRouter();
 
   /**
