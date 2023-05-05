@@ -43,7 +43,8 @@ export const ConnectButton = () => {
       <div
         role="button"
         className={clsx(
-          "bg-[#1b2836] shadow-lg flex items-center gap-3 text-xs p-2 px-4 rounded-lg",
+          "bg-[#1b2836] shadow-lg flex items-center gap-3 text-xs p-2 px-4 md:pr-8 rounded-lg",
+          "hover:opacity-75 transition-opacity",
           "absolute top-2 right-2 z-10 md:relative"
         )}
       >
