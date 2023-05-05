@@ -39,12 +39,14 @@ export const ConnectButton = () => {
   }
 
   return (
-    <label
-      className={clsx("w-full btn border-0 bg-[#1b2836] shadow-lg")}
-      htmlFor="web3-modal"
-      data-testid="connect-button"
-    >
-      <div className="flex items-center gap-3 text-xs">
+    <label htmlFor="web3-modal" data-testid="connect-button">
+      <div
+        role="button"
+        className={clsx(
+          "bg-[#1b2836] shadow-lg flex items-center gap-3 text-xs p-2 px-4 rounded-lg",
+          "absolute top-2 right-2 z-10 md:relative"
+        )}
+      >
         {renderConnectIndicator()}
       </div>
     </label>
