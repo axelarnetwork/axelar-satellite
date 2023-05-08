@@ -1,4 +1,5 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
+import { getSigningStrideClientOptions, strideAccountParser } from "stridejs";
 
 import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
 
@@ -76,4 +77,8 @@ export const stride: CosmosChain = {
   features: ["ibc-transfer"],
   chainToAxelarChannelId: "channel-69",
   explorer: "https://www.mintscan.io/stride/account/",
+  signingClientOptions: {
+    ...getSigningStrideClientOptions(),
+    accountParser: strideAccountParser,
+  },
 };
