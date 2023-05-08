@@ -97,7 +97,7 @@ export function useKeplrIBCTransfer() {
         .toString(),
     };
     const fee: StdFee = {
-      gas: "250000",
+      gas: chain.gas ?? "250000",
       amount: [{ denom: "uaxl", amount: "30000" }],
     };
 

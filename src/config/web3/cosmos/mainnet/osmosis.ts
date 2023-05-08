@@ -38,4 +38,5 @@ export const osmosis: CosmosChain = {
   bech32Config: Bech32Address.defaultBech32Config("osmo"),
   chainIdentifier: "osmosis",
   explorer: "https://www.mintscan.io/osmosis/account/",
+  gas: "400000",
 };
