@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 
-import { ENVIRONMENT, SOCKET_API } from "../config/constants";
+import { SOCKET_API } from "../config/constants";
 import { useSwapStore } from "../store";
 import {
   buildAxelarTransferCompletedRoomId,
@@ -54,8 +54,6 @@ export const useDetectDestTransferConfirmation = () => {
       const sentNative =
         asset?.is_gas_token &&
         asset?.native_chain === srcChain.chainName?.toLowerCase();
-
-      const assetCommonKey = asset?.common_key[ENVIRONMENT];
 
       if (sentNative) {
         //for now, the native asset is not in assets[] on destChain since it is hard-coded in satellite, so

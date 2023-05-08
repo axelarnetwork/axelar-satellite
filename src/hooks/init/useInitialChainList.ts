@@ -5,7 +5,7 @@ import {
   ChainInfo,
   loadAssets,
 } from "@axelar-network/axelarjs-sdk";
-import { clone, compose, prop, toLower, uniq, uniqBy } from "rambda";
+import { clone, uniq, uniqBy } from "rambda";
 import toast from "react-hot-toast";
 
 import {
@@ -241,13 +241,11 @@ export const useInitialChainList = () => {
 
     for (const token of squidTokens) {
       const existingAsset = result.find((asset) => {
-        const aliases = uniq(
-          Object.values(asset.chain_aliases).map(
-            compose(toLower, prop("assetSymbol"))
-          )
+        const uniqAddresses = uniq(
+          Object.values(asset.chain_aliases).map((x) => x.tokenAddress)
         );
 
-        return aliases.includes(token.symbol.toLowerCase());
+        return uniqAddresses.includes(token.address);
       });
 
       const newAlias: AssetAlias = {
@@ -270,7 +268,11 @@ export const useInitialChainList = () => {
         }
 
         if (!(chainName in existingAsset.chain_aliases)) {
-          existingAsset.chain_aliases[chainName] = newAlias;
+          // adding new chain alias
+          existingAsset.chain_aliases[chainName] = {
+            ...newAlias,
+            addedViaSquid: true,
+          };
         }
         if (!existingAsset.chain_aliases[chainName]?.decimals)
           existingAsset.chain_aliases[chainName].decimals = token.decimals;

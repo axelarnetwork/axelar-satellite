@@ -53,5 +53,5 @@ export const useAssetFilter = (input: string | undefined) => {
         }
         return 0;
       });
-  }, [allAssets, input, checkCompatibility, srcChain.chainName]);
+  }, [allAssets, input, srcChain.chainName, checkCompatibility]);
 };

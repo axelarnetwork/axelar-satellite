@@ -12,6 +12,8 @@ export const ConnectIndicator = () => {
   );
   const { isTerraConnected } = useIsTerraConnected();
 
+  const wagmiConnectorIdLabel = wagmiConnectorId?.toLowerCase() ?? "metamask";
+
   return (
     <div className="flex items-center flex-column">
       <span className="flex items-center">
@@ -30,10 +32,9 @@ export const ConnectIndicator = () => {
           <Image
             height={25}
             width={25}
-            src={`/assets/wallets/${
-              wagmiConnectorId?.toLowerCase() ?? "metamask"
-            }.logo.svg`}
-            alt={`${wagmiConnectorId} Logo`}
+            src={`/assets/wallets/${wagmiConnectorIdLabel}.logo.svg`}
+            className="h-[25px] w-[25px]"
+            alt={`${wagmiConnectorIdLabel} Logo`}
           />
         )}
         {keplrConnected && (

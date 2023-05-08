@@ -1,6 +1,5 @@
 import React from "react";
 
-import { siteMetadata } from "../../data";
 import { CommonSEO } from "./CommonSEO";
 
 type PageSEOType = {

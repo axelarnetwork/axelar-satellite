@@ -4,16 +4,16 @@ import ParticleSystem from "./ParticleSystem";
 /* credit to https://codepen.io/vladwulf/pen/mdxKNoR */
 export const drawBackground = () => {
   if (typeof window !== "undefined") {
-    let canvas: any = document.getElementById("canvas");
-    let ctx = (canvas as any)?.getContext("2d");
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    const canvas: any = document.getElementById("canvas");
+    const ctx = (canvas as any)?.getContext("2d");
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
-    let system = new ParticleSystem();
+    const system = new ParticleSystem();
 
     for (let i = 0; i < 200; i++) {
-      let particle = new Particle();
-      let angle = (Math.PI / 2) * (Math.random() - 0.5) * 2;
+      const particle = new Particle();
+
       particle.x = Math.random() * width;
       particle.y = Math.random() * height;
       particle.life = Math.random() * 1000 + 10000;
