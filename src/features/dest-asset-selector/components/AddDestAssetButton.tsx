@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import Image from "next/image";
 import { AssetInfo } from "@axelar-network/axelarjs-sdk";
 import { pick } from "rambda";
-import { useSwitchNetwork } from "wagmi";
+import { useNetwork, useSwitchNetwork } from "wagmi";
 import wait from "wait";
 
 import {
@@ -29,6 +29,7 @@ export const AddDestAssetButton = () => {
   const { isSquidTrade, selectedSquidAsset } = useSquidStateStore();
 
   const { switchNetworkAsync } = useSwitchNetwork();
+  const network = useNetwork();
 
   const handleOnAddTokenOnDestChain = useCallback(() => {
     if (!asset) {
@@ -44,18 +45,31 @@ export const AddDestAssetButton = () => {
       return;
     }
 
-    // switch to chain
-    switchNetworkAsync?.(chainId)
-      .then(() => wait(500))
-      .then(() => {
-        isSquidTrade
-          ? addTokenToMetamaskWithAssetInfo(selectedSquidAsset as AssetInfo)
-          : addAssetToMetamaskWithAssetConfig(asset, destChain);
-      })
-      .catch((error) => console.log(error));
+    if (network.chain?.id !== chainId) {
+      // switch to chain
+      switchNetworkAsync?.(chainId)
+        .then(() => wait(500))
+        .then(() => {
+          isSquidTrade
+            ? addTokenToMetamaskWithAssetInfo(selectedSquidAsset as AssetInfo)
+            : addAssetToMetamaskWithAssetConfig(asset, destChain);
+        })
+        .catch((error) => console.log(error));
+    } else {
+      isSquidTrade
+        ? addTokenToMetamaskWithAssetInfo(selectedSquidAsset as AssetInfo)
+        : addAssetToMetamaskWithAssetConfig(asset, destChain);
+    }
 
     // add token
-  }, [destChain, asset, switchNetworkAsync, isSquidTrade, selectedSquidAsset]);
+  }, [
+    destChain,
+    asset,
+    switchNetworkAsync,
+    isSquidTrade,
+    selectedSquidAsset,
+    network,
+  ]);
 
   if (!wagmiConnected || wagmiConnectorId?.toLowerCase() !== "metamask") {
     return null;

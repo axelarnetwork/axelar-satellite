@@ -62,7 +62,8 @@ export const getSigningClient = async (
 ): Promise<SigningStargateClient> => {
   return await SigningStargateClient.connectWithSigner(
     rpcUrl,
-    await getSigner(chain)
+    await getSigner(chain),
+    chain.signingClientOptions
   );
 };
 

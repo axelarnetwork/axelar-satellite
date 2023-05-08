@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import Image from "next/image";
 import { pick } from "rambda";
-import { useSwitchNetwork } from "wagmi";
+import { useNetwork, useSwitchNetwork } from "wagmi";
 import wait from "wait";
 
 import { defaultAssetImg, defaultChainImg } from "~/config/constants";
@@ -21,6 +21,7 @@ export const AddSrcAssetButton = () => {
   const asset = useSwapStore((state) => state.asset);
 
   const { switchNetworkAsync } = useSwitchNetwork();
+  const network = useNetwork();
 
   const handleOnAddTokenOnSrcChain = useCallback(() => {
     if (!asset) {
@@ -36,37 +37,18 @@ export const AddSrcAssetButton = () => {
       return;
     }
 
-    // switch to chain
-    switchNetworkAsync?.(chainId)
-      .then(() => wait(500))
-      .then(() => addAssetToMetamaskWithAssetConfig(asset, srcChain))
-      .catch((error) => console.log(error));
-
-    // add token
-  }, [srcChain, asset, switchNetworkAsync]);
-
-  const handleOnAddTokenOnDestChain = useCallback(() => {
-    if (!asset) {
-      return;
+    if (network.chain?.id !== chainId) {
+      // switch to chain
+      switchNetworkAsync?.(chainId)
+        .then(() => wait(500))
+        .then(() => addAssetToMetamaskWithAssetConfig(asset, srcChain))
+        .catch((error) => console.log(error));
+    } else {
+      addAssetToMetamaskWithAssetConfig(asset, srcChain);
     }
 
-    const wagmiChains = getWagmiChains();
-    const chainId = wagmiChains.find(
-      (_chain) =>
-        _chain.networkNameOverride === destChain.chainName?.toLowerCase()
-    )?.id;
-    if (!chainId) {
-      return;
-    }
-
-    // switch to chain
-    switchNetworkAsync?.(chainId)
-      .then(() => wait(500))
-      .then(() => addAssetToMetamaskWithAssetConfig(asset, destChain))
-      .catch((error) => console.log(error));
-
     // add token
-  }, [destChain, asset, switchNetworkAsync]);
+  }, [srcChain, asset, switchNetworkAsync, network]);
 
   if (!wagmiConnected || wagmiConnectorId?.toLowerCase() !== "metamask") {
     return null;

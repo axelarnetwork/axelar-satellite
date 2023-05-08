@@ -16,7 +16,6 @@ import {
   getSelectedAssetName,
   getSelectedAssetNameDestChain,
   getSelectedAssetSymbol,
-  getSelectedAssetSymbolDestinationChain,
   getSelectedAsssetIsWrapped,
   getUnwrappedAssetSymbol,
   isAXLToken,

@@ -8,7 +8,6 @@ import { constants } from "ethers";
 import { ENVIRONMENT } from "~/config/constants";
 
 import { AssetConfigExtended } from "~/types";
-import { showErrorMsgAndThrow } from "~/utils/error";
 
 const assetTransfer = new AxelarAssetTransfer({
   environment: ENVIRONMENT,
