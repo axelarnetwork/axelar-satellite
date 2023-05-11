@@ -6,4 +6,5 @@ export interface CosmosChain extends ChainInfo {
   chainToAxelarChannelId: string;
   explorer: string;
   signingClientOptions?: SigningStargateClientOptions;
+  gas?: string;
 }

@@ -151,7 +151,7 @@ export const Web3Modal = () => {
       <label htmlFor="web3-modal" className="modal backdrop-blur-sm">
         <div className="relative max-w-lg bg-base-100 modal-box">
           <h4 className="text-lg font-light text-white">Select Wallet</h4>
-          <div className="grid grid-cols-2 mt-4 gap-x-4 gap-y-5">
+          <div className="grid md:grid-cols-2 mt-4 gap-x-4 gap-y-5">
             {activeConnector ? (
               <ConnectorButton
                 connector={activeConnector}
