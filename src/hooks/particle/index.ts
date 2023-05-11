@@ -4,8 +4,11 @@ import ParticleSystem from "./ParticleSystem";
 /* credit to https://codepen.io/vladwulf/pen/mdxKNoR */
 export const drawBackground = () => {
   if (typeof window !== "undefined") {
-    const canvas: any = document.getElementById("canvas");
-    const ctx = (canvas as any)?.getContext("2d");
+    const canvas = document.getElementById("canvas") as
+      | HTMLCanvasElement
+      | undefined;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
     const width = window.innerWidth;
     const height = window.innerHeight;
 
@@ -50,10 +53,12 @@ export const drawBackground = () => {
     };
 
     const draw = () => {
+      if (!ctx) return;
+
       ctx.globalCompositeOperation = "source-over";
       ctx.fillStyle = "#000";
 
-      let grad = ctx.createRadialGradient(
+      const grad = ctx.createRadialGradient(
         width / 2,
         height / 2,
         0,

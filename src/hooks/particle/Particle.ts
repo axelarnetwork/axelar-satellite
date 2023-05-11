@@ -30,7 +30,7 @@ export default class Particle {
     this.y += this.vy;
   }
 
-  draw(ctx: any) {
+  draw(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = "lightgray";
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
