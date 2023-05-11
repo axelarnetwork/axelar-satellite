@@ -6,7 +6,11 @@ module.exports = {
     "./src/features/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        xs: "375px",
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {
