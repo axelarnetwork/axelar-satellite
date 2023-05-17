@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
 
-import { useSwapStore } from "~/store";
-
 import { ASSET_RESTRICTIONS } from "~/config/constants";
+
+import { useSwapStore } from "~/store";
 
 // TODO: abstract into global hook since it's used in src-chain & dest-chain selectors
 export const useChainFilter = (
@@ -13,6 +13,7 @@ export const useChainFilter = (
   const allChains = useSwapStore((state) => state.allChains);
   const destChain = useSwapStore((state) => state.destChain);
   const srcChain = useSwapStore((state) => state.srcChain);
+  const asset = useSwapStore((state) => state.asset);
 
   useEffect(() => {
     const chains = allChains.filter((chain) => {
@@ -26,8 +27,14 @@ export const useChainFilter = (
       const chainIsRestricted = ASSET_RESTRICTIONS[0]?.hideDestChains?.includes(
         chain.id
       );
+      const assetIsRestricted =
+        asset?.id && ASSET_RESTRICTIONS[0]?.assets?.includes(asset.id);
 
-      return chainMatchesSearch && !isDuplicateChain && !chainIsRestricted;
+      return (
+        chainMatchesSearch &&
+        !isDuplicateChain &&
+        !(chainIsRestricted && assetIsRestricted)
+      );
     });
 
     setFilteredChains(chains);
