@@ -14,6 +14,7 @@ import { injective } from "./injective";
 import { juno } from "./juno";
 import { ki } from "./ki";
 import { kujira } from "./kujira";
+import { neutron } from "./neutron";
 import { osmosis } from "./osmosis";
 import { regen } from "./regen";
 import { secret } from "./secret";
@@ -51,4 +52,5 @@ export const mainnetChains: CosmosChain[] = [
   carbon,
   stride,
   sommelier,
+  neutron,
 ];
