@@ -1,13 +1,13 @@
-import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
+import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
 
 import { CosmosChain } from "../interface";
 
 export const neutron: CosmosChain = {
-  chainId: "pion-1",
+  chainId: "neutron-1",
   chainIdentifier: "neutron",
-  chainName: "Neutron-Pion",
-  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/neutron`,
-  rest: "https://cosmo-sand-box.vercel.app/api/rest",
+  chainName: "Neutron",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/neutron`,
+  rest: "https://rest-kralum.neutron-1.neutron.org",
   bip44: {
     coinType: 118,
   },
@@ -44,6 +44,6 @@ export const neutron: CosmosChain = {
   coinType: 118,
   features: ["stargate", "ibc-transfer", "cosmwasm"],
   beta: true,
-  chainToAxelarChannelId: "channel-237",
-  explorer: "https://testnet.mintscan.io/neutron/account/",
+  chainToAxelarChannelId: "channel-2",
+  explorer: "https://www.mintscan.io/neutron/account/",
 };
