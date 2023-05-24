@@ -45,5 +45,5 @@ export const neutron: CosmosChain = {
   features: ["stargate", "ibc-transfer", "cosmwasm"],
   beta: true,
   chainToAxelarChannelId: "channel-2",
-  explorer: "https://neutron-explorer.keplr.app",
+  explorer: "https://www.mintscan.io/neutron/account/",
 };
