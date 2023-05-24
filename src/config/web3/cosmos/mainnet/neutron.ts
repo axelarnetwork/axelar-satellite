@@ -3,9 +3,9 @@ import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
 import { CosmosChain } from "../interface";
 
 export const neutron: CosmosChain = {
-  chainId: "pion-1",
+  chainId: "neutron-1",
   chainIdentifier: "neutron",
-  chainName: "Neutron-Pion",
+  chainName: "Neutron",
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/neutron`,
   rest: "https://rest-kralum.neutron-1.neutron.org",
   bip44: {
