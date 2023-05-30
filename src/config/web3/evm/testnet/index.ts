@@ -9,6 +9,7 @@ import { ethereum } from "./ethereum";
 import { fantom } from "./fantom";
 import { filecoin } from "./filecoin";
 import { kava } from "./kava";
+import { linea } from "./linea";
 import { moonbeam } from "./moonbeam";
 import { optimism } from "./optimism";
 import { polygon } from "./polygon";
@@ -27,4 +28,5 @@ export const testnetChains: ChainExtension[] = [
   arbitrum,
   celo,
   optimism,
+  linea,
 ];
