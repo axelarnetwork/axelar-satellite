@@ -13,7 +13,7 @@ export const linea: ChainExtension = {
   blockExplorers: {
     default: {
       name: "Blockscout",
-      url: "https://explorer.goerli.linea.build/",
+      url: "https://explorer.goerli.linea.build",
     },
   },
   rpcUrls: {
