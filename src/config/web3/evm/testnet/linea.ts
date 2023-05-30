@@ -6,7 +6,7 @@ export const linea: ChainExtension = {
   network: "linea",
   networkNameOverride: "linea",
   nativeCurrency: {
-    name: "Linea Goerli Ether",
+    name: "Ether",
     symbol: "ETH",
     decimals: 18,
   },
