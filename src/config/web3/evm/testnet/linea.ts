@@ -1,7 +1,7 @@
 import { ChainExtension } from "../interface";
 
 export const linea: ChainExtension = {
-  id: 2221,
+  id: 59140,
   name: "Linea Testnet",
   network: "linea",
   networkNameOverride: "linea",
