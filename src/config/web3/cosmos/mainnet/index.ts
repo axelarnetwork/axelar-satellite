@@ -18,6 +18,7 @@ import { neutron } from "./neutron";
 import { osmosis } from "./osmosis";
 import { regen } from "./regen";
 import { secret } from "./secret";
+import { sei } from "./sei";
 import { sommelier } from "./sommelier";
 import { stargaze } from "./stargaze";
 import { stride } from "./stride";
@@ -53,4 +54,5 @@ export const mainnetChains: CosmosChain[] = [
   stride,
   sommelier,
   neutron,
+  sei,
 ];
