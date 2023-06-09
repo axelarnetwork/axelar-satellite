@@ -9,7 +9,7 @@ export const rebus: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/rebus`,
   chainId: "reb_1111-1",
   chainIdentifier: "rebus",
-  chainName: "Rebus (EVM) v1.0.1",
+  chainName: "Rebus",
   bech32Config: Bech32Address.defaultBech32Config("rebus"),
   bip44: {
     coinType: 60,
