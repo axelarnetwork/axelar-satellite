@@ -2,6 +2,7 @@ import { CosmosChain } from "../interface";
 import { acrechain } from "./acrechain";
 import { agoric } from "./agoric";
 import { assetmantle } from "./assetmantle";
+import { aura } from "./aura";
 import { axelar } from "./axelar";
 import { carbon } from "./carbon";
 import { comdex } from "./comdex";
@@ -16,6 +17,7 @@ import { ki } from "./ki";
 import { kujira } from "./kujira";
 import { neutron } from "./neutron";
 import { osmosis } from "./osmosis";
+import { rebus } from "./rebus";
 import { regen } from "./regen";
 import { secret } from "./secret";
 import { sei } from "./sei";
@@ -55,4 +57,6 @@ export const mainnetChains: CosmosChain[] = [
   sommelier,
   neutron,
   sei,
+  aura,
+  rebus,
 ];
