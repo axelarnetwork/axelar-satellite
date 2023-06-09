@@ -46,5 +46,6 @@ export const aura: CosmosChain = {
   features: ["no-legacy-stdTx"],
   explorer: "https://aurascan.io/",
   chainIdentifier: "aura",
+  walletUrlForStaking: "https://aurascan.io/validators",
   chainToAxelarChannelId: "channel-4",
 };
