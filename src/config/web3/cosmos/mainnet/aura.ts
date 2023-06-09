@@ -38,8 +38,8 @@ export const aura: CosmosChain = {
     },
   ],
   stakeCurrency: {
-    coinDenom: "EAURA",
-    coinMinimalDenom: "ueaura",
+    coinDenom: "AURA",
+    coinMinimalDenom: "uaura",
     coinDecimals: 6,
   },
   coinType: 118,
