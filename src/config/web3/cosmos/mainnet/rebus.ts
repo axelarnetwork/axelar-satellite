@@ -12,7 +12,7 @@ export const rebus: CosmosChain = {
   chainName: "Rebus",
   bech32Config: Bech32Address.defaultBech32Config("rebus"),
   bip44: {
-    coinType: 60,
+    coinType: 118,
   },
   feeCurrencies: [
     {
