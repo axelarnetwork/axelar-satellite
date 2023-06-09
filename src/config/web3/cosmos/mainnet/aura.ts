@@ -44,7 +44,6 @@ export const aura: CosmosChain = {
   },
   coinType: 118,
   features: ["no-legacy-stdTx"],
-  walletUrlForStaking: "",
   explorer: "https://aurascan.io/",
   chainIdentifier: "aura",
   chainToAxelarChannelId: "channel-4",
