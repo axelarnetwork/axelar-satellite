@@ -176,15 +176,17 @@ export const Web3Modal = () => {
                 </ConnectorButton>
               ))
             )}
-            <ConnectorButton
-              connector={{
-                id: "kepler",
-                name: "Keplr",
-              }}
-              onClick={handleOnKeplrConnect}
-            >
-              Keplr
-            </ConnectorButton>
+            {!keplrConnected && (
+              <ConnectorButton
+                connector={{
+                  id: "kepler",
+                  name: "Keplr",
+                }}
+                onClick={handleOnKeplrConnect}
+              >
+                Keplr
+              </ConnectorButton>
+            )}
             <button
               className={`relative flex btn btn-neutral ${
                 isTerraInstalled ? "" : "tooltip"
