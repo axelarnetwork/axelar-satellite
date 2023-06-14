@@ -187,29 +187,29 @@ export const Web3Modal = () => {
                 Keplr
               </ConnectorButton>
             )}
-            <button
-              className={`relative flex btn btn-neutral ${
-                isTerraInstalled ? "" : "tooltip"
-              }`}
-              data-tip={
-                "Click to install the extension. Refresh Satellite once installed."
-              }
-              onClick={handleOnTerraStationConnect}
-            >
-              <span>Terra Station</span>
-              <div className="ml-auto">
-                {isTerraInstalled ? (
-                  <Image
-                    src="/assets/wallets/terra-station.logo.svg"
-                    alt="walletconnect"
-                    height={30}
-                    width={30}
-                  />
-                ) : (
-                  <DownloadButton />
-                )}
-              </div>
-            </button>
+            {!isTerraConnected && (
+              <button
+                className={`relative flex btn btn-neutral ${
+                  isTerraInstalled ? "" : "tooltip"
+                }`}
+                data-tip={"Install Station Wallet"}
+                onClick={handleOnTerraStationConnect}
+              >
+                <span>Station Wallet</span>
+                <div className="ml-auto">
+                  {isTerraInstalled ? (
+                    <Image
+                      src="/assets/wallets/terra-station.logo.svg"
+                      alt="walletconnect"
+                      height={30}
+                      width={30}
+                    />
+                  ) : (
+                    <DownloadButton />
+                  )}
+                </div>
+              </button>
+            )}
           </div>
         </div>
       </label>
