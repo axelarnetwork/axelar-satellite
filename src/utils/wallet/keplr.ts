@@ -56,16 +56,17 @@ export const queryBalance = async (
   tmClient.disconnect();
   return response.balance;
 };
-export const getSigningClient = async (
-  chain: CosmosChain,
-  rpcUrl: string
-): Promise<SigningStargateClient> => {
-  return await SigningStargateClient.connectWithSigner(
-    rpcUrl,
-    await getSigner(chain),
+export async function getSigningClient(chain: CosmosChain, rpcUrl?: string) {
+  const offlineSigner = await getSigner(chain);
+
+  const stargateClient = await SigningStargateClient.connectWithSigner(
+    rpcUrl ?? chain.rpc,
+    offlineSigner,
     chain.signingClientOptions
   );
-};
+
+  return [stargateClient, offlineSigner] as const;
+}
 
 export const getAddress = async (chain: CosmosChain): Promise<string> => {
   const signer = await getSigner(chain);
