@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
-import { OfflineSigner, StdFee } from "@cosmjs/launchpad";
-import { SigningStargateClient } from "@cosmjs/stargate";
+import { StdFee } from "@cosmjs/launchpad";
 import BigNumber from "bignumber.js";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { Height } from "cosmjs-types/ibc/core/client/v1/client";
@@ -18,6 +17,7 @@ import { evmIshSignDirect } from "~/hooks/kepler/evmIsh/evmIshSignDirect";
 import { curateCosmosChainId } from "~/utils";
 import { SwapStatus } from "~/utils/enums";
 import { renderGasFee } from "~/utils/renderGasFee";
+import { getSigningClient } from "~/utils/wallet/keplr";
 
 export function useKeplrIBCTransfer() {
   const allAssets = useSwapStore((state) => state.allAssets);
@@ -64,15 +64,8 @@ export function useKeplrIBCTransfer() {
     await keplerWallet?.experimentalSuggestChain(chain);
     await keplerWallet?.enable(chainId as string);
 
-    const offlineSigner = (await keplerWallet?.getOfflineSignerAuto(
-      chainId as string
-    )) as OfflineSigner;
-    const [account1] = await offlineSigner.getAccounts();
-    const sourceAddress = account1.address;
-    const cosmjs = await SigningStargateClient.connectWithSigner(
-      chain.rpc,
-      offlineSigner
-    );
+    const [stargateClient, offlineSigner] = await getSigningClient(chain);
+    const [{ address: sourceAddress }] = await offlineSigner.getAccounts();
 
     const assetCommonKey = asset?.id;
     const assetData = srcChain.assets?.find(
@@ -117,7 +110,7 @@ export function useKeplrIBCTransfer() {
     try {
       setLoading(true);
       if (srcChain.chainName?.toLowerCase() === "axelar") {
-        await cosmjs
+        await stargateClient
           .sendTokens(sourceAddress, depositAddress, [sendCoin], fee)
           .then((e) => {
             console.log("CosmosWalletTransfer: send tokens");
@@ -161,7 +154,7 @@ export function useKeplrIBCTransfer() {
           })
           .catch((error) => console.log(error));
       } else {
-        await cosmjs
+        await stargateClient
           .sendIbcTokens(
             sourceAddress,
             depositAddress,

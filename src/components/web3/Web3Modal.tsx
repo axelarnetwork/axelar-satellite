@@ -176,38 +176,40 @@ export const Web3Modal = () => {
                 </ConnectorButton>
               ))
             )}
-            <ConnectorButton
-              connector={{
-                id: "kepler",
-                name: "Keplr",
-              }}
-              onClick={handleOnKeplrConnect}
-            >
-              Keplr
-            </ConnectorButton>
-            <button
-              className={`relative flex btn btn-neutral ${
-                isTerraInstalled ? "" : "tooltip"
-              }`}
-              data-tip={
-                "Click to install the extension. Refresh Satellite once installed."
-              }
-              onClick={handleOnTerraStationConnect}
-            >
-              <span>Terra Station</span>
-              <div className="ml-auto">
-                {isTerraInstalled ? (
-                  <Image
-                    src="/assets/wallets/terra-station.logo.svg"
-                    alt="walletconnect"
-                    height={30}
-                    width={30}
-                  />
-                ) : (
-                  <DownloadButton />
-                )}
-              </div>
-            </button>
+            {!keplrConnected && (
+              <ConnectorButton
+                connector={{
+                  id: "kepler",
+                  name: "Keplr",
+                }}
+                onClick={handleOnKeplrConnect}
+              >
+                Keplr
+              </ConnectorButton>
+            )}
+            {!isTerraConnected && (
+              <button
+                className={`relative flex btn btn-neutral ${
+                  isTerraInstalled ? "" : "tooltip"
+                }`}
+                data-tip={"Install Station Wallet"}
+                onClick={handleOnTerraStationConnect}
+              >
+                <span>Station Wallet</span>
+                <div className="ml-auto">
+                  {isTerraInstalled ? (
+                    <Image
+                      src="/assets/wallets/terra-station.logo.svg"
+                      alt="walletconnect"
+                      height={30}
+                      width={30}
+                    />
+                  ) : (
+                    <DownloadButton />
+                  )}
+                </div>
+              </button>
+            )}
           </div>
         </div>
       </label>
