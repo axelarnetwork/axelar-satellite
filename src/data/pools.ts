@@ -81,4 +81,9 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
     dex: "Equilibre",
     url: "https://equilibrefinance.com/swap?outputCurrency=0xeb466342c4d449bc9f53a865d5cb90586f405215",
   },
+  optimism: {
+    pairs: ["axlUSDC/USDC"],
+    dex: "Kyberswap",
+    url: "https://kyberswap.com/swap/optimism/axlusdc-to-usdc",
+  },
 };
