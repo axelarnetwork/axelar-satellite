@@ -6,7 +6,7 @@ import { CosmosChain } from "../interface";
 
 export const rebus: CosmosChain = {
   rest: "https://api.rebuschain.com:1317",
-  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/rebus`,
+  rpc: `https://api.rebuschain.com:26657`,
   chainId: "reb_1111-1",
   chainIdentifier: "rebus",
   chainName: "Rebus",
