@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { AXELARSCAN_URL } from "~/config/constants";
 import { getWagmiChains } from "~/config/web3";
+import { AddressShortener, StatsWrapper } from "~/components/common";
 
 import {
   getSelectedAssetSymbol,
@@ -9,14 +10,12 @@ import {
   useSwapStore,
 } from "~/store";
 
+import { USDC_POOLS } from "~/data/pools";
 import { useGetRelayerGasFee } from "~/hooks";
 import { useGetMaxTransferAmount } from "~/hooks/useGetMaxTransferAmount";
 import { copyToClipboard } from "~/utils";
 import { SwapStatus } from "~/utils/enums";
 import { showDepositAddressCondition } from "~/utils/showDepositAddressCondition";
-
-import { USDC_POOLS } from "../../../data/pools";
-import { AddressShortener, StatsWrapper } from "../../common";
 
 const InfoIcon = (
   <svg
