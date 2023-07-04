@@ -13,13 +13,13 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   polygon: {
     pairs: ["axlUSDC/USDC"],
-    dex: "Curve",
-    url: "https://curve.fi/#/polygon/swap",
+    dex: "KyberSwap",
+    url: "https://kyberswap.com/swap/polygon/axlusdc-to-usdc",
   },
   avalanche: {
     pairs: ["axlUSDC/USDC"],
-    dex: "Curve",
-    url: "https://curve.fi/#/avalanche/swap",
+    dex: "KyberSwap",
+    url: "https://kyberswap.com/swap/avalanche/axlusdc-to-usdc",
   },
   fantom: {
     pairs: ["axlUSDC/USDC"],
@@ -63,8 +63,8 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   arbitrum: {
     pairs: ["axlUSDC/USDC"],
-    dex: "SushiSwap",
-    url: "https://www.sushi.com/swap?token0=0xEB466342C4d449BC9f53A865D5Cb90586f405215&token1=0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8&chainId=42161",
+    dex: "KyberSwap",
+    url: "https://kyberswap.com/swap/arbitrum/axlusdc-to-usdc.e",
   },
   moonbeam: {
     pairs: ["GLMR/axlUSDC"],
@@ -83,7 +83,7 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   optimism: {
     pairs: ["axlUSDC/USDC"],
-    dex: "Kyberswap",
+    dex: "KyberSwap",
     url: "https://kyberswap.com/swap/optimism/axlusdc-to-usdc",
   },
 };
