@@ -1,7 +1,5 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
-
 import { CosmosChain } from "../interface";
 
 export const rebus: CosmosChain = {
