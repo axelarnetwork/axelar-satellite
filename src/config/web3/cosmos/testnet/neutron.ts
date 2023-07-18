@@ -44,6 +44,6 @@ export const neutron: CosmosChain = {
   coinType: 118,
   features: ["stargate", "ibc-transfer", "cosmwasm"],
   beta: true,
-  chainToAxelarChannelId: "channel-237",
+  chainToAxelarChannelId: "channel-8",
   explorer: "https://testnet.mintscan.io/neutron/account/",
 };
