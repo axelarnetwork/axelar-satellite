@@ -1,4 +1,5 @@
 import { ChainExtension } from "../interface";
+import { linea } from "../testnet/linea";
 import { arbitrum } from "./arbitrum";
 import { avalanche } from "./avalanche";
 import { binance } from "./binance";
@@ -19,6 +20,7 @@ export const mainnetChains: ChainExtension[] = [
   ethereum,
   filecoin,
   kava,
+  linea,
   moonbeam,
   fantom,
   polygon,
