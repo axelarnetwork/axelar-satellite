@@ -1,5 +1,4 @@
 import { ChainExtension } from "../interface";
-import { linea } from "../testnet/linea";
 import { arbitrum } from "./arbitrum";
 import { avalanche } from "./avalanche";
 import { binance } from "./binance";
@@ -8,6 +7,7 @@ import { ethereum } from "./ethereum";
 import { fantom } from "./fantom";
 import { filecoin } from "./filecoin";
 import { kava } from "./kava";
+import { linea } from "./linea";
 import { moonbeam } from "./moonbeam";
 import { optimism } from "./optimism";
 import { polygon } from "./polygon";
