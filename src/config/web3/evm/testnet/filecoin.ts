@@ -1,10 +1,10 @@
 import { ChainExtension } from "../interface";
 
 export const filecoin: ChainExtension = {
-  id: 3141,
+  id: 314159,
   name: "Filecoin EVM Testnet",
   network: "filecoin",
-  networkNameOverride: "filecoin",
+  networkNameOverride: "filecoin-2",
   nativeCurrency: {
     name: "FIL",
     symbol: "FIL",
@@ -13,7 +13,7 @@ export const filecoin: ChainExtension = {
   blockExplorers: {
     default: {
       name: "Filecoin EVM Explorer",
-      url: "https://hyperspace.filfox.info",
+      url: "https://calibration.filfox.info",
     },
   },
   rpcUrls: {
