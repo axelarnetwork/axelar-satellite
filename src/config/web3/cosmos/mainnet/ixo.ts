@@ -1,0 +1,61 @@
+import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
+
+import { CosmosChain } from "../interface";
+
+export const ixo: CosmosChain = {
+  rpc: "https://rpc-ixo.keplr.app",
+  rest: "https://lcd-ixo.keplr.app",
+  chainId: "ixo-5",
+  chainName: "ixo",
+  chainSymbolImageUrl:
+    "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/ixo/chain.png",
+  stakeCurrency: {
+    coinDenom: "IXO",
+    coinMinimalDenom: "uixo",
+    coinDecimals: 6,
+    coinGeckoId: "ixo",
+    coinImageUrl:
+      "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/ixo/uixo.png",
+  },
+  walletUrl: "https://wallet.keplr.app/chains/ixo",
+  walletUrlForStaking: "https://wallet.keplr.app/chains/ixo",
+  bip44: {
+    coinType: 118,
+  },
+  bech32Config: {
+    bech32PrefixAccAddr: "ixo",
+    bech32PrefixAccPub: "ixopub",
+    bech32PrefixValAddr: "ixovaloper",
+    bech32PrefixValPub: "ixovaloperpub",
+    bech32PrefixConsAddr: "ixovalcons",
+    bech32PrefixConsPub: "ixovalconspub",
+  },
+  currencies: [
+    {
+      coinDenom: "IXO",
+      coinMinimalDenom: "uixo",
+      coinDecimals: 6,
+      coinGeckoId: "ixo",
+      coinImageUrl:
+        "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/ixo/uixo.png",
+    },
+  ],
+  feeCurrencies: [
+    {
+      coinDenom: "IXO",
+      coinMinimalDenom: "uixo",
+      coinDecimals: 6,
+      coinImageUrl:
+        "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/ixo/uixo.png",
+      gasPriceStep: {
+        low: 0.015,
+        average: 0.025,
+        high: 0.04,
+      },
+    },
+  ],
+  features: [],
+  chainIdentifier: "ixo",
+  chainToAxelarChannelId: "channel-23",
+  explorer: "https://www.mintscan.io/ixo/account",
+};

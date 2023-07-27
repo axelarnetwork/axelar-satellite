@@ -1,6 +1,7 @@
 import { CosmosChain } from "../interface";
 import { acrechain } from "./acrechain";
 import { agoric } from "./agoric";
+import { archway } from "./archway";
 import { assetmantle } from "./assetmantle";
 import { aura } from "./aura";
 import { axelar } from "./axelar";
@@ -12,6 +13,7 @@ import { eMoney } from "./e-money";
 import { evmos } from "./evmos";
 import { fetch } from "./fetch";
 import { injective } from "./injective";
+import { ixo } from "./ixo";
 import { juno } from "./juno";
 import { ki } from "./ki";
 import { kujira } from "./kujira";
@@ -31,6 +33,7 @@ import { xpla } from "./xpla";
 
 export const mainnetChains: CosmosChain[] = [
   acrechain,
+  archway,
   terra,
   osmosis,
   kujira,
@@ -38,6 +41,7 @@ export const mainnetChains: CosmosChain[] = [
   cosmoshub,
   crescent,
   secret,
+  ixo,
   juno,
   eMoney,
   injective,
