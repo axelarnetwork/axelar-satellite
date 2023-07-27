@@ -3,7 +3,7 @@ import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
 import { CosmosChain } from "../interface";
 
 export const ixo: CosmosChain = {
-  rpc: "https://rpc-ixo.keplr.app",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/ixo`,
   rest: "https://lcd-ixo.keplr.app",
   chainId: "ixo-5",
   chainName: "ixo",

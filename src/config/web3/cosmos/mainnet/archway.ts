@@ -4,7 +4,7 @@ import { CosmosChain } from "../interface";
 
 export const archway: CosmosChain = {
   rest: "https://api.mainnet.archway.io",
-  rpc: "https://rpc.mainnet.archway.io",
+  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/archway`,
   bech32Config: {
     bech32PrefixAccAddr: "archway",
     bech32PrefixAccPub: "archwaypub",
