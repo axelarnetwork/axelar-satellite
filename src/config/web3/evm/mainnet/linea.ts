@@ -12,8 +12,8 @@ export const linea: ChainExtension = {
   },
   blockExplorers: {
     default: {
-      name: "Blockscout",
-      url: "https://explorer.linea.build",
+      name: "LineaScan",
+      url: "https://lineascan.build",
     },
   },
   rpcUrls: {

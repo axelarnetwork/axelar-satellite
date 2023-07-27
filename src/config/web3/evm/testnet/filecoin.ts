@@ -13,7 +13,7 @@ export const filecoin: ChainExtension = {
   blockExplorers: {
     default: {
       name: "Filecoin EVM Explorer",
-      url: "https://hyperspace.filfox.info",
+      url: "https://calibration.filfox.info",
     },
   },
   rpcUrls: {
