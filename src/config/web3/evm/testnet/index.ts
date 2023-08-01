@@ -13,6 +13,7 @@ import { linea } from "./linea";
 import { moonbeam } from "./moonbeam";
 import { optimism } from "./optimism";
 import { polygon } from "./polygon";
+import { polygonZkEvm } from "./polygon-zkevm";
 
 export const testnetChains: ChainExtension[] = [
   aurora,
@@ -23,6 +24,7 @@ export const testnetChains: ChainExtension[] = [
   fantom,
   filecoin,
   polygon,
+  polygonZkEvm,
   binance,
   kava,
   arbitrum,
