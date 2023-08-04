@@ -57,7 +57,7 @@
     "@testing-library/react": "^14.0.0",
     "@types/big.js": "^6.2.0",
     "@types/jest": "^29.5.3",
-    "@types/node": "^18.17.1",
+    "@types/node": "^18.17.2",
     "@types/react": "^18.2.18",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "^10.4.14",
