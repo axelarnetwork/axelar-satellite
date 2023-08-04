@@ -25,43 +25,43 @@ function usePoll(
     throw new TypeError("Can't poll without a callback function");
   }
 
-  const savedCallback = useRef<PollFunction>();
-  const killed = useRef<boolean>(false);
-  const timeoutId = useRef<number>();
-  const rafId = useRef<number>();
+  const pollFnRef = useRef<PollFunction>();
+  const killedRef = useRef<boolean>(false);
+  const timeoutIdRef = useRef<number>();
+  const rafIdRef = useRef<number>();
 
   // Remember the latest callback.
   useEffect(() => {
-    savedCallback.current = func;
+    pollFnRef.current = func;
   }, [func]);
 
   // Set up the interval.
   useEffect(
     () => {
       const poll = () => {
-        if (!killed.current) {
+        if (!killedRef.current) {
           const tick = async () => {
-            await savedCallback.current?.();
+            await pollFnRef.current?.();
             // schedule next poll
-            timeoutId.current = window.setTimeout(poll, interval);
+            timeoutIdRef.current = window.setTimeout(poll, interval);
           };
 
-          rafId.current = window.requestAnimationFrame(tick);
+          rafIdRef.current = window.requestAnimationFrame(tick);
         }
       };
 
       // initial poll
-      rafId.current = window.requestAnimationFrame(poll);
+      rafIdRef.current = window.requestAnimationFrame(poll);
 
       return () => {
-        killed.current = true;
+        killedRef.current = true;
 
-        if (timeoutId.current) {
-          window.clearTimeout(timeoutId.current);
+        if (timeoutIdRef.current) {
+          window.clearTimeout(timeoutIdRef.current);
         }
 
-        if (rafId.current) {
-          window.cancelAnimationFrame(rafId.current);
+        if (rafIdRef.current) {
+          window.cancelAnimationFrame(rafIdRef.current);
         }
       };
     },
