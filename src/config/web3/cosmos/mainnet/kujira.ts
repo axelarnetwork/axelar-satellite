@@ -46,5 +46,5 @@ export const kujira: CosmosChain = {
   coinType: 118,
   chainIdentifier: "kujira",
   chainToAxelarChannelId: "channel-9",
-  explorer: "https://www.mintscan.io/kujira/account/",
+  explorer: "https://finder.kujira.network/kaiyo-1/address/",
 };
