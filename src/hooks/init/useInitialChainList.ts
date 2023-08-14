@@ -7,6 +7,7 @@ import {
 } from "@axelar-network/axelarjs-sdk";
 import { clone, uniq, uniqBy } from "rambda";
 import toast from "react-hot-toast";
+import { Address } from "viem";
 
 import {
   ARBITRARY_EVM_ADDRESS,
@@ -74,7 +75,7 @@ export const useInitialChainList = () => {
 
       const chains = await loadInitialChains(squidTokens);
 
-      setDestAddress((router.query?.destination_address as string) || "");
+      setDestAddress((router.query?.destination_address || "") as Address);
 
       updateRoutes(
         chains.srcChainName,

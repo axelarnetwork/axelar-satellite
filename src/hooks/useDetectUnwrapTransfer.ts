@@ -1,17 +1,20 @@
-import { useContractEvent } from "wagmi";
+import { zeroAddress } from "viem";
+import { Address, useContractEvent } from "wagmi";
 
 import { getDestChainId, useSwapStore } from "../store";
 import { SwapStatus } from "../utils/enums";
 
 export function useDetectUnwrapTransfer() {
   const destChainId = useSwapStore(getDestChainId);
-  const { asset, destChain, setSwapStatus, intermediaryDepositAddress } =
-    useSwapStore();
+  const { asset, destChain, setSwapStatus } = useSwapStore();
+
+  const assetAlias = asset?.chain_aliases?.[destChain?.chainName.toLowerCase()];
+
+  const tokenAddress = (assetAlias?.tokenAddress ?? zeroAddress) as Address;
 
   useContractEvent({
     chainId: destChainId as number,
-    address: ((asset?.chain_aliases?.[destChain?.chainName.toLowerCase()]
-      ?.tokenAddress as string) || "0x") as `0x${string}`,
+    address: tokenAddress,
     abi: [
       {
         anonymous: false,
@@ -34,16 +37,12 @@ export function useDetectUnwrapTransfer() {
       },
     ],
     eventName: "Withdrawal",
-    listener: (address) => {
+    listener() {
       if (asset?.native_chain !== destChain.chainName.toLowerCase()) {
         return;
       }
-      if (
-        typeof address === "string" &&
-        address?.toLowerCase() === intermediaryDepositAddress?.toLowerCase()
-      ) {
-        setSwapStatus(SwapStatus.FINISHED);
-      }
+
+      setSwapStatus(SwapStatus.FINISHED);
     },
   });
 }

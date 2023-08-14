@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { Address } from "viem";
 
 import { getDestCosmosChain, useSwapStore, useWalletStore } from "~/store";
 
@@ -37,7 +38,7 @@ export const KeplrFill = () => {
       return;
     }
     const address = await keplr?.getKey(destCosmosChain.chainId);
-    setDestAddress(address?.bech32Address as string);
+    setDestAddress(address?.bech32Address as Address);
   }, [keplr, destCosmosChain, setDestAddress, setKeplrConnected]);
 
   if (

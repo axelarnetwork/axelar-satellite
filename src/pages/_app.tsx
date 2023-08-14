@@ -43,7 +43,7 @@ function MyApp({
 
   const main = (
     <QueryClientProvider client={queryClient}>
-      <WagmiConfig client={wagmiClient}>
+      <WagmiConfig config={wagmiClient}>
         <Component {...pageProps} />
         <Web3Modal />
         <GlobalHooksContainer />

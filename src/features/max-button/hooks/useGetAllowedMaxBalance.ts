@@ -1,11 +1,14 @@
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { useQuery } from "react-query";
+import { Address, parseEther } from "viem";
 import {
   erc20ABI,
   useAccount,
   useBalance,
   useContractRead,
-  useProvider,
+  useFeeData,
+  useNetwork,
+  usePublicClient,
 } from "wagmi";
 
 import { getCosmosChains } from "~/config/web3";
@@ -17,7 +20,6 @@ import {
   useWalletStore,
 } from "~/store";
 
-import { Hash } from "~/types";
 import { getAddress, queryBalance } from "~/utils/wallet/keplr";
 
 const { utils } = ethers;
@@ -43,7 +45,7 @@ export function useGetAllowedMaxBalance() {
     chainId: srcChainId,
     address,
   });
-  const provider = useProvider({
+  const provider = usePublicClient({
     chainId: srcChainId,
   });
 
@@ -53,7 +55,7 @@ export function useGetAllowedMaxBalance() {
     abi: erc20ABI,
     chainId: srcChainId,
     functionName: "balanceOf",
-    args: [address as Hash],
+    args: [address as Address],
   });
 
   const getKeplrBalance = async () => {
@@ -84,22 +86,23 @@ export function useGetAllowedMaxBalance() {
     return formatUnits(res.amount, asset?.decimals);
   };
 
+  const { data: feeData } = useFeeData();
+
   const estimateGas = async () => {
-    let gas = BigNumber.from(200_000); // filler default value, arbitrarily
+    let gas = BigInt(200_000); // filler default value, arbitrarily
     try {
       return provider
         .estimateGas({
+          account: address as Address,
           to: depositAddress,
-          value: utils.parseEther("1.0"),
+          value: parseEther("1.0"),
         })
-        .then((bigNum) => bigNum.mul(5));
+        .then((bigNum) => bigNum * BigInt(5));
     } catch (e) {}
 
     //in some cases, the above calculation does not work, so invoking maxPriorityFeePerGas instead
     try {
-      return provider
-        .getFeeData()
-        .then((feeData) => feeData.maxPriorityFeePerGas ?? gas);
+      return feeData?.maxPriorityFeePerGas ?? gas;
     } catch (e) {}
 
     return gas;
@@ -109,15 +112,16 @@ export function useGetAllowedMaxBalance() {
     decimals: number;
     formatted: string;
     symbol: string;
-    value: BigNumber;
+    value: bigint;
   }) => {
     // if erc20 return token balance
     if (!asset?.is_gas_token) {
       return formatUnits(tokenBalance || "0", asset?.decimals || 18);
     }
     // if native asset return native token balance minus tx fee
-    let gas = BigNumber.from(0),
-      gasPrice = BigNumber.from(0);
+    let gas = BigInt(0);
+    let gasPrice = BigInt(0);
+
     try {
       gas = await estimateGas();
       gasPrice = await provider.getGasPrice();
@@ -126,17 +130,19 @@ export function useGetAllowedMaxBalance() {
         "computeRealMaxBalance(): could not estimate gas for max calculation"
       );
     }
-    const fee = gas.mul(gasPrice);
-    return formatUnits(balance.value.sub(fee), asset?.decimals || 18).substring(
+    const fee = gas * gasPrice;
+    return formatUnits(balance.value - fee, asset?.decimals || 18).substring(
       0,
       10
     );
   };
 
+  const { chain } = useNetwork();
+
   return useQuery(
     [
       "max-balance",
-      provider.network.chainId,
+      chain?.id,
       balance,
       asset?.id,
       asset?.is_gas_token,

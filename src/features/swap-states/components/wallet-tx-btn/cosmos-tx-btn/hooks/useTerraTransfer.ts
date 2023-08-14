@@ -9,6 +9,7 @@ import {
 import { BigNumber } from "bignumber.js";
 import { utils } from "ethers";
 import toast from "react-hot-toast";
+import { Hash } from "viem";
 
 import { TERRA_IBC_GAS_LIMIT } from "~/config/constants";
 
@@ -129,7 +130,7 @@ export function useTerraTransfer() {
       const tx = await lcdClient.tx.broadcastSync(signTx.result);
       console.log("TS tx", tx);
       setTxInfo({
-        sourceTxHash: tx.txhash,
+        sourceTxHash: tx.txhash as Hash,
       });
       setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
     } catch (e) {

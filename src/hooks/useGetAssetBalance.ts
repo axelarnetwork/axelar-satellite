@@ -189,14 +189,19 @@ const useGetEvmBalance = () => {
       return setBalance(value);
     }
 
-    const bigNum = new BigNumber(erc20Balance?._hex || "0");
-    const num = bigNum.div(10 ** Number(asset?.decimals));
-    setBalance(num.toFixed(4));
+    const num =
+      (erc20Balance ?? BigInt(0)) / BigInt(10 ** (asset?.decimals ?? 0));
+    setBalance(
+      num.toLocaleString("en", {
+        notation: "fixed",
+        maximumFractionDigits: 4,
+      })
+    );
   }, [
     isNativeBalance,
     asset?.decimals,
     nativeBalance?.formatted,
-    erc20Balance?._hex,
+    erc20Balance,
     wagmiConnected,
   ]);
 

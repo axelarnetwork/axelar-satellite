@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { utils } from "ethers";
 import toast from "react-hot-toast";
+import { parseUnits } from "viem";
 import {
   useBlockNumber,
   useNetwork,
@@ -34,13 +34,11 @@ export function useSendNative() {
     enabled:
       chain?.id === srcChainId && !!tokensToTransfer && asset?.is_gas_token,
     chainId: srcChainId as number,
-    request: {
-      to: depositAddress,
-      value: utils.parseUnits(
-        tokensToTransfer ? tokensToTransfer : "0",
-        asset?.decimals
-      ),
-    },
+    to: depositAddress,
+    value: parseUnits(
+      tokensToTransfer ? tokensToTransfer : "0",
+      asset?.decimals || 0
+    ),
     onError() {
       toast.error(
         `Can't estimate gas limit for transaction. Please verify that you are not trying to transfer more native assets than what you have. Transaction might fail if you proceed.`
@@ -51,9 +49,6 @@ export function useSendNative() {
   // tx execution
   const { sendTransaction, isLoading, isSuccess, data, error } =
     useSendTransaction(sendTxConfig);
-
-  // const { write, isLoading, isSuccess, data, error } =
-  //   useContractWrite(contractWriteConfig);
 
   // on tx success save tx metadata in store for further use
   useEffect(() => {

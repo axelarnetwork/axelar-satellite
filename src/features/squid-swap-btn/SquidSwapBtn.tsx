@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { RouteData } from "@0xsquid/sdk";
 import clsx from "clsx";
-import { useConnect, useNetwork, useSigner, useSwitchNetwork } from "wagmi";
+import { useConnect, useNetwork, useSwitchNetwork } from "wagmi";
 
 import { useGetDepositAddress } from "~/features/gen-address-btn/hooks";
 import {
@@ -22,6 +22,7 @@ import { squid } from "~/squid.config";
 import { validateCosmosAddress, validateEvmAddress } from "~/utils/address";
 import { SwapStatus } from "~/utils/enums";
 import { showErrorMsgAndThrow } from "~/utils/error";
+import { useEthersSigner } from "~/wagmi.config";
 
 import { parseSquidError } from ".";
 
@@ -36,7 +37,7 @@ const SquidSwapBtn = React.memo(() => {
   const srcChain = useSwapStore((state) => state.srcChain);
   const destChain = useSwapStore((state) => state.destChain);
   const asset = useSwapStore((state) => state.asset);
-  const { data: signer } = useSigner({
+  const signer = useEthersSigner({
     chainId: srcChainId,
   });
 

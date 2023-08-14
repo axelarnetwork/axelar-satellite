@@ -6,6 +6,7 @@ import { Height } from "cosmjs-types/ibc/core/client/v1/client";
 import { utils } from "ethers";
 import Long from "long";
 import toast from "react-hot-toast";
+import { Hash } from "viem";
 
 import { getCosmosChains } from "~/config/web3";
 import { connectToKeplr } from "~/components/web3/utils/handleOnKeplrConnect";
@@ -115,7 +116,7 @@ export function useKeplrIBCTransfer() {
           .then((e) => {
             console.log("CosmosWalletTransfer: send tokens");
             setTxInfo({
-              sourceTxHash: e.transactionHash,
+              sourceTxHash: e.transactionHash as Hash,
             });
 
             setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
@@ -170,7 +171,7 @@ export function useKeplrIBCTransfer() {
           .then((e) => {
             console.log("CosmosWalletTransfer: IBC transfer");
             setTxInfo({
-              sourceTxHash: e.transactionHash,
+              sourceTxHash: e.transactionHash as Hash,
             });
             setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })

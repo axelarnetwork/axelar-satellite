@@ -4,6 +4,7 @@ import {
   AxelarQueryAPI,
 } from "@axelar-network/axelarjs-sdk";
 import { constants } from "ethers";
+import { Address } from "viem";
 
 import { ENVIRONMENT } from "~/config/constants";
 
@@ -43,8 +44,8 @@ async function _getDepositAddress(payload: DepositAddressPayload) {
     });
 
     return {
-      intermediaryDepositAddress: null,
-      finalDepositAddress: depositAddress,
+      intermediaryDepositAddress: null as Address | null,
+      finalDepositAddress: depositAddress as Address,
     };
   }
 
@@ -75,8 +76,8 @@ async function _getDepositAddress(payload: DepositAddressPayload) {
     });
 
     return {
-      intermediaryDepositAddress,
-      finalDepositAddress: result,
+      intermediaryDepositAddress: intermediaryDepositAddress as Address,
+      finalDepositAddress: result as Address,
     };
   }
 
@@ -88,8 +89,8 @@ async function _getDepositAddress(payload: DepositAddressPayload) {
   });
 
   return {
-    intermediaryDepositAddress: null,
-    finalDepositAddress: depositAddress,
+    intermediaryDepositAddress: null as Address | null,
+    finalDepositAddress: depositAddress as Address,
   };
 }
 
