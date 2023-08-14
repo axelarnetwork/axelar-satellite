@@ -50,7 +50,7 @@ export const wagmiClient = createConfig({
       chains,
       options: {
         showQrModal: true,
-        projectId: String(process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID),
+        projectId: String(process.env.NEXT_PUBLIC_WALLETCONNNECT_PROJECT_ID),
       },
     }),
   ],
