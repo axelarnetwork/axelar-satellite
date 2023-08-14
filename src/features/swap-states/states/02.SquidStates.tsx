@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { StatusResponse } from "@0xsquid/sdk";
 import { GMPStatus } from "@axelar-network/axelarjs-sdk";
-import usePoll from "react-use-poll";
 import { SpinnerRoundFilled } from "spinners-react";
 import { useWaitForTransaction } from "wagmi";
 
@@ -11,6 +10,7 @@ import { InputWrapper } from "~/components/common";
 
 import { getSrcChainId, useSquidStateStore, useSwapStore } from "~/store";
 
+import usePoll from "~/hooks/usePoll";
 import { squid } from "~/squid.config";
 import { ChainInfoExtended } from "~/types";
 import { SwapStatus } from "~/utils/enums";
