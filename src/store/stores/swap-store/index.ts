@@ -11,7 +11,7 @@ export * from "./computed";
 interface TxInfo {
   sourceTxHash?: Hash;
   destTxHash?: Hash;
-  destStartBlockNumber?: bigint;
+  destStartBlockNumber?: string;
 }
 
 interface SwapState {
@@ -75,7 +75,7 @@ const initialState: SwapState = {
   txInfo: {
     sourceTxHash: "" as Hash,
     destTxHash: "" as Hash,
-    destStartBlockNumber: BigInt(1),
+    destStartBlockNumber: "1",
   },
   rehydrateAssets: true,
   shouldUnwrapAsset: false,

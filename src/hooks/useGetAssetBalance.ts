@@ -193,7 +193,7 @@ const useGetEvmBalance = () => {
       (erc20Balance ?? BigInt(0)) / BigInt(10 ** (asset?.decimals ?? 0));
     setBalance(
       num.toLocaleString("en", {
-        notation: "fixed",
+        minimumFractionDigits: 2,
         maximumFractionDigits: 4,
       })
     );

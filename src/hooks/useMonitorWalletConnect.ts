@@ -3,7 +3,7 @@ import { useAccount } from "wagmi";
 
 import { useWalletStore } from "../store";
 
-export const useMonitorWalletConnect = () => {
+export function useMonitorWalletConnect() {
   const { isConnected, connector } = useAccount();
   const { setWagmiConnected } = useWalletStore();
 
@@ -16,4 +16,4 @@ export const useMonitorWalletConnect = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected]);
-};
+}

@@ -143,10 +143,10 @@ export function useGetAllowedMaxBalance() {
     [
       "max-balance",
       chain?.id,
-      balance,
+      balance?.value?.toString(),
       asset?.id,
       asset?.is_gas_token,
-      tokenBalance,
+      tokenBalance?.toString(),
       depositAddress,
       srcChain.id,
       keplrConnected,

@@ -71,9 +71,12 @@ export const useInitialChainList = () => {
 
   const loadData = useCallback(
     async (squidTokens: TokensWithExtendedChainData[]) => {
-      const assets = await loadInitialAssets(squidTokens);
+      const safeSqidTokens = squidTokens.filter(
+        (x) => x.chainName && x.address && x.symbol
+      );
+      const assets = await loadInitialAssets(safeSqidTokens);
 
-      const chains = await loadInitialChains(squidTokens);
+      const chains = await loadInitialChains(safeSqidTokens);
 
       setDestAddress((router.query?.destination_address || "") as Address);
 
@@ -83,7 +86,7 @@ export const useInitialChainList = () => {
         assets?.assetDenom
       );
       // rehydrateAssets as long as there are no squid tokens
-      setRehydrateAssets(!squidTokens.length);
+      setRehydrateAssets(!safeSqidTokens.length);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

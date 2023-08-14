@@ -11,7 +11,7 @@ import { WagmiConfig } from "wagmi";
 
 import { GoogleAnalytics } from "../components/scripts";
 import { GlobalHooksContainer, Web3Modal } from "../components/web3";
-import { wagmiClient } from "../wagmi.config";
+import { wagmiConfig } from "../wagmi.config";
 
 import "animate.css";
 import "../styles/globals.css";
@@ -43,7 +43,7 @@ function MyApp({
 
   const main = (
     <QueryClientProvider client={queryClient}>
-      <WagmiConfig config={wagmiClient}>
+      <WagmiConfig config={wagmiConfig}>
         <Component {...pageProps} />
         <Web3Modal />
         <GlobalHooksContainer />

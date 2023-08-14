@@ -26,6 +26,8 @@ export const SrcChainTxConfirmation = () => {
 
   const destChainId = useSwapStore(getDestChainId);
 
+  console.log({ destChainId, tokenAddress });
+
   useDetectUnwrapTransfer();
   useDetectDestTransferConfirmation();
   useContractEvent({
@@ -35,6 +37,8 @@ export const SrcChainTxConfirmation = () => {
     eventName: "Transfer",
     listener(logs) {
       const log = logs.find(({ address }) => address === destAddress);
+
+      console.log({ log, logs });
 
       if (log) {
         setSwapStatus(SwapStatus.FINISHED);

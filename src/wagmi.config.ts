@@ -30,7 +30,7 @@ const { chains, publicClient } = configureChains(
   }
 );
 
-export const wagmiClient = createConfig({
+export const wagmiConfig = createConfig({
   autoConnect: true,
   connectors: [
     new MetaMaskConnector({
