@@ -1,3 +1,5 @@
+import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
 
 import { CosmosChain } from "../interface";
@@ -13,14 +15,7 @@ export const assetmantle: CosmosChain = {
     coinDecimals: 6,
     coinGeckoId: "assetmantle",
   },
-  bech32Config: {
-    bech32PrefixAccAddr: "mantle",
-    bech32PrefixAccPub: "mantlepub",
-    bech32PrefixValAddr: "mantlevaloper",
-    bech32PrefixValPub: "mantlevaloperpub",
-    bech32PrefixConsAddr: "mantlevalcons",
-    bech32PrefixConsPub: "mantlevalconspub",
-  },
+  bech32Config: Bech32Address.defaultBech32Config("mantle"),
   bip44: {
     coinType: 118,
   },

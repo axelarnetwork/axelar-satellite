@@ -1,3 +1,5 @@
+import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
 
 import { CosmosChain } from "../interface";
@@ -11,14 +13,7 @@ export const crescent: CosmosChain = {
   bip44: {
     coinType: 118,
   },
-  bech32Config: {
-    bech32PrefixAccAddr: "cre",
-    bech32PrefixAccPub: "crepub",
-    bech32PrefixValAddr: "crevaloper",
-    bech32PrefixValPub: "crevaloperpub",
-    bech32PrefixConsAddr: "crevalcons",
-    bech32PrefixConsPub: "crevalconspub",
-  },
+  bech32Config: Bech32Address.defaultBech32Config("cre"),
   currencies: [
     {
       coinDenom: "CRE",

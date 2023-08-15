@@ -1,3 +1,5 @@
+import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
 
 import { CosmosChain } from "../interface";
@@ -13,14 +15,7 @@ export const evmos: CosmosChain = {
     coinDecimals: 18,
     coinGeckoId: "evmos",
   },
-  bech32Config: {
-    bech32PrefixAccAddr: "evmos",
-    bech32PrefixAccPub: "evmospub",
-    bech32PrefixValAddr: "evmosvaloper",
-    bech32PrefixValPub: "evmosvaloperpub",
-    bech32PrefixConsAddr: "evmosvalcons",
-    bech32PrefixConsPub: "evmosvalconspub",
-  },
+  bech32Config: Bech32Address.defaultBech32Config("evmos"),
   bip44: {
     coinType: 118,
   },
