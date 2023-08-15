@@ -1,3 +1,5 @@
+import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
 
 import { CosmosChain } from "../interface";
@@ -14,14 +16,7 @@ export const acrechain: CosmosChain = {
     coinDecimals: 18,
     coinGeckoId: "unknown",
   },
-  bech32Config: {
-    bech32PrefixAccAddr: "acre",
-    bech32PrefixAccPub: "acrepub",
-    bech32PrefixValAddr: "acrevaloper",
-    bech32PrefixValPub: "acrevaloperpub",
-    bech32PrefixConsAddr: "acrevalcons",
-    bech32PrefixConsPub: "acrevalconspub",
-  },
+  bech32Config: Bech32Address.defaultBech32Config("acre"),
   bip44: { coinType: 60 },
   currencies: [
     {
