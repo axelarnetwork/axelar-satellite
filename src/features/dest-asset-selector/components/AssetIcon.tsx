@@ -16,7 +16,7 @@ const AssetIcon = (props: Props) => {
   return (
     <Image
       loading="eager"
-      src={props.iconSrc ?? `/assets/tokens/${props.assetId}.logo.svg`}
+      src={`/assets/tokens/${props.assetId}.logo.svg` ?? props.iconSrc}
       width={props.size}
       height={props.size}
       onError={(e) => {
