@@ -1,3 +1,5 @@
+import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
 
 import { CosmosChain } from "../interface";
@@ -5,14 +7,7 @@ import { CosmosChain } from "../interface";
 export const archway: CosmosChain = {
   rest: "https://api.mainnet.archway.io",
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/archway`,
-  bech32Config: {
-    bech32PrefixAccAddr: "archway",
-    bech32PrefixAccPub: "archwaypub",
-    bech32PrefixConsAddr: "archwayvalcons",
-    bech32PrefixConsPub: "archwayvalconspub",
-    bech32PrefixValAddr: "archwayvaloper",
-    bech32PrefixValPub: "archwayvaloperpub",
-  },
+  bech32Config: Bech32Address.defaultBech32Config("archway"),
   bip44: {
     coinType: 118,
   },

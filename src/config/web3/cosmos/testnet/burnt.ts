@@ -1,50 +1,52 @@
+import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
 
 import { CosmosChain } from "../interface";
 
 export const burnt: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/burnt`,
-  rest: "https://api.carbon-2.burnt.com/9909089ac2fa57a8f5661976ad0bcb3f0629372e5afa131e2e29e737588e505f",
-  chainId: "carbon-2",
+  rest: "https://api.xion-testnet-1.burnt.com",
+  chainId: "xion-testnet-1",
   chainName: "Burnt Testnet",
-  chainIdentifier: "burnt",
-  stakeCurrency: {
-    coinDenom: "TURNT",
-    coinMinimalDenom: "uturnt",
-    coinDecimals: 6,
-    coinGeckoId: "burnt",
-  },
-  bech32Config: {
-    bech32PrefixAccAddr: "burnt",
-    bech32PrefixAccPub: "burntpub",
-    bech32PrefixValAddr: "burntvaloper",
-    bech32PrefixValPub: "burntvaloperpub",
-    bech32PrefixConsAddr: "burntvalcons",
-    bech32PrefixConsPub: "burntvalconspub",
-  },
+  chainIdentifier: "burnt-2",
+  bech32Config: Bech32Address.defaultBech32Config("xion"),
   bip44: { coinType: 118 },
   currencies: [
     {
-      coinDenom: "TURNT",
-      coinMinimalDenom: "uturnt",
+      coinDenom: "XION",
+      coinMinimalDenom: "uxion",
       coinDecimals: 6,
-      coinGeckoId: "turnt",
+      coinGeckoId: "xion",
+    },
+    {
+      coinDenom: "AXL",
+      coinMinimalDenom:
+        "ibc/D934516FBE457F3A98AFABD87E0EFF7F95A15325C191EA8CDD7763C702FDDEC2",
+      coinDecimals: 6,
+      coinGeckoId: "axelar",
     },
   ],
   feeCurrencies: [
     {
-      coinDenom: "TURNT",
-      coinMinimalDenom: "uturnt",
+      coinDenom: "XION",
+      coinMinimalDenom: "uxion",
       coinDecimals: 6,
-      coinGeckoId: "turnt",
+      coinGeckoId: "xion",
       gasPriceStep: {
-        low: 0.25,
-        average: 0.25,
-        high: 0.4,
+        low: 0.01,
+        average: 0.025,
+        high: 0.03,
       },
     },
   ],
-  features: ["stargate", "no-legacy-stdTx", "cosmwasm", "ibc-transfer"],
-  chainToAxelarChannelId: "channel-1",
+  stakeCurrency: {
+    coinDenom: "XION",
+    coinMinimalDenom: "uxion",
+    coinDecimals: 6,
+    coinGeckoId: "xion",
+  },
+  features: ["ibc-go", "ibc-transfer", "no-legacy-stdTx"],
+  chainToAxelarChannelId: "channel-5",
   explorer: "", // TODO: add explorer
 };
