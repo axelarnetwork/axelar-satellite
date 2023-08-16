@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Address, parseUnits } from "viem";
 import {
+  erc20ABI,
   useBlockNumber,
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
 } from "wagmi";
-import { erc20ABI } from "wagmi";
 
 import { getDestChainId, getSrcChainId, useSwapStore } from "~/store";
 
@@ -74,7 +74,7 @@ export function useSendErc20() {
     }
     setTxInfo({
       sourceTxHash: data.hash,
-      destStartBlockNumber: blockNumber,
+      destStartBlockNumber: blockNumber?.toString(),
     });
     setSwapStatus(SwapStatus.WAIT_FOR_SRC_TX_PROPAGATION);
   }, [isSuccess, data, setTxInfo, blockNumber, setSwapStatus]);

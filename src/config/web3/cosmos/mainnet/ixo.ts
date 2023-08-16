@@ -1,3 +1,5 @@
+import { Bech32Address } from "@keplr-wallet/cosmos";
+
 import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
 
 import { CosmosChain } from "../interface";
@@ -22,14 +24,7 @@ export const ixo: CosmosChain = {
   bip44: {
     coinType: 118,
   },
-  bech32Config: {
-    bech32PrefixAccAddr: "ixo",
-    bech32PrefixAccPub: "ixopub",
-    bech32PrefixValAddr: "ixovaloper",
-    bech32PrefixValPub: "ixovaloperpub",
-    bech32PrefixConsAddr: "ixovalcons",
-    bech32PrefixConsPub: "ixovalconspub",
-  },
+  bech32Config: Bech32Address.defaultBech32Config("ixo"),
   currencies: [
     {
       coinDenom: "IXO",

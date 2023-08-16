@@ -1,9 +1,8 @@
 import { useMemo, useState } from "react";
 import { StdFee } from "@cosmjs/launchpad";
-import BigNumber from "bignumber.js";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { Height } from "cosmjs-types/ibc/core/client/v1/client";
-import { utils } from "ethers";
+import { BigNumber, utils } from "ethers";
 import Long from "long";
 import toast from "react-hot-toast";
 import { Hash } from "viem";
@@ -73,10 +72,7 @@ export function useKeplrIBCTransfer() {
       (asset) => asset.common_key === assetCommonKey
     );
 
-    const { minAmountOk, minDeposit } = await checkMinAmount(
-      tokensToTransfer,
-      assetData?.minDepositAmt
-    );
+    const { minAmountOk, minDeposit } = await checkMinAmount(tokensToTransfer);
 
     if (!minAmountOk) {
       return toast.error(
@@ -187,15 +183,14 @@ export function useKeplrIBCTransfer() {
     }
   }
 
-  // FIXME: this is a duplicate funciton
-  async function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
-    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit))) {
-      return { minDeposit, minAmountOk: false };
-    }
+  async function checkMinAmount(amount: string) {
+    const minDeposit = await renderGasFee(srcChain, destChain, asset);
+
     return {
       minDeposit,
-      minAmountOk: true,
+      minAmountOk: BigNumber.from(amount || "0").gt(
+        BigNumber.from(minDeposit || "0")
+      ),
     };
   }
 

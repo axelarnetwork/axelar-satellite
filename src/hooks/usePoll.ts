@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-type UsePollOptions = {
+type UsePollConfig = {
   interval?: number;
 };
 
@@ -17,9 +17,9 @@ type PollFunction = () => Promise<void> | void;
 function usePoll(
   func: PollFunction,
   deps: React.DependencyList = [],
-  config: UsePollOptions = { interval: 5000 }
+  config: UsePollConfig = { interval: 5000 }
 ): void {
-  const { interval = 5000 } = config;
+  const { interval } = config;
 
   if (typeof func !== "function") {
     throw new TypeError("Can't poll without a callback function");

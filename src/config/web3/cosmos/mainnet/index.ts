@@ -19,6 +19,7 @@ import { ki } from "./ki";
 import { kujira } from "./kujira";
 import { neutron } from "./neutron";
 import { osmosis } from "./osmosis";
+import { provenance } from "./provenance";
 import { rebus } from "./rebus";
 import { regen } from "./regen";
 import { secret } from "./secret";
@@ -63,4 +64,5 @@ export const mainnetChains: CosmosChain[] = [
   sei,
   aura,
   rebus,
+  provenance,
 ];

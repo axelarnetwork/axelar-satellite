@@ -57,7 +57,7 @@ export function useSendNative() {
     }
     setTxInfo({
       sourceTxHash: data.hash,
-      destStartBlockNumber: blockNumber,
+      destStartBlockNumber: blockNumber?.toString(),
     });
     setSwapStatus(SwapStatus.WAIT_FOR_SRC_TX_PROPAGATION);
   }, [isSuccess, data, setTxInfo, blockNumber, setSwapStatus]);

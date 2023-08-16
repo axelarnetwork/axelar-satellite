@@ -9,17 +9,7 @@ import { CosmosChain } from "./cosmos/interface";
 import { mainnetChains as cosmosMainnetChains } from "./cosmos/mainnet";
 import { testnetChains as cosmosTestnetChains } from "./cosmos/testnet";
 import { mainnetChains as evmMainnetChains } from "./evm/mainnet";
-// wagmi ready chains
 import { testnetChains as evmTestnetChains } from "./evm/testnet";
-
-// sdk chains (generic)
-// export const allAssets = loadAssets({
-//   environment: ENVIRONMENT,
-// });
-
-// export const allChains = loadChains({
-//   environment: ENVIRONMENT,
-// });
 
 export const getWagmiChains = () => {
   if (ENVIRONMENT === Environment.TESTNET) {
