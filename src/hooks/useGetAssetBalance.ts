@@ -3,7 +3,7 @@ import {
   useLCDClient as useTerraLCDClient,
   useWallet as useTerraWallet,
 } from "@terra-money/wallet-provider";
-import { BigNumber } from "bignumber.js";
+import { BigNumber } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import toast from "react-hot-toast";
 import {
@@ -185,13 +185,23 @@ const useGetEvmBalance = () => {
     }
 
     if (isNativeBalance) {
-      const value = new BigNumber(nativeBalance?.formatted || "0").toFixed(4);
+      const value = BigNumber.from(nativeBalance?.formatted || "0")
+        .toBigInt()
+        .toLocaleString("en", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 4,
+        });
       return setBalance(value);
     }
 
-    const bigNum = new BigNumber(erc20Balance?._hex || "0");
+    const bigNum = BigNumber.from(erc20Balance?._hex || "0");
     const num = bigNum.div(10 ** Number(asset?.decimals));
-    setBalance(num.toFixed(4));
+    setBalance(
+      num.toBigInt().toLocaleString("en", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 4,
+      })
+    );
   }, [
     isNativeBalance,
     asset?.decimals,

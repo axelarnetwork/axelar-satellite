@@ -1,5 +1,5 @@
 import { AxelarQueryAPI, ChainInfo } from "@axelar-network/axelarjs-sdk";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "ethers";
 import { formatUnits } from "ethers/lib/utils.js";
 
 import { ENVIRONMENT } from "~/config/constants";
@@ -37,5 +37,5 @@ export async function renderGasFee(
     return "0";
   }
 
-  return new BigNumber(sourceFee).plus(new BigNumber(destFee)).toString();
+  return BigNumber.from(sourceFee).add(BigNumber.from(destFee)).toString();
 }
