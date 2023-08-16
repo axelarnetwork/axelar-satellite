@@ -1,6 +1,5 @@
-import { ethers } from "ethers";
 import { useQuery } from "react-query";
-import { Address, parseEther } from "viem";
+import { Address, formatUnits, parseEther } from "viem";
 import {
   erc20ABI,
   useAccount,
@@ -21,9 +20,6 @@ import {
 } from "~/store";
 
 import { getAddress, queryBalance } from "~/utils/wallet/keplr";
-
-const { utils } = ethers;
-const { formatUnits } = utils;
 
 /**
  * Returns the max balance that a user can select by
@@ -83,7 +79,7 @@ export function useGetAllowedMaxBalance() {
     if (!res?.amount) {
       return;
     }
-    return formatUnits(res.amount, asset?.decimals);
+    return formatUnits(BigInt(res.amount), asset.decimals);
   };
 
   const { data: feeData } = useFeeData();
@@ -116,7 +112,7 @@ export function useGetAllowedMaxBalance() {
   }) => {
     // if erc20 return token balance
     if (!asset?.is_gas_token) {
-      return formatUnits(tokenBalance || "0", asset?.decimals || 18);
+      return formatUnits(BigInt(tokenBalance || "0"), asset?.decimals || 18);
     }
     // if native asset return native token balance minus tx fee
     let gas = BigInt(0);

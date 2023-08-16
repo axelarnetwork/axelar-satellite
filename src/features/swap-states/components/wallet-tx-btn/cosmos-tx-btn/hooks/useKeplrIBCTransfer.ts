@@ -2,10 +2,9 @@ import { useMemo, useState } from "react";
 import { StdFee } from "@cosmjs/launchpad";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { Height } from "cosmjs-types/ibc/core/client/v1/client";
-import { BigNumber, utils } from "ethers";
 import Long from "long";
 import toast from "react-hot-toast";
-import { Hash } from "viem";
+import { Hash, parseUnits } from "viem";
 
 import { getCosmosChains } from "~/config/web3";
 import { connectToKeplr } from "~/components/web3/utils/handleOnKeplrConnect";
@@ -16,7 +15,7 @@ import { useGetKeplerWallet } from "~/hooks";
 import { evmIshSignDirect } from "~/hooks/kepler/evmIsh/evmIshSignDirect";
 import { curateCosmosChainId } from "~/utils";
 import { SwapStatus } from "~/utils/enums";
-import { renderGasFee } from "~/utils/renderGasFee";
+import { getGasFee } from "~/utils/renderGasFee";
 import { getSigningClient } from "~/utils/wallet/keplr";
 
 export function useKeplrIBCTransfer() {
@@ -82,9 +81,7 @@ export function useKeplrIBCTransfer() {
 
     const sendCoin = {
       denom: assetData?.ibcDenom as string,
-      amount: utils
-        .parseUnits(tokensToTransfer, assetData?.decimals)
-        .toString(),
+      amount: parseUnits(tokensToTransfer, assetData?.decimals ?? 0).toString(),
     };
     const fee: StdFee = {
       gas: chain.gas ?? "250000",
@@ -128,9 +125,10 @@ export function useKeplrIBCTransfer() {
       ) {
         const sendCoin = {
           denom: assetData?.ibcDenom as string,
-          amount: utils
-            .parseUnits(tokensToTransfer, assetData?.decimals)
-            .toString(),
+          amount: parseUnits(
+            tokensToTransfer,
+            assetData?.decimals ?? 0
+          ).toString(),
         };
         await evmIshSignDirect(
           sendCoin.amount,
@@ -184,13 +182,11 @@ export function useKeplrIBCTransfer() {
   }
 
   async function checkMinAmount(amount: string) {
-    const minDeposit = await renderGasFee(srcChain, destChain, asset);
+    const minDeposit = await getGasFee(srcChain, destChain, asset);
 
     return {
       minDeposit,
-      minAmountOk: BigNumber.from(amount || "0").gt(
-        BigNumber.from(minDeposit || "0")
-      ),
+      minAmountOk: BigInt(amount || "0") > minDeposit,
     };
   }
 
