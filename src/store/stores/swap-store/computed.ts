@@ -25,7 +25,8 @@ export const getSrcChainId = memoize((state: { srcChain: ChainInfo }) => {
 export const getDestCosmosChain = memoize(
   (state: { allAssets: AssetConfigExtended[]; destChain: ChainInfo }) => {
     const chain = getCosmosChains(state.allAssets).find(
-      (_chain) => _chain.chainIdentifier === state.destChain.id
+      (_chain) =>
+        _chain.chainIdentifier === state.destChain.chainName?.toLowerCase()
     );
     if (!chain) {
       return null;
