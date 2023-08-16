@@ -6,8 +6,7 @@ import {
   useLCDClient,
   useWallet as useTerraWallet,
 } from "@terra-money/wallet-provider";
-import { BigNumber } from "bignumber.js";
-import { utils } from "ethers";
+import { BigNumber, utils } from "ethers";
 import toast from "react-hot-toast";
 
 import { TERRA_IBC_GAS_LIMIT } from "~/config/constants";
@@ -35,15 +34,14 @@ export function useTerraTransfer() {
   const lcdClient = useLCDClient();
   const [loading, setLoading] = useState(false);
 
-  // FIXME: duplicate
-  async function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
-    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit))) {
-      return { minDeposit, minAmountOk: false };
-    }
+  async function checkMinAmount(amount: string) {
+    const minDeposit = await renderGasFee(srcChain, destChain, asset);
+
     return {
       minDeposit,
-      minAmountOk: true,
+      minAmountOk: BigNumber.from(amount || "0").gt(
+        BigNumber.from(minDeposit || "0")
+      ),
     };
   }
 
@@ -55,10 +53,7 @@ export function useTerraTransfer() {
     const assetData = srcChain.assets?.find(
       (asset) => asset.common_key === assetCommonKey
     );
-    const { minAmountOk, minDeposit } = await checkMinAmount(
-      tokensToTransfer,
-      assetData?.minDepositAmt
-    );
+    const { minAmountOk, minDeposit } = await checkMinAmount(tokensToTransfer);
 
     if (!minAmountOk) {
       return toast.error(

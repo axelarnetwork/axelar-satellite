@@ -1,5 +1,5 @@
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "ethers";
 
 import { AssetConfigExtended } from "~/types";
 import { showErrorMsgAndThrow } from "~/utils/error";
@@ -11,12 +11,12 @@ export async function checkMinTransfer(
   destChain: ChainInfo,
   asset: AssetConfigExtended | null
 ) {
-  const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
-  const amountTooSmall = new BigNumber(amount || "0").lt(
-    new BigNumber(minDeposit)
-  );
+  const minDeposit = await renderGasFee(srcChain, destChain, asset);
 
-  if (amountTooSmall) {
+  const bnAmount = BigNumber.from(amount || "0");
+  const bnMinDeposit = BigNumber.from(minDeposit);
+
+  if (bnAmount.lt(bnMinDeposit)) {
     showErrorMsgAndThrow(
       `${amount} ${asset?.id} is insufficient. Please transfer at least ${minDeposit} ${asset?.id}`
     );

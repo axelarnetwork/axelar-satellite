@@ -1,5 +1,5 @@
 import { AxelarQueryAPI, ChainInfo } from "@axelar-network/axelarjs-sdk";
-import Big from "big.js";
+import { BigNumber } from "ethers";
 import { formatUnits } from "ethers/lib/utils.js";
 
 import { ENVIRONMENT } from "~/config/constants";
@@ -12,12 +12,13 @@ export async function renderGasFee(
   asset: AssetConfigExtended | null
 ) {
   const axelarQueryApi = new AxelarQueryAPI({ environment: ENVIRONMENT });
-  const id = asset?.wrapped_erc20 ? asset.wrapped_erc20 : asset?.id;
+  const id = asset?.wrapped_erc20 || asset?.id;
 
   const feeQuery = await axelarQueryApi
     .getTransferFee(srcChain?.id, destChain?.id, id as string, 0)
     .then((res) => formatUnits(res.fee?.amount as string, asset?.decimals))
-    .catch((e) => "0");
+    .catch(() => "0");
+
   if (feeQuery) {
     return feeQuery;
   }
@@ -35,5 +36,6 @@ export async function renderGasFee(
   if (!(sourceFee && destFee)) {
     return "0";
   }
-  return Big(sourceFee).add(Big(destFee)).toString();
+
+  return BigNumber.from(sourceFee).add(BigNumber.from(destFee)).toString();
 }
