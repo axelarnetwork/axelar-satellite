@@ -51,7 +51,6 @@
     "@keplr-wallet/types": "^0.11.64",
     "@next/bundle-analyzer": "^13.4.16",
     "@playwright/test": "^1.37.0",
-    "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.0.0",
     "@types/big.js": "^6.2.0",
     "@types/node": "^18.17.5",

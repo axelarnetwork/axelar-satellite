@@ -7,7 +7,6 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     environment: "happy-dom",
-    setupFiles: resolve(__dirname, "vitest.setup.ts"),
     exclude: [
       "**/node_modules/**",
       "e2e/**",
