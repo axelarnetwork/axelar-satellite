@@ -6,8 +6,8 @@ import {
   useLCDClient,
   useWallet as useTerraWallet,
 } from "@terra-money/wallet-provider";
-import { BigNumber, utils } from "ethers";
 import toast from "react-hot-toast";
+import { Hash, parseUnits } from "viem";
 
 import { TERRA_IBC_GAS_LIMIT } from "~/config/constants";
 
@@ -15,7 +15,7 @@ import { useSwapStore } from "~/store";
 
 import { useIsTerraConnected } from "~/hooks/terra";
 import { SwapStatus } from "~/utils/enums";
-import { renderGasFee } from "~/utils/renderGasFee";
+import { getGasFee } from "~/utils/renderGasFee";
 
 export function useTerraTransfer() {
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -35,13 +35,11 @@ export function useTerraTransfer() {
   const [loading, setLoading] = useState(false);
 
   async function checkMinAmount(amount: string) {
-    const minDeposit = await renderGasFee(srcChain, destChain, asset);
+    const minDeposit = await getGasFee(srcChain, destChain, asset);
 
     return {
       minDeposit,
-      minAmountOk: BigNumber.from(amount || "0").gt(
-        BigNumber.from(minDeposit || "0")
-      ),
+      minAmountOk: BigInt(amount || "0") > minDeposit,
     };
   }
 
@@ -86,7 +84,7 @@ export function useTerraTransfer() {
       _channel,
       new TerraCoin(
         denom,
-        utils.parseUnits(tokensToTransfer, assetData?.decimals).toString()
+        parseUnits(tokensToTransfer, assetData?.decimals ?? 0).toString()
       ),
       senderAddress,
       depositAddress,
@@ -124,7 +122,7 @@ export function useTerraTransfer() {
       const tx = await lcdClient.tx.broadcastSync(signTx.result);
       console.log("TS tx", tx);
       setTxInfo({
-        sourceTxHash: tx.txhash,
+        sourceTxHash: tx.txhash as Hash,
       });
       setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
     } catch (e) {

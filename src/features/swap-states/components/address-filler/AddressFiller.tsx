@@ -1,4 +1,5 @@
 import React from "react";
+import { Address } from "viem";
 
 import { InputWrapper } from "~/components/common";
 
@@ -18,7 +19,9 @@ export const AddressFiller = () => {
             className="w-full h-full text-xs bg-transparent outline-none"
             placeholder="Destination address"
             value={destAddress}
-            onChange={(e) => setDestAddress(e.target.value)}
+            onChange={(e) => {
+              setDestAddress(e.target.value as Address);
+            }}
           />
         </div>
       </InputWrapper>

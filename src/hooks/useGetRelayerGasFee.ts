@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 
 import { useSwapStore } from "~/store";
 
-import { renderGasFee } from "~/utils/renderGasFee";
+import { getGasFee } from "~/utils/renderGasFee";
 
 export function useGetRelayerGasFee() {
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -11,7 +11,7 @@ export function useGetRelayerGasFee() {
 
   return useQuery(
     ["relayer-gas-fee", asset?.id, destChain.id, srcChain.id],
-    renderGasFee.bind(null, srcChain, destChain, asset),
+    getGasFee.bind(null, srcChain, destChain, asset),
     { cacheTime: 10_000, staleTime: 10_000 }
   );
 }

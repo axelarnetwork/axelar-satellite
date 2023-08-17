@@ -45,7 +45,8 @@ export const SrcChainTxExecution = () => {
                         Please transfer{" "}
                         <strong>
                           {">"}
-                          {relayerFee} {selectedAssetSymbol}
+                          {relayerFee?.toLocaleString("en")}{" "}
+                          {selectedAssetSymbol}
                         </strong>{" "}
                         on{" "}
                         <span className="capitalize">

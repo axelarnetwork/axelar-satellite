@@ -118,7 +118,7 @@ export const useDetectDepositConfirmation = () => {
         if (destChain.module === "evm") {
           setTxInfo({
             sourceTxHash: data?.transactionHash || txInfo?.sourceTxHash || "",
-            destStartBlockNumber: blockNumber || 1,
+            destStartBlockNumber: blockNumber?.toString() || "1",
           });
         } else {
           setTxInfo({

@@ -3,9 +3,8 @@ import {
   useLCDClient as useTerraLCDClient,
   useWallet as useTerraWallet,
 } from "@terra-money/wallet-provider";
-import { BigNumber } from "ethers";
-import { formatUnits } from "ethers/lib/utils";
 import toast from "react-hot-toast";
+import { formatUnits } from "viem";
 import {
   erc20ABI,
   useAccount,
@@ -101,8 +100,8 @@ export const useGetAssetBalance = () => {
       .then(([coins]) => {
         setTerraStationBalance(
           formatUnits(
-            coins.get(denom)?.amount.toNumber() as number,
-            asset?.decimals
+            BigInt(coins.get(denom)?.amount.toString() ?? "0"),
+            asset?.decimals ?? 0
           )
         );
       })
@@ -185,19 +184,20 @@ const useGetEvmBalance = () => {
     }
 
     if (isNativeBalance) {
-      const value = BigNumber.from(nativeBalance?.formatted || "0")
-        .toBigInt()
-        .toLocaleString("en", {
+      const value = BigInt(nativeBalance?.formatted || "0").toLocaleString(
+        "en",
+        {
           minimumFractionDigits: 2,
           maximumFractionDigits: 4,
-        });
+        }
+      );
       return setBalance(value);
     }
 
-    const bigNum = BigNumber.from(erc20Balance?._hex || "0");
-    const num = bigNum.div(10 ** Number(asset?.decimals));
+    const num =
+      (erc20Balance ?? BigInt(0)) / BigInt(10 ** (asset?.decimals ?? 0));
     setBalance(
-      num.toBigInt().toLocaleString("en", {
+      num.toLocaleString("en", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 4,
       })
@@ -206,7 +206,7 @@ const useGetEvmBalance = () => {
     isNativeBalance,
     asset?.decimals,
     nativeBalance?.formatted,
-    erc20Balance?._hex,
+    erc20Balance,
     wagmiConnected,
   ]);
 
@@ -276,7 +276,7 @@ const useGetKeplerBalance = () => {
         derivedDenom,
         fullChainConfig.rpc
       );
-      return formatUnits(res?.amount as string, asset.decimals) || "0";
+      return res ? formatUnits(BigInt(res.amount), asset.decimals) : "0";
     } catch (e) {
       let msg;
       if (e?.toString()?.includes("Ledger is not compatible")) {

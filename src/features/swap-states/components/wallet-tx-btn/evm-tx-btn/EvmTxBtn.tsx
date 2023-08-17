@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import { clsx } from "clsx";
-import { BigNumber } from "ethers";
 import { pick } from "rambda";
 import toast from "react-hot-toast";
 import { useNetwork, useSwitchNetwork } from "wagmi";
@@ -40,9 +39,8 @@ export const EvmTxBtn = () => {
     }
 
     // check that token provided in the asset input are greated than relayer fees
-    const minAmountOk = BigNumber.from(tokensToTransfer || "0").gt(
-      BigNumber.from(relayerGasFee as string)
-    );
+    const minAmountOk =
+      BigInt(tokensToTransfer || "0") > (relayerGasFee ?? BigInt(0));
     if (!minAmountOk) {
       return toast.error(
         `Token amount to transfer should be bigger than ${relayerGasFee} ${assetName}`

@@ -298,7 +298,7 @@ export const TransferStats = () => {
             {InfoIcon}
           </div>
           <span className="font-semibold">
-            {transferFee} {selectedAssetSymbol}
+            {transferFee?.toLocaleString("en")} {selectedAssetSymbol}
           </span>
         </li>
         <li className="flex justify-between ">

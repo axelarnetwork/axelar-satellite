@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import { utils } from "ethers";
 import toast from "react-hot-toast";
+import { Address, parseUnits } from "viem";
 import {
+  erc20ABI,
   useBlockNumber,
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
 } from "wagmi";
-import { erc20ABI } from "wagmi";
 
 import { getDestChainId, getSrcChainId, useSwapStore } from "~/store";
 
-import { Hash } from "~/types";
 import { SwapStatus } from "~/utils/enums";
 
 export function useSendErc20() {
@@ -51,10 +50,10 @@ export function useSendErc20() {
     abi: erc20ABI,
     functionName: "transfer",
     args: [
-      depositAddress as Hash,
-      utils.parseUnits(
+      depositAddress as Address,
+      parseUnits(
         tokensToTransfer ? tokensToTransfer : "0",
-        asset?.decimals
+        asset?.decimals ?? 0
       ),
     ],
     onError() {
@@ -75,7 +74,7 @@ export function useSendErc20() {
     }
     setTxInfo({
       sourceTxHash: data.hash,
-      destStartBlockNumber: blockNumber,
+      destStartBlockNumber: blockNumber?.toString(),
     });
     setSwapStatus(SwapStatus.WAIT_FOR_SRC_TX_PROPAGATION);
   }, [isSuccess, data, setTxInfo, blockNumber, setSwapStatus]);

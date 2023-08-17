@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import Image from "next/image";
 import { useWallet as useTerraWallet } from "@terra-money/wallet-provider";
 import toast from "react-hot-toast";
+import { Address } from "viem";
 
 import { getDestCosmosChain, useSwapStore, useWalletStore } from "~/store";
 
@@ -39,7 +40,7 @@ export const KeplrOrTerraFill = () => {
       return;
     }
     const address = await keplr?.getKey(destCosmosChain.chainId);
-    setDestAddress(address?.bech32Address as string);
+    setDestAddress(address?.bech32Address as Address);
   }, [
     keplr,
     keplrConnected,
@@ -48,8 +49,8 @@ export const KeplrOrTerraFill = () => {
     setKeplrConnected,
   ]);
 
-  const handleOnTerraFill = useCallback(async () => {
-    await terraStation.connect();
+  const handleOnTerraFill = useCallback(() => {
+    terraStation.connect();
     if (terraStation?.wallets?.length < 1) {
       console.log({
         wallets: terraStation?.wallets,
@@ -60,7 +61,7 @@ export const KeplrOrTerraFill = () => {
     }
 
     const address = terraStation.wallets[0].terraAddress;
-    setDestAddress(address);
+    setDestAddress(address as Address);
   }, [setDestAddress, terraStation]);
 
   if (
