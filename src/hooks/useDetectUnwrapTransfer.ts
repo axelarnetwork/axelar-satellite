@@ -6,7 +6,8 @@ import { SwapStatus } from "../utils/enums";
 
 export function useDetectUnwrapTransfer() {
   const destChainId = useSwapStore(getDestChainId);
-  const { asset, destChain, setSwapStatus } = useSwapStore();
+  const { asset, destChain, setSwapStatus, intermediaryDepositAddress } =
+    useSwapStore();
 
   const assetAlias = asset?.chain_aliases?.[destChain?.chainName.toLowerCase()];
 
@@ -37,12 +38,15 @@ export function useDetectUnwrapTransfer() {
       },
     ],
     eventName: "Withdrawal",
-    listener() {
+    listener(address) {
       if (asset?.native_chain !== destChain.chainName.toLowerCase()) {
         return;
       }
-
-      setSwapStatus(SwapStatus.FINISHED);
+      if (
+        address?.toLowerCase() === intermediaryDepositAddress?.toLowerCase()
+      ) {
+        setSwapStatus(SwapStatus.FINISHED);
+      }
     },
   });
 }
