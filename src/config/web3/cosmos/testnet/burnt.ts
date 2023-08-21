@@ -1,11 +1,9 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
-
 import { CosmosChain } from "../interface";
 
 export const burnt: CosmosChain = {
-  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/burnt`,
+  rpc: `https://rpc.xion-testnet-1.burnt.com`,
   rest: "https://api.xion-testnet-1.burnt.com",
   chainId: "xion-testnet-1",
   chainName: "Burnt Testnet",
