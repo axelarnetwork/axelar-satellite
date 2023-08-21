@@ -38,11 +38,12 @@ export function useDetectUnwrapTransfer() {
       },
     ],
     eventName: "Withdrawal",
-    listener(address) {
+    listener: (address) => {
       if (asset?.native_chain !== destChain.chainName.toLowerCase()) {
         return;
       }
       if (
+        // @ts-ignore
         address?.toLowerCase() === intermediaryDepositAddress?.toLowerCase()
       ) {
         setSwapStatus(SwapStatus.FINISHED);
