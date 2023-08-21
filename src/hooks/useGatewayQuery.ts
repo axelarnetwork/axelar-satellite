@@ -43,10 +43,9 @@ export function useGatewayQuery() {
         return;
       }
       const chain = destChain?.chainName?.toLowerCase();
-      const gatewayAddress = await (
-        await api?.evm?.GatewayAddress({ chain })
-      ).address;
-      setGatewayAddr(gatewayAddress);
+      const { address } = await api?.evm?.GatewayAddress({ chain });
+
+      setGatewayAddr(address);
     })();
   }, [destChain, api]);
 

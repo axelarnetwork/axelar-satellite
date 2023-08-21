@@ -15,7 +15,7 @@ import { useSwapStore } from "~/store";
 
 import { useIsTerraConnected } from "~/hooks/terra";
 import { SwapStatus } from "~/utils/enums";
-import { getGasFee } from "~/utils/renderGasFee";
+import { getGasFee } from "~/utils/getGasFee";
 
 export function useTerraTransfer() {
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -39,7 +39,7 @@ export function useTerraTransfer() {
 
     return {
       minDeposit,
-      minAmountOk: BigInt(amount || "0") > minDeposit,
+      minAmountOk: Number(amount) > minDeposit,
     };
   }
 
@@ -59,7 +59,6 @@ export function useTerraTransfer() {
       );
     }
 
-    console.log(1);
     const sourcePort = "transfer";
     const senderAddress =
       terraWallets && terraWallets.length >= 1
@@ -74,7 +73,6 @@ export function useTerraTransfer() {
       "/"
     ) as string[];
 
-    console.log(2);
     if (!denom) {
       throw new Error(`asset not found: ${_denom}`);
     }
@@ -92,12 +90,6 @@ export function useTerraTransfer() {
       undefined
     );
 
-    console.log(3);
-
-    console.log({
-      connectedWallet,
-      transferMsg,
-    });
     const signTx = await connectedWallet
       ?.sign({
         msgs: [transferMsg],
@@ -110,8 +102,6 @@ export function useTerraTransfer() {
         );
         return null;
       });
-
-    console.log(4);
 
     if (!signTx) {
       return;

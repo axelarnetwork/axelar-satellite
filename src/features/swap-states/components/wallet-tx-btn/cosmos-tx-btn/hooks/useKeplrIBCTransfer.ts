@@ -15,7 +15,7 @@ import { useGetKeplerWallet } from "~/hooks";
 import { evmIshSignDirect } from "~/hooks/kepler/evmIsh/evmIshSignDirect";
 import { curateCosmosChainId } from "~/utils";
 import { SwapStatus } from "~/utils/enums";
-import { getGasFee } from "~/utils/renderGasFee";
+import { getGasFee } from "~/utils/getGasFee";
 import { getSigningClient } from "~/utils/wallet/keplr";
 
 export function useKeplrIBCTransfer() {
@@ -186,7 +186,7 @@ export function useKeplrIBCTransfer() {
 
     return {
       minDeposit,
-      minAmountOk: BigInt(amount || "0") > minDeposit,
+      minAmountOk: Number(amount) > minDeposit,
     };
   }
 

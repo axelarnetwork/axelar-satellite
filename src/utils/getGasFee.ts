@@ -1,5 +1,5 @@
 import { AxelarQueryAPI, ChainInfo } from "@axelar-network/axelarjs-sdk";
-import { formatUnits } from "ethers/lib/utils.js";
+import { formatUnits } from "viem";
 
 import { ENVIRONMENT } from "~/config/constants";
 
@@ -15,29 +15,28 @@ export async function getGasFee(
 
   const feeQuery = await axelarQueryApi
     .getTransferFee(srcChain?.id, destChain?.id, id as string, 0)
-    .then((res) => formatUnits(res.fee?.amount as string, asset?.decimals))
+    .then((res) =>
+      formatUnits(BigInt(res.fee?.amount ?? "0"), asset?.decimals ?? 0)
+    )
     .catch(() => "0");
 
   if (feeQuery) {
-    return BigInt(feeQuery);
+    return Number(feeQuery);
   }
 
   if (!(srcChain && destChain)) {
-    return BigInt(0);
+    return 0;
   }
 
   const sourceChainName = srcChain.chainName?.toLowerCase();
   const destChainName = destChain.chainName?.toLowerCase();
 
-  const sourceFee = BigInt(
-    asset?.chain_aliases[sourceChainName]?.minDepositAmt ?? 0
-  );
-  const destFee = BigInt(
-    asset?.chain_aliases[destChainName]?.minDepositAmt ?? 0
+  const [sourceFee, destFee] = [sourceChainName, destChainName].map(
+    (chainName) => asset?.chain_aliases[chainName]?.minDepositAmt ?? 0
   );
 
-  if (!(Boolean(sourceFee) && Boolean(destFee))) {
-    return BigInt(0);
+  if (!(sourceFee && destFee)) {
+    return 0;
   }
 
   return sourceFee + destFee;

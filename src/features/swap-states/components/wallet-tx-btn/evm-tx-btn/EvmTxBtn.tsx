@@ -39,8 +39,8 @@ export const EvmTxBtn = () => {
     }
 
     // check that token provided in the asset input are greated than relayer fees
-    const minAmountOk =
-      BigInt(tokensToTransfer || "0") > (relayerGasFee ?? BigInt(0));
+    const minAmountOk = Number(tokensToTransfer || "0") > (relayerGasFee ?? 0);
+
     if (!minAmountOk) {
       return toast.error(
         `Token amount to transfer should be bigger than ${relayerGasFee} ${assetName}`
