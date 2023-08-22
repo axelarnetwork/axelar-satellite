@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 
 import { useSwapStore } from "~/store";
 
-import { getGasFee } from "~/utils/renderGasFee";
+import { getGasFee } from "~/utils/getGasFee";
 
 export function useGetRelayerGasFee() {
   const srcChain = useSwapStore((state) => state.srcChain);
