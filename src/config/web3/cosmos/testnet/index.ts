@@ -15,6 +15,7 @@ import { osmosis } from "./osmosis";
 import { persistence } from "./persistence";
 import { secret } from "./secret";
 import { sei } from "./sei";
+import { teritori } from "./teritori";
 import { terra } from "./terra";
 import { xpla } from "./xpla";
 
@@ -37,4 +38,5 @@ export const testnetChains: CosmosChain[] = [
   odin,
   secret,
   neutron,
+  teritori,
 ];
