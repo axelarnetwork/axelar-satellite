@@ -16,7 +16,7 @@ export const teritori: CosmosChain = {
         coinGeckoId: "teritori",
     },
     walletUrl: "https://app.teritori.com/wallet-manager",
-    walletUrlForStaking: "https://restake.app/teritori",
+    walletUrlForStaking: "https://app.teritori.com/staking",
     bip44: {
         coinType: 118,
     },
