@@ -26,7 +26,7 @@
     "clsx": "^1.2.1",
     "daisyui": "^2.52.0",
     "ethers": "^5.7.2",
-    "next": "^13.4.16",
+    "next": "^13.4.19",
     "next-secure-headers": "^2.2.0",
     "proxy-memoize": "^2.0.4",
     "rambda": "^8.3.0",
@@ -50,7 +50,7 @@
     "@cosmjs/tendermint-rpc": "^0.30.1",
     "@ianvs/prettier-plugin-sort-imports": "^3.7.2",
     "@keplr-wallet/types": "^0.11.64",
-    "@next/bundle-analyzer": "^13.4.16",
+    "@next/bundle-analyzer": "^13.4.19",
     "@playwright/test": "^1.37.0",
     "@testing-library/react": "^14.0.0",
     "@types/big.js": "^6.2.0",
@@ -61,7 +61,7 @@
     "autoprefixer": "^10.4.15",
     "cosmjs-types": "^0.8.0",
     "eslint": "^8.47.0",
-    "eslint-config-next": "^13.4.16",
+    "eslint-config-next": "^13.4.19",
     "happy-dom": "^9.20.3",
     "long": "^5.2.3",
     "postcss": "^8.4.28",
@@ -69,7 +69,7 @@
     "stridejs": "^0.6.2",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.1.6",
-    "vitest": "^0.34.1"
+    "vitest": "^0.34.3"
   },
   "pnpm": {
     "overrides": {
