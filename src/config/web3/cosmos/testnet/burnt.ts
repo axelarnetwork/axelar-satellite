@@ -9,7 +9,7 @@ export const burnt: CosmosChain = {
   rest: "https://api.xion-testnet-1.burnt.com",
   chainId: "xion-testnet-1",
   chainName: "Burnt Testnet",
-  chainIdentifier: "burnt",
+  chainIdentifier: "burnt-2",
   bech32Config: Bech32Address.defaultBech32Config("xion"),
   bip44: { coinType: 118 },
   currencies: [

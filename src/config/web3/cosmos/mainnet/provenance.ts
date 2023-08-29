@@ -8,7 +8,7 @@ export const provenance: CosmosChain = {
   chainId: "pio-mainnet-1",
   chainName: "Provenance",
   chainIdentifier: "provenance",
-  chainToAxelarChannelId: "provenance-mainnet",
+  chainToAxelarChannelId: "channel-9",
   rest: "https://api.provenance.io/",
   rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/provenance`,
   bech32Config: Bech32Address.defaultBech32Config("pb"),
