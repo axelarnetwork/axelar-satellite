@@ -9,6 +9,7 @@ import { fantom } from "./fantom";
 import { filecoin } from "./filecoin";
 import { kava } from "./kava";
 import { linea } from "./linea";
+import { mantle } from "./mantle";
 import { moonbeam } from "./moonbeam";
 import { optimism } from "./optimism";
 import { polygon } from "./polygon";
@@ -29,4 +30,5 @@ export const mainnetChains: ChainExtension[] = [
   polygon,
   polygonZkEvm,
   optimism,
+  mantle,
 ];

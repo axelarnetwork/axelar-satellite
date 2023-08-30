@@ -11,10 +11,11 @@ export async function checkMinTransfer(
   asset: AssetConfigExtended | null
 ) {
   const minDeposit = await getGasFee(srcChain, destChain, asset);
-
+  const symbol =
+    asset?.chain_aliases[srcChain?.chainName?.toLowerCase()].assetSymbol;
   if (Number(amount) < minDeposit) {
     showErrorMsgAndThrow(
-      `${amount} ${asset?.id} is insufficient. Please transfer at least ${minDeposit} ${asset?.id}`
+      `${amount} ${symbol} is insufficient. Please transfer at least ${minDeposit} ${symbol}`
     );
   }
 }
