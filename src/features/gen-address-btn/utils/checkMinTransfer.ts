@@ -15,10 +15,12 @@ export async function checkMinTransfer(
   const amountTooSmall = new BigNumber(amount || "0").lt(
     new BigNumber(minDeposit)
   );
+  const symbol =
+    asset?.chain_aliases[srcChain?.chainName?.toLowerCase()].assetSymbol;
 
   if (amountTooSmall) {
     showErrorMsgAndThrow(
-      `${amount} ${asset?.id} is insufficient. Please transfer at least ${minDeposit} ${asset?.id}`
+      `${amount} ${symbol} is insufficient. Please transfer at least ${minDeposit} ${symbol}`
     );
   }
 }
