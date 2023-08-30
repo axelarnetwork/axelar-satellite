@@ -18,10 +18,10 @@ export const mantle: ChainExtension = {
   },
   rpcUrls: {
     default: {
-      http: ["https://mantle.publicnode.com"],
+      http: ["https://rpc.mantle.xyz"],
     },
     public: {
-      http: ["https://mantle.publicnode.com"],
+      http: ["https://rpc.mantle.xyz"],
     },
   },
   testnet: false,
