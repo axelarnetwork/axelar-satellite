@@ -38,7 +38,7 @@ export const haqq: CosmosChain = {
     coinMinimalDenom: "aISLM",
     coinDecimals: 18,
   },
-  coinType: 118,
+  coinType: 60,
   features: ["ibc-transfer", "ibc-go", "eth-address-gen", "eth-key-sign"],
   chainToAxelarChannelId: "channel-4",
   explorer: "", // TODO: add explorer,
