@@ -184,7 +184,7 @@ const useGetEvmBalance = () => {
     }
 
     if (isNativeBalance) {
-      const value = BigInt(nativeBalance?.formatted || "0").toLocaleString(
+      const value = Number(nativeBalance?.formatted ?? "0").toLocaleString(
         "en",
         {
           minimumFractionDigits: 2,
@@ -196,6 +196,7 @@ const useGetEvmBalance = () => {
 
     const num =
       (erc20Balance ?? BigInt(0)) / BigInt(10 ** (asset?.decimals ?? 0));
+
     setBalance(
       num.toLocaleString("en", {
         minimumFractionDigits: 2,
