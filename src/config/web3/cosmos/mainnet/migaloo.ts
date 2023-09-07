@@ -44,5 +44,5 @@ export const migaloo: CosmosChain = {
   coinType: 118,
   chainIdentifier: "migaloo",
   chainToAxelarChannelId: "channel-53",
-  explorer: "", // TODO: add explorer,
+  explorer: "https://app.whitewhale.money/migaloo/dashboard",
 };
