@@ -41,6 +41,6 @@ export const haqq: CosmosChain = {
   coinType: 60,
   features: ["ibc-transfer", "ibc-go", "eth-address-gen", "eth-key-sign"],
   chainToAxelarChannelId: "channel-4",
-  explorer: "", // TODO: add explorer,
+  explorer: "https://explorer.testedge2.haqq.network/address/",
   beta: true,
 };
