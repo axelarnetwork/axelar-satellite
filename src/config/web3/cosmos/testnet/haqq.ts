@@ -8,7 +8,7 @@ export const haqq: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/haqq`,
   rest: "https://rest.cosmos.testedge2.haqq.network",
   chainId: "haqq_54211-3",
-  chainName: "Haqq // TestEdge2",
+  chainName: "Haqq Testnet",
   chainIdentifier: "haqq",
   bip44: {
     coinType: 60,
