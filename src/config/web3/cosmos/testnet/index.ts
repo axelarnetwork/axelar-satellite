@@ -8,6 +8,7 @@ import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
 import { evmos } from "./evmos";
 import { fetch } from "./fetch";
+import { haqq } from "./haqq";
 import { kujira } from "./kujira";
 import { neutron } from "./neutron";
 import { odin } from "./odin";
@@ -39,4 +40,5 @@ export const testnetChains: CosmosChain[] = [
   secret,
   neutron,
   teritori,
+  haqq,
 ];
