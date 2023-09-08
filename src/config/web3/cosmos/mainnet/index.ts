@@ -17,6 +17,7 @@ import { ixo } from "./ixo";
 import { juno } from "./juno";
 import { ki } from "./ki";
 import { kujira } from "./kujira";
+import { migaloo } from "./migaloo";
 import { neutron } from "./neutron";
 import { osmosis } from "./osmosis";
 import { provenance } from "./provenance";
@@ -65,4 +66,5 @@ export const mainnetChains: CosmosChain[] = [
   aura,
   rebus,
   provenance,
+  migaloo,
 ];
