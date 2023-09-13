@@ -7,6 +7,7 @@ import { Layout, UnderMaintenance } from "~/components/layout";
 import { PageSEO } from "~/components/seo";
 import { SwapBox } from "~/components/swap";
 import { FirstTimeWarning } from "~/components/swap/parts/FirstTimeWarning";
+import { SquidBanner } from "~/components/swap/parts/SquidBanner";
 
 import { useSwapStore } from "~/store";
 
@@ -52,6 +53,7 @@ const Home: NextPage = () => {
         ) : (
           <>
             <div className="grid h-full grid-cols-1 gap-10 lg:grid-cols-1 justify-items-center lg:justify-items-stretch">
+              <SquidBanner />
               {ENVIRONMENT === "mainnet" && <FirstTimeWarning />}
               <div
                 className="flex items-start justify-center"
