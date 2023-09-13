@@ -44,6 +44,6 @@ export const teritori: CosmosChain = {
     ],
     features: ["ibc-transfer", "ibc-go", "stargate"],
     chainIdentifier: "teritori",
-    chainToAxelarChannelId: "channel-19",
+    chainToAxelarChannelId: "channel-61",
     explorer: "https://explorer.teritori.com/teritori",
 };
