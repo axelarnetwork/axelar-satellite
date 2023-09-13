@@ -41,39 +41,37 @@ export const SquidBanner = () => {
   }
 
   return (
-    <div className="fixed z-50 w-full max-w-screen-2xl top-24 left-10">
-      <div className="relative block w-7/12 p-4 border-2 border-white border-solid shadow-lg alert bg-base-100/50 backdrop-blur-lg">
-        <button
-          className="absolute btn btn-sm btn-circle right-10 top-2"
-          onClick={() => setShowSquidBanner(false)}
-        >
-          Dismiss
-        </button>
+    <div className="flex flex-col w-screen sm:w-full md:max-w-[550px] mb-5 z-10 p-4 border-2 border-white border-solid shadow-lg alert bg-base-100/50 backdrop-blur-lg">
+      <button
+        className="absolute btn btn-sm right-2 top-2"
+        onClick={() => setShowSquidBanner(false)}
+      >
+        Dismiss
+      </button>
+      <div>
         <div>
-          <div>
-            <h3 className="mb-5 text-xl font-bold">Heads up!</h3>
-            <div className="text-md">
-              Save $$$ in fees: Bridge between EVM and Cosmos chains with Squid
-              Router, powered by Axelar.
-              <span
-                className="cursor-pointer tooltip tooltip-warning"
-                data-tip="Satellite uses Deposit Address, an Axelar feature that auto-routes deposits from any chain. Squid uses more gas-efficient logic built with General Message Passing. More info: docs.axelar.dev. "
-              >
-                {InfoIcon}
-              </span>
-            </div>
+          <h3 className="mb-5 text-xl font-bold">Heads up!</h3>
+          <div className="text-md">
+            Save $$$ in fees: Bridge between EVM and Cosmos chains with Squid
+            Router, powered by Axelar.
+            <span
+              className="cursor-pointer tooltip tooltip-warning"
+              data-tip="Satellite uses Deposit Address, an Axelar feature that auto-routes deposits from any chain. Squid uses more gas-efficient logic built with General Message Passing. More info: docs.axelar.dev. "
+            >
+              {InfoIcon}
+            </span>
           </div>
         </div>
-        <div className="flex justify-end">
-          <a
-            className="mt-5 btn btn-xs btn-primary"
-            href="https://app.squidrouter.com"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Check it out
-          </a>
-        </div>
+      </div>
+      <div className="flex justify-end">
+        <a
+          className="btn btn-xs btn-primary"
+          href="https://app.squidrouter.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Check it out
+        </a>
       </div>
     </div>
   );
