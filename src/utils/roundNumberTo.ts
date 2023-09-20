@@ -1,10 +1,12 @@
-export const roundNumberTo = (num: string, places: number) => {
-  if (isNaN(Number(num))) {
+export function roundNumberTo(num: string, places: number) {
+  const sanitized = parseFloat(num.replace(/,/g, ""));
+
+  if (isNaN(sanitized)) {
     return "...";
   }
 
-  const number = Number(num).toFixed(
-    Math.max((`${num}`.split(".")[1] || "").length, places)
+  const number = sanitized.toFixed(
+    Math.max((`${sanitized}`.split(".")[1] || "").length, places)
   );
   return number;
-};
+}
