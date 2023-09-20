@@ -1,13 +1,16 @@
 export function roundNumberTo(num: string, places: number) {
   // remove commas
-  const sanitized = parseFloat(num.replace(/,/g, ""));
+  const sanitized = num.replace(/,/g, "");
 
-  if (isNaN(sanitized)) {
+  if (isNaN(parseFloat(sanitized))) {
     return "...";
   }
 
-  const number = sanitized.toFixed(
-    Math.max((`${sanitized}`.split(".")[1] || "").length, places)
-  );
+  const [, decimals] = sanitized.split(".");
+
+  const number = Number(sanitized).toLocaleString("en", {
+    minimumFractionDigits: Math.max(decimals?.length ?? 0, places),
+  });
+
   return number;
 }
