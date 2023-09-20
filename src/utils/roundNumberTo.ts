@@ -1,10 +1,16 @@
-export const roundNumberTo = (num: string, places: number) => {
-  if (isNaN(Number(num))) {
+export function roundNumberTo(num: string, places: number) {
+  // remove commas
+  const sanitized = num.replace(/,/g, "");
+
+  if (isNaN(parseFloat(sanitized))) {
     return "...";
   }
 
-  const number = Number(num).toFixed(
-    Math.max((`${num}`.split(".")[1] || "").length, places)
-  );
+  const [, decimals] = sanitized.split(".");
+
+  const number = Number(sanitized).toLocaleString("en", {
+    minimumFractionDigits: Math.max(decimals?.length ?? 0, places),
+  });
+
   return number;
-};
+}
