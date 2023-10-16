@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:analyze": "ANALYZE=true pnpm build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest --run",
