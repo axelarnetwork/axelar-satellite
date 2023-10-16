@@ -1,4 +1,4 @@
-import { moonbaseAlpha } from "wagmi/chains";
+import { moonbaseAlpha } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

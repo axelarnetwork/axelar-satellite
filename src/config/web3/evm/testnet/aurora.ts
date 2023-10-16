@@ -1,4 +1,4 @@
-import { auroraTestnet } from "wagmi/chains";
+import { auroraTestnet } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

@@ -1,4 +1,4 @@
-import { bscTestnet as binanceConfig } from "wagmi/chains";
+import { bscTestnet as binanceConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

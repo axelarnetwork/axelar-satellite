@@ -1,4 +1,4 @@
-import { moonbeam as moonbeamConfig } from "wagmi/chains";
+import { moonbeam as moonbeamConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

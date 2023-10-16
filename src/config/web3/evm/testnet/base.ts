@@ -1,4 +1,4 @@
-import { baseGoerli } from "wagmi/chains";
+import { baseGoerli } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

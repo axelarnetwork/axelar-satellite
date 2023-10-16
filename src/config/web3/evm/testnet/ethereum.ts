@@ -1,4 +1,4 @@
-import { goerli as ethereumConfig } from "wagmi/chains";
+import { goerli as ethereumConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 
