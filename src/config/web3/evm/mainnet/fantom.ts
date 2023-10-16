@@ -1,4 +1,4 @@
-import { fantom as fantomConfig } from "wagmi/chains";
+import { fantom as fantomConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

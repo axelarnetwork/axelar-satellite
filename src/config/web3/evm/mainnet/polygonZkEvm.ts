@@ -1,4 +1,4 @@
-import { polygonZkEvm as polygonZkEvmConfig } from "wagmi/chains";
+import { polygonZkEvm as polygonZkEvmConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

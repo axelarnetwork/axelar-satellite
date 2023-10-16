@@ -1,4 +1,4 @@
-import { celoAlfajores } from "wagmi/chains";
+import { celoAlfajores } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 
