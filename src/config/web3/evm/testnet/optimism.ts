@@ -1,4 +1,4 @@
-import { optimismGoerli as optimismConfig } from "wagmi/chains";
+import { optimismGoerli as optimismConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

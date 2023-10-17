@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { BigNumber } from "ethers";
-import { formatUnits } from "ethers/lib/utils";
+import { formatUnits } from "viem";
 import { useContractRead } from "wagmi";
 
 import { getWagmiChains } from "../config/web3";
-import gatewayABI from "../data/abi/axelarGateway.json";
+import gatewayABI from "../data/abi/axelarGateway";
 import { useSwapStore } from "../store";
 import { useAxelarRPCQuery } from "./api/useAxelarRPCQuery";
 
-export const useGatewayQuery = () => {
+export function useGatewayQuery() {
   const { asset, destChain } = useSwapStore((state) => state);
   const [gatewayAddr, setGatewayAddr] = useState<string>("");
   const { api } = useAxelarRPCQuery();
@@ -29,7 +28,9 @@ export const useGatewayQuery = () => {
       destChain.module === "evm"
     ),
     args: [
-      asset?.chain_aliases[destChain?.chainName?.toLowerCase()].assetSymbol,
+      String(
+        asset?.chain_aliases[destChain?.chainName?.toLowerCase()].assetSymbol
+      ),
     ],
   });
 
@@ -42,14 +43,13 @@ export const useGatewayQuery = () => {
         return;
       }
       const chain = destChain?.chainName?.toLowerCase();
-      const gatewayAddress = await (
-        await api?.evm?.GatewayAddress({ chain })
-      ).address;
-      setGatewayAddr(gatewayAddress);
+      const { address } = await api?.evm?.GatewayAddress({ chain });
+
+      setGatewayAddr(address);
     })();
   }, [destChain, api]);
 
   return maxTransferAmount
-    ? formatUnits(BigNumber.from(maxTransferAmount).div(4), asset?.decimals)
+    ? formatUnits(maxTransferAmount / BigInt(4), asset?.decimals ?? 0)
     : null;
-};
+}

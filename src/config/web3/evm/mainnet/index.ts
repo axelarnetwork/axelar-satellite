@@ -14,6 +14,7 @@ import { moonbeam } from "./moonbeam";
 import { optimism } from "./optimism";
 import { polygon } from "./polygon";
 import { polygonZkEvm } from "./polygonZkEvm";
+import { scroll } from "./scroll";
 
 export const mainnetChains: ChainExtension[] = [
   arbitrum,
@@ -31,4 +32,5 @@ export const mainnetChains: ChainExtension[] = [
   polygonZkEvm,
   optimism,
   mantle,
+  scroll,
 ];

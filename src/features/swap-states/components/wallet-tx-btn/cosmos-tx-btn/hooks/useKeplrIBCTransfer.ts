@@ -1,11 +1,10 @@
 import { useMemo, useState } from "react";
 import { StdFee } from "@cosmjs/launchpad";
-import BigNumber from "bignumber.js";
 import { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { Height } from "cosmjs-types/ibc/core/client/v1/client";
-import { utils } from "ethers";
 import Long from "long";
 import toast from "react-hot-toast";
+import { Hash, parseUnits } from "viem";
 
 import { getCosmosChains } from "~/config/web3";
 import { connectToKeplr } from "~/components/web3/utils/handleOnKeplrConnect";
@@ -16,7 +15,7 @@ import { useGetKeplerWallet } from "~/hooks";
 import { evmIshSignDirect } from "~/hooks/kepler/evmIsh/evmIshSignDirect";
 import { curateCosmosChainId } from "~/utils";
 import { SwapStatus } from "~/utils/enums";
-import { renderGasFee } from "~/utils/renderGasFee";
+import { getGasFee } from "~/utils/getGasFee";
 import { getSigningClient } from "~/utils/wallet/keplr";
 
 export function useKeplrIBCTransfer() {
@@ -72,10 +71,7 @@ export function useKeplrIBCTransfer() {
       (asset) => asset.common_key === assetCommonKey
     );
 
-    const { minAmountOk, minDeposit } = await checkMinAmount(
-      tokensToTransfer,
-      assetData?.minDepositAmt
-    );
+    const { minAmountOk, minDeposit } = await checkMinAmount(tokensToTransfer);
 
     if (!minAmountOk) {
       return toast.error(
@@ -85,9 +81,7 @@ export function useKeplrIBCTransfer() {
 
     const sendCoin = {
       denom: assetData?.ibcDenom as string,
-      amount: utils
-        .parseUnits(tokensToTransfer, assetData?.decimals)
-        .toString(),
+      amount: parseUnits(tokensToTransfer, assetData?.decimals ?? 0).toString(),
     };
     const fee: StdFee = {
       gas: chain.gas ?? "250000",
@@ -115,7 +109,7 @@ export function useKeplrIBCTransfer() {
           .then((e) => {
             console.log("CosmosWalletTransfer: send tokens");
             setTxInfo({
-              sourceTxHash: e.transactionHash,
+              sourceTxHash: e.transactionHash as Hash,
             });
 
             setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
@@ -131,9 +125,10 @@ export function useKeplrIBCTransfer() {
       ) {
         const sendCoin = {
           denom: assetData?.ibcDenom as string,
-          amount: utils
-            .parseUnits(tokensToTransfer, assetData?.decimals)
-            .toString(),
+          amount: parseUnits(
+            tokensToTransfer,
+            assetData?.decimals ?? 0
+          ).toString(),
         };
         await evmIshSignDirect(
           sendCoin.amount,
@@ -170,7 +165,7 @@ export function useKeplrIBCTransfer() {
           .then((e) => {
             console.log("CosmosWalletTransfer: IBC transfer");
             setTxInfo({
-              sourceTxHash: e.transactionHash,
+              sourceTxHash: e.transactionHash as Hash,
             });
             setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
           })
@@ -186,15 +181,12 @@ export function useKeplrIBCTransfer() {
     }
   }
 
-  // FIXME: this is a duplicate funciton
-  async function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
-    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit))) {
-      return { minDeposit, minAmountOk: false };
-    }
+  async function checkMinAmount(amount: string) {
+    const minDeposit = await getGasFee(srcChain, destChain, asset);
+
     return {
       minDeposit,
-      minAmountOk: true,
+      minAmountOk: Number(amount) > minDeposit,
     };
   }
 

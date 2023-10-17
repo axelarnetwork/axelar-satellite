@@ -1,4 +1,4 @@
-import { celo as celoConfig } from "wagmi/chains";
+import { celo as celoConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

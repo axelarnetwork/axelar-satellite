@@ -1,4 +1,5 @@
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { Address, Hash } from "viem";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -8,9 +9,9 @@ import { SwapOrigin, SwapStatus } from "~/utils/enums";
 export * from "./computed";
 
 interface TxInfo {
-  sourceTxHash?: string;
-  destTxHash?: string;
-  destStartBlockNumber?: number;
+  sourceTxHash?: Hash;
+  destTxHash?: Hash;
+  destStartBlockNumber?: string;
 }
 
 interface SwapState {
@@ -18,12 +19,12 @@ interface SwapState {
   allChains: ChainInfoExtended[];
   srcChain: ChainInfoExtended;
   destChain: ChainInfoExtended;
-  destAddress: string;
+  destAddress: Address;
   selectableAssetList: AssetConfigExtended[];
   initialAsset: AssetConfigExtended | null;
   asset: AssetConfigExtended | null;
   swapStatus: SwapStatus;
-  depositAddress: string;
+  depositAddress: Address;
   intermediaryDepositAddress: string;
   swapOrigin: SwapOrigin;
   tokensToTransfer: string;
@@ -38,14 +39,14 @@ interface SwapStore extends SwapState {
   setAllChains: (chains: ChainInfo[]) => ChainInfo[];
   setSrcChain: (chain: ChainInfo) => void;
   setDestChain: (chain: ChainInfo) => void;
-  setDestAddress: (address: string) => void;
+  setDestAddress: (address: Address) => void;
   setAsset: (asset: AssetConfigExtended | null) => void;
   setInitialAsset: (asset: AssetConfigExtended | null) => void;
   setAssetList: (assets: AssetConfigExtended[]) => void;
   switchChains: () => void;
   setSwapStatus: (newStatus: SwapStatus) => void;
-  setDepositAddress: (address: string) => void;
-  setIntermediaryDepositAddress: (address: string) => void;
+  setDepositAddress: (address: Address) => void;
+  setIntermediaryDepositAddress: (address: Address) => void;
   setSwapOrigin: (origin: SwapOrigin) => void;
   setTokensToTransfer: (tokens: string) => void;
   setTxInfo: (_txInfo: TxInfo) => void;
@@ -66,15 +67,15 @@ const initialState: SwapState = {
   initialAsset: null, // helper for switching between native/wrapped assets
   asset: null, // asset to transfer
   tokensToTransfer: "", // asset amount to transfer
-  destAddress: "", // user owned account to transfer assets to
-  depositAddress: "", // axelar generated account where user should deposit his assets
+  destAddress: "" as Address, // user owned account to transfer assets to
+  depositAddress: "" as Address, // axelar generated account where user should deposit his assets
   intermediaryDepositAddress: "",
   swapStatus: SwapStatus.IDLE,
   swapOrigin: SwapOrigin.APP,
   txInfo: {
-    sourceTxHash: "",
-    destTxHash: "",
-    destStartBlockNumber: 1,
+    sourceTxHash: "" as Hash,
+    destTxHash: "" as Hash,
+    destStartBlockNumber: "1",
   },
   rehydrateAssets: true,
   shouldUnwrapAsset: false,

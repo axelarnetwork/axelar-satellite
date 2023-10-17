@@ -14,6 +14,7 @@ export const addAssetToMetamaskWithAssetConfig = async (
       assetName,
     } = chain_aliases[chain.chainName?.toLowerCase()];
     const nativeAssetSymbol = chain_aliases[native_chain].assetSymbol;
+    // @ts-ignore
     await window.ethereum?.request({
       // @ts-ignore
       method: "eth_requestAccounts",
@@ -21,6 +22,7 @@ export const addAssetToMetamaskWithAssetConfig = async (
       params: [],
     });
 
+    // @ts-ignore
     return await window.ethereum?.request({
       // @ts-ignore
       method: "wallet_watchAsset",
@@ -53,6 +55,7 @@ export const addTokenToMetamaskWithAssetInfo = async (asset: AssetInfo) => {
       assetName,
       assetSymbol,
     } = asset;
+    // @ts-ignore
     await window.ethereum?.request({
       // @ts-ignore
       method: "eth_requestAccounts",
@@ -60,6 +63,7 @@ export const addTokenToMetamaskWithAssetInfo = async (asset: AssetInfo) => {
       params: [],
     });
 
+    // @ts-ignore
     return await window.ethereum?.request({
       // @ts-ignore
       method: "wallet_watchAsset",

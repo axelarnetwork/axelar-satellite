@@ -1,4 +1,4 @@
-import { polygon as polygonConfig } from "wagmi/chains";
+import { polygon as polygonConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

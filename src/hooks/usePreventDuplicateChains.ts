@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChainInfo } from "@axelar-network/axelarjs-sdk";
+import { Address } from "viem";
 
 import { useSwapStore } from "../store";
 
@@ -27,7 +28,7 @@ export const usePreventDuplicateChains = () => {
         originSrcChain &&
         originDestChain?.module !== destChain?.module
       ) {
-        setDestAddress("");
+        setDestAddress("" as Address);
       }
 
       updateCachedChains();

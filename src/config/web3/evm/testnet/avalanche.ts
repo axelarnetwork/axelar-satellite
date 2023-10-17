@@ -1,4 +1,4 @@
-import { avalancheFuji as avalancheConfig } from "wagmi/chains";
+import { avalancheFuji as avalancheConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

@@ -3,9 +3,8 @@ import {
   useLCDClient as useTerraLCDClient,
   useWallet as useTerraWallet,
 } from "@terra-money/wallet-provider";
-import { BigNumber } from "bignumber.js";
-import { formatUnits } from "ethers/lib/utils";
 import toast from "react-hot-toast";
+import { formatUnits } from "viem";
 import {
   erc20ABI,
   useAccount,
@@ -68,6 +67,7 @@ export const useGetAssetBalance = () => {
    */
   const { data: keplrBalance, isLoading: keplrBalanceIsLoading } =
     useGetKeplerBalance();
+
   useEffect(
     () => {
       if (srcChain.module !== "axelarnet" || !keplrConnected) {
@@ -101,8 +101,8 @@ export const useGetAssetBalance = () => {
       .then(([coins]) => {
         setTerraStationBalance(
           formatUnits(
-            coins.get(denom)?.amount.toNumber() as number,
-            asset?.decimals
+            BigInt(coins.get(denom)?.amount.toString() ?? "0"),
+            asset?.decimals ?? 0
           )
         );
       })
@@ -124,6 +124,13 @@ export const useGetAssetBalance = () => {
     loading,
   };
 };
+
+function parseBigIntWithDecimals(bigint: bigint, decimals: number): number {
+  const divisor = BigInt(10 ** decimals);
+  const wholePart = Number(bigint / divisor);
+  const remainder = Number(bigint % divisor) / Number(divisor);
+  return wholePart + remainder;
+}
 
 const useGetEvmBalance = () => {
   const { address } = useAccount();
@@ -185,18 +192,32 @@ const useGetEvmBalance = () => {
     }
 
     if (isNativeBalance) {
-      const value = new BigNumber(nativeBalance?.formatted || "0").toFixed(4);
+      const value = Number(nativeBalance?.formatted ?? "0").toLocaleString(
+        "en",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 4,
+        }
+      );
       return setBalance(value);
     }
 
-    const bigNum = new BigNumber(erc20Balance?._hex || "0");
-    const num = bigNum.div(10 ** Number(asset?.decimals));
-    setBalance(num.toFixed(4));
+    const num = parseBigIntWithDecimals(
+      BigInt(erc20Balance ?? 0),
+      asset?.decimals ?? 0
+    );
+
+    setBalance(
+      num.toLocaleString("en", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 4,
+      })
+    );
   }, [
     isNativeBalance,
     asset?.decimals,
     nativeBalance?.formatted,
-    erc20Balance?._hex,
+    erc20Balance,
     wagmiConnected,
   ]);
 
@@ -266,7 +287,7 @@ const useGetKeplerBalance = () => {
         derivedDenom,
         fullChainConfig.rpc
       );
-      return formatUnits(res?.amount as string, asset.decimals) || "0";
+      return res ? formatUnits(BigInt(res.amount), asset.decimals) : "0";
     } catch (e) {
       let msg;
       if (e?.toString()?.includes("Ledger is not compatible")) {

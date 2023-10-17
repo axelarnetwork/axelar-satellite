@@ -1,4 +1,4 @@
-import { arbitrumGoerli as arbitrumConfig } from "wagmi/chains";
+import { arbitrumGoerli as arbitrumConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

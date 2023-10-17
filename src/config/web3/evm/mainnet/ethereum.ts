@@ -1,4 +1,4 @@
-import { mainnet as ethereumConfig } from "wagmi/chains";
+import { mainnet as ethereumConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

@@ -6,9 +6,8 @@ import {
   useLCDClient,
   useWallet as useTerraWallet,
 } from "@terra-money/wallet-provider";
-import { BigNumber } from "bignumber.js";
-import { utils } from "ethers";
 import toast from "react-hot-toast";
+import { Hash, parseUnits } from "viem";
 
 import { TERRA_IBC_GAS_LIMIT } from "~/config/constants";
 
@@ -16,7 +15,7 @@ import { useSwapStore } from "~/store";
 
 import { useIsTerraConnected } from "~/hooks/terra";
 import { SwapStatus } from "~/utils/enums";
-import { renderGasFee } from "~/utils/renderGasFee";
+import { getGasFee } from "~/utils/getGasFee";
 
 export function useTerraTransfer() {
   const srcChain = useSwapStore((state) => state.srcChain);
@@ -35,15 +34,12 @@ export function useTerraTransfer() {
   const lcdClient = useLCDClient();
   const [loading, setLoading] = useState(false);
 
-  // FIXME: duplicate
-  async function checkMinAmount(amount: string, minAmount?: number) {
-    const minDeposit = (await renderGasFee(srcChain, destChain, asset)) || 0;
-    if (new BigNumber(amount || "0").lte(new BigNumber(minDeposit))) {
-      return { minDeposit, minAmountOk: false };
-    }
+  async function checkMinAmount(amount: string) {
+    const minDeposit = await getGasFee(srcChain, destChain, asset);
+
     return {
       minDeposit,
-      minAmountOk: true,
+      minAmountOk: Number(amount) > minDeposit,
     };
   }
 
@@ -55,10 +51,7 @@ export function useTerraTransfer() {
     const assetData = srcChain.assets?.find(
       (asset) => asset.common_key === assetCommonKey
     );
-    const { minAmountOk, minDeposit } = await checkMinAmount(
-      tokensToTransfer,
-      assetData?.minDepositAmt
-    );
+    const { minAmountOk, minDeposit } = await checkMinAmount(tokensToTransfer);
 
     if (!minAmountOk) {
       return toast.error(
@@ -66,7 +59,6 @@ export function useTerraTransfer() {
       );
     }
 
-    console.log(1);
     const sourcePort = "transfer";
     const senderAddress =
       terraWallets && terraWallets.length >= 1
@@ -81,7 +73,6 @@ export function useTerraTransfer() {
       "/"
     ) as string[];
 
-    console.log(2);
     if (!denom) {
       throw new Error(`asset not found: ${_denom}`);
     }
@@ -91,7 +82,7 @@ export function useTerraTransfer() {
       _channel,
       new TerraCoin(
         denom,
-        utils.parseUnits(tokensToTransfer, assetData?.decimals).toString()
+        parseUnits(tokensToTransfer, assetData?.decimals ?? 0).toString()
       ),
       senderAddress,
       depositAddress,
@@ -99,12 +90,6 @@ export function useTerraTransfer() {
       undefined
     );
 
-    console.log(3);
-
-    console.log({
-      connectedWallet,
-      transferMsg,
-    });
     const signTx = await connectedWallet
       ?.sign({
         msgs: [transferMsg],
@@ -118,8 +103,6 @@ export function useTerraTransfer() {
         return null;
       });
 
-    console.log(4);
-
     if (!signTx) {
       return;
     }
@@ -129,7 +112,7 @@ export function useTerraTransfer() {
       const tx = await lcdClient.tx.broadcastSync(signTx.result);
       console.log("TS tx", tx);
       setTxInfo({
-        sourceTxHash: tx.txhash,
+        sourceTxHash: tx.txhash as Hash,
       });
       setSwapStatus(SwapStatus.WAIT_FOR_CONFIRMATION);
     } catch (e) {
