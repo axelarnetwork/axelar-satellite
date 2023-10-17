@@ -67,6 +67,7 @@ export const useGetAssetBalance = () => {
    */
   const { data: keplrBalance, isLoading: keplrBalanceIsLoading } =
     useGetKeplerBalance();
+
   useEffect(
     () => {
       if (srcChain.module !== "axelarnet" || !keplrConnected) {
@@ -123,6 +124,13 @@ export const useGetAssetBalance = () => {
     loading,
   };
 };
+
+function parseBigIntWithDecimals(bigint: bigint, decimals: number): number {
+  const divisor = BigInt(10 ** decimals);
+  const wholePart = Number(bigint / divisor);
+  const remainder = Number(bigint % divisor) / Number(divisor);
+  return wholePart + remainder;
+}
 
 const useGetEvmBalance = () => {
   const { address } = useAccount();
@@ -194,8 +202,10 @@ const useGetEvmBalance = () => {
       return setBalance(value);
     }
 
-    const num =
-      (erc20Balance ?? BigInt(0)) / BigInt(10 ** (asset?.decimals ?? 0));
+    const num = parseBigIntWithDecimals(
+      BigInt(erc20Balance ?? 0),
+      asset?.decimals ?? 0
+    );
 
     setBalance(
       num.toLocaleString("en", {
