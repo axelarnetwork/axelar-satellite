@@ -6,12 +6,14 @@ import { assetmantle } from "./assetmantle";
 import { aura } from "./aura";
 import { axelar } from "./axelar";
 import { carbon } from "./carbon";
+import { celestia } from "./celestia";
 import { comdex } from "./comdex";
 import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
 import { eMoney } from "./e-money";
 import { evmos } from "./evmos";
 import { fetch } from "./fetch";
+import { haqq } from "./haqq";
 import { injective } from "./injective";
 import { ixo } from "./ixo";
 import { juno } from "./juno";
@@ -67,4 +69,6 @@ export const mainnetChains: CosmosChain[] = [
   rebus,
   provenance,
   migaloo,
+  celestia,
+  haqq,
 ];

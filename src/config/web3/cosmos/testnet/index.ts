@@ -3,6 +3,7 @@ import { acrechain } from "./acrechain";
 import { aura } from "./aura";
 import { axelar } from "./axelar";
 import { burnt } from "./burnt";
+import { celestia } from "./celestia";
 import { comdex } from "./comdex";
 import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
@@ -14,6 +15,7 @@ import { neutron } from "./neutron";
 import { odin } from "./odin";
 import { osmosis } from "./osmosis";
 import { persistence } from "./persistence";
+import { provenance } from "./provenance";
 import { secret } from "./secret";
 import { sei } from "./sei";
 import { teritori } from "./teritori";
@@ -41,4 +43,6 @@ export const testnetChains: CosmosChain[] = [
   neutron,
   teritori,
   haqq,
+  celestia,
+  provenance,
 ];
