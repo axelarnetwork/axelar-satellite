@@ -30,6 +30,7 @@ import { sei } from "./sei";
 import { sommelier } from "./sommelier";
 import { stargaze } from "./stargaze";
 import { stride } from "./stride";
+import { teritori } from "./teritori";
 import { terra } from "./terra";
 import { terraClassic } from "./terra_classic";
 import { umee } from "./umee";
@@ -71,4 +72,5 @@ export const mainnetChains: CosmosChain[] = [
   migaloo,
   celestia,
   haqq,
+  teritori,
 ];
