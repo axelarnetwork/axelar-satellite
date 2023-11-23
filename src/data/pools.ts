@@ -11,16 +11,16 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
     dex: "Osmosis",
     url: "https://app.osmosis.zone/pool/678",
   },
-  polygon: {
-    pairs: ["axlUSDC/USDC"],
-    dex: "KyberSwap",
-    url: "https://kyberswap.com/swap/polygon/axlusdc-to-usdc",
-  },
-  avalanche: {
-    pairs: ["axlUSDC/USDC"],
-    dex: "KyberSwap",
-    url: "https://kyberswap.com/swap/avalanche/axlusdc-to-usdc",
-  },
+  // polygon: {
+  //   pairs: ["axlUSDC/USDC"],
+  //   dex: "KyberSwap",
+  //   url: "https://kyberswap.com/swap/polygon/axlusdc-to-usdc",
+  // },
+  // avalanche: {
+  //   pairs: ["axlUSDC/USDC"],
+  //   dex: "KyberSwap",
+  //   url: "https://kyberswap.com/swap/avalanche/axlusdc-to-usdc",
+  // },
   fantom: {
     pairs: ["axlUSDC/USDC"],
     dex: "Curve",
@@ -61,11 +61,11 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
     dex: "PancakeSwap",
     url: "https://pancakeswap.finance/swap?inputCurrency=0x4268B8F0B87b6Eae5d897996E6b845ddbD99Adf3&outputCurrency=0x55d398326f99059fF775485246999027B3197955",
   },
-  arbitrum: {
-    pairs: ["axlUSDC/USDC"],
-    dex: "KyberSwap",
-    url: "https://kyberswap.com/swap/arbitrum/axlusdc-to-usdc.e",
-  },
+  // arbitrum: {
+  //   pairs: ["axlUSDC/USDC"],
+  //   dex: "KyberSwap",
+  //   url: "https://kyberswap.com/swap/arbitrum/axlusdc-to-usdc.e",
+  // },
   moonbeam: {
     pairs: ["GLMR/axlUSDC"],
     dex: "Stellaswap",
@@ -81,9 +81,9 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
     dex: "Equilibre",
     url: "https://equilibrefinance.com/swap?outputCurrency=0xeb466342c4d449bc9f53a865d5cb90586f405215",
   },
-  optimism: {
-    pairs: ["axlUSDC/USDC"],
-    dex: "KyberSwap",
-    url: "https://kyberswap.com/swap/optimism/axlusdc-to-usdc",
-  },
+  // optimism: {
+  //   pairs: ["axlUSDC/USDC"],
+  //   dex: "KyberSwap",
+  //   url: "https://kyberswap.com/swap/optimism/axlusdc-to-usdc",
+  // },
 };
