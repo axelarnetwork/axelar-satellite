@@ -147,5 +147,6 @@ const list = [
   "0xed6e0a7e4ac94d976eebfb82ccf777a3c6bad921",
   "0xf4B067dD14e95Bab89Be928c07Cb22E3c94E0DAA",
   "0xffbac21a641dcfe4552920138d90f3638b3c9fba",
+  "0xc9b826bad20872eb29f9b1d8af4befe8460b50c6",
 ];
 export default list;
