@@ -11,6 +11,7 @@ const kybeSwapRevervedList: string[] = [
   "0x5E42DD64266C3852cad3d294f71b171459Cf0a48",
   "0x4Ea83653eceA38B51730c14776698E19f5ca6e65", //added 12/1/2023
   "0xa423C7Be031E988B25fb7Ec39b7906582f6858c6", //added 12/6/2023
+  "0xc0f9c4B3d29a522140F3002972a7D07d7566E296", //added 12/6/2023
 ];
 
 export default kybeSwapRevervedList;
