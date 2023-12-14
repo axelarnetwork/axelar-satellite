@@ -11,7 +11,7 @@ import {
 } from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+// import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
 
@@ -46,13 +46,13 @@ export const wagmiConfig = createConfig({
         darkMode: true,
       },
     }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        showQrModal: true,
-        projectId: String(process.env.NEXT_PUBLIC_WALLETCONNNECT_PROJECT_ID),
-      },
-    }),
+    // new WalletConnectConnector({
+    //   chains,
+    //   options: {
+    //     showQrModal: true,
+    //     projectId: String(process.env.NEXT_PUBLIC_WALLETCONNNECT_PROJECT_ID),
+    //   },
+    // }),
   ],
   publicClient,
 });
