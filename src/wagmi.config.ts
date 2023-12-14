@@ -46,13 +46,13 @@ export const wagmiConfig = createConfig({
         darkMode: true,
       },
     }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        showQrModal: true,
-        projectId: String(process.env.NEXT_PUBLIC_WALLETCONNNECT_PROJECT_ID),
-      },
-    }),
+    // new WalletConnectConnector({
+    //   chains,
+    //   options: {
+    //     showQrModal: true,
+    //     projectId: String(process.env.NEXT_PUBLIC_WALLETCONNNECT_PROJECT_ID),
+    //   },
+    // }),
   ],
   publicClient,
 });
