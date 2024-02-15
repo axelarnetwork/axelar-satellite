@@ -4,6 +4,7 @@ import { aura } from "./aura";
 import { axelar } from "./axelar";
 import { burnt } from "./burnt";
 import { celestia } from "./celestia";
+import { chain4energy } from "./chain4energy";
 import { comdex } from "./comdex";
 import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
@@ -43,6 +44,7 @@ export const testnetChains: CosmosChain[] = [
   nibiru,
   elys,
   dymension,
+  chain4energy,
   fetch,
   fxcore,
   persistence,
