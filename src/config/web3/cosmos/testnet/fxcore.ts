@@ -8,7 +8,7 @@ export const fxcore: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/fxcore`,
   rest: "https://testnet-fx-rest.functionx.io",
   chainId: "dhobyghaut",
-  chainName: "f(x)Core Testnet",
+  chainName: "fxCore Testnet",
   chainIdentifier: "fxcore",
   walletUrl: "https://testnet.starscan.io/fxcore/validators",
   walletUrlForStaking: "https://testnet.starscan.io/fxcore/validators",
