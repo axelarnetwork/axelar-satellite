@@ -14,6 +14,7 @@ import { fxcore } from "./fxcore";
 import { haqq } from "./haqq";
 import { kujira } from "./kujira";
 import { neutron } from "./neutron";
+import { nibiru } from "./nibiru";
 import { odin } from "./odin";
 import { ojo } from "./ojo";
 import { osmosis } from "./osmosis";
@@ -38,6 +39,7 @@ export const testnetChains: CosmosChain[] = [
   saga,
   cosmoshub,
   crescent,
+  nibiru,
   elys,
   fetch,
   fxcore,
