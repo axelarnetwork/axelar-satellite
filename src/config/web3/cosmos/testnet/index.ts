@@ -7,6 +7,7 @@ import { celestia } from "./celestia";
 import { comdex } from "./comdex";
 import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
+import { dymension } from "./dymension";
 import { elys } from "./elys";
 import { evmos } from "./evmos";
 import { fetch } from "./fetch";
@@ -41,6 +42,7 @@ export const testnetChains: CosmosChain[] = [
   crescent,
   nibiru,
   elys,
+  dymension,
   fetch,
   fxcore,
   persistence,
