@@ -7,6 +7,7 @@ import { celestia } from "./celestia";
 import { comdex } from "./comdex";
 import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
+import { elys } from "./elys";
 import { evmos } from "./evmos";
 import { fetch } from "./fetch";
 import { fxcore } from "./fxcore";
@@ -37,6 +38,7 @@ export const testnetChains: CosmosChain[] = [
   saga,
   cosmoshub,
   crescent,
+  elys,
   fetch,
   fxcore,
   persistence,
