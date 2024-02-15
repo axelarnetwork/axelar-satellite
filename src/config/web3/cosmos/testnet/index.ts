@@ -17,6 +17,7 @@ import { odin } from "./odin";
 import { osmosis } from "./osmosis";
 import { persistence } from "./persistence";
 import { provenance } from "./provenance";
+import { saga } from "./saga";
 import { secret } from "./secret";
 import { sei } from "./sei";
 import { teritori } from "./teritori";
@@ -32,6 +33,7 @@ export const testnetChains: CosmosChain[] = [
   kujira,
   axelar,
   sei,
+  saga,
   cosmoshub,
   crescent,
   fetch,
