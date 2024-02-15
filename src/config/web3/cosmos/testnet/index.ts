@@ -14,6 +14,7 @@ import { haqq } from "./haqq";
 import { kujira } from "./kujira";
 import { neutron } from "./neutron";
 import { odin } from "./odin";
+import { ojo } from "./ojo";
 import { osmosis } from "./osmosis";
 import { persistence } from "./persistence";
 import { provenance } from "./provenance";
@@ -43,6 +44,7 @@ export const testnetChains: CosmosChain[] = [
   burnt,
   acrechain,
   odin,
+  ojo,
   secret,
   neutron,
   teritori,
