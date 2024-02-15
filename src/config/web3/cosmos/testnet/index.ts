@@ -9,6 +9,7 @@ import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
 import { evmos } from "./evmos";
 import { fetch } from "./fetch";
+import { fxcore } from "./fxcore";
 import { haqq } from "./haqq";
 import { kujira } from "./kujira";
 import { neutron } from "./neutron";
@@ -34,6 +35,7 @@ export const testnetChains: CosmosChain[] = [
   cosmoshub,
   crescent,
   fetch,
+  fxcore,
   persistence,
   xpla,
   burnt,
