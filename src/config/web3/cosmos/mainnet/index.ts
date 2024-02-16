@@ -7,6 +7,7 @@ import { aura } from "./aura";
 import { axelar } from "./axelar";
 import { carbon } from "./carbon";
 import { celestia } from "./celestia";
+import { chihuahua } from "./chihuahua";
 import { comdex } from "./comdex";
 import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
@@ -43,6 +44,7 @@ export const mainnetChains: CosmosChain[] = [
   osmosis,
   kujira,
   axelar,
+  chihuahua,
   cosmoshub,
   crescent,
   secret,
