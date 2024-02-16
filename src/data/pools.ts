@@ -13,14 +13,24 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   polygon: {
     pairs: ["axlUSDC/USDC"],
-    dex: "KyberSwap",
-    url: "https://kyberswap.com/swap/polygon/axlusdc-to-usdc",
+    dex: "QuickSwap",
+    url: "https://quickswap.exchange/#/swap?currency0=0x750e4C4984a9e0f12978eA6742Bc1c5D248f40ed[…]ncy1=0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359&swapIndex=0",
   },
-  avalanche: {
+  linea: {
     pairs: ["axlUSDC/USDC"],
-    dex: "KyberSwap",
-    url: "https://kyberswap.com/swap/avalanche/axlusdc-to-usdc",
+    dex: "PancakeSwap",
+    url: "https://pancakeswap.finance/swap?chain=linea&inputCurrency=0xEB466342C4d449BC9f53A865D[…]5&outputCurrency=0x176211869cA2b568f2A7D4EE941E073a821EE1ff",
   },
+  base: {
+    pairs: ["axlUSDC/USDC"],
+    dex: "PancakeSwap",
+    url: "https://pancakeswap.finance/swap?chain=base&inputCurrency=0xEB466342C4d449BC9f53A865D5[…]5&outputCurrency=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  },
+  // avalanche: {
+  //   pairs: ["axlUSDC/USDC"],
+  //   dex: "KyberSwap",
+  //   url: "https://kyberswap.com/swap/avalanche/axlusdc-to-usdc",
+  // },
   fantom: {
     pairs: ["axlUSDC/USDC"],
     dex: "Curve",
@@ -63,8 +73,8 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   arbitrum: {
     pairs: ["axlUSDC/USDC"],
-    dex: "KyberSwap",
-    url: "https://kyberswap.com/swap/arbitrum/axlusdc-to-usdc.e",
+    dex: "UniSwap",
+    url: "https://app.uniswap.org/swap",
   },
   moonbeam: {
     pairs: ["GLMR/axlUSDC"],
@@ -83,7 +93,7 @@ export const USDC_POOLS: Record<string, PoolInfo> = {
   },
   optimism: {
     pairs: ["axlUSDC/USDC"],
-    dex: "KyberSwap",
-    url: "https://kyberswap.com/swap/optimism/axlusdc-to-usdc",
+    dex: "UniSwap",
+    url: "https://app.uniswap.org/swap",
   },
 };

@@ -6,8 +6,8 @@ import { CosmosChain } from "../interface";
 
 export const teritori: CosmosChain = {
   rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/teritori`,
-  rest: "https://teritori-testnet.api.kjnodes.com",
-  chainId: "teritori-testnet-v3",
+  rest: "https://rest.testnet.teritori.com",
+  chainId: "teritori-test-6",
   chainName: "Teritori Testnet",
   chainIdentifier: "teritori",
   bech32Config: Bech32Address.defaultBech32Config("tori"),
@@ -48,6 +48,6 @@ export const teritori: CosmosChain = {
     "no-legacy-stdTx",
     "ibc-go",
   ],
-  chainToAxelarChannelId: "channel-36",
+  chainToAxelarChannelId: "channel-0",
   explorer: "", // TODO: add explorer
 };
