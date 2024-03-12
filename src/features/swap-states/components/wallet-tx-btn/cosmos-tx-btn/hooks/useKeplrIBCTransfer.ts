@@ -119,7 +119,7 @@ export function useKeplrIBCTransfer() {
             console.log(e);
           });
       } else if (
-        ["evmos", "xpla", "acrechain", "rebus"].includes(
+        ["evmos", "xpla", "acrechain", "rebus", "haqq"].includes(
           srcChain.chainName.toLowerCase()
         )
       ) {
