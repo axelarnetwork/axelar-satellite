@@ -83,7 +83,7 @@ export const SrcChainTxPropagation = () => {
 
     let name = "";
     if (srcChain.chainName.toLowerCase()?.includes("base")) {
-      name = "Goerli L1";
+      name = "Sepolia L1";
     } else {
       name = srcChain.chainName;
     }

@@ -1,4 +1,4 @@
-import { optimismGoerli as optimismConfig } from "viem/chains";
+import { optimismSepolia as optimismConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

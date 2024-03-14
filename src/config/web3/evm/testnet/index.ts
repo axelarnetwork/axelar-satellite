@@ -4,10 +4,12 @@ import { aurora } from "./aurora";
 import { avalanche } from "./avalanche";
 import { base } from "./base";
 import { binance } from "./binance";
+import { blast } from "./blast";
 import { celo } from "./celo";
 import { ethereum } from "./ethereum";
 import { fantom } from "./fantom";
 import { filecoin } from "./filecoin";
+import { fraxtal } from "./fraxtal";
 import { kava } from "./kava";
 import { linea } from "./linea";
 import { mantle } from "./mantle";
@@ -21,10 +23,12 @@ export const testnetChains: ChainExtension[] = [
   aurora,
   avalanche,
   base,
+  blast,
   ethereum,
   moonbeam,
   fantom,
   filecoin,
+  fraxtal,
   polygon,
   polygonZkEvm,
   binance,

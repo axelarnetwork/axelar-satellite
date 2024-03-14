@@ -1,4 +1,4 @@
-import { goerli as ethereumConfig } from "viem/chains";
+import { sepolia as ethereumConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 

@@ -3,10 +3,12 @@ import { arbitrum } from "./arbitrum";
 import { avalanche } from "./avalanche";
 import { base } from "./base";
 import { binance } from "./binance";
+import { blast } from "./blast";
 import { celo } from "./celo";
 import { ethereum } from "./ethereum";
 import { fantom } from "./fantom";
 import { filecoin } from "./filecoin";
+import { fraxtal } from "./fraxtal";
 import { kava } from "./kava";
 import { linea } from "./linea";
 import { mantle } from "./mantle";
@@ -21,9 +23,11 @@ export const mainnetChains: ChainExtension[] = [
   avalanche,
   base,
   binance,
+  blast,
   celo,
   ethereum,
   filecoin,
+  fraxtal,
   kava,
   linea,
   moonbeam,

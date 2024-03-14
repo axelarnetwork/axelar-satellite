@@ -1,8 +1,8 @@
-import { baseGoerli } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 
 export const base: ChainExtension = {
-  ...baseGoerli,
+  ...baseSepolia,
   networkNameOverride: "base",
 };
