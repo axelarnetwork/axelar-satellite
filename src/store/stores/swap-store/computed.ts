@@ -289,6 +289,7 @@ const getWagmiChainOverride = (wagmiNetwork: string) => {
     ropsten: "ethereum",
     homestead: "ethereum",
     goerli: "ethereum",
+    sepolia: "ethereum",
   };
   return map[wagmiNetwork] || wagmiNetwork;
 };

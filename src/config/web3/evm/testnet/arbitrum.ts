@@ -1,4 +1,4 @@
-import { arbitrumGoerli as arbitrumConfig } from "viem/chains";
+import { arbitrumSepolia as arbitrumConfig } from "viem/chains";
 
 import { ChainExtension } from "../interface";
 
