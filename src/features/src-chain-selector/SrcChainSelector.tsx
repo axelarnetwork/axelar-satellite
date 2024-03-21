@@ -48,7 +48,7 @@ export const SrcChainSelector = () => {
               <div className="flex items-center gap-x-2">
                 <Image
                   loading="eager"
-                  src={`/assets/chains/${chainName}.logo.svg`}
+                  src={`/assets/chains/${chainName?.split(" ")[0]}.logo.svg`}
                   width={35}
                   height={35}
                   onError={(e) => {

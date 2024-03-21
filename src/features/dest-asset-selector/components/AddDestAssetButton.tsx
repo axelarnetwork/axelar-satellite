@@ -138,7 +138,9 @@ export const AddDestAssetButton = () => {
               />
               <Image
                 loading="eager"
-                src={`/assets/chains/${destChain.chainName?.toLowerCase()}.logo.svg`}
+                src={`/assets/chains/${
+                  destChain.chainName?.toLowerCase().split(" ")[0]
+                }.logo.svg`}
                 width={20}
                 height={20}
                 onError={(e) => {

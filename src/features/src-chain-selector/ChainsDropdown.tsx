@@ -59,7 +59,7 @@ export const ChainsDropdown: React.FC<Props> = ({
         {...makeAccessibleKeysHandler(handleOnDropdownToggle)}
       >
         {filteredChains.map((chain, i) => {
-          const chainName = chain.chainName?.toLowerCase();
+          const chainName = chain.chainName?.toLowerCase().split(" ")[0];
           return (
             <li
               className={clsx({

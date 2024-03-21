@@ -25,5 +25,5 @@ export const blast: ChainExtension = defineChain({
     },
   },
   testnet: true,
-  networkNameOverride: "blast",
+  networkNameOverride: "blast-sepolia",
 });
