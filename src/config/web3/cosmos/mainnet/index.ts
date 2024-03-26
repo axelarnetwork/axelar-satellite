@@ -11,6 +11,7 @@ import { chihuahua } from "./chihuahua";
 import { comdex } from "./comdex";
 import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
+import { dymension } from "./dymension";
 import { eMoney } from "./e-money";
 import { evmos } from "./evmos";
 import { fetch } from "./fetch";
@@ -47,6 +48,7 @@ export const mainnetChains: CosmosChain[] = [
   chihuahua,
   cosmoshub,
   crescent,
+  dymension,
   secret,
   ixo,
   juno,
