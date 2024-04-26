@@ -5,6 +5,7 @@ import { archway } from "./archway";
 import { assetmantle } from "./assetmantle";
 import { aura } from "./aura";
 import { axelar } from "./axelar";
+import { bitsong } from "./bitsong";
 import { carbon } from "./carbon";
 import { celestia } from "./celestia";
 import { chihuahua } from "./chihuahua";
@@ -23,6 +24,8 @@ import { ki } from "./ki";
 import { kujira } from "./kujira";
 import { migaloo } from "./migaloo";
 import { neutron } from "./neutron";
+import { nolus } from "./nolus";
+import { ojo } from "./ojo";
 import { osmosis } from "./osmosis";
 import { provenance } from "./provenance";
 import { rebus } from "./rebus";
@@ -55,6 +58,9 @@ export const mainnetChains: CosmosChain[] = [
   eMoney,
   injective,
   evmos,
+  ojo,
+  nolus,
+  bitsong,
   stargaze,
   assetmantle,
   ki,
