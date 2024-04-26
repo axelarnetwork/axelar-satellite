@@ -1,11 +1,9 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
-
 import { CosmosChain } from "../interface";
 
 export const ojo: CosmosChain = {
-  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/ojo`,
+  rpc: `https://rpc.agamotto-val-stage-0.ojo.network`,
   rest: "https://api.agamotto-val-stage-0.ojo.network",
   chainId: "agamotto",
   chainName: "Ojo",
@@ -33,9 +31,9 @@ export const ojo: CosmosChain = {
       coinDecimals: 6,
       coinGeckoId: "ojo",
       gasPriceStep: {
-        low: 0,
-        average: 0,
-        high: 0,
+        low: 0.05,
+        average: 0.125,
+        high: 0.2,
       },
     },
   ],
