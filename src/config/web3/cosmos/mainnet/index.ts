@@ -8,6 +8,7 @@ import { axelar } from "./axelar";
 import { bitsong } from "./bitsong";
 import { carbon } from "./carbon";
 import { celestia } from "./celestia";
+import { chain4energy } from "./chain4energy";
 import { chihuahua } from "./chihuahua";
 import { comdex } from "./comdex";
 import { cosmoshub } from "./cosmoshub";
@@ -48,6 +49,7 @@ export const mainnetChains: CosmosChain[] = [
   osmosis,
   kujira,
   axelar,
+  chain4energy,
   chihuahua,
   cosmoshub,
   crescent,
