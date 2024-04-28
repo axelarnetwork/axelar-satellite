@@ -2,12 +2,12 @@ import { Bech32Address } from "@keplr-wallet/cosmos";
 
 import { CosmosChain } from "../interface";
 
-export const chain4energy: CosmosChain = {
+export const c4e: CosmosChain = {
   rpc: `https://rpc.c4e.io`,
   rest: "https://lcd.c4e.io",
   chainId: "perun-1",
-  chainName: "Chain4Energy",
-  chainIdentifier: "chain4energy",
+  chainName: "C4E",
+  chainIdentifier: "c4e",
   bech32Config: Bech32Address.defaultBech32Config("c4e"),
   bip44: {
     coinType: 118,

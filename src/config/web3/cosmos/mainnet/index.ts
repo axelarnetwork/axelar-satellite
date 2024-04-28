@@ -6,9 +6,9 @@ import { assetmantle } from "./assetmantle";
 import { aura } from "./aura";
 import { axelar } from "./axelar";
 import { bitsong } from "./bitsong";
+import { c4e } from "./c4e";
 import { carbon } from "./carbon";
 import { celestia } from "./celestia";
-import { chain4energy } from "./chain4energy";
 import { chihuahua } from "./chihuahua";
 import { comdex } from "./comdex";
 import { cosmoshub } from "./cosmoshub";
@@ -49,7 +49,7 @@ export const mainnetChains: CosmosChain[] = [
   osmosis,
   kujira,
   axelar,
-  chain4energy,
+  c4e,
   chihuahua,
   cosmoshub,
   crescent,
