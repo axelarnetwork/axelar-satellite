@@ -4,12 +4,12 @@ import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
 
 import { CosmosChain } from "../interface";
 
-export const chain4energy: CosmosChain = {
-  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/chain4energy`,
+export const c4e: CosmosChain = {
+  rpc: `${COSMOS_PROXY_RPC_TESTNET}/chain/c4e`,
   rest: "https://lcd-testnet.c4e.io",
   chainId: "babajaga-1",
-  chainName: "Chain4Energy Testnet",
-  chainIdentifier: "chain4energy",
+  chainName: "C4E Testnet",
+  chainIdentifier: "c4e",
   bech32Config: Bech32Address.defaultBech32Config("c4e"),
   bip44: {
     coinType: 118,
