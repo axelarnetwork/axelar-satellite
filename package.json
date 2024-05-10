@@ -27,7 +27,7 @@
     "clsx": "^1.2.1",
     "daisyui": "^2.52.0",
     "ethers": "^5.7.2",
-    "next": "^13.5.5",
+    "next": "^14.1.1",
     "next-secure-headers": "^2.2.0",
     "proxy-memoize": "^2.0.4",
     "rambda": "^8.3.0",
