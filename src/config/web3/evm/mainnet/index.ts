@@ -9,6 +9,7 @@ import { ethereum } from "./ethereum";
 import { fantom } from "./fantom";
 import { filecoin } from "./filecoin";
 import { fraxtal } from "./fraxtal";
+import { immutable } from "./immutable";
 import { kava } from "./kava";
 import { linea } from "./linea";
 import { mantle } from "./mantle";
@@ -29,6 +30,7 @@ export const mainnetChains: ChainExtension[] = [
   filecoin,
   fraxtal,
   kava,
+  immutable,
   linea,
   moonbeam,
   fantom,
