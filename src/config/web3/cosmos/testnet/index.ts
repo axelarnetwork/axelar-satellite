@@ -27,6 +27,7 @@ import { secret } from "./secret";
 import { sei } from "./sei";
 import { teritori } from "./teritori";
 import { terra } from "./terra";
+import { warden } from "./warden";
 import { xpla } from "./xpla";
 
 export const testnetChains: CosmosChain[] = [
@@ -59,4 +60,5 @@ export const testnetChains: CosmosChain[] = [
   haqq,
   celestia,
   provenance,
+  warden,
 ];
