@@ -35,7 +35,7 @@ export const c4e: CosmosChain = {
     coinDenom: "C4E",
     coinMinimalDenom: "uc4e",
     coinDecimals: 6,
-    coinGeckoId: "unknown",
+    coinGeckoId: "chain4energy",
   },
   features: ["cosmwasm"],
   chainToAxelarChannelId: "channel-0",
