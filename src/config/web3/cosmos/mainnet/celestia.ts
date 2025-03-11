@@ -1,7 +1,5 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
-
 import { CosmosChain } from "../interface";
 
 export const celestia: CosmosChain = {
@@ -11,7 +9,7 @@ export const celestia: CosmosChain = {
   },
   chainId: "celestia",
   chainName: "Celestia",
-  chainIdentifier: "comdex",
+  chainIdentifier: "celestia",
   chainToAxelarChannelId: "channel-1",
   chainSymbolImageUrl:
     "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/celestia/chain.png",
@@ -41,7 +39,7 @@ export const celestia: CosmosChain = {
       },
     },
   ],
-  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/celestia`,
+  rpc: "https://rpc.celestia.nodestake.top",
   rest: "https://lcd-celestia.keplr.app",
   stakeCurrency: {
     coinDecimals: 6,
