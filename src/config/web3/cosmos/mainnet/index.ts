@@ -40,6 +40,7 @@ import { teritori } from "./teritori";
 import { terra } from "./terra";
 import { terraClassic } from "./terra_classic";
 import { umee } from "./umee";
+import { elys } from "./elys";
 import { xpla } from "./xpla";
 
 export const mainnetChains: CosmosChain[] = [
@@ -85,4 +86,5 @@ export const mainnetChains: CosmosChain[] = [
   celestia,
   haqq,
   teritori,
+  elys,
 ];
