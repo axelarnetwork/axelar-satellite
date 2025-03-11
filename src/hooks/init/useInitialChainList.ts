@@ -199,7 +199,7 @@ export const useInitialChainList = () => {
      * eg: moonbeam - moonbeamzzz
      */
     if (
-      srcChainFound?.chainName?.toLowerCase() === "moobeam" &&
+      srcChainFound?.chainName?.toLowerCase() === "moonbeam" &&
       !destChainFound
     ) {
       destChainFound = uniqueChains.find(byChainName("avalanche"));
