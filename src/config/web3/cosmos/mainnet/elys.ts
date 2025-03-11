@@ -1,5 +1,3 @@
-import { COSMOS_PROXY_RPC_TESTNET } from "~/config/constants";
-
 import { CosmosChain } from "../interface";
 
 export const elys: CosmosChain = {
