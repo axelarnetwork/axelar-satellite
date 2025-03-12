@@ -15,6 +15,7 @@ import { cosmoshub } from "./cosmoshub";
 import { crescent } from "./crescent";
 import { dymension } from "./dymension";
 import { eMoney } from "./e-money";
+import { elys } from "./elys";
 import { evmos } from "./evmos";
 import { fetch } from "./fetch";
 import { haqq } from "./haqq";
@@ -40,7 +41,7 @@ import { teritori } from "./teritori";
 import { terra } from "./terra";
 import { terraClassic } from "./terra_classic";
 import { umee } from "./umee";
-import { elys } from "./elys";
+import { xion } from "./xion";
 import { xpla } from "./xpla";
 
 export const mainnetChains: CosmosChain[] = [
@@ -86,5 +87,6 @@ export const mainnetChains: CosmosChain[] = [
   celestia,
   haqq,
   teritori,
+  xion,
   elys,
 ];
