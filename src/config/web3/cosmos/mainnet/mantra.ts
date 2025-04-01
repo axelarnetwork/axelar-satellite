@@ -37,7 +37,7 @@ export const elys: CosmosChain = {
         high: 0.03,
       },
       coinImageUrl:
-        "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/refs/heads/main/images/mantra/chain.png",
+        "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/refs/heads/main/images/mantra/om.png",
     },
   ],
   stakeCurrency: {
@@ -45,9 +45,9 @@ export const elys: CosmosChain = {
     coinMinimalDenom: "uom",
     coinDecimals: 6,
     coinImageUrl:
-      "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/refs/heads/main/images/mantra/chain.png",
+      "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/refs/heads/main/images/mantra/om.png",
   },
   features: [],
   chainToAxelarChannelId: "channel-6",
-  explorer: "https://explorer.nodestake.org/elys/account/",
+  explorer: "https://explorer.nodestake.org/mantra/account/",
 };
