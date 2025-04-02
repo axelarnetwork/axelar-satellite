@@ -1,6 +1,6 @@
 import { CosmosChain } from "../interface";
 
-export const elys: CosmosChain = {
+export const mantra: CosmosChain = {
   rpc: "https://rpc.mantrachain.io",
   rest: "https://api.mantrachain.io",
   chainId: "mantra-1",
