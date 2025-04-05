@@ -24,6 +24,7 @@ import { ixo } from "./ixo";
 import { juno } from "./juno";
 import { ki } from "./ki";
 import { kujira } from "./kujira";
+import { mantra } from "./mantra";
 import { migaloo } from "./migaloo";
 import { neutron } from "./neutron";
 import { nolus } from "./nolus";
@@ -89,4 +90,5 @@ export const mainnetChains: CosmosChain[] = [
   teritori,
   xion,
   elys,
+  mantra,
 ];
