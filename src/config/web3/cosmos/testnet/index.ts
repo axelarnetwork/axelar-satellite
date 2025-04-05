@@ -29,6 +29,7 @@ import { teritori } from "./teritori";
 import { terra } from "./terra";
 import { warden } from "./warden";
 import { xpla } from "./xpla";
+import { zigchain } from "./zigchain";
 
 export const testnetChains: CosmosChain[] = [
   terra,
@@ -61,4 +62,5 @@ export const testnetChains: CosmosChain[] = [
   celestia,
   provenance,
   warden,
+  zigchain,
 ];
