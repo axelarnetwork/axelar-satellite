@@ -33,9 +33,14 @@ export const zigchain: CosmosChain = {
         low: 0.01,
         average: 0.025,
         high: 0.03,
-      }
+      },
     },
   ],
+  stakeCurrency: {
+    coinDecimals: 18,
+    coinDenom: "ZIG",
+    coinMinimalDenom: "unit-zig",
+  },
   features: [],
   chainToAxelarChannelId: "channel-1",
   explorer: "",
