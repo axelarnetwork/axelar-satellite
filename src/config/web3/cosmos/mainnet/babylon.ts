@@ -23,14 +23,14 @@ export const babylon: CosmosChain = {
       coinMinimalDenom: "ubbn",
       coinDecimals: 6,
       coinImageUrl:
-        "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/bbn/chain.png",
+        "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/refs/heads/main/images/bbn-test/chain.png",
     },
     {
         coinDenom: "LBTC",
         coinMinimalDenom: "ibc/89EE10FCF78800B572BAAC7080AEFA301B5F3BBC51C5371E907EB129C5B900E7",
         coinDecimals: 8,
         coinImageUrl:
-          "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/bbn/LBTC.png",
+          "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/bbn-test/LBTC.png",
       }
   ],
   feeCurrencies: [
@@ -44,7 +44,7 @@ export const babylon: CosmosChain = {
         high: 0.01,
       },
       coinImageUrl:
-        "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/bbn/chain.png",
+        "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/refs/heads/main/images/bbn-test/chain.png",
     },
   ],
   stakeCurrency: {
@@ -52,7 +52,7 @@ export const babylon: CosmosChain = {
     coinMinimalDenom: "ubbn",
     coinDecimals: 6,
     coinImageUrl:
-      "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/bbn/chain.png",
+      "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/refs/heads/main/images/bbn-test/chain.png",
   },
   features: [],
   chainToAxelarChannelId: "channel-2",
