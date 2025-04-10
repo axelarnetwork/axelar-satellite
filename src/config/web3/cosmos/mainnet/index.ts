@@ -5,6 +5,7 @@ import { archway } from "./archway";
 import { assetmantle } from "./assetmantle";
 import { aura } from "./aura";
 import { axelar } from "./axelar";
+import { babylon } from "./babylon";
 import { bitsong } from "./bitsong";
 import { c4e } from "./c4e";
 import { carbon } from "./carbon";
@@ -91,4 +92,5 @@ export const mainnetChains: CosmosChain[] = [
   xion,
   elys,
   mantra,
+  babylon,
 ];
