@@ -3,7 +3,7 @@ import { CosmosChain } from "../interface";
 export const zigchain: CosmosChain = {
   rpc: "https://testnet-rpc.zigchain.com",
   rest: "https://testnet-api.zigchain.com",
-  chainId: "zig-test-1",
+  chainId: "zig-test-2",
   chainName: "Zigchain",
   chainIdentifier: "zigchain",
   bip44: {
@@ -42,6 +42,6 @@ export const zigchain: CosmosChain = {
     coinMinimalDenom: "unit-zig",
   },
   features: [],
-  chainToAxelarChannelId: "channel-1",
+  chainToAxelarChannelId: "channel-0",
   explorer: "",
 };
