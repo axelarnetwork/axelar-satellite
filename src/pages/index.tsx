@@ -53,10 +53,9 @@ const Home: NextPage = () => {
         ) : (
           <>
             <div className="grid h-full grid-cols-1 gap-10 lg:grid-cols-1 justify-items-center lg:justify-items-stretch">
-              {ENVIRONMENT === "mainnet" && <FirstTimeWarning />}
               <div className="flex flex-col items-center justify-center">
                 <SquidBanner />
-                {storeIsReady && <SwapBox />}
+                {/* SwapBox is now hidden to show only the deprecation notice */}
               </div>
             </div>
           </>
