@@ -1,15 +1,11 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 
-import { ENVIRONMENT, UNDER_MAINTENANCE } from "~/config/constants";
+import { UNDER_MAINTENANCE } from "~/config/constants";
 import { Layout, UnderMaintenance } from "~/components/layout";
 import { PageSEO } from "~/components/seo";
-import { SwapBox } from "~/components/swap";
-import { FirstTimeWarning } from "~/components/swap/parts/FirstTimeWarning";
 import { SquidBanner } from "~/components/swap/parts/SquidBanner";
-
-import { useSwapStore } from "~/store";
 
 import { siteMetadata } from "~/data";
 import { useNormalizeChains, useNormalizeUrlPaths } from "~/hooks";
@@ -21,17 +17,6 @@ const VideoBackground = dynamic(
 );
 
 const Home: NextPage = () => {
-  const allAssets = useSwapStore((state) => state.allAssets);
-  const allChains = useSwapStore((state) => state.allChains);
-
-  const [storeIsReady, setStoreIsReady] = useState(false);
-
-  useEffect(() => {
-    if (allAssets.length > 0 && allChains.length > 0) {
-      setStoreIsReady(true);
-    }
-  }, [allAssets, allChains]);
-
   useEffect(() => drawBackground(), []);
   useInitialChainList();
   useNormalizeUrlPaths();
