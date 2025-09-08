@@ -1,12 +1,10 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
-
 import { CosmosChain } from "../interface";
 
 export const juno: CosmosChain = {
-  rest: "https://lcd-juno.itastakers.com",
-  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/juno`,
+  rest: "https://juno-rest.publicnode.com",
+  rpc: `https://juno-rpc.publicnode.com`,
   chainId: "juno-1",
   chainName: "Juno",
   chainToAxelarChannelId: "channel-71",
