@@ -1,12 +1,10 @@
 import { Bech32Address } from "@keplr-wallet/cosmos";
 
-import { COSMOS_PROXY_RPC_MAINNET } from "~/config/constants";
-
 import { CosmosChain } from "../interface";
 
 export const secret: CosmosChain = {
   rest: "https://secret-4.api.trivium.network:1317",
-  rpc: `${COSMOS_PROXY_RPC_MAINNET}/chain/secret`,
+  rpc: "https://secret-4.api.trivium.network:26657",
   chainId: "secret-4",
   chainName: "Secret",
   chainIdentifier: "secret",
